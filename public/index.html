@@ -1,0 +1,164 @@
+<html>
+<head>
+    <title>Parsing demo</title>
+    <style>
+    pre span {
+        padding: 1px;
+        display: inline-block;
+    }
+    </style>
+</head>
+<body style="height: 100%; overflow: hidden; margin: 0px;">
+    <div style="width: 10%; height: 100%; display: inline-block; float: left;">
+        <input id="language" />
+        <br />
+        <ul style="overflow: scroll; height: 90%;">
+            <li><strong>76</strong> / <strong>115</strong></li>
+            <li>abnf</li>
+            <li>agc</li>
+            <li>arithmetic</li>
+            <li>asm6502</li>
+            <li>asn</li>
+            <li>atl</li>
+            <li>bnf</li>
+            <li>c</li>
+            <li>calculator</li>
+            <li>clf</li>
+            <li>clif</li>
+            <li>clojure</li>
+            <li>creole</li>
+            <li>csv</li>
+            <li>datetime</li>
+            <li>dot</li>
+            <li>erlang</li>
+            <li>fasta</li>
+            <li>fol</li>
+            <li>fortran77</li>
+            <li>gff3</li>
+            <li>gml</li>
+            <li>golang</li>
+            <li>graphql</li>
+            <li>icalendar</li>
+            <li>idl</li>
+            <li>informix</li>
+            <li>iri</li>
+            <li>java</li>
+            <li>jpa</li>
+            <li>json</li>
+            <li>logo</li>
+            <li>lolcode</li>
+            <li>lua</li>
+            <li>mdx</li>
+            <li>memcached_protocol</li>
+            <li>modelica</li>
+            <li>mps</li>
+            <li>mumath</li>
+            <li>mumps</li>
+            <li>muparser</li>
+            <li>pascal</li>
+            <li>pcre</li>
+            <li>pddl</li>
+            <li>pdp7</li>
+            <li>peoplecode</li>
+            <li>pgn</li>
+            <li>plsql</li>
+            <li>postalcode</li>
+            <li>propcalc</li>
+            <li>protobuf3</li>
+            <li>python3</li>
+            <li>r</li>
+            <li>rcs</li>
+            <li>redcode</li>
+            <li>scala</li>
+            <li>sexpression</li>
+            <li>smalltalk</li>
+            <li>snobol</li>
+            <li>sparql</li>
+            <li>sqlite</li>
+            <li>stacktrace</li>
+            <li>suokif</li>
+            <li>swift</li>
+            <li>telephone</li>
+            <li>tiny</li>
+            <li>tinyc</li>
+            <li>tnt</li>
+            <li>tsql</li>
+            <li>turtle</li>
+            <li>url</li>
+            <li>useragent</li>
+            <li>vba</li>
+            <li>vhdl</li>
+            <li>webidl</li>
+            <li>xpath</li>
+        </ul>
+    </div>
+
+    <textarea id="code" style="width: 40%; height: 100%; display: inline-block; float: left;"></textarea>
+
+    <span style="width: 48%; height: 100%; display: inline-block; float: left;">
+        <pre id="formatted" style="padding: 20px;"></pre>
+    </span>
+
+    <script type="text/javascript">
+
+    let colors = {};
+    let get_color = function(key) {
+        if (!colors[key]) {
+            colors[key] = '#' + ((1<<24) * Math.random()|0).toString(16);
+        }
+        return colors[key];
+    };
+
+    let escape_code = function(str) {
+        return str.replace(/ /g, '&nbsp;').replace(/\n/g, '<br />');
+    };
+
+    let gen_html = function(code, node) {
+        let html = '<span style="background-color: ' + get_color(node.type) + '">';
+
+        let i = node.begin;
+        html += node.children.map(function(child) {
+            if (i > child.begin) {
+                throw new Error('Unordered children');
+            }
+
+            let res = '';
+            res += escape_code(code.substring(i, child.begin));
+            res += gen_html(code, child);
+            i = child.end;
+            return res;
+        }).join('');
+        html += escape_code(code.substring(i, node.end));
+
+        html += '</span>';
+        return html;
+    };
+
+
+    let lang_el = document.getElementById('language');
+    lang_el.onchange = function() {
+        let path = 'langs/' + lang_el.value + '.js';
+
+        var script_el = document.createElement('script');
+        script_el.setAttribute('type', 'text/javascript');
+        script_el.setAttribute('src', path);
+
+        document.body.appendChild(script_el);
+    };
+
+    let code_el = document.getElementById('code');
+    let formatted_el = document.getElementById('formatted');
+    code_el.onkeyup = code_el.onchange = function() {
+        let parser = window['CodeSplain_parse_' + lang_el.value];
+        if (typeof parser !== 'function') {return;}
+
+        let code = code_el.value;
+        let ast = parser(code);
+        console.log(ast);
+        let html = gen_html(code, ast);
+        formatted_el.innerHTML = html;
+    }
+    code_el.onchange();
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "explain_my_code",
+  "version": "1.0.0",
+  "description": "Decomposes the lexical elements of a string of code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Maryville Techonologies",
+  "license": "ISC",
+  "dependencies": {
+    "antlr4": "^4.6.0",
+    "cp": "^0.2.0",
+    "webpack": "^2.2.1"
+  }
+}
