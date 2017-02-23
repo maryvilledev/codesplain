@@ -1,3 +1,6 @@
 [submodule "grammars-v4"]
 	path = grammars-v4
 	url = https://github.com/maryvilledev/grammars-v4.git
+[submodule "antlr4"]
+	path = antlr4
+	url = https://github.com/antlr/antlr4.git

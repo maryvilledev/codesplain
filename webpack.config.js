@@ -35,14 +35,19 @@ let prepare_lang = function(lang_name) {
     });
 };
 
-module.exports = function() {
+module.exports = function(env) {
+    let langs = env && env.langs ? env.langs.split(',') : undefined;
+
     return new Promise(function(resolve, reject) {
         fs.readdir(config.lang_configs_path, function(err, files) {
-            let lang_configs = files.filter(function(file) {
-                return file.slice(-3) === '.js';
-            }).map(function(file) {
+            let lang_configs = files.map(function(file) {
+                let lang = file.slice(0, -3);
+
+                if (file.slice(-3) !== '.js') {return;}
+                if (langs && langs.indexOf(lang) === -1) {return;}
+
                 return prepare_lang(file.slice(0, -3));
-            });
+            }).filter(Boolean);
             Promise.all(lang_configs).then(resolve, reject);
         });
     });

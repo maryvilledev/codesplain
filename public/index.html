@@ -118,6 +118,8 @@
 
         let i = node.begin;
         html += node.children.map(function(child) {
+            if (typeof child !== 'object') {return '';}
+
             if (i > child.begin) {
                 throw new Error('Unordered children');
             }
