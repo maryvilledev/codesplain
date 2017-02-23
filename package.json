@@ -4,8 +4,7 @@
   "description": "Decomposes the lexical elements of a string of code",
   "main": "index.js",
   "scripts": {
-    "postinstall": "pushd antlr4/runtime/JavaScript/src/antlr4/ && npm install && popd && npm link antlr4/runtime/JavaScript/src/antlr4/",
-    "start": "./node_modules/.bin/webpack",
+    "postinstall": "sh install.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },

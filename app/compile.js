@@ -14,7 +14,7 @@ module.exports = function(lang_config, callback) {
 
     let check_generated = function(err) {
         if (err) {
-            callback_with_error(err.msg);
+            callback_with_error(err);
             return;
         }
 
@@ -23,7 +23,7 @@ module.exports = function(lang_config, callback) {
                 // If directory doesn't exist, create it and start the compilation process
                 fs.mkdir(cache_dir, cp_grammar);
             } else if (err) {
-                callback_with_error(err.msg);
+                callback_with_error(err);
             } else if (config.always_recompile_antlr) {
                 cp_grammar(err);
             } else {
@@ -35,7 +35,7 @@ module.exports = function(lang_config, callback) {
 
     let cp_grammar = function(err) {
         if (err) {
-            callback_with_error(err.msg);
+            callback_with_error(err);
             return;
         }
 
@@ -44,7 +44,7 @@ module.exports = function(lang_config, callback) {
 
     let compile_parser = function(err) {
         if (err) {
-            callback_with_error(err.msg);
+            callback_with_error(err);
             return;
         }
 
