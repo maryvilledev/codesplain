@@ -30,7 +30,7 @@ module.exports = function(input) {
 
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
-            return node.symbol.type;
+            return parser.symbolicNames[node.symbol.type];
         } else {
             let ast = {
                 'type': parser.ruleNames[node.ruleIndex],
