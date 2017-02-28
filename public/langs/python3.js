@@ -1,4 +1,4 @@
-var CodeSplain_parse_python3 =
+window["CodeSplain_parse_python3"] =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -23836,7 +23836,7 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = fs;
+(function() { module.exports = window["fs"]; }());
 
 /***/ }),
 /* 54 */
@@ -23879,8 +23879,8 @@ module.exports = function(input) {
             let ast = {
                 'type': parser.ruleNames[node.ruleIndex],
                 'begin': node.start.start,
-                'end': node.stop.stop + 1,
-                'children': node.children.map(process_node).filter(Boolean),
+                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
             };
 
             let opts = lang_config.rules[ast.type];
