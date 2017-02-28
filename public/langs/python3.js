@@ -23856,16 +23856,12 @@ let ErrorListener = __webpack_require__(33);
 
 let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
-module.exports = function(input) {
+module.exports = function(input, error_callback) {
     let chars = new antlr.InputStream(input);
     let lexer = new LexerClass(chars);
     let tokens  = new antlr.CommonTokenStream(lexer);
     let parser = new ParserClass(tokens);
     parser.buildParseTrees = true;
-
-    let error_callback = function() {
-        console.error(arguments);
-    }
 
     parser.removeErrorListeners();
     parser.addErrorListener(new ErrorListener(error_callback));
