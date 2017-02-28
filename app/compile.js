@@ -62,7 +62,6 @@ module.exports = function(lang_config, callback) {
             'cwd': cache_dir,
         };
 
-        console.log(cmd, JSON.stringify(args), JSON.stringify(opts));
         let antlr = child_process.spawn(cmd, args, opts);
 
         antlr.stdout.on('data', function(data) {
