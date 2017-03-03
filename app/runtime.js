@@ -26,7 +26,13 @@ module.exports = function(input, error_callback) {
 
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
-            return parser.symbolicNames[node.symbol.type];
+            console.log(node);
+            return {
+                'type': 'term_' + parser.symbolicNames[node.symbol.type],
+                'begin': node.start.start,
+                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'children': [],
+            };
         } else {
             let ast = {
                 'type': parser.ruleNames[node.ruleIndex],
