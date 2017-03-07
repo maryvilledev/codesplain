@@ -46,3 +46,6 @@ module.exports = function(input, error_callback) {
 
     return process_node(tree);
 };
+
+module.exports['finalizers'] = require('./finalizers.js');
+module.exports['rules'] = lang_config.rules;

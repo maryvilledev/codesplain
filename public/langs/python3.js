@@ -23891,6 +23891,8 @@ module.exports = function(input, error_callback) {
     return process_node(tree);
 };
 
+module.exports['rule_names'] = Object.keys(lang_config.rules);
+
 
 /***/ })
 /******/ ]);
