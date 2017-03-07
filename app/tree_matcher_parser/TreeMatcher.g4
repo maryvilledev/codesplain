@@ -10,22 +10,22 @@ main
   ;
 
 node
-  : (mod_type | mod_terminal)? (mod_store | mod_eq)* (mod_child | mod_children)?
+  : (mod_type | mod_terminal) (mod_store | mod_eq)* (mod_child | mod_children)?
   ;
 
 mod_type
-  : ident
+  : IDENTIFIER
   ;
 mod_terminal
-  : '.' ident
+  : '.' IDENTIFIER
   ;
 
 mod_store
-  : ':' ident
+  : ':' IDENTIFIER
   ;
 
 mod_eq
-  : '=' (ident | json_string)
+  : '=' (IDENTIFIER | JSON_STRING)
   ;
 
 mod_child
@@ -45,12 +45,12 @@ node_search
   : '/' node
   ;
 
-ident
+IDENTIFIER
   : [a-zA-Z0-9_]+
   ;
 
 // JSON string
-json_string
+JSON_STRING
   : '"' (ESC | ~ ["\\])* '"'
   ;
 fragment ESC

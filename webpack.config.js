@@ -11,7 +11,7 @@ let prepare_lang = function(filename) {
     let lang_name = filename.slice(0, -3);
 
     if (filename.slice(-3) !== '.js') {return undefined;}
-    if (config.langs && config.langs.indexOf(lang) === -1) {return undefined;}
+    if (config.langs && config.langs.indexOf(lang_name) === -1) {return undefined;}
 
     return new Promise(function(resolve, reject) {
         let lang_config_path = path.resolve(config.lang_configs_path, lang_name + '.js');

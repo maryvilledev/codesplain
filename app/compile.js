@@ -109,14 +109,6 @@ module.exports = function(lang_config, callback) {
             callback_with_error('Extra rules ' + JSON.stringify(config_extra));
         }
 
-        compile_matchers();
-    };
-
-    let compile_matchers = function() {
-        let node_matchers = {};
-        lang_config.matchers.forEach(function() {
-
-        });
         callback_with_success();
     };
 
