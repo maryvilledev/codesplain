@@ -1,4 +1,4 @@
-window["CodeSplain_parse_python3"] =
+module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3761,14 +3761,14 @@ exports.PredPrediction = PredPrediction;
  * can be found in the LICENSE.txt file in the project root.
  */
 exports.atn = __webpack_require__(47);
-exports.codepointat = __webpack_require__(30);
+exports.codepointat = __webpack_require__(31);
 exports.dfa = __webpack_require__(49);
-exports.fromcodepoint = __webpack_require__(31);
+exports.fromcodepoint = __webpack_require__(32);
 exports.tree = __webpack_require__(52);
 exports.error = __webpack_require__(51);
 exports.Token = __webpack_require__(1).Token;
 exports.CommonToken = __webpack_require__(1).CommonToken;
-exports.InputStream = __webpack_require__(22).InputStream;
+exports.InputStream = __webpack_require__(23).InputStream;
 exports.FileStream = __webpack_require__(40).FileStream;
 exports.CommonTokenStream = __webpack_require__(39).CommonTokenStream;
 exports.Lexer = __webpack_require__(13).Lexer;
@@ -3795,7 +3795,7 @@ exports.Utils = __webpack_require__(0);
 //  uses simplified match() and error recovery mechanisms in the interest of speed.
 
 var Token = __webpack_require__(1).Token;
-var Recognizer = __webpack_require__(23).Recognizer;
+var Recognizer = __webpack_require__(24).Recognizer;
 var CommonTokenFactory = __webpack_require__(38).CommonTokenFactory;
 var RecognitionException  = __webpack_require__(5).RecognitionException;
 var LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
@@ -4282,7 +4282,7 @@ RuleContext.prototype.accept = function(visitor) {
 
 //need to manage circular dependencies, so export now
 exports.RuleContext = RuleContext;
-var Trees = __webpack_require__(32).Trees;
+var Trees = __webpack_require__(33).Trees;
 
 
 // Print out a whole tree, not just a node, in LISP format
@@ -4684,9 +4684,9 @@ exports.ProxyErrorListener = ProxyErrorListener;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./Python3Lexer.js": 35,
-	"./Python3Listener.js": 20,
-	"./Python3Parser.js": 21
+	"./Python3Lexer.js": 36,
+	"./Python3Listener.js": 21,
+	"./Python3Parser.js": 22
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -4931,6 +4931,25 @@ exports.ParserRuleContext = ParserRuleContext;
 
 /***/ }),
 /* 20 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+module.exports.collapse = function(ast) {
+    // If there is only one child, and it is exactly the same as this node, then eliminate this node.
+    if (ast.children.length === 1
+        && ast.begin === ast.children[0].begin
+        && ast.end === ast.children[0].end
+    ) {
+        return ast.children[0];
+    } else {
+        return ast;
+    }
+};
+
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated from Python3.g4 by ANTLR 4.6
@@ -5715,13 +5734,13 @@ Python3Listener.prototype.exitInteger = function(ctx) {
 exports.Python3Listener = Python3Listener;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated from Python3.g4 by ANTLR 4.6
 // jshint ignore: start
 var antlr4 = __webpack_require__(12);
-var Python3Listener = __webpack_require__(20).Python3Listener;
+var Python3Listener = __webpack_require__(21).Python3Listener;
 var grammarFileName = "Python3.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
@@ -15199,7 +15218,7 @@ exports.Python3Parser = Python3Parser;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15210,8 +15229,8 @@ exports.Python3Parser = Python3Parser;
 //
 
 var Token = __webpack_require__(1).Token;
-__webpack_require__(30);
 __webpack_require__(31);
+__webpack_require__(32);
 
 // Vacuum all input from a string and then treat it like a buffer.
 
@@ -15340,7 +15359,7 @@ exports.InputStream = InputStream;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15493,7 +15512,7 @@ exports.Recognizer = Recognizer;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -15524,7 +15543,7 @@ exports.ATNDeserializationOptions = ATNDeserializationOptions;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -15565,8 +15584,8 @@ var PredicateTransition = Transitions.PredicateTransition;
 var PrecedencePredicateTransition = Transitions.PrecedencePredicateTransition;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 var Interval = __webpack_require__(2).Interval;
-var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
-var LexerActions = __webpack_require__(27);
+var ATNDeserializationOptions = __webpack_require__(25).ATNDeserializationOptions;
+var LexerActions = __webpack_require__(28);
 var LexerActionType = LexerActions.LexerActionType;
 var LexerSkipAction = LexerActions.LexerSkipAction;
 var LexerChannelAction = LexerActions.LexerChannelAction;
@@ -16195,7 +16214,7 @@ ATNDeserializer.prototype.lexerActionFactory = function(type, data1, data2) {
 exports.ATNDeserializer = ATNDeserializer;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -16252,7 +16271,7 @@ exports.ATNSimulator = ATNSimulator;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 //
@@ -16623,7 +16642,7 @@ exports.LexerPopModeAction = LexerPopModeAction;
 exports.LexerModeAction = LexerModeAction;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -17188,7 +17207,7 @@ exports.PredictionMode = PredictionMode;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -17949,7 +17968,7 @@ exports.BailErrorStrategy = BailErrorStrategy;
 exports.DefaultErrorStrategy = DefaultErrorStrategy;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/codepointat v0.2.0 by @mathias */
@@ -18009,7 +18028,7 @@ if (!String.prototype.codePointAt) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
@@ -18077,7 +18096,7 @@ if (!String.fromCodePoint) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -18222,7 +18241,7 @@ Trees.descendants = function(t) {
 exports.Trees = Trees;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let antlr = __webpack_require__(12);
@@ -18254,10 +18273,10 @@ module.exports = ErrorListener;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let collapse = __webpack_require__(36).collapse;
+let collapse = __webpack_require__(20).collapse;
 
 module.exports = {
 	'language': 'Python3',
@@ -18354,7 +18373,7 @@ module.exports = {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated from Python3.g4 by ANTLR 4.6
@@ -19172,7 +19191,7 @@ Python3Lexer.prototype.grammarFileName = "Python3.g4";
 
 
   let CommonToken = __webpack_require__(1).CommonToken;
-  let Python3Parser = __webpack_require__(21).Python3Parser;
+  let Python3Parser = __webpack_require__(22).Python3Parser;
 
   let old_lexer = Python3Lexer;
   Python3Lexer = function() {
@@ -19418,25 +19437,6 @@ Python3Lexer.prototype.NEWLINE_sempred = function(localctx, predIndex) {
 
 exports.Python3Lexer = Python3Lexer;
 
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-module.exports.collapse = function(ast) {
-    // If there is only one child, and it is exactly the same as this node, then eliminate this node.
-    if (ast.children.length === 1
-        && ast.begin === ast.children[0].begin
-        && ast.end === ast.children[0].end
-    ) {
-        return ast.children[0];
-    } else {
-        return ast;
-    }
-};
 
 
 /***/ }),
@@ -20019,7 +20019,7 @@ exports.CommonTokenStream = CommonTokenStream;
 //  This is an InputStream that is loaded from a file all at once
 //  when you construct the object.
 //
-var InputStream = __webpack_require__(22).InputStream;
+var InputStream = __webpack_require__(23).InputStream;
 var isNodeJs = typeof window === 'undefined' && typeof importScripts === 'undefined';
 var fs = isNodeJs ? __webpack_require__(53) : null;
 
@@ -20252,10 +20252,10 @@ exports.LL1Analyzer = LL1Analyzer;
 
 var Token = __webpack_require__(1).Token;
 var ParseTreeListener = __webpack_require__(3).ParseTreeListener;
-var Recognizer = __webpack_require__(23).Recognizer;
-var DefaultErrorStrategy = __webpack_require__(29).DefaultErrorStrategy;
-var ATNDeserializer = __webpack_require__(25).ATNDeserializer;
-var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
+var Recognizer = __webpack_require__(24).Recognizer;
+var DefaultErrorStrategy = __webpack_require__(30).DefaultErrorStrategy;
+var ATNDeserializer = __webpack_require__(26).ATNDeserializer;
+var ATNDeserializationOptions = __webpack_require__(25).ATNDeserializationOptions;
 var TerminalNode = __webpack_require__(3).TerminalNode;
 var ErrorNode = __webpack_require__(3).ErrorNode;
 
@@ -20973,7 +20973,7 @@ exports.ATNType = ATNType;
 var Token = __webpack_require__(1).Token;
 var Lexer = __webpack_require__(13).Lexer;
 var ATN = __webpack_require__(7).ATN;
-var ATNSimulator = __webpack_require__(26).ATNSimulator;
+var ATNSimulator = __webpack_require__(27).ATNSimulator;
 var DFAState = __webpack_require__(11).DFAState;
 var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var OrderedATNConfigSet = __webpack_require__(9).OrderedATNConfigSet;
@@ -21604,7 +21604,7 @@ exports.LexerATNSimulator = LexerATNSimulator;
 // not cause bloating of the {@link DFA} created for the lexer.</p>
 
 var hashStuff = __webpack_require__(0).hashStuff;
-var LexerIndexedCustomAction = __webpack_require__(27).LexerIndexedCustomAction;
+var LexerIndexedCustomAction = __webpack_require__(28).LexerIndexedCustomAction;
 
 function LexerActionExecutor(lexerActions) {
 	this.lexerActions = lexerActions === null ? [] : lexerActions;
@@ -22007,8 +22007,8 @@ var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var Token = __webpack_require__(1).Token;
 var DFAState = __webpack_require__(11).DFAState;
 var PredPrediction = __webpack_require__(11).PredPrediction;
-var ATNSimulator = __webpack_require__(26).ATNSimulator;
-var PredictionMode = __webpack_require__(28).PredictionMode;
+var ATNSimulator = __webpack_require__(27).ATNSimulator;
+var PredictionMode = __webpack_require__(29).PredictionMode;
 var RuleContext = __webpack_require__(14).RuleContext;
 var ParserRuleContext = __webpack_require__(19).ParserRuleContext;
 var SemanticContext = __webpack_require__(10).SemanticContext;
@@ -23500,10 +23500,10 @@ exports.ParserATNSimulator = ParserATNSimulator;
  */
 
 exports.ATN = __webpack_require__(7).ATN;
-exports.ATNDeserializer = __webpack_require__(25).ATNDeserializer;
+exports.ATNDeserializer = __webpack_require__(26).ATNDeserializer;
 exports.LexerATNSimulator = __webpack_require__(44).LexerATNSimulator;
 exports.ParserATNSimulator = __webpack_require__(46).ParserATNSimulator;
-exports.PredictionMode = __webpack_require__(28).PredictionMode;
+exports.PredictionMode = __webpack_require__(29).PredictionMode;
 
 
 /***/ }),
@@ -23811,7 +23811,7 @@ exports.LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltExcep
 exports.InputMismatchException = __webpack_require__(5).InputMismatchException;
 exports.FailedPredicateException = __webpack_require__(5).FailedPredicateException;
 exports.DiagnosticErrorListener = __webpack_require__(50).DiagnosticErrorListener;
-exports.BailErrorStrategy = __webpack_require__(29).BailErrorStrategy;
+exports.BailErrorStrategy = __webpack_require__(30).BailErrorStrategy;
 exports.ErrorListener = __webpack_require__(17).ErrorListener;
 
 
@@ -23825,7 +23825,7 @@ exports.ErrorListener = __webpack_require__(17).ErrorListener;
  */
 
 var Tree = __webpack_require__(3);
-exports.Trees = __webpack_require__(32).Trees;
+exports.Trees = __webpack_require__(33).Trees;
 exports.RuleNode = Tree.RuleNode;
 exports.ParseTreeListener = Tree.ParseTreeListener;
 exports.ParseTreeVisitor = Tree.ParseTreeVisitor;
@@ -23836,7 +23836,7 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 /* 53 */
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["fs"]; }());
+module.exports = require("fs");
 
 /***/ }),
 /* 54 */
@@ -23845,14 +23845,14 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 let antlr = __webpack_require__(12);
 
 // LANGUAGE_CONFIG_PATH and LANGUAGE_CACHE_DIR are defined in webpack.config.js
-let lang_config = __webpack_require__(34);
+let lang_config = __webpack_require__(35);
 
 let lexer_classname = lang_config.language + 'Lexer';
 let parser_classname = lang_config.language + 'Parser';
 
 let LexerClass = __webpack_require__(18)("./" + lexer_classname + '.js')[lexer_classname];
 let ParserClass = __webpack_require__(18)("./" + parser_classname + '.js')[parser_classname];
-let ErrorListener = __webpack_require__(33);
+let ErrorListener = __webpack_require__(34);
 
 let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
@@ -23891,7 +23891,8 @@ module.exports = function(input, error_callback) {
     return process_node(tree);
 };
 
-module.exports['rule_names'] = Object.keys(lang_config.rules);
+module.exports['finalizers'] = __webpack_require__(20);
+module.exports['rules'] = lang_config.rules;
 
 
 /***/ })
