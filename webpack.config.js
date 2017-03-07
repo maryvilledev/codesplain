@@ -7,7 +7,12 @@ let ClosureCompilerPlugin = require('webpack-closure-compiler');
 let config = require('./config');
 let compile = require('./app/compile');
 
-let prepare_lang = function(lang_name) {
+let prepare_lang = function(filename) {
+    let lang_name = filename.slice(0, -3);
+
+    if (filename.slice(-3) !== '.js') {return undefined;}
+    if (config.langs && config.langs.indexOf(lang) === -1) {return undefined;}
+
     return new Promise(function(resolve, reject) {
         let lang_config_path = path.resolve(config.lang_configs_path, lang_name + '.js');
         let lang_config = require(lang_config_path);
@@ -25,6 +30,7 @@ let prepare_lang = function(lang_name) {
                     new webpack.DefinePlugin({
                         'LANGUAGE_CONFIG_PATH': JSON.stringify(lang_config_path),
                         'LANGUAGE_CACHE_DIR': JSON.stringify(lang_cache_dir),
+                        'TREE_MATCHER_CACHE_DIR': JSON.stringify(config.tree_matcher_cache_dir),
                     }),
                     config.optimize ? new ClosureCompilerPlugin({
                         'compiler': {
@@ -57,16 +63,19 @@ module.exports = function(env) {
     config.optimize = env && env.optimize;
 
     return new Promise(function(resolve, reject) {
-        fs.readdir(config.lang_configs_path, function(err, files) {
-            let lang_configs = files.map(function(file) {
-                let lang = file.slice(0, -3);
+        let lang_config = require('./app/tree_matcher_parser/lang_config.js');
+        compile(lang_config, function(err, lang_cache_dir) {
+            if (err) {
+                reject(err);
+                return;
+            }
 
-                if (file.slice(-3) !== '.js') {return;}
-                if (config.langs && config.langs.indexOf(lang) === -1) {return;}
+            config.tree_matcher_cache_dir = lang_cache_dir;
 
-                return prepare_lang(file.slice(0, -3));
-            }).filter(Boolean);
-            Promise.all(lang_configs).then(resolve, reject);
+            fs.readdir(config.lang_configs_path, function(err, files) {
+                let lang_configs = files.map(prepare_lang).filter(Boolean);
+                Promise.all(lang_configs).then(resolve, reject);
+            });
         });
     });
 };

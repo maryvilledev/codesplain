@@ -1,6 +1,7 @@
 let antlr = require('antlr4');
 
 // LANGUAGE_CONFIG_PATH and LANGUAGE_CACHE_DIR are defined in webpack.config.js
+
 let lang_config = require(LANGUAGE_CONFIG_PATH);
 
 let lexer_classname = lang_config.language + 'Lexer';
@@ -9,7 +10,6 @@ let parser_classname = lang_config.language + 'Parser';
 let LexerClass = require(LANGUAGE_CACHE_DIR + '/' + lexer_classname + '.js')[lexer_classname];
 let ParserClass = require(LANGUAGE_CACHE_DIR + '/' + parser_classname + '.js')[parser_classname];
 let ErrorListener = require('./error_listener');
-
 let TerminalNodeImpl = require('antlr4/tree/Tree.js').TerminalNodeImpl;
 
 module.exports = function(input, error_callback) {
@@ -28,7 +28,7 @@ module.exports = function(input, error_callback) {
         if (node instanceof TerminalNodeImpl) {
             console.log(node);
             return {
-                'type': 'term_' + parser.symbolicNames[node.symbol.type],
+                'type': '.' + parser.symbolicNames[node.symbol.type],
                 'begin': node.start.start,
                 'end': (node.stop ? node.stop : node.start).stop + 1,
                 'children': [],

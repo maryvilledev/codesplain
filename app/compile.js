@@ -8,7 +8,11 @@ let config = require('../config');
 
 module.exports = function(lang_config, callback) {
     let language_key = lang_config.language.toLowerCase();
-    let g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_config.grammar_file);
+    let g4_path = lang_config.grammar_path;
+    if (!g4_path) {
+        g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_config.grammar_file);
+    }
+
     let cache_dir = path.resolve(__dirname, '..', '_cache', language_key);
     let cache_g4_path = path.resolve(cache_dir, lang_config.language + '.g4');
 
@@ -54,7 +58,8 @@ module.exports = function(lang_config, callback) {
             '-cp', '../../bin/antlr-4.6-complete.jar',
             'org.antlr.v4.Tool',
             '-long-messages',
-            //'-no-listener',
+            lang_config.generate_listener ? '-listener' : '-no-listener',
+            lang_config.generate_visitor ? '-visitor' : '-no-visitor',
             '-Dlanguage=JavaScript',
             lang_config.language + '.g4',
         ];
@@ -90,7 +95,8 @@ module.exports = function(lang_config, callback) {
         let ParserClass = require(cache_dir + '/' + parser_classname + '.js')[parser_classname];
         let parser = new ParserClass();
 
-        let parser_rules = parser.ruleNames;
+        let symbol_rules = parser.symbolicNames.filter(Boolean).map(function(val) {return '.' + val;});
+        let parser_rules = parser.ruleNames.concat(symbol_rules);
         let config_rules = Object.keys(lang_config.rules);
 
         let config_missing = array_diff(parser_rules, config_rules);
@@ -103,6 +109,14 @@ module.exports = function(lang_config, callback) {
             callback_with_error('Extra rules ' + JSON.stringify(config_extra));
         }
 
+        compile_matchers();
+    };
+
+    let compile_matchers = function() {
+        let node_matchers = {};
+        lang_config.matchers.forEach(function() {
+
+        });
         callback_with_success();
     };
 

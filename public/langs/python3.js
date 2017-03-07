@@ -64,7 +64,7 @@ window["CodeSplain_parse_python3"] =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 54);
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2464,7 +2464,7 @@ exports.getCachedPredictionContext = getCachedPredictionContext;
  * can be found in the LICENSE.txt file in the project root.
  */
 
-var LL1Analyzer = __webpack_require__(41).LL1Analyzer;
+var LL1Analyzer = __webpack_require__(42).LL1Analyzer;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 
 function ATN(grammarType , maxTokenType) {
@@ -3760,19 +3760,19 @@ exports.PredPrediction = PredPrediction;
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-exports.atn = __webpack_require__(47);
-exports.codepointat = __webpack_require__(30);
-exports.dfa = __webpack_require__(49);
-exports.fromcodepoint = __webpack_require__(31);
-exports.tree = __webpack_require__(52);
-exports.error = __webpack_require__(51);
+exports.atn = __webpack_require__(48);
+exports.codepointat = __webpack_require__(29);
+exports.dfa = __webpack_require__(50);
+exports.fromcodepoint = __webpack_require__(30);
+exports.tree = __webpack_require__(53);
+exports.error = __webpack_require__(52);
 exports.Token = __webpack_require__(1).Token;
 exports.CommonToken = __webpack_require__(1).CommonToken;
-exports.InputStream = __webpack_require__(22).InputStream;
-exports.FileStream = __webpack_require__(40).FileStream;
-exports.CommonTokenStream = __webpack_require__(39).CommonTokenStream;
+exports.InputStream = __webpack_require__(21).InputStream;
+exports.FileStream = __webpack_require__(41).FileStream;
+exports.CommonTokenStream = __webpack_require__(40).CommonTokenStream;
 exports.Lexer = __webpack_require__(13).Lexer;
-exports.Parser = __webpack_require__(42).Parser;
+exports.Parser = __webpack_require__(43).Parser;
 var pc = __webpack_require__(6);
 exports.PredictionContextCache = pc.PredictionContextCache;
 exports.ParserRuleContext = __webpack_require__(19).ParserRuleContext;
@@ -3795,8 +3795,8 @@ exports.Utils = __webpack_require__(0);
 //  uses simplified match() and error recovery mechanisms in the interest of speed.
 
 var Token = __webpack_require__(1).Token;
-var Recognizer = __webpack_require__(23).Recognizer;
-var CommonTokenFactory = __webpack_require__(38).CommonTokenFactory;
+var Recognizer = __webpack_require__(22).Recognizer;
+var CommonTokenFactory = __webpack_require__(39).CommonTokenFactory;
 var RecognitionException  = __webpack_require__(5).RecognitionException;
 var LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 
@@ -4282,7 +4282,7 @@ RuleContext.prototype.accept = function(visitor) {
 
 //need to manage circular dependencies, so export now
 exports.RuleContext = RuleContext;
-var Trees = __webpack_require__(32).Trees;
+var Trees = __webpack_require__(31).Trees;
 
 
 // Print out a whole tree, not just a node, in LISP format
@@ -4684,9 +4684,8 @@ exports.ProxyErrorListener = ProxyErrorListener;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./Python3Lexer.js": 35,
-	"./Python3Listener.js": 20,
-	"./Python3Parser.js": 21
+	"./Python3Lexer.js": 34,
+	"./Python3Parser.js": 20
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -4936,792 +4935,6 @@ exports.ParserRuleContext = ParserRuleContext;
 // Generated from Python3.g4 by ANTLR 4.6
 // jshint ignore: start
 var antlr4 = __webpack_require__(12);
-
-// This class defines a complete listener for a parse tree produced by Python3Parser.
-function Python3Listener() {
-	antlr4.tree.ParseTreeListener.call(this);
-	return this;
-}
-
-Python3Listener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
-Python3Listener.prototype.constructor = Python3Listener;
-
-// Enter a parse tree produced by Python3Parser#single_input.
-Python3Listener.prototype.enterSingle_input = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#single_input.
-Python3Listener.prototype.exitSingle_input = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#file_input.
-Python3Listener.prototype.enterFile_input = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#file_input.
-Python3Listener.prototype.exitFile_input = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#eval_input.
-Python3Listener.prototype.enterEval_input = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#eval_input.
-Python3Listener.prototype.exitEval_input = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#decorator.
-Python3Listener.prototype.enterDecorator = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#decorator.
-Python3Listener.prototype.exitDecorator = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#decorators.
-Python3Listener.prototype.enterDecorators = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#decorators.
-Python3Listener.prototype.exitDecorators = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#decorated.
-Python3Listener.prototype.enterDecorated = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#decorated.
-Python3Listener.prototype.exitDecorated = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#funcdef.
-Python3Listener.prototype.enterFuncdef = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#funcdef.
-Python3Listener.prototype.exitFuncdef = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#parameters.
-Python3Listener.prototype.enterParameters = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#parameters.
-Python3Listener.prototype.exitParameters = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#typedargslist.
-Python3Listener.prototype.enterTypedargslist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#typedargslist.
-Python3Listener.prototype.exitTypedargslist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#tfpdef.
-Python3Listener.prototype.enterTfpdef = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#tfpdef.
-Python3Listener.prototype.exitTfpdef = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#varargslist.
-Python3Listener.prototype.enterVarargslist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#varargslist.
-Python3Listener.prototype.exitVarargslist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#vfpdef.
-Python3Listener.prototype.enterVfpdef = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#vfpdef.
-Python3Listener.prototype.exitVfpdef = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#stmt.
-Python3Listener.prototype.enterStmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#stmt.
-Python3Listener.prototype.exitStmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#simple_stmt.
-Python3Listener.prototype.enterSimple_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#simple_stmt.
-Python3Listener.prototype.exitSimple_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#small_stmt.
-Python3Listener.prototype.enterSmall_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#small_stmt.
-Python3Listener.prototype.exitSmall_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#expr_stmt.
-Python3Listener.prototype.enterExpr_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#expr_stmt.
-Python3Listener.prototype.exitExpr_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#testlist_star_expr.
-Python3Listener.prototype.enterTestlist_star_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#testlist_star_expr.
-Python3Listener.prototype.exitTestlist_star_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#augassign.
-Python3Listener.prototype.enterAugassign = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#augassign.
-Python3Listener.prototype.exitAugassign = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#del_stmt.
-Python3Listener.prototype.enterDel_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#del_stmt.
-Python3Listener.prototype.exitDel_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#pass_stmt.
-Python3Listener.prototype.enterPass_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#pass_stmt.
-Python3Listener.prototype.exitPass_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#flow_stmt.
-Python3Listener.prototype.enterFlow_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#flow_stmt.
-Python3Listener.prototype.exitFlow_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#break_stmt.
-Python3Listener.prototype.enterBreak_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#break_stmt.
-Python3Listener.prototype.exitBreak_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#continue_stmt.
-Python3Listener.prototype.enterContinue_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#continue_stmt.
-Python3Listener.prototype.exitContinue_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#return_stmt.
-Python3Listener.prototype.enterReturn_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#return_stmt.
-Python3Listener.prototype.exitReturn_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#yield_stmt.
-Python3Listener.prototype.enterYield_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#yield_stmt.
-Python3Listener.prototype.exitYield_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#raise_stmt.
-Python3Listener.prototype.enterRaise_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#raise_stmt.
-Python3Listener.prototype.exitRaise_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#import_stmt.
-Python3Listener.prototype.enterImport_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#import_stmt.
-Python3Listener.prototype.exitImport_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#import_name.
-Python3Listener.prototype.enterImport_name = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#import_name.
-Python3Listener.prototype.exitImport_name = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#import_from.
-Python3Listener.prototype.enterImport_from = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#import_from.
-Python3Listener.prototype.exitImport_from = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#import_as_name.
-Python3Listener.prototype.enterImport_as_name = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#import_as_name.
-Python3Listener.prototype.exitImport_as_name = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#dotted_as_name.
-Python3Listener.prototype.enterDotted_as_name = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#dotted_as_name.
-Python3Listener.prototype.exitDotted_as_name = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#import_as_names.
-Python3Listener.prototype.enterImport_as_names = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#import_as_names.
-Python3Listener.prototype.exitImport_as_names = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#dotted_as_names.
-Python3Listener.prototype.enterDotted_as_names = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#dotted_as_names.
-Python3Listener.prototype.exitDotted_as_names = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#dotted_name.
-Python3Listener.prototype.enterDotted_name = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#dotted_name.
-Python3Listener.prototype.exitDotted_name = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#global_stmt.
-Python3Listener.prototype.enterGlobal_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#global_stmt.
-Python3Listener.prototype.exitGlobal_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#nonlocal_stmt.
-Python3Listener.prototype.enterNonlocal_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#nonlocal_stmt.
-Python3Listener.prototype.exitNonlocal_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#assert_stmt.
-Python3Listener.prototype.enterAssert_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#assert_stmt.
-Python3Listener.prototype.exitAssert_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#compound_stmt.
-Python3Listener.prototype.enterCompound_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#compound_stmt.
-Python3Listener.prototype.exitCompound_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#if_stmt.
-Python3Listener.prototype.enterIf_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#if_stmt.
-Python3Listener.prototype.exitIf_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#while_stmt.
-Python3Listener.prototype.enterWhile_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#while_stmt.
-Python3Listener.prototype.exitWhile_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#for_stmt.
-Python3Listener.prototype.enterFor_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#for_stmt.
-Python3Listener.prototype.exitFor_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#try_stmt.
-Python3Listener.prototype.enterTry_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#try_stmt.
-Python3Listener.prototype.exitTry_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#with_stmt.
-Python3Listener.prototype.enterWith_stmt = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#with_stmt.
-Python3Listener.prototype.exitWith_stmt = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#with_item.
-Python3Listener.prototype.enterWith_item = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#with_item.
-Python3Listener.prototype.exitWith_item = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#except_clause.
-Python3Listener.prototype.enterExcept_clause = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#except_clause.
-Python3Listener.prototype.exitExcept_clause = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#suite.
-Python3Listener.prototype.enterSuite = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#suite.
-Python3Listener.prototype.exitSuite = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#test.
-Python3Listener.prototype.enterTest = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#test.
-Python3Listener.prototype.exitTest = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#test_nocond.
-Python3Listener.prototype.enterTest_nocond = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#test_nocond.
-Python3Listener.prototype.exitTest_nocond = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#lambdef.
-Python3Listener.prototype.enterLambdef = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#lambdef.
-Python3Listener.prototype.exitLambdef = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#lambdef_nocond.
-Python3Listener.prototype.enterLambdef_nocond = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#lambdef_nocond.
-Python3Listener.prototype.exitLambdef_nocond = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#or_test.
-Python3Listener.prototype.enterOr_test = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#or_test.
-Python3Listener.prototype.exitOr_test = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#and_test.
-Python3Listener.prototype.enterAnd_test = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#and_test.
-Python3Listener.prototype.exitAnd_test = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#not_test.
-Python3Listener.prototype.enterNot_test = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#not_test.
-Python3Listener.prototype.exitNot_test = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#comparison.
-Python3Listener.prototype.enterComparison = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#comparison.
-Python3Listener.prototype.exitComparison = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#comp_op.
-Python3Listener.prototype.enterComp_op = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#comp_op.
-Python3Listener.prototype.exitComp_op = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#star_expr.
-Python3Listener.prototype.enterStar_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#star_expr.
-Python3Listener.prototype.exitStar_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#expr.
-Python3Listener.prototype.enterExpr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#expr.
-Python3Listener.prototype.exitExpr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#xor_expr.
-Python3Listener.prototype.enterXor_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#xor_expr.
-Python3Listener.prototype.exitXor_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#and_expr.
-Python3Listener.prototype.enterAnd_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#and_expr.
-Python3Listener.prototype.exitAnd_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#shift_expr.
-Python3Listener.prototype.enterShift_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#shift_expr.
-Python3Listener.prototype.exitShift_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#arith_expr.
-Python3Listener.prototype.enterArith_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#arith_expr.
-Python3Listener.prototype.exitArith_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#term.
-Python3Listener.prototype.enterTerm = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#term.
-Python3Listener.prototype.exitTerm = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#factor.
-Python3Listener.prototype.enterFactor = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#factor.
-Python3Listener.prototype.exitFactor = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#power.
-Python3Listener.prototype.enterPower = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#power.
-Python3Listener.prototype.exitPower = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#trailed_atom.
-Python3Listener.prototype.enterTrailed_atom = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#trailed_atom.
-Python3Listener.prototype.exitTrailed_atom = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#atom.
-Python3Listener.prototype.enterAtom = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#atom.
-Python3Listener.prototype.exitAtom = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#testlist_comp.
-Python3Listener.prototype.enterTestlist_comp = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#testlist_comp.
-Python3Listener.prototype.exitTestlist_comp = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#trailer.
-Python3Listener.prototype.enterTrailer = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#trailer.
-Python3Listener.prototype.exitTrailer = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#subscriptlist.
-Python3Listener.prototype.enterSubscriptlist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#subscriptlist.
-Python3Listener.prototype.exitSubscriptlist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#subscript.
-Python3Listener.prototype.enterSubscript = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#subscript.
-Python3Listener.prototype.exitSubscript = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#sliceop.
-Python3Listener.prototype.enterSliceop = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#sliceop.
-Python3Listener.prototype.exitSliceop = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#exprlist.
-Python3Listener.prototype.enterExprlist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#exprlist.
-Python3Listener.prototype.exitExprlist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#testlist.
-Python3Listener.prototype.enterTestlist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#testlist.
-Python3Listener.prototype.exitTestlist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#dictorsetmaker.
-Python3Listener.prototype.enterDictorsetmaker = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#dictorsetmaker.
-Python3Listener.prototype.exitDictorsetmaker = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#classdef.
-Python3Listener.prototype.enterClassdef = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#classdef.
-Python3Listener.prototype.exitClassdef = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#arglist.
-Python3Listener.prototype.enterArglist = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#arglist.
-Python3Listener.prototype.exitArglist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#argument.
-Python3Listener.prototype.enterArgument = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#argument.
-Python3Listener.prototype.exitArgument = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#comp_iter.
-Python3Listener.prototype.enterComp_iter = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#comp_iter.
-Python3Listener.prototype.exitComp_iter = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#comp_for.
-Python3Listener.prototype.enterComp_for = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#comp_for.
-Python3Listener.prototype.exitComp_for = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#comp_if.
-Python3Listener.prototype.enterComp_if = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#comp_if.
-Python3Listener.prototype.exitComp_if = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#yield_expr.
-Python3Listener.prototype.enterYield_expr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#yield_expr.
-Python3Listener.prototype.exitYield_expr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#yield_arg.
-Python3Listener.prototype.enterYield_arg = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#yield_arg.
-Python3Listener.prototype.exitYield_arg = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#str.
-Python3Listener.prototype.enterStr = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#str.
-Python3Listener.prototype.exitStr = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#number.
-Python3Listener.prototype.enterNumber = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#number.
-Python3Listener.prototype.exitNumber = function(ctx) {
-};
-
-
-// Enter a parse tree produced by Python3Parser#integer.
-Python3Listener.prototype.enterInteger = function(ctx) {
-};
-
-// Exit a parse tree produced by Python3Parser#integer.
-Python3Listener.prototype.exitInteger = function(ctx) {
-};
-
-
-
-exports.Python3Listener = Python3Listener;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Generated from Python3.g4 by ANTLR 4.6
-// jshint ignore: start
-var antlr4 = __webpack_require__(12);
-var Python3Listener = __webpack_require__(20).Python3Listener;
 var grammarFileName = "Python3.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
@@ -6723,18 +5936,6 @@ Single_inputContext.prototype.compound_stmt = function() {
     return this.getTypedRuleContext(Compound_stmtContext,0);
 };
 
-Single_inputContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSingle_input(this);
-	}
-};
-
-Single_inputContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSingle_input(this);
-	}
-};
-
 
 
 
@@ -6865,18 +6066,6 @@ File_inputContext.prototype.stmt = function(i) {
     }
 };
 
-File_inputContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterFile_input(this);
-	}
-};
-
-File_inputContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitFile_input(this);
-	}
-};
-
 
 
 
@@ -7004,18 +6193,6 @@ Eval_inputContext.prototype.NEWLINE = function(i) {
 };
 
 
-Eval_inputContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterEval_input(this);
-	}
-};
-
-Eval_inputContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitEval_input(this);
-	}
-};
-
 
 
 
@@ -7082,18 +6259,6 @@ DecoratorContext.prototype.NEWLINE = function() {
 
 DecoratorContext.prototype.arglist = function() {
     return this.getTypedRuleContext(ArglistContext,0);
-};
-
-DecoratorContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDecorator(this);
-	}
-};
-
-DecoratorContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDecorator(this);
-	}
 };
 
 
@@ -7173,18 +6338,6 @@ DecoratorsContext.prototype.decorator = function(i) {
     }
 };
 
-DecoratorsContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDecorators(this);
-	}
-};
-
-DecoratorsContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDecorators(this);
-	}
-};
-
 
 
 
@@ -7247,18 +6400,6 @@ DecoratedContext.prototype.classdef = function() {
 
 DecoratedContext.prototype.funcdef = function() {
     return this.getTypedRuleContext(FuncdefContext,0);
-};
-
-DecoratedContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDecorated(this);
-	}
-};
-
-DecoratedContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDecorated(this);
-	}
 };
 
 
@@ -7338,18 +6479,6 @@ FuncdefContext.prototype.test = function() {
     return this.getTypedRuleContext(TestContext,0);
 };
 
-FuncdefContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterFuncdef(this);
-	}
-};
-
-FuncdefContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitFuncdef(this);
-	}
-};
-
 
 
 
@@ -7414,18 +6543,6 @@ ParametersContext.prototype.constructor = ParametersContext;
 
 ParametersContext.prototype.typedargslist = function() {
     return this.getTypedRuleContext(TypedargslistContext,0);
-};
-
-ParametersContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterParameters(this);
-	}
-};
-
-ParametersContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitParameters(this);
-	}
 };
 
 
@@ -7502,18 +6619,6 @@ TypedargslistContext.prototype.test = function(i) {
     } else {
         return this.getTypedRuleContext(TestContext,i);
     }
-};
-
-TypedargslistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTypedargslist(this);
-	}
-};
-
-TypedargslistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTypedargslist(this);
-	}
 };
 
 
@@ -7739,18 +6844,6 @@ TfpdefContext.prototype.test = function() {
     return this.getTypedRuleContext(TestContext,0);
 };
 
-TfpdefContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTfpdef(this);
-	}
-};
-
-TfpdefContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTfpdef(this);
-	}
-};
-
 
 
 
@@ -7825,18 +6918,6 @@ VarargslistContext.prototype.test = function(i) {
     } else {
         return this.getTypedRuleContext(TestContext,i);
     }
-};
-
-VarargslistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterVarargslist(this);
-	}
-};
-
-VarargslistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitVarargslist(this);
-	}
 };
 
 
@@ -8058,18 +7139,6 @@ VfpdefContext.prototype.NAME = function() {
     return this.getToken(Python3Parser.NAME, 0);
 };
 
-VfpdefContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterVfpdef(this);
-	}
-};
-
-VfpdefContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitVfpdef(this);
-	}
-};
-
 
 
 
@@ -8119,18 +7188,6 @@ StmtContext.prototype.simple_stmt = function() {
 
 StmtContext.prototype.compound_stmt = function() {
     return this.getTypedRuleContext(Compound_stmtContext,0);
-};
-
-StmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterStmt(this);
-	}
-};
-
-StmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitStmt(this);
-	}
 };
 
 
@@ -8244,18 +7301,6 @@ Simple_stmtContext.prototype.NEWLINE = function() {
     return this.getToken(Python3Parser.NEWLINE, 0);
 };
 
-Simple_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSimple_stmt(this);
-	}
-};
-
-Simple_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSimple_stmt(this);
-	}
-};
-
 
 
 
@@ -8355,18 +7400,6 @@ Small_stmtContext.prototype.nonlocal_stmt = function() {
 
 Small_stmtContext.prototype.assert_stmt = function() {
     return this.getTypedRuleContext(Assert_stmtContext,0);
-};
-
-Small_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSmall_stmt(this);
-	}
-};
-
-Small_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSmall_stmt(this);
-	}
 };
 
 
@@ -8509,18 +7542,6 @@ Expr_stmtContext.prototype.yield_expr = function(i) {
 
 Expr_stmtContext.prototype.testlist = function() {
     return this.getTypedRuleContext(TestlistContext,0);
-};
-
-Expr_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterExpr_stmt(this);
-	}
-};
-
-Expr_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitExpr_stmt(this);
-	}
 };
 
 
@@ -8695,18 +7716,6 @@ Testlist_star_exprContext.prototype.star_expr = function(i) {
     }
 };
 
-Testlist_star_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTestlist_star_expr(this);
-	}
-};
-
-Testlist_star_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTestlist_star_expr(this);
-	}
-};
-
 
 
 
@@ -8801,18 +7810,6 @@ AugassignContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 AugassignContext.prototype.constructor = AugassignContext;
 
 
-AugassignContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterAugassign(this);
-	}
-};
-
-AugassignContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitAugassign(this);
-	}
-};
-
 
 
 
@@ -8872,18 +7869,6 @@ Del_stmtContext.prototype.exprlist = function() {
     return this.getTypedRuleContext(ExprlistContext,0);
 };
 
-Del_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDel_stmt(this);
-	}
-};
-
-Del_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDel_stmt(this);
-	}
-};
-
 
 
 
@@ -8931,18 +7916,6 @@ Pass_stmtContext.prototype.constructor = Pass_stmtContext;
 
 Pass_stmtContext.prototype.PASS = function() {
     return this.getToken(Python3Parser.PASS, 0);
-};
-
-Pass_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterPass_stmt(this);
-	}
-};
-
-Pass_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitPass_stmt(this);
-	}
 };
 
 
@@ -9006,18 +7979,6 @@ Flow_stmtContext.prototype.raise_stmt = function() {
 
 Flow_stmtContext.prototype.yield_stmt = function() {
     return this.getTypedRuleContext(Yield_stmtContext,0);
-};
-
-Flow_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterFlow_stmt(this);
-	}
-};
-
-Flow_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitFlow_stmt(this);
-	}
 };
 
 
@@ -9095,18 +8056,6 @@ Break_stmtContext.prototype.BREAK = function() {
     return this.getToken(Python3Parser.BREAK, 0);
 };
 
-Break_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterBreak_stmt(this);
-	}
-};
-
-Break_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitBreak_stmt(this);
-	}
-};
-
 
 
 
@@ -9152,18 +8101,6 @@ Continue_stmtContext.prototype.constructor = Continue_stmtContext;
 
 Continue_stmtContext.prototype.CONTINUE = function() {
     return this.getToken(Python3Parser.CONTINUE, 0);
-};
-
-Continue_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterContinue_stmt(this);
-	}
-};
-
-Continue_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitContinue_stmt(this);
-	}
 };
 
 
@@ -9215,18 +8152,6 @@ Return_stmtContext.prototype.RETURN = function() {
 
 Return_stmtContext.prototype.testlist = function() {
     return this.getTypedRuleContext(TestlistContext,0);
-};
-
-Return_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterReturn_stmt(this);
-	}
-};
-
-Return_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitReturn_stmt(this);
-	}
 };
 
 
@@ -9283,18 +8208,6 @@ Yield_stmtContext.prototype.constructor = Yield_stmtContext;
 
 Yield_stmtContext.prototype.yield_expr = function() {
     return this.getTypedRuleContext(Yield_exprContext,0);
-};
-
-Yield_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterYield_stmt(this);
-	}
-};
-
-Yield_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitYield_stmt(this);
-	}
 };
 
 
@@ -9357,18 +8270,6 @@ Raise_stmtContext.prototype.test = function(i) {
 
 Raise_stmtContext.prototype.FROM = function() {
     return this.getToken(Python3Parser.FROM, 0);
-};
-
-Raise_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterRaise_stmt(this);
-	}
-};
-
-Raise_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitRaise_stmt(this);
-	}
 };
 
 
@@ -9441,18 +8342,6 @@ Import_stmtContext.prototype.import_from = function() {
     return this.getTypedRuleContext(Import_fromContext,0);
 };
 
-Import_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterImport_stmt(this);
-	}
-};
-
-Import_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitImport_stmt(this);
-	}
-};
-
 
 
 
@@ -9517,18 +8406,6 @@ Import_nameContext.prototype.dotted_as_names = function() {
     return this.getTypedRuleContext(Dotted_as_namesContext,0);
 };
 
-Import_nameContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterImport_name(this);
-	}
-};
-
-Import_nameContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitImport_name(this);
-	}
-};
-
 
 
 
@@ -9588,18 +8465,6 @@ Import_fromContext.prototype.dotted_name = function() {
 
 Import_fromContext.prototype.import_as_names = function() {
     return this.getTypedRuleContext(Import_as_namesContext,0);
-};
-
-Import_fromContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterImport_from(this);
-	}
-};
-
-Import_fromContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitImport_from(this);
-	}
 };
 
 
@@ -9733,18 +8598,6 @@ Import_as_nameContext.prototype.AS = function() {
     return this.getToken(Python3Parser.AS, 0);
 };
 
-Import_as_nameContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterImport_as_name(this);
-	}
-};
-
-Import_as_nameContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitImport_as_name(this);
-	}
-};
-
 
 
 
@@ -9811,18 +8664,6 @@ Dotted_as_nameContext.prototype.NAME = function() {
     return this.getToken(Python3Parser.NAME, 0);
 };
 
-Dotted_as_nameContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDotted_as_name(this);
-	}
-};
-
-Dotted_as_nameContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDotted_as_name(this);
-	}
-};
-
 
 
 
@@ -9886,18 +8727,6 @@ Import_as_namesContext.prototype.import_as_name = function(i) {
     } else {
         return this.getTypedRuleContext(Import_as_nameContext,i);
     }
-};
-
-Import_as_namesContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterImport_as_names(this);
-	}
-};
-
-Import_as_namesContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitImport_as_names(this);
-	}
 };
 
 
@@ -9978,18 +8807,6 @@ Dotted_as_namesContext.prototype.dotted_as_name = function(i) {
     }
 };
 
-Dotted_as_namesContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDotted_as_names(this);
-	}
-};
-
-Dotted_as_namesContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDotted_as_names(this);
-	}
-};
-
 
 
 
@@ -10057,18 +8874,6 @@ Dotted_nameContext.prototype.NAME = function(i) {
     }
 };
 
-
-Dotted_nameContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDotted_name(this);
-	}
-};
-
-Dotted_nameContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDotted_name(this);
-	}
-};
 
 
 
@@ -10141,18 +8946,6 @@ Global_stmtContext.prototype.NAME = function(i) {
     }
 };
 
-
-Global_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterGlobal_stmt(this);
-	}
-};
-
-Global_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitGlobal_stmt(this);
-	}
-};
 
 
 
@@ -10228,18 +9021,6 @@ Nonlocal_stmtContext.prototype.NAME = function(i) {
 };
 
 
-Nonlocal_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterNonlocal_stmt(this);
-	}
-};
-
-Nonlocal_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitNonlocal_stmt(this);
-	}
-};
-
 
 
 
@@ -10311,18 +9092,6 @@ Assert_stmtContext.prototype.test = function(i) {
     } else {
         return this.getTypedRuleContext(TestContext,i);
     }
-};
-
-Assert_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterAssert_stmt(this);
-	}
-};
-
-Assert_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitAssert_stmt(this);
-	}
 };
 
 
@@ -10411,18 +9180,6 @@ Compound_stmtContext.prototype.classdef = function() {
 
 Compound_stmtContext.prototype.decorated = function() {
     return this.getTypedRuleContext(DecoratedContext,0);
-};
-
-Compound_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterCompound_stmt(this);
-	}
-};
-
-Compound_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitCompound_stmt(this);
-	}
 };
 
 
@@ -10553,18 +9310,6 @@ If_stmtContext.prototype.ELSE = function() {
     return this.getToken(Python3Parser.ELSE, 0);
 };
 
-If_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterIf_stmt(this);
-	}
-};
-
-If_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitIf_stmt(this);
-	}
-};
-
 
 
 
@@ -10666,18 +9411,6 @@ While_stmtContext.prototype.ELSE = function() {
     return this.getToken(Python3Parser.ELSE, 0);
 };
 
-While_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterWhile_stmt(this);
-	}
-};
-
-While_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitWhile_stmt(this);
-	}
-};
-
 
 
 
@@ -10769,18 +9502,6 @@ For_stmtContext.prototype.suite = function(i) {
 
 For_stmtContext.prototype.ELSE = function() {
     return this.getToken(Python3Parser.ELSE, 0);
-};
-
-For_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterFor_stmt(this);
-	}
-};
-
-For_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitFor_stmt(this);
-	}
 };
 
 
@@ -10881,18 +9602,6 @@ Try_stmtContext.prototype.except_clause = function(i) {
 
 Try_stmtContext.prototype.ELSE = function() {
     return this.getToken(Python3Parser.ELSE, 0);
-};
-
-Try_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTry_stmt(this);
-	}
-};
-
-Try_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTry_stmt(this);
-	}
 };
 
 
@@ -11016,18 +9725,6 @@ With_stmtContext.prototype.suite = function() {
     return this.getTypedRuleContext(SuiteContext,0);
 };
 
-With_stmtContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterWith_stmt(this);
-	}
-};
-
-With_stmtContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitWith_stmt(this);
-	}
-};
-
 
 
 
@@ -11102,18 +9799,6 @@ With_itemContext.prototype.expr = function() {
     return this.getTypedRuleContext(ExprContext,0);
 };
 
-With_itemContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterWith_item(this);
-	}
-};
-
-With_itemContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitWith_item(this);
-	}
-};
-
 
 
 
@@ -11182,18 +9867,6 @@ Except_clauseContext.prototype.AS = function() {
 
 Except_clauseContext.prototype.NAME = function() {
     return this.getToken(Python3Parser.NAME, 0);
-};
-
-Except_clauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterExcept_clause(this);
-	}
-};
-
-Except_clauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitExcept_clause(this);
-	}
 };
 
 
@@ -11283,18 +9956,6 @@ SuiteContext.prototype.stmt = function(i) {
     } else {
         return this.getTypedRuleContext(StmtContext,i);
     }
-};
-
-SuiteContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSuite(this);
-	}
-};
-
-SuiteContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSuite(this);
-	}
 };
 
 
@@ -11428,18 +10089,6 @@ TestContext.prototype.lambdef = function() {
     return this.getTypedRuleContext(LambdefContext,0);
 };
 
-TestContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTest(this);
-	}
-};
-
-TestContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTest(this);
-	}
-};
-
 
 
 
@@ -11539,18 +10188,6 @@ Test_nocondContext.prototype.lambdef_nocond = function() {
     return this.getTypedRuleContext(Lambdef_nocondContext,0);
 };
 
-Test_nocondContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTest_nocond(this);
-	}
-};
-
-Test_nocondContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTest_nocond(this);
-	}
-};
-
 
 
 
@@ -11639,18 +10276,6 @@ LambdefContext.prototype.varargslist = function() {
     return this.getTypedRuleContext(VarargslistContext,0);
 };
 
-LambdefContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterLambdef(this);
-	}
-};
-
-LambdefContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitLambdef(this);
-	}
-};
-
 
 
 
@@ -11717,18 +10342,6 @@ Lambdef_nocondContext.prototype.test_nocond = function() {
 
 Lambdef_nocondContext.prototype.varargslist = function() {
     return this.getTypedRuleContext(VarargslistContext,0);
-};
-
-Lambdef_nocondContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterLambdef_nocond(this);
-	}
-};
-
-Lambdef_nocondContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitLambdef_nocond(this);
-	}
 };
 
 
@@ -11810,18 +10423,6 @@ Or_testContext.prototype.OR = function(i) {
 };
 
 
-Or_testContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterOr_test(this);
-	}
-};
-
-Or_testContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitOr_test(this);
-	}
-};
-
 
 
 
@@ -11901,18 +10502,6 @@ And_testContext.prototype.AND = function(i) {
 };
 
 
-And_testContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterAnd_test(this);
-	}
-};
-
-And_testContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitAnd_test(this);
-	}
-};
-
 
 
 
@@ -11979,18 +10568,6 @@ Not_testContext.prototype.not_test = function() {
 
 Not_testContext.prototype.comparison = function() {
     return this.getTypedRuleContext(ComparisonContext,0);
-};
-
-Not_testContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterNot_test(this);
-	}
-};
-
-Not_testContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitNot_test(this);
-	}
 };
 
 
@@ -12092,18 +10669,6 @@ ComparisonContext.prototype.comp_op = function(i) {
     }
 };
 
-ComparisonContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterComparison(this);
-	}
-};
-
-ComparisonContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitComparison(this);
-	}
-};
-
 
 
 
@@ -12170,18 +10735,6 @@ Comp_opContext.prototype.NOT = function() {
 
 Comp_opContext.prototype.IS = function() {
     return this.getToken(Python3Parser.IS, 0);
-};
-
-Comp_opContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterComp_op(this);
-	}
-};
-
-Comp_opContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitComp_op(this);
-	}
 };
 
 
@@ -12303,18 +10856,6 @@ Star_exprContext.prototype.expr = function() {
     return this.getTypedRuleContext(ExprContext,0);
 };
 
-Star_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterStar_expr(this);
-	}
-};
-
-Star_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitStar_expr(this);
-	}
-};
-
 
 
 
@@ -12376,18 +10917,6 @@ ExprContext.prototype.xor_expr = function(i) {
     } else {
         return this.getTypedRuleContext(Xor_exprContext,i);
     }
-};
-
-ExprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterExpr(this);
-	}
-};
-
-ExprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitExpr(this);
-	}
 };
 
 
@@ -12457,18 +10986,6 @@ Xor_exprContext.prototype.and_expr = function(i) {
     }
 };
 
-Xor_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterXor_expr(this);
-	}
-};
-
-Xor_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitXor_expr(this);
-	}
-};
-
 
 
 
@@ -12536,18 +11053,6 @@ And_exprContext.prototype.shift_expr = function(i) {
     }
 };
 
-And_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterAnd_expr(this);
-	}
-};
-
-And_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitAnd_expr(this);
-	}
-};
-
 
 
 
@@ -12613,18 +11118,6 @@ Shift_exprContext.prototype.arith_expr = function(i) {
     } else {
         return this.getTypedRuleContext(Arith_exprContext,i);
     }
-};
-
-Shift_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterShift_expr(this);
-	}
-};
-
-Shift_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitShift_expr(this);
-	}
 };
 
 
@@ -12708,18 +11201,6 @@ Arith_exprContext.prototype.term = function(i) {
     }
 };
 
-Arith_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterArith_expr(this);
-	}
-};
-
-Arith_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitArith_expr(this);
-	}
-};
-
 
 
 
@@ -12799,18 +11280,6 @@ TermContext.prototype.factor = function(i) {
     } else {
         return this.getTypedRuleContext(FactorContext,i);
     }
-};
-
-TermContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTerm(this);
-	}
-};
-
-TermContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTerm(this);
-	}
 };
 
 
@@ -12909,18 +11378,6 @@ FactorContext.prototype.power = function() {
     return this.getTypedRuleContext(PowerContext,0);
 };
 
-FactorContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterFactor(this);
-	}
-};
-
-FactorContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitFactor(this);
-	}
-};
-
 
 
 
@@ -13016,18 +11473,6 @@ PowerContext.prototype.factor = function() {
     return this.getTypedRuleContext(FactorContext,0);
 };
 
-PowerContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterPower(this);
-	}
-};
-
-PowerContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitPower(this);
-	}
-};
-
 
 
 
@@ -13095,18 +11540,6 @@ Trailed_atomContext.prototype.trailer = function(i) {
     } else {
         return this.getTypedRuleContext(TrailerContext,i);
     }
-};
-
-Trailed_atomContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTrailed_atom(this);
-	}
-};
-
-Trailed_atomContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTrailed_atom(this);
-	}
 };
 
 
@@ -13204,18 +11637,6 @@ AtomContext.prototype.TRUE = function() {
 
 AtomContext.prototype.FALSE = function() {
     return this.getToken(Python3Parser.FALSE, 0);
-};
-
-AtomContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterAtom(this);
-	}
-};
-
-AtomContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitAtom(this);
-	}
 };
 
 
@@ -13403,18 +11824,6 @@ Testlist_compContext.prototype.comp_for = function() {
     return this.getTypedRuleContext(Comp_forContext,0);
 };
 
-Testlist_compContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTestlist_comp(this);
-	}
-};
-
-Testlist_compContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTestlist_comp(this);
-	}
-};
-
 
 
 
@@ -13508,18 +11917,6 @@ TrailerContext.prototype.NAME = function() {
     return this.getToken(Python3Parser.NAME, 0);
 };
 
-TrailerContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTrailer(this);
-	}
-};
-
-TrailerContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTrailer(this);
-	}
-};
-
 
 
 
@@ -13609,18 +12006,6 @@ SubscriptlistContext.prototype.subscript = function(i) {
     }
 };
 
-SubscriptlistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSubscriptlist(this);
-	}
-};
-
-SubscriptlistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSubscriptlist(this);
-	}
-};
-
 
 
 
@@ -13701,18 +12086,6 @@ SubscriptContext.prototype.test = function(i) {
 
 SubscriptContext.prototype.sliceop = function() {
     return this.getTypedRuleContext(SliceopContext,0);
-};
-
-SubscriptContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSubscript(this);
-	}
-};
-
-SubscriptContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSubscript(this);
-	}
 };
 
 
@@ -13801,18 +12174,6 @@ SliceopContext.prototype.test = function() {
     return this.getTypedRuleContext(TestContext,0);
 };
 
-SliceopContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterSliceop(this);
-	}
-};
-
-SliceopContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitSliceop(this);
-	}
-};
-
 
 
 
@@ -13874,18 +12235,6 @@ ExprlistContext.prototype.star_expr = function(i) {
     } else {
         return this.getTypedRuleContext(Star_exprContext,i);
     }
-};
-
-ExprlistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterExprlist(this);
-	}
-};
-
-ExprlistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitExprlist(this);
-	}
 };
 
 
@@ -13964,18 +12313,6 @@ TestlistContext.prototype.test = function(i) {
     } else {
         return this.getTypedRuleContext(TestContext,i);
     }
-};
-
-TestlistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterTestlist(this);
-	}
-};
-
-TestlistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitTestlist(this);
-	}
 };
 
 
@@ -14058,18 +12395,6 @@ DictorsetmakerContext.prototype.test = function(i) {
 
 DictorsetmakerContext.prototype.comp_for = function() {
     return this.getTypedRuleContext(Comp_forContext,0);
-};
-
-DictorsetmakerContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterDictorsetmaker(this);
-	}
-};
-
-DictorsetmakerContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitDictorsetmaker(this);
-	}
 };
 
 
@@ -14226,18 +12551,6 @@ ClassdefContext.prototype.arglist = function() {
     return this.getTypedRuleContext(ArglistContext,0);
 };
 
-ClassdefContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterClassdef(this);
-	}
-};
-
-ClassdefContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitClassdef(this);
-	}
-};
-
 
 
 
@@ -14326,18 +12639,6 @@ ArglistContext.prototype.test = function(i) {
     } else {
         return this.getTypedRuleContext(TestContext,i);
     }
-};
-
-ArglistContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterArglist(this);
-	}
-};
-
-ArglistContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitArglist(this);
-	}
 };
 
 
@@ -14471,18 +12772,6 @@ ArgumentContext.prototype.comp_for = function() {
     return this.getTypedRuleContext(Comp_forContext,0);
 };
 
-ArgumentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterArgument(this);
-	}
-};
-
-ArgumentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitArgument(this);
-	}
-};
-
 
 
 
@@ -14561,18 +12850,6 @@ Comp_iterContext.prototype.comp_if = function() {
     return this.getTypedRuleContext(Comp_ifContext,0);
 };
 
-Comp_iterContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterComp_iter(this);
-	}
-};
-
-Comp_iterContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitComp_iter(this);
-	}
-};
-
 
 
 
@@ -14649,18 +12926,6 @@ Comp_forContext.prototype.comp_iter = function() {
     return this.getTypedRuleContext(Comp_iterContext,0);
 };
 
-Comp_forContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterComp_for(this);
-	}
-};
-
-Comp_forContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitComp_for(this);
-	}
-};
-
 
 
 
@@ -14731,18 +12996,6 @@ Comp_ifContext.prototype.comp_iter = function() {
     return this.getTypedRuleContext(Comp_iterContext,0);
 };
 
-Comp_ifContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterComp_if(this);
-	}
-};
-
-Comp_ifContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitComp_if(this);
-	}
-};
-
 
 
 
@@ -14803,18 +13056,6 @@ Yield_exprContext.prototype.YIELD = function() {
 
 Yield_exprContext.prototype.yield_arg = function() {
     return this.getTypedRuleContext(Yield_argContext,0);
-};
-
-Yield_exprContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterYield_expr(this);
-	}
-};
-
-Yield_exprContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitYield_expr(this);
-	}
 };
 
 
@@ -14879,18 +13120,6 @@ Yield_argContext.prototype.test = function() {
 
 Yield_argContext.prototype.testlist = function() {
     return this.getTypedRuleContext(TestlistContext,0);
-};
-
-Yield_argContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterYield_arg(this);
-	}
-};
-
-Yield_argContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitYield_arg(this);
-	}
 };
 
 
@@ -14980,18 +13209,6 @@ StrContext.prototype.BYTES_LITERAL = function() {
     return this.getToken(Python3Parser.BYTES_LITERAL, 0);
 };
 
-StrContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterStr(this);
-	}
-};
-
-StrContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitStr(this);
-	}
-};
-
 
 
 
@@ -15053,18 +13270,6 @@ NumberContext.prototype.FLOAT_NUMBER = function() {
 
 NumberContext.prototype.IMAG_NUMBER = function() {
     return this.getToken(Python3Parser.IMAG_NUMBER, 0);
-};
-
-NumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterNumber(this);
-	}
-};
-
-NumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitNumber(this);
-	}
 };
 
 
@@ -15147,18 +13352,6 @@ IntegerContext.prototype.BIN_INTEGER = function() {
     return this.getToken(Python3Parser.BIN_INTEGER, 0);
 };
 
-IntegerContext.prototype.enterRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.enterInteger(this);
-	}
-};
-
-IntegerContext.prototype.exitRule = function(listener) {
-    if(listener instanceof Python3Listener ) {
-        listener.exitInteger(this);
-	}
-};
-
 
 
 
@@ -15199,7 +13392,7 @@ exports.Python3Parser = Python3Parser;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15210,8 +13403,8 @@ exports.Python3Parser = Python3Parser;
 //
 
 var Token = __webpack_require__(1).Token;
+__webpack_require__(29);
 __webpack_require__(30);
-__webpack_require__(31);
 
 // Vacuum all input from a string and then treat it like a buffer.
 
@@ -15340,7 +13533,7 @@ exports.InputStream = InputStream;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15493,7 +13686,7 @@ exports.Recognizer = Recognizer;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -15524,7 +13717,7 @@ exports.ATNDeserializationOptions = ATNDeserializationOptions;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -15534,7 +13727,7 @@ exports.ATNDeserializationOptions = ATNDeserializationOptions;
 
 var Token = __webpack_require__(1).Token;
 var ATN = __webpack_require__(7).ATN;
-var ATNType = __webpack_require__(43).ATNType;
+var ATNType = __webpack_require__(44).ATNType;
 var ATNStates = __webpack_require__(4);
 var ATNState = ATNStates.ATNState;
 var BasicState = ATNStates.BasicState;
@@ -15565,8 +13758,8 @@ var PredicateTransition = Transitions.PredicateTransition;
 var PrecedencePredicateTransition = Transitions.PrecedencePredicateTransition;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 var Interval = __webpack_require__(2).Interval;
-var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
-var LexerActions = __webpack_require__(27);
+var ATNDeserializationOptions = __webpack_require__(23).ATNDeserializationOptions;
+var LexerActions = __webpack_require__(26);
 var LexerActionType = LexerActions.LexerActionType;
 var LexerSkipAction = LexerActions.LexerSkipAction;
 var LexerChannelAction = LexerActions.LexerChannelAction;
@@ -16195,7 +14388,7 @@ ATNDeserializer.prototype.lexerActionFactory = function(type, data1, data2) {
 exports.ATNDeserializer = ATNDeserializer;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -16252,7 +14445,7 @@ exports.ATNSimulator = ATNSimulator;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 //
@@ -16623,7 +14816,7 @@ exports.LexerPopModeAction = LexerPopModeAction;
 exports.LexerModeAction = LexerModeAction;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -17188,7 +15381,7 @@ exports.PredictionMode = PredictionMode;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -17949,7 +16142,7 @@ exports.BailErrorStrategy = BailErrorStrategy;
 exports.DefaultErrorStrategy = DefaultErrorStrategy;
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/codepointat v0.2.0 by @mathias */
@@ -18009,7 +16202,7 @@ if (!String.prototype.codePointAt) {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
@@ -18077,7 +16270,7 @@ if (!String.fromCodePoint) {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -18222,7 +16415,7 @@ Trees.descendants = function(t) {
 exports.Trees = Trees;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let antlr = __webpack_require__(12);
@@ -18254,107 +16447,20 @@ module.exports = ErrorListener;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
-
-let collapse = __webpack_require__(36).collapse;
 
 module.exports = {
 	'language': 'Python3',
 	'grammar_file': 'Python3.JavaScriptTarget.g4',
 	'entry_rule': 'file_input',
-	'rules': {
-	    'single_input': {'finalizers': []},
-	    'file_input': {'finalizers': []},
-	    'eval_input': {'finalizers': []},
-	    'decorator': {'finalizers': []},
-	    'decorators': {'finalizers': [collapse]},
-	    'decorated': {'finalizers': [collapse]},
-	    'funcdef': {'finalizers': []},
-	    'parameters': {'finalizers': []},
-	    'typedargslist': {'finalizers': []},
-	    'tfpdef': {'finalizers': []},
-	    'varargslist': {'finalizers': []},
-	    'vfpdef': {'finalizers': [collapse]},
-	    'stmt': {'finalizers': [collapse]},
-	    'simple_stmt': {'finalizers': []},
-	    'small_stmt': {'finalizers': [collapse]},
-	    'expr_stmt': {'finalizers': []},
-	    'testlist_star_expr': {'finalizers': [collapse]},
-	    'augassign': {'finalizers': []},
-	    'del_stmt': {'finalizers': []},
-	    'pass_stmt': {'finalizers': []},
-	    'flow_stmt': {'finalizers': [collapse]},
-	    'break_stmt': {'finalizers': []},
-	    'continue_stmt': {'finalizers': []},
-	    'return_stmt': {'finalizers': []},
-	    'yield_stmt': {'finalizers': []},
-	    'raise_stmt': {'finalizers': []},
-	    'import_stmt': {'finalizers': [collapse], 'sdb_concept': 'import'},
-	    'import_name': {'finalizers': []},
-	    'import_from': {'finalizers': []},
-	    'import_as_name': {'finalizers': []},
-	    'dotted_as_name': {'finalizers': [collapse]},
-	    'import_as_names': {'finalizers': [collapse]},
-	    'dotted_as_names': {'finalizers': [collapse]},
-	    'dotted_name': {'finalizers': [collapse]},
-	    'global_stmt': {'finalizers': []},
-	    'nonlocal_stmt': {'finalizers': []},
-	    'assert_stmt': {'finalizers': []},
-	    'compound_stmt': {'finalizers': [collapse]},
-	    'if_stmt': {'finalizers': []},
-	    'while_stmt': {'finalizers': []},
-	    'for_stmt': {'finalizers': []},
-	    'try_stmt': {'finalizers': []},
-	    'with_stmt': {'finalizers': []},
-	    'with_item': {'finalizers': []},
-	    'except_clause': {'finalizers': []},
-	    'suite': {'finalizers': [collapse]},
-	    'test': {'finalizers': [collapse]},
-	    'test_nocond': {'finalizers': [collapse]},
-	    'lambdef': {'finalizers': []},
-	    'lambdef_nocond': {'finalizers': []},
-	    'or_test': {'finalizers': [collapse]},
-	    'and_test': {'finalizers': [collapse]},
-	    'not_test': {'finalizers': [collapse]},
-	    'comparison': {'finalizers': [collapse]},
-	    'comp_op': {'finalizers': []},
-	    'star_expr': {'finalizers': [collapse]},
-	    'expr': {'finalizers': []},
-	    'xor_expr': {'finalizers': [collapse]},
-	    'and_expr': {'finalizers': [collapse]},
-	    'shift_expr': {'finalizers': [collapse]},
-	    'arith_expr': {'finalizers': [collapse]},
-	    'term': {'finalizers': [collapse]},
-	    'factor': {'finalizers': [collapse]},
-	    'power': {'finalizers': [collapse]},
-	    'trailed_atom': {'finalizers': [collapse]},
-	    'atom': {'finalizers': []},
-	    'testlist_comp': {'finalizers': []},
-	    'trailer': {'finalizers': []},
-	    'subscriptlist': {'finalizers': [collapse]},
-	    'subscript': {'finalizers': [collapse]},
-	    'sliceop': {'finalizers': []},
-	    'exprlist': {'finalizers': [collapse]},
-	    'testlist': {'finalizers': [collapse]},
-	    'dictorsetmaker': {'finalizers': []},
-	    'classdef': {'finalizers': []},
-	    'arglist': {'finalizers': []},
-	    'argument': {'finalizers': []},
-	    'comp_iter': {'finalizers': [collapse]},
-	    'comp_for': {'finalizers': []},
-	    'comp_if': {'finalizers': []},
-	    'yield_expr': {'finalizers': []},
-	    'yield_arg': {'finalizers': [collapse]},
-	    'str': {'finalizers': []},
-	    'number': {'finalizers': [collapse]},
-	    'integer': {'finalizers': []},
-	},
+	'rules': __webpack_require__(37),
+	'matchers': __webpack_require__(36),
 };
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated from Python3.g4 by ANTLR 4.6
@@ -19172,7 +17278,7 @@ Python3Lexer.prototype.grammarFileName = "Python3.g4";
 
 
   let CommonToken = __webpack_require__(1).CommonToken;
-  let Python3Parser = __webpack_require__(21).Python3Parser;
+  let Python3Parser = __webpack_require__(20).Python3Parser;
 
   let old_lexer = Python3Lexer;
   Python3Lexer = function() {
@@ -19421,7 +17527,7 @@ exports.Python3Lexer = Python3Lexer;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = {};
@@ -19440,7 +17546,210 @@ module.exports.collapse = function(ast) {
 
 
 /***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+module.exports = {
+    'for_stmt [.FOR, /.NAME:iter, .IN, /trailed_atom [/.NAME="range", trailer\
+        [.OPEN_PAREN, arglist [/.DECIMAL_INTEGER:begin, .COMMA,\
+        /.DECIMAL_INTEGER:end], .CLOSE_PAREN]]]': function(nodes) {
+            nodes.main.tags.push('for');
+            nodes.iter.tags.push('iter');
+        },
+};
+
+
+/***/ }),
 /* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+let collapse = __webpack_require__(35).collapse;
+
+module.exports = {
+    'single_input': {'finalizers': []},
+    'file_input': {'finalizers': []},
+    'eval_input': {'finalizers': []},
+    'decorator': {'finalizers': []},
+    'decorators': {'finalizers': [collapse]},
+    'decorated': {'finalizers': [collapse]},
+    'funcdef': {'finalizers': []},
+    'parameters': {'finalizers': []},
+    'typedargslist': {'finalizers': []},
+    'tfpdef': {'finalizers': []},
+    'varargslist': {'finalizers': []},
+    'vfpdef': {'finalizers': [collapse]},
+    'stmt': {'finalizers': [collapse]},
+    'simple_stmt': {'finalizers': []},
+    'small_stmt': {'finalizers': [collapse]},
+    'expr_stmt': {'finalizers': []},
+    'testlist_star_expr': {'finalizers': [collapse]},
+    'augassign': {'finalizers': []},
+    'del_stmt': {'finalizers': []},
+    'pass_stmt': {'finalizers': []},
+    'flow_stmt': {'finalizers': [collapse]},
+    'break_stmt': {'finalizers': []},
+    'continue_stmt': {'finalizers': []},
+    'return_stmt': {'finalizers': []},
+    'yield_stmt': {'finalizers': []},
+    'raise_stmt': {'finalizers': []},
+    'import_stmt': {'finalizers': [collapse], 'sdb_concept': 'import'},
+    'import_name': {'finalizers': []},
+    'import_from': {'finalizers': []},
+    'import_as_name': {'finalizers': []},
+    'dotted_as_name': {'finalizers': [collapse]},
+    'import_as_names': {'finalizers': [collapse]},
+    'dotted_as_names': {'finalizers': [collapse]},
+    'dotted_name': {'finalizers': [collapse]},
+    'global_stmt': {'finalizers': []},
+    'nonlocal_stmt': {'finalizers': []},
+    'assert_stmt': {'finalizers': []},
+    'compound_stmt': {'finalizers': [collapse]},
+    'if_stmt': {'finalizers': []},
+    'while_stmt': {'finalizers': []},
+    'for_stmt': {'finalizers': []},
+    'try_stmt': {'finalizers': []},
+    'with_stmt': {'finalizers': []},
+    'with_item': {'finalizers': []},
+    'except_clause': {'finalizers': []},
+    'suite': {'finalizers': [collapse]},
+    'test': {'finalizers': [collapse]},
+    'test_nocond': {'finalizers': [collapse]},
+    'lambdef': {'finalizers': []},
+    'lambdef_nocond': {'finalizers': []},
+    'or_test': {'finalizers': [collapse]},
+    'and_test': {'finalizers': [collapse]},
+    'not_test': {'finalizers': [collapse]},
+    'comparison': {'finalizers': [collapse]},
+    'comp_op': {'finalizers': []},
+    'star_expr': {'finalizers': [collapse]},
+    'expr': {'finalizers': []},
+    'xor_expr': {'finalizers': [collapse]},
+    'and_expr': {'finalizers': [collapse]},
+    'shift_expr': {'finalizers': [collapse]},
+    'arith_expr': {'finalizers': [collapse]},
+    'term': {'finalizers': [collapse]},
+    'factor': {'finalizers': [collapse]},
+    'power': {'finalizers': [collapse]},
+    'trailed_atom': {'finalizers': [collapse]},
+    'atom': {'finalizers': []},
+    'testlist_comp': {'finalizers': []},
+    'trailer': {'finalizers': []},
+    'subscriptlist': {'finalizers': [collapse]},
+    'subscript': {'finalizers': [collapse]},
+    'sliceop': {'finalizers': []},
+    'exprlist': {'finalizers': [collapse]},
+    'testlist': {'finalizers': [collapse]},
+    'dictorsetmaker': {'finalizers': []},
+    'classdef': {'finalizers': []},
+    'arglist': {'finalizers': []},
+    'argument': {'finalizers': []},
+    'comp_iter': {'finalizers': [collapse]},
+    'comp_for': {'finalizers': []},
+    'comp_if': {'finalizers': []},
+    'yield_expr': {'finalizers': []},
+    'yield_arg': {'finalizers': [collapse]},
+    'str': {'finalizers': []},
+    'number': {'finalizers': [collapse]},
+    'integer': {'finalizers': []},
+    '.DEF': {},
+    '.RETURN': {},
+    '.RAISE': {},
+    '.FROM': {},
+    '.IMPORT': {},
+    '.AS': {},
+    '.GLOBAL': {},
+    '.NONLOCAL': {},
+    '.ASSERT': {},
+    '.IF': {},
+    '.ELIF': {},
+    '.ELSE': {},
+    '.WHILE': {},
+    '.FOR': {},
+    '.IN': {},
+    '.TRY': {},
+    '.FINALLY': {},
+    '.WITH': {},
+    '.EXCEPT': {},
+    '.LAMBDA': {},
+    '.OR': {},
+    '.AND': {},
+    '.NOT': {},
+    '.IS': {},
+    '.NONE': {},
+    '.TRUE': {},
+    '.FALSE': {},
+    '.CLASS': {},
+    '.YIELD': {},
+    '.DEL': {},
+    '.PASS': {},
+    '.CONTINUE': {},
+    '.BREAK': {},
+    '.NEWLINE': {},
+    '.NAME': {},
+    '.STRING_LITERAL': {},
+    '.BYTES_LITERAL': {},
+    '.DECIMAL_INTEGER': {},
+    '.OCT_INTEGER': {},
+    '.HEX_INTEGER': {},
+    '.BIN_INTEGER': {},
+    '.FLOAT_NUMBER': {},
+    '.IMAG_NUMBER': {},
+    '.DOT': {},
+    '.ELLIPSIS': {},
+    '.STAR': {},
+    '.OPEN_PAREN': {},
+    '.CLOSE_PAREN': {},
+    '.COMMA': {},
+    '.COLON': {},
+    '.SEMI_COLON': {},
+    '.POWER': {},
+    '.ASSIGN': {},
+    '.OPEN_BRACK': {},
+    '.CLOSE_BRACK': {},
+    '.OR_OP': {},
+    '.XOR': {},
+    '.AND_OP': {},
+    '.LEFT_SHIFT': {},
+    '.RIGHT_SHIFT': {},
+    '.ADD': {},
+    '.MINUS': {},
+    '.DIV': {},
+    '.MOD': {},
+    '.IDIV': {},
+    '.NOT_OP': {},
+    '.OPEN_BRACE': {},
+    '.CLOSE_BRACE': {},
+    '.LESS_THAN': {},
+    '.GREATER_THAN': {},
+    '.EQUALS': {},
+    '.GT_EQ': {},
+    '.LT_EQ': {},
+    '.NOT_EQ_1': {},
+    '.NOT_EQ_2': {},
+    '.AT': {},
+    '.ARROW': {},
+    '.ADD_ASSIGN': {},
+    '.SUB_ASSIGN': {},
+    '.MULT_ASSIGN': {},
+    '.AT_ASSIGN': {},
+    '.DIV_ASSIGN': {},
+    '.MOD_ASSIGN': {},
+    '.AND_ASSIGN': {},
+    '.OR_ASSIGN': {},
+    '.XOR_ASSIGN': {},
+    '.LEFT_SHIFT_ASSIGN': {},
+    '.RIGHT_SHIFT_ASSIGN': {},
+    '.POWER_ASSIGN': {},
+    '.IDIV_ASSIGN': {},
+    '.SKIP_': {},
+    '.UNKNOWN_CHAR': {},
+    '.INDENT': {},
+    '.DEDENT': {},
+};
+
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -19821,7 +18130,7 @@ exports.BufferedTokenStream = BufferedTokenStream;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -19896,7 +18205,7 @@ exports.CommonTokenFactory = CommonTokenFactory;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -19932,7 +18241,7 @@ exports.CommonTokenFactory = CommonTokenFactory;
 ///
 
 var Token = __webpack_require__(1).Token;
-var BufferedTokenStream = __webpack_require__(37).BufferedTokenStream;
+var BufferedTokenStream = __webpack_require__(38).BufferedTokenStream;
 
 function CommonTokenStream(lexer, channel) {
 	BufferedTokenStream.call(this, lexer);
@@ -20005,7 +18314,7 @@ CommonTokenStream.prototype.getNumberOfOnChannelTokens = function() {
 exports.CommonTokenStream = CommonTokenStream;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -20019,9 +18328,9 @@ exports.CommonTokenStream = CommonTokenStream;
 //  This is an InputStream that is loaded from a file all at once
 //  when you construct the object.
 //
-var InputStream = __webpack_require__(22).InputStream;
+var InputStream = __webpack_require__(21).InputStream;
 var isNodeJs = typeof window === 'undefined' && typeof importScripts === 'undefined';
-var fs = isNodeJs ? __webpack_require__(53) : null;
+var fs = isNodeJs ? __webpack_require__(54) : null;
 
 function FileStream(fileName, decodeToUnicodeCodePoints) {
 	var data = fs.readFileSync(fileName, "utf8");
@@ -20037,7 +18346,7 @@ exports.FileStream = FileStream;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -20242,7 +18551,7 @@ exports.LL1Analyzer = LL1Analyzer;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -20252,10 +18561,10 @@ exports.LL1Analyzer = LL1Analyzer;
 
 var Token = __webpack_require__(1).Token;
 var ParseTreeListener = __webpack_require__(3).ParseTreeListener;
-var Recognizer = __webpack_require__(23).Recognizer;
-var DefaultErrorStrategy = __webpack_require__(29).DefaultErrorStrategy;
-var ATNDeserializer = __webpack_require__(25).ATNDeserializer;
-var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
+var Recognizer = __webpack_require__(22).Recognizer;
+var DefaultErrorStrategy = __webpack_require__(28).DefaultErrorStrategy;
+var ATNDeserializer = __webpack_require__(24).ATNDeserializer;
+var ATNDeserializationOptions = __webpack_require__(23).ATNDeserializationOptions;
 var TerminalNode = __webpack_require__(3).TerminalNode;
 var ErrorNode = __webpack_require__(3).ErrorNode;
 
@@ -20921,7 +19230,7 @@ Parser.prototype.setTrace = function(trace) {
 exports.Parser = Parser;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -20944,7 +19253,7 @@ exports.ATNType = ATNType;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -20973,7 +19282,7 @@ exports.ATNType = ATNType;
 var Token = __webpack_require__(1).Token;
 var Lexer = __webpack_require__(13).Lexer;
 var ATN = __webpack_require__(7).ATN;
-var ATNSimulator = __webpack_require__(26).ATNSimulator;
+var ATNSimulator = __webpack_require__(25).ATNSimulator;
 var DFAState = __webpack_require__(11).DFAState;
 var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var OrderedATNConfigSet = __webpack_require__(9).OrderedATNConfigSet;
@@ -20982,7 +19291,7 @@ var SingletonPredictionContext = __webpack_require__(6).SingletonPredictionConte
 var RuleStopState = __webpack_require__(4).RuleStopState;
 var LexerATNConfig = __webpack_require__(15).LexerATNConfig;
 var Transition = __webpack_require__(8).Transition;
-var LexerActionExecutor = __webpack_require__(45).LexerActionExecutor;
+var LexerActionExecutor = __webpack_require__(46).LexerActionExecutor;
 var LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 
 function resetSimState(sim) {
@@ -21586,7 +19895,7 @@ exports.LexerATNSimulator = LexerATNSimulator;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -21604,7 +19913,7 @@ exports.LexerATNSimulator = LexerATNSimulator;
 // not cause bloating of the {@link DFA} created for the lexer.</p>
 
 var hashStuff = __webpack_require__(0).hashStuff;
-var LexerIndexedCustomAction = __webpack_require__(27).LexerIndexedCustomAction;
+var LexerIndexedCustomAction = __webpack_require__(26).LexerIndexedCustomAction;
 
 function LexerActionExecutor(lexerActions) {
 	this.lexerActions = lexerActions === null ? [] : lexerActions;
@@ -21758,7 +20067,7 @@ exports.LexerActionExecutor = LexerActionExecutor;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -22007,8 +20316,8 @@ var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var Token = __webpack_require__(1).Token;
 var DFAState = __webpack_require__(11).DFAState;
 var PredPrediction = __webpack_require__(11).PredPrediction;
-var ATNSimulator = __webpack_require__(26).ATNSimulator;
-var PredictionMode = __webpack_require__(28).PredictionMode;
+var ATNSimulator = __webpack_require__(25).ATNSimulator;
+var PredictionMode = __webpack_require__(27).PredictionMode;
 var RuleContext = __webpack_require__(14).RuleContext;
 var ParserRuleContext = __webpack_require__(19).ParserRuleContext;
 var SemanticContext = __webpack_require__(10).SemanticContext;
@@ -23491,7 +21800,7 @@ ParserATNSimulator.prototype.reportAmbiguity = function(dfa, D, startIndex, stop
 exports.ParserATNSimulator = ParserATNSimulator;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -23500,14 +21809,14 @@ exports.ParserATNSimulator = ParserATNSimulator;
  */
 
 exports.ATN = __webpack_require__(7).ATN;
-exports.ATNDeserializer = __webpack_require__(25).ATNDeserializer;
-exports.LexerATNSimulator = __webpack_require__(44).LexerATNSimulator;
-exports.ParserATNSimulator = __webpack_require__(46).ParserATNSimulator;
-exports.PredictionMode = __webpack_require__(28).PredictionMode;
+exports.ATNDeserializer = __webpack_require__(24).ATNDeserializer;
+exports.LexerATNSimulator = __webpack_require__(45).LexerATNSimulator;
+exports.ParserATNSimulator = __webpack_require__(47).ParserATNSimulator;
+exports.PredictionMode = __webpack_require__(27).PredictionMode;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -23666,7 +21975,7 @@ exports.DFA = DFA;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -23674,14 +21983,14 @@ exports.DFA = DFA;
  * can be found in the LICENSE.txt file in the project root.
  */
 
-exports.DFA = __webpack_require__(48).DFA;
+exports.DFA = __webpack_require__(49).DFA;
 exports.DFASerializer = __webpack_require__(16).DFASerializer;
 exports.LexerDFASerializer = __webpack_require__(16).LexerDFASerializer;
 exports.PredPrediction = __webpack_require__(11).PredPrediction;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -23797,7 +22106,7 @@ DiagnosticErrorListener.prototype.getConflictingAlts = function(reportedAlts, co
 exports.DiagnosticErrorListener = DiagnosticErrorListener;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -23810,13 +22119,13 @@ exports.NoViableAltException = __webpack_require__(5).NoViableAltException;
 exports.LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 exports.InputMismatchException = __webpack_require__(5).InputMismatchException;
 exports.FailedPredicateException = __webpack_require__(5).FailedPredicateException;
-exports.DiagnosticErrorListener = __webpack_require__(50).DiagnosticErrorListener;
-exports.BailErrorStrategy = __webpack_require__(29).BailErrorStrategy;
+exports.DiagnosticErrorListener = __webpack_require__(51).DiagnosticErrorListener;
+exports.BailErrorStrategy = __webpack_require__(28).BailErrorStrategy;
 exports.ErrorListener = __webpack_require__(17).ErrorListener;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -23825,7 +22134,7 @@ exports.ErrorListener = __webpack_require__(17).ErrorListener;
  */
 
 var Tree = __webpack_require__(3);
-exports.Trees = __webpack_require__(32).Trees;
+exports.Trees = __webpack_require__(31).Trees;
 exports.RuleNode = Tree.RuleNode;
 exports.ParseTreeListener = Tree.ParseTreeListener;
 exports.ParseTreeVisitor = Tree.ParseTreeVisitor;
@@ -23833,26 +22142,26 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["fs"]; }());
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let antlr = __webpack_require__(12);
 
 // LANGUAGE_CONFIG_PATH and LANGUAGE_CACHE_DIR are defined in webpack.config.js
-let lang_config = __webpack_require__(34);
+let lang_config = __webpack_require__(33);
 
 let lexer_classname = lang_config.language + 'Lexer';
 let parser_classname = lang_config.language + 'Parser';
 
 let LexerClass = __webpack_require__(18)("./" + lexer_classname + '.js')[lexer_classname];
 let ParserClass = __webpack_require__(18)("./" + parser_classname + '.js')[parser_classname];
-let ErrorListener = __webpack_require__(33);
+let ErrorListener = __webpack_require__(32);
 
 let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
@@ -23870,7 +22179,13 @@ module.exports = function(input, error_callback) {
 
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
-            return parser.symbolicNames[node.symbol.type];
+            console.log(node);
+            return {
+                'type': '.' + parser.symbolicNames[node.symbol.type],
+                'begin': node.start.start,
+                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'children': [],
+            };
         } else {
             let ast = {
                 'type': parser.ruleNames[node.ruleIndex],
