@@ -4,17 +4,17 @@ let cp = require('cp');
 let child_process = require('child_process');
 let antlr = require('antlr4');
 
-let utils = require('./utils.js');
-let tree_matcher_generator = require('./tree_matcher_generator.js');
+let config = require('../config.js');
 
 module.exports = function(lang_compile_config, lang_runtime_config, callback) {
     let language_key = lang_runtime_config.language.toLowerCase();
+
     let g4_path = lang_compile_config.grammar_path;
     if (!g4_path) {
         g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_compile_config.grammar_file);
     }
 
-    let cache_dir = utils.resolve_cache_dir(lang_runtime_config);
+    let cache_dir = config.resolve_cache_dir(lang_runtime_config);
     let cache_g4_path = path.resolve(cache_dir, lang_runtime_config.language + '.g4');
 
     let check_generated = function(err) {
@@ -85,7 +85,12 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
         });
     };
 
-    let check_compiled = function() {
+    let check_compiled = function(err) {
+        if (err) {
+            callback_with_error(err);
+            return;
+        }
+
         let array_diff = function(a, b) {
             return a.filter(function(i) {return b.indexOf(i) === -1;});
         };
@@ -108,28 +113,45 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
             callback_with_error('Extra rules ' + JSON.stringify(config_extra));
         }
 
-        write_runtime_config();
+        write_runtime_config_modifier();
     };
 
-    let write_runtime_config = function() {
-        let matchers = lang_compile_config.tree_matcher_specs.map(tree_matcher_generator);
-
-        {
-            'cache_dir': cache_dir,
-    'language': 'Python3',
-    'grammar_file': 'Python3.JavaScriptTarget.g4',
-    'entry_rule': 'file_input',
-    'rules': require('./python3.rules.js'),
-    'tree_matchers': require('./python3.tree_matchers.js'),
+    let write_runtime_config_modifier = function(err) {
+        if (err) {
+            callback_with_error(err);
+            return;
         }
-        callback_with_success();
+
+        let code = '';
+        code += 'module.exports = function(lang_runtime_config) {';
+
+        if (lang_compile_config.tree_matcher_specs) {
+            let tree_matcher_generator = require('./tree_matcher_generator.js');
+            let tree_matchers = lang_compile_config.tree_matcher_specs.map(tree_matcher_generator);
+
+            code += tree_matchers.map(function(tree_matcher) {
+                return 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.push(' + tree_matcher.finalizer_code + ');';
+            });
+        }
+
+        code += '};';
+
+        let modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
+        fs.writeFile(modifier_path, code, callback_with_success);
     };
 
     let callback_with_error = function(msg) {
         callback(new Error('Language ' + JSON.stringify(language_key) + ': ' + msg));
     };
-    let callback_with_success = function() {
-        callback(undefined);
+    let callback_with_success = function(err) {
+        if (err) {
+            callback_with_error(err);
+            return;
+        }
+
+        callback(undefined, {
+            'cache_dir': cache_dir
+        });
     }
 
     check_generated();

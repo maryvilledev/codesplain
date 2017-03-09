@@ -7,11 +7,14 @@ let ClosureCompilerPlugin = require('webpack-closure-compiler');
 let config = require('./config');
 let compile = require('./app/compile');
 
+let langs;
+let optimize;
+
 let prepare_lang = function(filename) {
     let lang_name = filename.slice(0, -11);
 
     if (filename.slice(-11) !== '.compile.js') {return undefined;}
-    if (config.langs && config.langs.indexOf(lang_name) === -1) {return undefined;}
+    if (langs && langs.indexOf(lang_name) === -1) {return undefined;}
 
     return new Promise(function(resolve, reject) {
         let lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
@@ -19,11 +22,13 @@ let prepare_lang = function(filename) {
 
         let lang_compile_config = require(lang_compile_config_path);
         let lang_runtime_config = require(lang_runtime_config_path);
-        compile(lang_compile_config, lang_runtime_config, function(err, lang_runtime_params) {
+        compile(lang_compile_config, lang_runtime_config, function(err) {
             if (err) {
                 reject(err);
                 return;
             }
+
+            let lang_cache_dir = config.resolve_cache_dir(lang_runtime_config);
 
             resolve({
                 'context': __dirname,
@@ -32,8 +37,9 @@ let prepare_lang = function(filename) {
                 'plugins': [
                     new webpack.DefinePlugin({
                         'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
+                        'LANGUAGE_CACHE_DIR': JSON.stringify(lang_cache_dir),
                     }),
-                    config.optimize ? new ClosureCompilerPlugin({
+                    optimize ? new ClosureCompilerPlugin({
                         'compiler': {
                             'language_in': 'ECMASCRIPT6',
                             'language_out': 'ECMASCRIPT5',
@@ -49,7 +55,7 @@ let prepare_lang = function(filename) {
                     }) : undefined,
                 ].filter(Boolean),
                 'output': {
-                    'filename': lang_name + (config.optimize ? '.min.js' : '.js'),
+                    'filename': lang_name + (optimize ? '.min.js' : '.js'),
                     'path': path.resolve(__dirname, 'public', 'langs'),
                     'library': 'CodeSplain_parse_' + lang_name,
                     'libraryTarget': 'window',
@@ -60,10 +66,12 @@ let prepare_lang = function(filename) {
 };
 
 module.exports = function(env) {
-    config.langs = env && env.langs ? env.langs.split(',') : undefined;
-    config.optimize = env && env.optimize;
+    // Read command line options
+    langs = env && env.langs ? env.langs.split(',') : undefined;
+    optimize = env && env.optimize;
 
     return new Promise(function(resolve, reject) {
+        // First, compile the tree matcher parser
         let lang_compile_config = require('./app/tree_matcher_parser/lang_config.compile.js');
         let lang_runtime_config = require('./app/tree_matcher_parser/lang_config.runtime.js');
         compile(lang_compile_config, lang_runtime_config, function(err) {

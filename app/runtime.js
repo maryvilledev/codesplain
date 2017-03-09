@@ -4,16 +4,13 @@ let antlr = require('antlr4');
 // LANGUAGE_RUNTIME_CONFIG_PATH is defined in webpack.config.js
 let lang_runtime_config = require(LANGUAGE_RUNTIME_CONFIG_PATH);
 
-let utils = require('./utils.js');
-let cache_dir = utils.resolve_cache_dir(lang_runtime_config);
-
-require(path.resolve(cache_dir, 'runtime_modifier.js'))(lang_runtime_config);
+require(LANGUAGE_CACHE_DIR + '/runtime_config_modifier.js')(lang_runtime_config);
 
 let lexer_classname = lang_runtime_config.language + 'Lexer';
 let parser_classname = lang_runtime_config.language + 'Parser';
 
-let LexerClass = require(path.resolve(cache_dir, lexer_classname + '.js'))[lexer_classname];
-let ParserClass = require(path.resolve(cache_dir, parser_classname + '.js'))[parser_classname];
+let LexerClass = require(LANGUAGE_CACHE_DIR + '/' + lexer_classname + '.js')[lexer_classname];
+let ParserClass = require(LANGUAGE_CACHE_DIR + '/' + parser_classname + '.js')[parser_classname];
 let ErrorListener = require('./error_listener');
 let TerminalNodeImpl = require('antlr4/tree/Tree.js').TerminalNodeImpl;
 

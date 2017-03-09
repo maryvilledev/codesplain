@@ -64,7 +64,7 @@ window["CodeSplain_parse_python3"] =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 54);
+/******/ 	return __webpack_require__(__webpack_require__.s = 57);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1558,7 +1558,7 @@ exports.BasicBlockStartState = BasicBlockStartState;
 //  in the input, where it is in the ATN, the rule invocation stack,
 //  and what kind of problem occurred.
 
-var PredicateTransition = __webpack_require__(9).PredicateTransition;
+var PredicateTransition = __webpack_require__(8).PredicateTransition;
 
 function RecognitionException(params) {
 	Error.call(this);
@@ -1720,192 +1720,6 @@ exports.ParseCancellationException = ParseCancellationException;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -1915,7 +1729,7 @@ process.umask = function() { return 0; };
  */
 ///
 
-var RuleContext = __webpack_require__(22).RuleContext;
+var RuleContext = __webpack_require__(14).RuleContext;
 var Hash = __webpack_require__(0).Hash;
 
 function PredictionContext(cachedHashCode) {
@@ -2642,7 +2456,7 @@ exports.getCachedPredictionContext = getCachedPredictionContext;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -2650,7 +2464,7 @@ exports.getCachedPredictionContext = getCachedPredictionContext;
  * can be found in the LICENSE.txt file in the project root.
  */
 
-var LL1Analyzer = __webpack_require__(59).LL1Analyzer;
+var LL1Analyzer = __webpack_require__(41).LL1Analyzer;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 
 function ATN(grammarType , maxTokenType) {
@@ -2789,7 +2603,7 @@ ATN.INVALID_ALT_NUMBER = 0;
 exports.ATN = ATN;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -2813,8 +2627,8 @@ exports.ATN = ATN;
 var Token = __webpack_require__(1).Token;
 var Interval = __webpack_require__(2).Interval;
 var IntervalSet = __webpack_require__(2).IntervalSet;
-var Predicate = __webpack_require__(14).Predicate;
-var PrecedencePredicate = __webpack_require__(14).PrecedencePredicate;
+var Predicate = __webpack_require__(10).Predicate;
+var PrecedencePredicate = __webpack_require__(10).PrecedencePredicate;
 
 function Transition (target) {
     // The target of this transition.
@@ -3110,7 +2924,7 @@ exports.PrecedencePredicateTransition = PrecedencePredicateTransition;
 exports.AbstractPredicateTransition = AbstractPredicateTransition;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -3125,12 +2939,12 @@ exports.AbstractPredicateTransition = AbstractPredicateTransition;
 // graph-structured stack.
 ///
 
-var ATN = __webpack_require__(8).ATN;
+var ATN = __webpack_require__(7).ATN;
 var Utils = __webpack_require__(0);
 var Hash = Utils.Hash;
 var Set = Utils.Set;
-var SemanticContext = __webpack_require__(14).SemanticContext;
-var merge = __webpack_require__(7).merge;
+var SemanticContext = __webpack_require__(10).SemanticContext;
+var merge = __webpack_require__(6).merge;
 
 function hashATNConfig(c) {
 	return c.hashCodeForConfigSet();
@@ -3371,1916 +3185,7 @@ exports.OrderedATNConfigSet = OrderedATNConfigSet;
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-/* eslint-disable no-proto */
-
-
-
-var base64 = __webpack_require__(77)
-var ieee754 = __webpack_require__(83)
-var isArray = __webpack_require__(49)
-
-exports.Buffer = Buffer
-exports.SlowBuffer = SlowBuffer
-exports.INSPECT_MAX_BYTES = 50
-
-/**
- * If `Buffer.TYPED_ARRAY_SUPPORT`:
- *   === true    Use Uint8Array implementation (fastest)
- *   === false   Use Object implementation (most compatible, even IE6)
- *
- * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
- * Opera 11.6+, iOS 4.2+.
- *
- * Due to various browser bugs, sometimes the Object implementation will be used even
- * when the browser supports typed arrays.
- *
- * Note:
- *
- *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
- *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
- *
- *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
- *
- *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
- *     incorrect length in some situations.
-
- * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
- * get the Object implementation, which is slower but behaves correctly.
- */
-Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
-  ? global.TYPED_ARRAY_SUPPORT
-  : typedArraySupport()
-
-/*
- * Export kMaxLength after typed array support is determined.
- */
-exports.kMaxLength = kMaxLength()
-
-function typedArraySupport () {
-  try {
-    var arr = new Uint8Array(1)
-    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
-    return arr.foo() === 42 && // typed array instances can be augmented
-        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
-        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
-  } catch (e) {
-    return false
-  }
-}
-
-function kMaxLength () {
-  return Buffer.TYPED_ARRAY_SUPPORT
-    ? 0x7fffffff
-    : 0x3fffffff
-}
-
-function createBuffer (that, length) {
-  if (kMaxLength() < length) {
-    throw new RangeError('Invalid typed array length')
-  }
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    // Return an augmented `Uint8Array` instance, for best performance
-    that = new Uint8Array(length)
-    that.__proto__ = Buffer.prototype
-  } else {
-    // Fallback: Return an object instance of the Buffer class
-    if (that === null) {
-      that = new Buffer(length)
-    }
-    that.length = length
-  }
-
-  return that
-}
-
-/**
- * The Buffer constructor returns instances of `Uint8Array` that have their
- * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
- * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
- * and the `Uint8Array` methods. Square bracket notation works as expected -- it
- * returns a single octet.
- *
- * The `Uint8Array` prototype remains unmodified.
- */
-
-function Buffer (arg, encodingOrOffset, length) {
-  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
-    return new Buffer(arg, encodingOrOffset, length)
-  }
-
-  // Common case.
-  if (typeof arg === 'number') {
-    if (typeof encodingOrOffset === 'string') {
-      throw new Error(
-        'If encoding is specified then the first argument must be a string'
-      )
-    }
-    return allocUnsafe(this, arg)
-  }
-  return from(this, arg, encodingOrOffset, length)
-}
-
-Buffer.poolSize = 8192 // not used by this implementation
-
-// TODO: Legacy, not needed anymore. Remove in next major version.
-Buffer._augment = function (arr) {
-  arr.__proto__ = Buffer.prototype
-  return arr
-}
-
-function from (that, value, encodingOrOffset, length) {
-  if (typeof value === 'number') {
-    throw new TypeError('"value" argument must not be a number')
-  }
-
-  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
-    return fromArrayBuffer(that, value, encodingOrOffset, length)
-  }
-
-  if (typeof value === 'string') {
-    return fromString(that, value, encodingOrOffset)
-  }
-
-  return fromObject(that, value)
-}
-
-/**
- * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
- * if value is a number.
- * Buffer.from(str[, encoding])
- * Buffer.from(array)
- * Buffer.from(buffer)
- * Buffer.from(arrayBuffer[, byteOffset[, length]])
- **/
-Buffer.from = function (value, encodingOrOffset, length) {
-  return from(null, value, encodingOrOffset, length)
-}
-
-if (Buffer.TYPED_ARRAY_SUPPORT) {
-  Buffer.prototype.__proto__ = Uint8Array.prototype
-  Buffer.__proto__ = Uint8Array
-  if (typeof Symbol !== 'undefined' && Symbol.species &&
-      Buffer[Symbol.species] === Buffer) {
-    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
-    Object.defineProperty(Buffer, Symbol.species, {
-      value: null,
-      configurable: true
-    })
-  }
-}
-
-function assertSize (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be a number')
-  } else if (size < 0) {
-    throw new RangeError('"size" argument must not be negative')
-  }
-}
-
-function alloc (that, size, fill, encoding) {
-  assertSize(size)
-  if (size <= 0) {
-    return createBuffer(that, size)
-  }
-  if (fill !== undefined) {
-    // Only pay attention to encoding if it's a string. This
-    // prevents accidentally sending in a number that would
-    // be interpretted as a start offset.
-    return typeof encoding === 'string'
-      ? createBuffer(that, size).fill(fill, encoding)
-      : createBuffer(that, size).fill(fill)
-  }
-  return createBuffer(that, size)
-}
-
-/**
- * Creates a new filled Buffer instance.
- * alloc(size[, fill[, encoding]])
- **/
-Buffer.alloc = function (size, fill, encoding) {
-  return alloc(null, size, fill, encoding)
-}
-
-function allocUnsafe (that, size) {
-  assertSize(size)
-  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) {
-    for (var i = 0; i < size; ++i) {
-      that[i] = 0
-    }
-  }
-  return that
-}
-
-/**
- * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
- * */
-Buffer.allocUnsafe = function (size) {
-  return allocUnsafe(null, size)
-}
-/**
- * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
- */
-Buffer.allocUnsafeSlow = function (size) {
-  return allocUnsafe(null, size)
-}
-
-function fromString (that, string, encoding) {
-  if (typeof encoding !== 'string' || encoding === '') {
-    encoding = 'utf8'
-  }
-
-  if (!Buffer.isEncoding(encoding)) {
-    throw new TypeError('"encoding" must be a valid string encoding')
-  }
-
-  var length = byteLength(string, encoding) | 0
-  that = createBuffer(that, length)
-
-  var actual = that.write(string, encoding)
-
-  if (actual !== length) {
-    // Writing a hex string, for example, that contains invalid characters will
-    // cause everything after the first invalid character to be ignored. (e.g.
-    // 'abxxcd' will be treated as 'ab')
-    that = that.slice(0, actual)
-  }
-
-  return that
-}
-
-function fromArrayLike (that, array) {
-  var length = array.length < 0 ? 0 : checked(array.length) | 0
-  that = createBuffer(that, length)
-  for (var i = 0; i < length; i += 1) {
-    that[i] = array[i] & 255
-  }
-  return that
-}
-
-function fromArrayBuffer (that, array, byteOffset, length) {
-  array.byteLength // this throws if `array` is not a valid ArrayBuffer
-
-  if (byteOffset < 0 || array.byteLength < byteOffset) {
-    throw new RangeError('\'offset\' is out of bounds')
-  }
-
-  if (array.byteLength < byteOffset + (length || 0)) {
-    throw new RangeError('\'length\' is out of bounds')
-  }
-
-  if (byteOffset === undefined && length === undefined) {
-    array = new Uint8Array(array)
-  } else if (length === undefined) {
-    array = new Uint8Array(array, byteOffset)
-  } else {
-    array = new Uint8Array(array, byteOffset, length)
-  }
-
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    // Return an augmented `Uint8Array` instance, for best performance
-    that = array
-    that.__proto__ = Buffer.prototype
-  } else {
-    // Fallback: Return an object instance of the Buffer class
-    that = fromArrayLike(that, array)
-  }
-  return that
-}
-
-function fromObject (that, obj) {
-  if (Buffer.isBuffer(obj)) {
-    var len = checked(obj.length) | 0
-    that = createBuffer(that, len)
-
-    if (that.length === 0) {
-      return that
-    }
-
-    obj.copy(that, 0, 0, len)
-    return that
-  }
-
-  if (obj) {
-    if ((typeof ArrayBuffer !== 'undefined' &&
-        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
-      if (typeof obj.length !== 'number' || isnan(obj.length)) {
-        return createBuffer(that, 0)
-      }
-      return fromArrayLike(that, obj)
-    }
-
-    if (obj.type === 'Buffer' && isArray(obj.data)) {
-      return fromArrayLike(that, obj.data)
-    }
-  }
-
-  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
-}
-
-function checked (length) {
-  // Note: cannot use `length < kMaxLength()` here because that fails when
-  // length is NaN (which is otherwise coerced to zero.)
-  if (length >= kMaxLength()) {
-    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
-  }
-  return length | 0
-}
-
-function SlowBuffer (length) {
-  if (+length != length) { // eslint-disable-line eqeqeq
-    length = 0
-  }
-  return Buffer.alloc(+length)
-}
-
-Buffer.isBuffer = function isBuffer (b) {
-  return !!(b != null && b._isBuffer)
-}
-
-Buffer.compare = function compare (a, b) {
-  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
-    throw new TypeError('Arguments must be Buffers')
-  }
-
-  if (a === b) return 0
-
-  var x = a.length
-  var y = b.length
-
-  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
-    if (a[i] !== b[i]) {
-      x = a[i]
-      y = b[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-Buffer.isEncoding = function isEncoding (encoding) {
-  switch (String(encoding).toLowerCase()) {
-    case 'hex':
-    case 'utf8':
-    case 'utf-8':
-    case 'ascii':
-    case 'latin1':
-    case 'binary':
-    case 'base64':
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      return true
-    default:
-      return false
-  }
-}
-
-Buffer.concat = function concat (list, length) {
-  if (!isArray(list)) {
-    throw new TypeError('"list" argument must be an Array of Buffers')
-  }
-
-  if (list.length === 0) {
-    return Buffer.alloc(0)
-  }
-
-  var i
-  if (length === undefined) {
-    length = 0
-    for (i = 0; i < list.length; ++i) {
-      length += list[i].length
-    }
-  }
-
-  var buffer = Buffer.allocUnsafe(length)
-  var pos = 0
-  for (i = 0; i < list.length; ++i) {
-    var buf = list[i]
-    if (!Buffer.isBuffer(buf)) {
-      throw new TypeError('"list" argument must be an Array of Buffers')
-    }
-    buf.copy(buffer, pos)
-    pos += buf.length
-  }
-  return buffer
-}
-
-function byteLength (string, encoding) {
-  if (Buffer.isBuffer(string)) {
-    return string.length
-  }
-  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
-      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
-    return string.byteLength
-  }
-  if (typeof string !== 'string') {
-    string = '' + string
-  }
-
-  var len = string.length
-  if (len === 0) return 0
-
-  // Use a for loop to avoid recursion
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'ascii':
-      case 'latin1':
-      case 'binary':
-        return len
-      case 'utf8':
-      case 'utf-8':
-      case undefined:
-        return utf8ToBytes(string).length
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return len * 2
-      case 'hex':
-        return len >>> 1
-      case 'base64':
-        return base64ToBytes(string).length
-      default:
-        if (loweredCase) return utf8ToBytes(string).length // assume utf8
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-Buffer.byteLength = byteLength
-
-function slowToString (encoding, start, end) {
-  var loweredCase = false
-
-  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
-  // property of a typed array.
-
-  // This behaves neither like String nor Uint8Array in that we set start/end
-  // to their upper/lower bounds if the value passed is out of range.
-  // undefined is handled specially as per ECMA-262 6th Edition,
-  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
-  if (start === undefined || start < 0) {
-    start = 0
-  }
-  // Return early if start > this.length. Done here to prevent potential uint32
-  // coercion fail below.
-  if (start > this.length) {
-    return ''
-  }
-
-  if (end === undefined || end > this.length) {
-    end = this.length
-  }
-
-  if (end <= 0) {
-    return ''
-  }
-
-  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
-  end >>>= 0
-  start >>>= 0
-
-  if (end <= start) {
-    return ''
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  while (true) {
-    switch (encoding) {
-      case 'hex':
-        return hexSlice(this, start, end)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Slice(this, start, end)
-
-      case 'ascii':
-        return asciiSlice(this, start, end)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Slice(this, start, end)
-
-      case 'base64':
-        return base64Slice(this, start, end)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return utf16leSlice(this, start, end)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = (encoding + '').toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
-// Buffer instances.
-Buffer.prototype._isBuffer = true
-
-function swap (b, n, m) {
-  var i = b[n]
-  b[n] = b[m]
-  b[m] = i
-}
-
-Buffer.prototype.swap16 = function swap16 () {
-  var len = this.length
-  if (len % 2 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 16-bits')
-  }
-  for (var i = 0; i < len; i += 2) {
-    swap(this, i, i + 1)
-  }
-  return this
-}
-
-Buffer.prototype.swap32 = function swap32 () {
-  var len = this.length
-  if (len % 4 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 32-bits')
-  }
-  for (var i = 0; i < len; i += 4) {
-    swap(this, i, i + 3)
-    swap(this, i + 1, i + 2)
-  }
-  return this
-}
-
-Buffer.prototype.swap64 = function swap64 () {
-  var len = this.length
-  if (len % 8 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 64-bits')
-  }
-  for (var i = 0; i < len; i += 8) {
-    swap(this, i, i + 7)
-    swap(this, i + 1, i + 6)
-    swap(this, i + 2, i + 5)
-    swap(this, i + 3, i + 4)
-  }
-  return this
-}
-
-Buffer.prototype.toString = function toString () {
-  var length = this.length | 0
-  if (length === 0) return ''
-  if (arguments.length === 0) return utf8Slice(this, 0, length)
-  return slowToString.apply(this, arguments)
-}
-
-Buffer.prototype.equals = function equals (b) {
-  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-  if (this === b) return true
-  return Buffer.compare(this, b) === 0
-}
-
-Buffer.prototype.inspect = function inspect () {
-  var str = ''
-  var max = exports.INSPECT_MAX_BYTES
-  if (this.length > 0) {
-    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
-    if (this.length > max) str += ' ... '
-  }
-  return '<Buffer ' + str + '>'
-}
-
-Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
-  if (!Buffer.isBuffer(target)) {
-    throw new TypeError('Argument must be a Buffer')
-  }
-
-  if (start === undefined) {
-    start = 0
-  }
-  if (end === undefined) {
-    end = target ? target.length : 0
-  }
-  if (thisStart === undefined) {
-    thisStart = 0
-  }
-  if (thisEnd === undefined) {
-    thisEnd = this.length
-  }
-
-  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-    throw new RangeError('out of range index')
-  }
-
-  if (thisStart >= thisEnd && start >= end) {
-    return 0
-  }
-  if (thisStart >= thisEnd) {
-    return -1
-  }
-  if (start >= end) {
-    return 1
-  }
-
-  start >>>= 0
-  end >>>= 0
-  thisStart >>>= 0
-  thisEnd >>>= 0
-
-  if (this === target) return 0
-
-  var x = thisEnd - thisStart
-  var y = end - start
-  var len = Math.min(x, y)
-
-  var thisCopy = this.slice(thisStart, thisEnd)
-  var targetCopy = target.slice(start, end)
-
-  for (var i = 0; i < len; ++i) {
-    if (thisCopy[i] !== targetCopy[i]) {
-      x = thisCopy[i]
-      y = targetCopy[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
-// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
-//
-// Arguments:
-// - buffer - a Buffer to search
-// - val - a string, Buffer, or number
-// - byteOffset - an index into `buffer`; will be clamped to an int32
-// - encoding - an optional encoding, relevant is val is a string
-// - dir - true for indexOf, false for lastIndexOf
-function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
-  // Empty buffer means no match
-  if (buffer.length === 0) return -1
-
-  // Normalize byteOffset
-  if (typeof byteOffset === 'string') {
-    encoding = byteOffset
-    byteOffset = 0
-  } else if (byteOffset > 0x7fffffff) {
-    byteOffset = 0x7fffffff
-  } else if (byteOffset < -0x80000000) {
-    byteOffset = -0x80000000
-  }
-  byteOffset = +byteOffset  // Coerce to Number.
-  if (isNaN(byteOffset)) {
-    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
-    byteOffset = dir ? 0 : (buffer.length - 1)
-  }
-
-  // Normalize byteOffset: negative offsets start from the end of the buffer
-  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
-  if (byteOffset >= buffer.length) {
-    if (dir) return -1
-    else byteOffset = buffer.length - 1
-  } else if (byteOffset < 0) {
-    if (dir) byteOffset = 0
-    else return -1
-  }
-
-  // Normalize val
-  if (typeof val === 'string') {
-    val = Buffer.from(val, encoding)
-  }
-
-  // Finally, search either indexOf (if dir is true) or lastIndexOf
-  if (Buffer.isBuffer(val)) {
-    // Special case: looking for empty string/buffer always fails
-    if (val.length === 0) {
-      return -1
-    }
-    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
-  } else if (typeof val === 'number') {
-    val = val & 0xFF // Search for a byte value [0-255]
-    if (Buffer.TYPED_ARRAY_SUPPORT &&
-        typeof Uint8Array.prototype.indexOf === 'function') {
-      if (dir) {
-        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
-      } else {
-        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
-      }
-    }
-    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
-  }
-
-  throw new TypeError('val must be string, number or Buffer')
-}
-
-function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
-  var indexSize = 1
-  var arrLength = arr.length
-  var valLength = val.length
-
-  if (encoding !== undefined) {
-    encoding = String(encoding).toLowerCase()
-    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
-        encoding === 'utf16le' || encoding === 'utf-16le') {
-      if (arr.length < 2 || val.length < 2) {
-        return -1
-      }
-      indexSize = 2
-      arrLength /= 2
-      valLength /= 2
-      byteOffset /= 2
-    }
-  }
-
-  function read (buf, i) {
-    if (indexSize === 1) {
-      return buf[i]
-    } else {
-      return buf.readUInt16BE(i * indexSize)
-    }
-  }
-
-  var i
-  if (dir) {
-    var foundIndex = -1
-    for (i = byteOffset; i < arrLength; i++) {
-      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
-        if (foundIndex === -1) foundIndex = i
-        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
-      } else {
-        if (foundIndex !== -1) i -= i - foundIndex
-        foundIndex = -1
-      }
-    }
-  } else {
-    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
-    for (i = byteOffset; i >= 0; i--) {
-      var found = true
-      for (var j = 0; j < valLength; j++) {
-        if (read(arr, i + j) !== read(val, j)) {
-          found = false
-          break
-        }
-      }
-      if (found) return i
-    }
-  }
-
-  return -1
-}
-
-Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
-  return this.indexOf(val, byteOffset, encoding) !== -1
-}
-
-Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
-}
-
-Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
-}
-
-function hexWrite (buf, string, offset, length) {
-  offset = Number(offset) || 0
-  var remaining = buf.length - offset
-  if (!length) {
-    length = remaining
-  } else {
-    length = Number(length)
-    if (length > remaining) {
-      length = remaining
-    }
-  }
-
-  // must be an even number of digits
-  var strLen = string.length
-  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
-
-  if (length > strLen / 2) {
-    length = strLen / 2
-  }
-  for (var i = 0; i < length; ++i) {
-    var parsed = parseInt(string.substr(i * 2, 2), 16)
-    if (isNaN(parsed)) return i
-    buf[offset + i] = parsed
-  }
-  return i
-}
-
-function utf8Write (buf, string, offset, length) {
-  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-function asciiWrite (buf, string, offset, length) {
-  return blitBuffer(asciiToBytes(string), buf, offset, length)
-}
-
-function latin1Write (buf, string, offset, length) {
-  return asciiWrite(buf, string, offset, length)
-}
-
-function base64Write (buf, string, offset, length) {
-  return blitBuffer(base64ToBytes(string), buf, offset, length)
-}
-
-function ucs2Write (buf, string, offset, length) {
-  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-Buffer.prototype.write = function write (string, offset, length, encoding) {
-  // Buffer#write(string)
-  if (offset === undefined) {
-    encoding = 'utf8'
-    length = this.length
-    offset = 0
-  // Buffer#write(string, encoding)
-  } else if (length === undefined && typeof offset === 'string') {
-    encoding = offset
-    length = this.length
-    offset = 0
-  // Buffer#write(string, offset[, length][, encoding])
-  } else if (isFinite(offset)) {
-    offset = offset | 0
-    if (isFinite(length)) {
-      length = length | 0
-      if (encoding === undefined) encoding = 'utf8'
-    } else {
-      encoding = length
-      length = undefined
-    }
-  // legacy write(string, encoding, offset, length) - remove in v0.13
-  } else {
-    throw new Error(
-      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
-    )
-  }
-
-  var remaining = this.length - offset
-  if (length === undefined || length > remaining) length = remaining
-
-  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
-    throw new RangeError('Attempt to write outside buffer bounds')
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'hex':
-        return hexWrite(this, string, offset, length)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Write(this, string, offset, length)
-
-      case 'ascii':
-        return asciiWrite(this, string, offset, length)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Write(this, string, offset, length)
-
-      case 'base64':
-        // Warning: maxLength not taken into account in base64Write
-        return base64Write(this, string, offset, length)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return ucs2Write(this, string, offset, length)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-Buffer.prototype.toJSON = function toJSON () {
-  return {
-    type: 'Buffer',
-    data: Array.prototype.slice.call(this._arr || this, 0)
-  }
-}
-
-function base64Slice (buf, start, end) {
-  if (start === 0 && end === buf.length) {
-    return base64.fromByteArray(buf)
-  } else {
-    return base64.fromByteArray(buf.slice(start, end))
-  }
-}
-
-function utf8Slice (buf, start, end) {
-  end = Math.min(buf.length, end)
-  var res = []
-
-  var i = start
-  while (i < end) {
-    var firstByte = buf[i]
-    var codePoint = null
-    var bytesPerSequence = (firstByte > 0xEF) ? 4
-      : (firstByte > 0xDF) ? 3
-      : (firstByte > 0xBF) ? 2
-      : 1
-
-    if (i + bytesPerSequence <= end) {
-      var secondByte, thirdByte, fourthByte, tempCodePoint
-
-      switch (bytesPerSequence) {
-        case 1:
-          if (firstByte < 0x80) {
-            codePoint = firstByte
-          }
-          break
-        case 2:
-          secondByte = buf[i + 1]
-          if ((secondByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
-            if (tempCodePoint > 0x7F) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 3:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
-            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 4:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          fourthByte = buf[i + 3]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
-            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
-              codePoint = tempCodePoint
-            }
-          }
-      }
-    }
-
-    if (codePoint === null) {
-      // we did not generate a valid codePoint so insert a
-      // replacement char (U+FFFD) and advance only 1 byte
-      codePoint = 0xFFFD
-      bytesPerSequence = 1
-    } else if (codePoint > 0xFFFF) {
-      // encode to utf16 (surrogate pair dance)
-      codePoint -= 0x10000
-      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
-      codePoint = 0xDC00 | codePoint & 0x3FF
-    }
-
-    res.push(codePoint)
-    i += bytesPerSequence
-  }
-
-  return decodeCodePointsArray(res)
-}
-
-// Based on http://stackoverflow.com/a/22747272/680742, the browser with
-// the lowest limit is Chrome, with 0x10000 args.
-// We go 1 magnitude less, for safety
-var MAX_ARGUMENTS_LENGTH = 0x1000
-
-function decodeCodePointsArray (codePoints) {
-  var len = codePoints.length
-  if (len <= MAX_ARGUMENTS_LENGTH) {
-    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
-  }
-
-  // Decode in chunks to avoid "call stack size exceeded".
-  var res = ''
-  var i = 0
-  while (i < len) {
-    res += String.fromCharCode.apply(
-      String,
-      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
-    )
-  }
-  return res
-}
-
-function asciiSlice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i] & 0x7F)
-  }
-  return ret
-}
-
-function latin1Slice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i])
-  }
-  return ret
-}
-
-function hexSlice (buf, start, end) {
-  var len = buf.length
-
-  if (!start || start < 0) start = 0
-  if (!end || end < 0 || end > len) end = len
-
-  var out = ''
-  for (var i = start; i < end; ++i) {
-    out += toHex(buf[i])
-  }
-  return out
-}
-
-function utf16leSlice (buf, start, end) {
-  var bytes = buf.slice(start, end)
-  var res = ''
-  for (var i = 0; i < bytes.length; i += 2) {
-    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
-  }
-  return res
-}
-
-Buffer.prototype.slice = function slice (start, end) {
-  var len = this.length
-  start = ~~start
-  end = end === undefined ? len : ~~end
-
-  if (start < 0) {
-    start += len
-    if (start < 0) start = 0
-  } else if (start > len) {
-    start = len
-  }
-
-  if (end < 0) {
-    end += len
-    if (end < 0) end = 0
-  } else if (end > len) {
-    end = len
-  }
-
-  if (end < start) end = start
-
-  var newBuf
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    newBuf = this.subarray(start, end)
-    newBuf.__proto__ = Buffer.prototype
-  } else {
-    var sliceLen = end - start
-    newBuf = new Buffer(sliceLen, undefined)
-    for (var i = 0; i < sliceLen; ++i) {
-      newBuf[i] = this[i + start]
-    }
-  }
-
-  return newBuf
-}
-
-/*
- * Need to make sure that buffer isn't trying to write out of bounds.
- */
-function checkOffset (offset, ext, length) {
-  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
-  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
-}
-
-Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    checkOffset(offset, byteLength, this.length)
-  }
-
-  var val = this[offset + --byteLength]
-  var mul = 1
-  while (byteLength > 0 && (mul *= 0x100)) {
-    val += this[offset + --byteLength] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  return this[offset]
-}
-
-Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return this[offset] | (this[offset + 1] << 8)
-}
-
-Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return (this[offset] << 8) | this[offset + 1]
-}
-
-Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return ((this[offset]) |
-      (this[offset + 1] << 8) |
-      (this[offset + 2] << 16)) +
-      (this[offset + 3] * 0x1000000)
-}
-
-Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] * 0x1000000) +
-    ((this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    this[offset + 3])
-}
-
-Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var i = byteLength
-  var mul = 1
-  var val = this[offset + --i]
-  while (i > 0 && (mul *= 0x100)) {
-    val += this[offset + --i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  if (!(this[offset] & 0x80)) return (this[offset])
-  return ((0xff - this[offset] + 1) * -1)
-}
-
-Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset] | (this[offset + 1] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset + 1] | (this[offset] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset]) |
-    (this[offset + 1] << 8) |
-    (this[offset + 2] << 16) |
-    (this[offset + 3] << 24)
-}
-
-Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] << 24) |
-    (this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    (this[offset + 3])
-}
-
-Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, true, 23, 4)
-}
-
-Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, false, 23, 4)
-}
-
-Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, true, 52, 8)
-}
-
-Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, false, 52, 8)
-}
-
-function checkInt (buf, value, offset, ext, max, min) {
-  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
-  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-}
-
-Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var mul = 1
-  var i = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-function objectWriteUInt16 (buf, value, offset, littleEndian) {
-  if (value < 0) value = 0xffff + value + 1
-  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
-    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
-      (littleEndian ? i : 1 - i) * 8
-  }
-}
-
-Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-  } else {
-    objectWriteUInt16(this, value, offset, true)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 8)
-    this[offset + 1] = (value & 0xff)
-  } else {
-    objectWriteUInt16(this, value, offset, false)
-  }
-  return offset + 2
-}
-
-function objectWriteUInt32 (buf, value, offset, littleEndian) {
-  if (value < 0) value = 0xffffffff + value + 1
-  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
-    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
-  }
-}
-
-Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset + 3] = (value >>> 24)
-    this[offset + 2] = (value >>> 16)
-    this[offset + 1] = (value >>> 8)
-    this[offset] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, true)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 24)
-    this[offset + 1] = (value >>> 16)
-    this[offset + 2] = (value >>> 8)
-    this[offset + 3] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, false)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) {
-    var limit = Math.pow(2, 8 * byteLength - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = 0
-  var mul = 1
-  var sub = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) {
-    var limit = Math.pow(2, 8 * byteLength - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  var sub = 0
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-  if (value < 0) value = 0xff + value + 1
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-  } else {
-    objectWriteUInt16(this, value, offset, true)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 8)
-    this[offset + 1] = (value & 0xff)
-  } else {
-    objectWriteUInt16(this, value, offset, false)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-    this[offset + 2] = (value >>> 16)
-    this[offset + 3] = (value >>> 24)
-  } else {
-    objectWriteUInt32(this, value, offset, true)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (value < 0) value = 0xffffffff + value + 1
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 24)
-    this[offset + 1] = (value >>> 16)
-    this[offset + 2] = (value >>> 8)
-    this[offset + 3] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, false)
-  }
-  return offset + 4
-}
-
-function checkIEEE754 (buf, value, offset, ext, max, min) {
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-  if (offset < 0) throw new RangeError('Index out of range')
-}
-
-function writeFloat (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-  return offset + 4
-}
-
-Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, false, noAssert)
-}
-
-function writeDouble (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-  return offset + 8
-}
-
-Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, false, noAssert)
-}
-
-// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-Buffer.prototype.copy = function copy (target, targetStart, start, end) {
-  if (!start) start = 0
-  if (!end && end !== 0) end = this.length
-  if (targetStart >= target.length) targetStart = target.length
-  if (!targetStart) targetStart = 0
-  if (end > 0 && end < start) end = start
-
-  // Copy 0 bytes; we're done
-  if (end === start) return 0
-  if (target.length === 0 || this.length === 0) return 0
-
-  // Fatal error conditions
-  if (targetStart < 0) {
-    throw new RangeError('targetStart out of bounds')
-  }
-  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
-  if (end < 0) throw new RangeError('sourceEnd out of bounds')
-
-  // Are we oob?
-  if (end > this.length) end = this.length
-  if (target.length - targetStart < end - start) {
-    end = target.length - targetStart + start
-  }
-
-  var len = end - start
-  var i
-
-  if (this === target && start < targetStart && targetStart < end) {
-    // descending copy from end
-    for (i = len - 1; i >= 0; --i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
-    // ascending copy from start
-    for (i = 0; i < len; ++i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else {
-    Uint8Array.prototype.set.call(
-      target,
-      this.subarray(start, start + len),
-      targetStart
-    )
-  }
-
-  return len
-}
-
-// Usage:
-//    buffer.fill(number[, offset[, end]])
-//    buffer.fill(buffer[, offset[, end]])
-//    buffer.fill(string[, offset[, end]][, encoding])
-Buffer.prototype.fill = function fill (val, start, end, encoding) {
-  // Handle string cases:
-  if (typeof val === 'string') {
-    if (typeof start === 'string') {
-      encoding = start
-      start = 0
-      end = this.length
-    } else if (typeof end === 'string') {
-      encoding = end
-      end = this.length
-    }
-    if (val.length === 1) {
-      var code = val.charCodeAt(0)
-      if (code < 256) {
-        val = code
-      }
-    }
-    if (encoding !== undefined && typeof encoding !== 'string') {
-      throw new TypeError('encoding must be a string')
-    }
-    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
-      throw new TypeError('Unknown encoding: ' + encoding)
-    }
-  } else if (typeof val === 'number') {
-    val = val & 255
-  }
-
-  // Invalid ranges are not set to a default, so can range check early.
-  if (start < 0 || this.length < start || this.length < end) {
-    throw new RangeError('Out of range index')
-  }
-
-  if (end <= start) {
-    return this
-  }
-
-  start = start >>> 0
-  end = end === undefined ? this.length : end >>> 0
-
-  if (!val) val = 0
-
-  var i
-  if (typeof val === 'number') {
-    for (i = start; i < end; ++i) {
-      this[i] = val
-    }
-  } else {
-    var bytes = Buffer.isBuffer(val)
-      ? val
-      : utf8ToBytes(new Buffer(val, encoding).toString())
-    var len = bytes.length
-    for (i = 0; i < end - start; ++i) {
-      this[i + start] = bytes[i % len]
-    }
-  }
-
-  return this
-}
-
-// HELPER FUNCTIONS
-// ================
-
-var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
-
-function base64clean (str) {
-  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
-  // Node converts strings with length < 2 to ''
-  if (str.length < 2) return ''
-  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
-  while (str.length % 4 !== 0) {
-    str = str + '='
-  }
-  return str
-}
-
-function stringtrim (str) {
-  if (str.trim) return str.trim()
-  return str.replace(/^\s+|\s+$/g, '')
-}
-
-function toHex (n) {
-  if (n < 16) return '0' + n.toString(16)
-  return n.toString(16)
-}
-
-function utf8ToBytes (string, units) {
-  units = units || Infinity
-  var codePoint
-  var length = string.length
-  var leadSurrogate = null
-  var bytes = []
-
-  for (var i = 0; i < length; ++i) {
-    codePoint = string.charCodeAt(i)
-
-    // is surrogate component
-    if (codePoint > 0xD7FF && codePoint < 0xE000) {
-      // last char was a lead
-      if (!leadSurrogate) {
-        // no lead yet
-        if (codePoint > 0xDBFF) {
-          // unexpected trail
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        } else if (i + 1 === length) {
-          // unpaired lead
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        }
-
-        // valid lead
-        leadSurrogate = codePoint
-
-        continue
-      }
-
-      // 2 leads in a row
-      if (codePoint < 0xDC00) {
-        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-        leadSurrogate = codePoint
-        continue
-      }
-
-      // valid surrogate pair
-      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
-    } else if (leadSurrogate) {
-      // valid bmp char, but last char was a lead
-      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-    }
-
-    leadSurrogate = null
-
-    // encode utf8
-    if (codePoint < 0x80) {
-      if ((units -= 1) < 0) break
-      bytes.push(codePoint)
-    } else if (codePoint < 0x800) {
-      if ((units -= 2) < 0) break
-      bytes.push(
-        codePoint >> 0x6 | 0xC0,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x10000) {
-      if ((units -= 3) < 0) break
-      bytes.push(
-        codePoint >> 0xC | 0xE0,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x110000) {
-      if ((units -= 4) < 0) break
-      bytes.push(
-        codePoint >> 0x12 | 0xF0,
-        codePoint >> 0xC & 0x3F | 0x80,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else {
-      throw new Error('Invalid code point')
-    }
-  }
-
-  return bytes
-}
-
-function asciiToBytes (str) {
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    // Node's code seems to be doing this and not & 0x7F..
-    byteArray.push(str.charCodeAt(i) & 0xFF)
-  }
-  return byteArray
-}
-
-function utf16leToBytes (str, units) {
-  var c, hi, lo
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    if ((units -= 2) < 0) break
-
-    c = str.charCodeAt(i)
-    hi = c >> 8
-    lo = c % 256
-    byteArray.push(lo)
-    byteArray.push(hi)
-  }
-
-  return byteArray
-}
-
-function base64ToBytes (str) {
-  return base64.toByteArray(base64clean(str))
-}
-
-function blitBuffer (src, dst, offset, length) {
-  for (var i = 0; i < length; ++i) {
-    if ((i + offset >= dst.length) || (i >= src.length)) break
-    dst[i + offset] = src[i]
-  }
-  return i
-}
-
-function isnan (val) {
-  return val !== val // eslint-disable-line no-self-compare
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// a duplex stream is just a stream that is both readable and writable.
-// Since JS doesn't have multiple prototypal inheritance, this class
-// prototypally inherits from Readable, and then parasitically from
-// Writable.
-
-
-
-/*<replacement>*/
-
-var objectKeys = Object.keys || function (obj) {
-  var keys = [];
-  for (var key in obj) {
-    keys.push(key);
-  }return keys;
-};
-/*</replacement>*/
-
-module.exports = Duplex;
-
-/*<replacement>*/
-var processNextTick = __webpack_require__(33);
-/*</replacement>*/
-
-/*<replacement>*/
-var util = __webpack_require__(18);
-util.inherits = __webpack_require__(16);
-/*</replacement>*/
-
-var Readable = __webpack_require__(51);
-var Writable = __webpack_require__(35);
-
-util.inherits(Duplex, Readable);
-
-var keys = objectKeys(Writable.prototype);
-for (var v = 0; v < keys.length; v++) {
-  var method = keys[v];
-  if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
-}
-
-function Duplex(options) {
-  if (!(this instanceof Duplex)) return new Duplex(options);
-
-  Readable.call(this, options);
-  Writable.call(this, options);
-
-  if (options && options.readable === false) this.readable = false;
-
-  if (options && options.writable === false) this.writable = false;
-
-  this.allowHalfOpen = true;
-  if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;
-
-  this.once('end', onend);
-}
-
-// the no-half-open enforcer
-function onend() {
-  // if we allow half-open state, or if the writable side ended,
-  // then we're ok.
-  if (this.allowHalfOpen || this._writableState.ended) return;
-
-  // no more data can be written.
-  // But allow more writes to happen in this tick.
-  processNextTick(onEndNT, this);
-}
-
-function onEndNT(self) {
-  self.end();
-}
-
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
-  }
-}
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./compile.js": 71,
-	"./error_listener.js": 28,
-	"./finalizers.js": 72,
-	"./generate_tree_matcher.js": 73,
-	"./runtime.js": 54,
-	"./tree_matcher_parser/generator_listener.js": 47,
-	"./tree_matcher_parser/lang_config.compile.js": 74,
-	"./tree_matcher_parser/lang_config.runtime.js": 30
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 13;
-
-
-/***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -5690,7 +3595,7 @@ exports.Predicate = Predicate;
 
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -5700,7 +3605,7 @@ exports.Predicate = Predicate;
  */
 ///
 
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var Utils = __webpack_require__(0);
 var Hash = Utils.Hash;
 var Set = Utils.Set;
@@ -5848,211 +3753,35 @@ exports.PredPrediction = PredPrediction;
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// NOTE: These type checking functions intentionally don't use `instanceof`
-// because it is fragile and can be easily faked with `Object.create()`.
-
-function isArray(arg) {
-  if (Array.isArray) {
-    return Array.isArray(arg);
-  }
-  return objectToString(arg) === '[object Array]';
-}
-exports.isArray = isArray;
-
-function isBoolean(arg) {
-  return typeof arg === 'boolean';
-}
-exports.isBoolean = isBoolean;
-
-function isNull(arg) {
-  return arg === null;
-}
-exports.isNull = isNull;
-
-function isNullOrUndefined(arg) {
-  return arg == null;
-}
-exports.isNullOrUndefined = isNullOrUndefined;
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-exports.isNumber = isNumber;
-
-function isString(arg) {
-  return typeof arg === 'string';
-}
-exports.isString = isString;
-
-function isSymbol(arg) {
-  return typeof arg === 'symbol';
-}
-exports.isSymbol = isSymbol;
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-exports.isUndefined = isUndefined;
-
-function isRegExp(re) {
-  return objectToString(re) === '[object RegExp]';
-}
-exports.isRegExp = isRegExp;
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-exports.isObject = isObject;
-
-function isDate(d) {
-  return objectToString(d) === '[object Date]';
-}
-exports.isDate = isDate;
-
-function isError(e) {
-  return (objectToString(e) === '[object Error]' || e instanceof Error);
-}
-exports.isError = isError;
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-exports.isFunction = isFunction;
-
-function isPrimitive(arg) {
-  return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
-}
-exports.isPrimitive = isPrimitive;
-
-exports.isBuffer = Buffer.isBuffer;
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).Buffer))
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["fs"]; }());
-
-/***/ }),
-/* 20 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-exports.atn = __webpack_require__(65);
-exports.codepointat = __webpack_require__(44);
-exports.dfa = __webpack_require__(67);
-exports.fromcodepoint = __webpack_require__(45);
-exports.tree = __webpack_require__(70);
-exports.error = __webpack_require__(69);
+exports.atn = __webpack_require__(47);
+exports.codepointat = __webpack_require__(30);
+exports.dfa = __webpack_require__(49);
+exports.fromcodepoint = __webpack_require__(31);
+exports.tree = __webpack_require__(52);
+exports.error = __webpack_require__(51);
 exports.Token = __webpack_require__(1).Token;
 exports.CommonToken = __webpack_require__(1).CommonToken;
-exports.InputStream = __webpack_require__(36).InputStream;
-exports.FileStream = __webpack_require__(58).FileStream;
-exports.CommonTokenStream = __webpack_require__(57).CommonTokenStream;
-exports.Lexer = __webpack_require__(21).Lexer;
-exports.Parser = __webpack_require__(60).Parser;
-var pc = __webpack_require__(7);
+exports.InputStream = __webpack_require__(22).InputStream;
+exports.FileStream = __webpack_require__(40).FileStream;
+exports.CommonTokenStream = __webpack_require__(39).CommonTokenStream;
+exports.Lexer = __webpack_require__(13).Lexer;
+exports.Parser = __webpack_require__(42).Parser;
+var pc = __webpack_require__(6);
 exports.PredictionContextCache = pc.PredictionContextCache;
-exports.ParserRuleContext = __webpack_require__(29).ParserRuleContext;
+exports.ParserRuleContext = __webpack_require__(19).ParserRuleContext;
 exports.Interval = __webpack_require__(2).Interval;
 exports.Utils = __webpack_require__(0);
 
 
 /***/ }),
-/* 21 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -6066,8 +3795,8 @@ exports.Utils = __webpack_require__(0);
 //  uses simplified match() and error recovery mechanisms in the interest of speed.
 
 var Token = __webpack_require__(1).Token;
-var Recognizer = __webpack_require__(37).Recognizer;
-var CommonTokenFactory = __webpack_require__(56).CommonTokenFactory;
+var Recognizer = __webpack_require__(23).Recognizer;
+var CommonTokenFactory = __webpack_require__(38).CommonTokenFactory;
 var RecognitionException  = __webpack_require__(5).RecognitionException;
 var LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 
@@ -6429,7 +4158,7 @@ exports.Lexer = Lexer;
 
 
 /***/ }),
-/* 22 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -6461,7 +4190,7 @@ exports.Lexer = Lexer;
 
 var RuleNode = __webpack_require__(3).RuleNode;
 var INVALID_INTERVAL = __webpack_require__(3).INVALID_INTERVAL;
-var INVALID_ALT_NUMBER = __webpack_require__(8).INVALID_ALT_NUMBER;
+var INVALID_ALT_NUMBER = __webpack_require__(7).INVALID_ALT_NUMBER;
 
 function RuleContext(parent, invokingState) {
 	RuleNode.call(this);
@@ -6553,7 +4282,7 @@ RuleContext.prototype.accept = function(visitor) {
 
 //need to manage circular dependencies, so export now
 exports.RuleContext = RuleContext;
-var Trees = __webpack_require__(46).Trees;
+var Trees = __webpack_require__(32).Trees;
 
 
 // Print out a whole tree, not just a node, in LISP format
@@ -6592,7 +4321,7 @@ RuleContext.prototype.toString = function(ruleNames, stop) {
 
 
 /***/ }),
-/* 23 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -6611,7 +4340,7 @@ RuleContext.prototype.toString = function(ruleNames, stop) {
 ///
 
 var DecisionState = __webpack_require__(4).DecisionState;
-var SemanticContext = __webpack_require__(14).SemanticContext;
+var SemanticContext = __webpack_require__(10).SemanticContext;
 var Hash = __webpack_require__(0).Hash;
 
 
@@ -6773,7 +4502,7 @@ exports.ATNConfig = ATNConfig;
 exports.LexerATNConfig = LexerATNConfig;
 
 /***/ }),
-/* 24 */
+/* 16 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -6858,7 +4587,7 @@ exports.LexerDFASerializer = LexerDFASerializer;
 
 
 /***/ }),
-/* 25 */
+/* 17 */
 /***/ (function(module, exports) {
 
 //
@@ -6951,480 +4680,33 @@ exports.ProxyErrorListener = ProxyErrorListener;
 
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-function EventEmitter() {
-  this._events = this._events || {};
-  this._maxListeners = this._maxListeners || undefined;
-}
-module.exports = EventEmitter;
-
-// Backwards-compat with node 0.10.x
-EventEmitter.EventEmitter = EventEmitter;
-
-EventEmitter.prototype._events = undefined;
-EventEmitter.prototype._maxListeners = undefined;
-
-// By default EventEmitters will print a warning if more than 10 listeners are
-// added to it. This is a useful default which helps finding memory leaks.
-EventEmitter.defaultMaxListeners = 10;
-
-// Obviously not all Emitters should be limited to 10. This function allows
-// that to be increased. Set to zero for unlimited.
-EventEmitter.prototype.setMaxListeners = function(n) {
-  if (!isNumber(n) || n < 0 || isNaN(n))
-    throw TypeError('n must be a positive number');
-  this._maxListeners = n;
-  return this;
-};
-
-EventEmitter.prototype.emit = function(type) {
-  var er, handler, len, args, i, listeners;
-
-  if (!this._events)
-    this._events = {};
-
-  // If there is no 'error' event listener then throw.
-  if (type === 'error') {
-    if (!this._events.error ||
-        (isObject(this._events.error) && !this._events.error.length)) {
-      er = arguments[1];
-      if (er instanceof Error) {
-        throw er; // Unhandled 'error' event
-      } else {
-        // At least give some kind of context to the user
-        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-        err.context = er;
-        throw err;
-      }
-    }
-  }
-
-  handler = this._events[type];
-
-  if (isUndefined(handler))
-    return false;
-
-  if (isFunction(handler)) {
-    switch (arguments.length) {
-      // fast cases
-      case 1:
-        handler.call(this);
-        break;
-      case 2:
-        handler.call(this, arguments[1]);
-        break;
-      case 3:
-        handler.call(this, arguments[1], arguments[2]);
-        break;
-      // slower
-      default:
-        args = Array.prototype.slice.call(arguments, 1);
-        handler.apply(this, args);
-    }
-  } else if (isObject(handler)) {
-    args = Array.prototype.slice.call(arguments, 1);
-    listeners = handler.slice();
-    len = listeners.length;
-    for (i = 0; i < len; i++)
-      listeners[i].apply(this, args);
-  }
-
-  return true;
-};
-
-EventEmitter.prototype.addListener = function(type, listener) {
-  var m;
-
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  if (!this._events)
-    this._events = {};
-
-  // To avoid recursion in the case that type === "newListener"! Before
-  // adding it to the listeners, first emit "newListener".
-  if (this._events.newListener)
-    this.emit('newListener', type,
-              isFunction(listener.listener) ?
-              listener.listener : listener);
-
-  if (!this._events[type])
-    // Optimize the case of one listener. Don't need the extra array object.
-    this._events[type] = listener;
-  else if (isObject(this._events[type]))
-    // If we've already got an array, just append.
-    this._events[type].push(listener);
-  else
-    // Adding the second element, need to change to array.
-    this._events[type] = [this._events[type], listener];
-
-  // Check for listener leak
-  if (isObject(this._events[type]) && !this._events[type].warned) {
-    if (!isUndefined(this._maxListeners)) {
-      m = this._maxListeners;
-    } else {
-      m = EventEmitter.defaultMaxListeners;
-    }
-
-    if (m && m > 0 && this._events[type].length > m) {
-      this._events[type].warned = true;
-      console.error('(node) warning: possible EventEmitter memory ' +
-                    'leak detected. %d listeners added. ' +
-                    'Use emitter.setMaxListeners() to increase limit.',
-                    this._events[type].length);
-      if (typeof console.trace === 'function') {
-        // not supported in IE 10
-        console.trace();
-      }
-    }
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-EventEmitter.prototype.once = function(type, listener) {
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  var fired = false;
-
-  function g() {
-    this.removeListener(type, g);
-
-    if (!fired) {
-      fired = true;
-      listener.apply(this, arguments);
-    }
-  }
-
-  g.listener = listener;
-  this.on(type, g);
-
-  return this;
-};
-
-// emits a 'removeListener' event iff the listener was removed
-EventEmitter.prototype.removeListener = function(type, listener) {
-  var list, position, length, i;
-
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  if (!this._events || !this._events[type])
-    return this;
-
-  list = this._events[type];
-  length = list.length;
-  position = -1;
-
-  if (list === listener ||
-      (isFunction(list.listener) && list.listener === listener)) {
-    delete this._events[type];
-    if (this._events.removeListener)
-      this.emit('removeListener', type, listener);
-
-  } else if (isObject(list)) {
-    for (i = length; i-- > 0;) {
-      if (list[i] === listener ||
-          (list[i].listener && list[i].listener === listener)) {
-        position = i;
-        break;
-      }
-    }
-
-    if (position < 0)
-      return this;
-
-    if (list.length === 1) {
-      list.length = 0;
-      delete this._events[type];
-    } else {
-      list.splice(position, 1);
-    }
-
-    if (this._events.removeListener)
-      this.emit('removeListener', type, listener);
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.removeAllListeners = function(type) {
-  var key, listeners;
-
-  if (!this._events)
-    return this;
-
-  // not listening for removeListener, no need to emit
-  if (!this._events.removeListener) {
-    if (arguments.length === 0)
-      this._events = {};
-    else if (this._events[type])
-      delete this._events[type];
-    return this;
-  }
-
-  // emit removeListener for all listeners on all events
-  if (arguments.length === 0) {
-    for (key in this._events) {
-      if (key === 'removeListener') continue;
-      this.removeAllListeners(key);
-    }
-    this.removeAllListeners('removeListener');
-    this._events = {};
-    return this;
-  }
-
-  listeners = this._events[type];
-
-  if (isFunction(listeners)) {
-    this.removeListener(type, listeners);
-  } else if (listeners) {
-    // LIFO order
-    while (listeners.length)
-      this.removeListener(type, listeners[listeners.length - 1]);
-  }
-  delete this._events[type];
-
-  return this;
-};
-
-EventEmitter.prototype.listeners = function(type) {
-  var ret;
-  if (!this._events || !this._events[type])
-    ret = [];
-  else if (isFunction(this._events[type]))
-    ret = [this._events[type]];
-  else
-    ret = this._events[type].slice();
-  return ret;
-};
-
-EventEmitter.prototype.listenerCount = function(type) {
-  if (this._events) {
-    var evlistener = this._events[type];
-
-    if (isFunction(evlistener))
-      return 1;
-    else if (evlistener)
-      return evlistener.length;
-  }
-  return 0;
-};
-
-EventEmitter.listenerCount = function(emitter, type) {
-  return emitter.listenerCount(type);
-};
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-
-
-/***/ }),
-/* 27 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-module.exports = Stream;
-
-var EE = __webpack_require__(26).EventEmitter;
-var inherits = __webpack_require__(16);
-
-inherits(Stream, EE);
-Stream.Readable = __webpack_require__(87);
-Stream.Writable = __webpack_require__(89);
-Stream.Duplex = __webpack_require__(84);
-Stream.Transform = __webpack_require__(88);
-Stream.PassThrough = __webpack_require__(86);
-
-// Backwards-compat with node 0.4.x
-Stream.Stream = Stream;
-
-
-
-// old-style streams.  Note that the pipe method (the only relevant
-// part of this class) is overridden in the Readable class.
-
-function Stream() {
-  EE.call(this);
-}
-
-Stream.prototype.pipe = function(dest, options) {
-  var source = this;
-
-  function ondata(chunk) {
-    if (dest.writable) {
-      if (false === dest.write(chunk) && source.pause) {
-        source.pause();
-      }
-    }
-  }
-
-  source.on('data', ondata);
-
-  function ondrain() {
-    if (source.readable && source.resume) {
-      source.resume();
-    }
-  }
-
-  dest.on('drain', ondrain);
-
-  // If the 'end' option is not supplied, dest.end() will be called when
-  // source gets the 'end' or 'close' events.  Only dest.end() once.
-  if (!dest._isStdio && (!options || options.end !== false)) {
-    source.on('end', onend);
-    source.on('close', onclose);
-  }
-
-  var didOnEnd = false;
-  function onend() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    dest.end();
-  }
-
-
-  function onclose() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    if (typeof dest.destroy === 'function') dest.destroy();
-  }
-
-  // don't leave dangling pipes when there are errors.
-  function onerror(er) {
-    cleanup();
-    if (EE.listenerCount(this, 'error') === 0) {
-      throw er; // Unhandled stream error in pipe.
-    }
-  }
-
-  source.on('error', onerror);
-  dest.on('error', onerror);
-
-  // remove all the event listeners that were added.
-  function cleanup() {
-    source.removeListener('data', ondata);
-    dest.removeListener('drain', ondrain);
-
-    source.removeListener('end', onend);
-    source.removeListener('close', onclose);
-
-    source.removeListener('error', onerror);
-    dest.removeListener('error', onerror);
-
-    source.removeListener('end', cleanup);
-    source.removeListener('close', cleanup);
-
-    dest.removeListener('close', cleanup);
-  }
-
-  source.on('end', cleanup);
-  source.on('close', cleanup);
-
-  dest.on('close', cleanup);
-
-  dest.emit('pipe', source);
-
-  // Allow for unix-like usage: A.pipe(B).pipe(C)
-  return dest;
+var map = {
+	"./Python3Lexer.js": 36,
+	"./Python3Parser.js": 21,
+	"./runtime_config_modifier.js": 20
 };
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 18;
 
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-let antlr = __webpack_require__(20);
-
-function ErrorListener(callback) {
-    antlr.error.ErrorListener.call(this);
-    this.callback = callback;
-    return this;
-}
-
-ErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
-ErrorListener.prototype.constructor = ErrorListener;
-
-ErrorListener.prototype.syntaxError = function(recognizer, offendingSymbol, line, column, msg, e) {
-    this.callback('syntaxError', recognizer, offendingSymbol, line, column, msg, e);
-};
-
-ErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
-    // This really shouldn't happen...
-};
-
-ErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
-};
-
-ErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
-};
-
-module.exports = ErrorListener;
-
-
-/***/ }),
-/* 29 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -7455,7 +4737,7 @@ module.exports = ErrorListener;
 //  group values such as this aggregate.  The getters/setters are there to
 //  satisfy the superclass interface.
 
-var RuleContext = __webpack_require__(22).RuleContext;
+var RuleContext = __webpack_require__(14).RuleContext;
 var Tree = __webpack_require__(3);
 var INVALID_INTERVAL = Tree.INVALID_INTERVAL;
 var TerminalNode = Tree.TerminalNode;
@@ -7648,1179 +4930,8476 @@ InterpreterRuleContext.prototype.constructor = InterpreterRuleContext;
 exports.ParserRuleContext = ParserRuleContext;
 
 /***/ }),
-/* 30 */
+/* 20 */
 /***/ (function(module, exports) {
 
-module.exports = {
-    'language': 'TreeMatcher',
-    'entry_rule': 'main',
-    'rules': {
-        'main': {},
-        'node': {},
-        'mod_type': {},
-        'mod_terminal': {},
-        'mod_store': {},
-        'mod_eq': {},
-        'mod_child': {},
-        'mod_children': {},
-        'child': {},
-        'node_search': {},
-        '.WS': {},
-        '.IDENTIFIER': {},
-        '.JSON_STRING': {},
-    }
-};
-
+module.exports = function(lang_runtime_config) {lang_runtime_config.rules.for_stmt.finalizers.push(function(node) {return node;});};
 
 /***/ }),
-/* 31 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
+// Generated from Python3.g4 by ANTLR 4.6
+// jshint ignore: start
+var antlr4 = __webpack_require__(12);
+var grammarFileName = "Python3.g4";
 
-var buffer = __webpack_require__(11);
-var Buffer = buffer.Buffer;
-var SlowBuffer = buffer.SlowBuffer;
-var MAX_LEN = buffer.kMaxLength || 2147483647;
-exports.alloc = function alloc(size, fill, encoding) {
-  if (typeof Buffer.alloc === 'function') {
-    return Buffer.alloc(size, fill, encoding);
-  }
-  if (typeof encoding === 'number') {
-    throw new TypeError('encoding must not be number');
-  }
-  if (typeof size !== 'number') {
-    throw new TypeError('size must be a number');
-  }
-  if (size > MAX_LEN) {
-    throw new RangeError('size is too large');
-  }
-  var enc = encoding;
-  var _fill = fill;
-  if (_fill === undefined) {
-    enc = undefined;
-    _fill = 0;
-  }
-  var buf = new Buffer(size);
-  if (typeof _fill === 'string') {
-    var fillBuf = new Buffer(_fill, enc);
-    var flen = fillBuf.length;
-    var i = -1;
-    while (++i < size) {
-      buf[i] = fillBuf[i % flen];
-    }
-  } else {
-    buf.fill(_fill);
-  }
-  return buf;
-}
-exports.allocUnsafe = function allocUnsafe(size) {
-  if (typeof Buffer.allocUnsafe === 'function') {
-    return Buffer.allocUnsafe(size);
-  }
-  if (typeof size !== 'number') {
-    throw new TypeError('size must be a number');
-  }
-  if (size > MAX_LEN) {
-    throw new RangeError('size is too large');
-  }
-  return new Buffer(size);
-}
-exports.from = function from(value, encodingOrOffset, length) {
-  if (typeof Buffer.from === 'function' && (!global.Uint8Array || Uint8Array.from !== Buffer.from)) {
-    return Buffer.from(value, encodingOrOffset, length);
-  }
-  if (typeof value === 'number') {
-    throw new TypeError('"value" argument must not be a number');
-  }
-  if (typeof value === 'string') {
-    return new Buffer(value, encodingOrOffset);
-  }
-  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
-    var offset = encodingOrOffset;
-    if (arguments.length === 1) {
-      return new Buffer(value);
-    }
-    if (typeof offset === 'undefined') {
-      offset = 0;
-    }
-    var len = length;
-    if (typeof len === 'undefined') {
-      len = value.byteLength - offset;
-    }
-    if (offset >= value.byteLength) {
-      throw new RangeError('\'offset\' is out of bounds');
-    }
-    if (len > value.byteLength - offset) {
-      throw new RangeError('\'length\' is out of bounds');
-    }
-    return new Buffer(value.slice(offset, offset + len));
-  }
-  if (Buffer.isBuffer(value)) {
-    var out = new Buffer(value.length);
-    value.copy(out, 0, 0, value.length);
-    return out;
-  }
-  if (value) {
-    if (Array.isArray(value) || (typeof ArrayBuffer !== 'undefined' && value.buffer instanceof ArrayBuffer) || 'length' in value) {
-      return new Buffer(value);
-    }
-    if (value.type === 'Buffer' && Array.isArray(value.data)) {
-      return new Buffer(value.data);
-    }
-  }
+var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
+    "\u0003`\u0425\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
+    "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
+    "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
+    "\u0011\t\u0011\u0004\u0012\t\u0012\u0004\u0013\t\u0013\u0004\u0014\t",
+    "\u0014\u0004\u0015\t\u0015\u0004\u0016\t\u0016\u0004\u0017\t\u0017\u0004",
+    "\u0018\t\u0018\u0004\u0019\t\u0019\u0004\u001a\t\u001a\u0004\u001b\t",
+    "\u001b\u0004\u001c\t\u001c\u0004\u001d\t\u001d\u0004\u001e\t\u001e\u0004",
+    "\u001f\t\u001f\u0004 \t \u0004!\t!\u0004\"\t\"\u0004#\t#\u0004$\t$\u0004",
+    "%\t%\u0004&\t&\u0004\'\t\'\u0004(\t(\u0004)\t)\u0004*\t*\u0004+\t+\u0004",
+    ",\t,\u0004-\t-\u0004.\t.\u0004/\t/\u00040\t0\u00041\t1\u00042\t2\u0004",
+    "3\t3\u00044\t4\u00045\t5\u00046\t6\u00047\t7\u00048\t8\u00049\t9\u0004",
+    ":\t:\u0004;\t;\u0004<\t<\u0004=\t=\u0004>\t>\u0004?\t?\u0004@\t@\u0004",
+    "A\tA\u0004B\tB\u0004C\tC\u0004D\tD\u0004E\tE\u0004F\tF\u0004G\tG\u0004",
+    "H\tH\u0004I\tI\u0004J\tJ\u0004K\tK\u0004L\tL\u0004M\tM\u0004N\tN\u0004",
+    "O\tO\u0004P\tP\u0004Q\tQ\u0004R\tR\u0004S\tS\u0004T\tT\u0004U\tU\u0004",
+    "V\tV\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0005",
+    "\u0002\u00b2\n\u0002\u0003\u0003\u0003\u0003\u0007\u0003\u00b6\n\u0003",
+    "\f\u0003\u000e\u0003\u00b9\u000b\u0003\u0003\u0003\u0003\u0003\u0003",
+    "\u0004\u0003\u0004\u0007\u0004\u00bf\n\u0004\f\u0004\u000e\u0004\u00c2",
+    "\u000b\u0004\u0003\u0004\u0003\u0004\u0003\u0005\u0003\u0005\u0003\u0005",
+    "\u0003\u0005\u0005\u0005\u00ca\n\u0005\u0003\u0005\u0005\u0005\u00cd",
+    "\n\u0005\u0003\u0005\u0003\u0005\u0003\u0006\u0006\u0006\u00d2\n\u0006",
+    "\r\u0006\u000e\u0006\u00d3\u0003\u0007\u0003\u0007\u0003\u0007\u0005",
+    "\u0007\u00d9\n\u0007\u0003\b\u0003\b\u0003\b\u0003\b\u0003\b\u0005\b",
+    "\u00e0\n\b\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0005\t\u00e7\n\t",
+    "\u0003\t\u0003\t\u0003\n\u0003\n\u0003\n\u0005\n\u00ee\n\n\u0003\n\u0003",
+    "\n\u0003\n\u0003\n\u0005\n\u00f4\n\n\u0007\n\u00f6\n\n\f\n\u000e\n\u00f9",
+    "\u000b\n\u0003\n\u0003\n\u0003\n\u0005\n\u00fe\n\n\u0003\n\u0003\n\u0003",
+    "\n\u0003\n\u0005\n\u0104\n\n\u0007\n\u0106\n\n\f\n\u000e\n\u0109\u000b",
+    "\n\u0003\n\u0003\n\u0003\n\u0005\n\u010e\n\n\u0003\n\u0003\n\u0005\n",
+    "\u0112\n\n\u0005\n\u0114\n\n\u0003\n\u0003\n\u0005\n\u0118\n\n\u0003",
+    "\n\u0003\n\u0003\n\u0003\n\u0005\n\u011e\n\n\u0007\n\u0120\n\n\f\n\u000e",
+    "\n\u0123\u000b\n\u0003\n\u0003\n\u0003\n\u0005\n\u0128\n\n\u0003\n\u0003",
+    "\n\u0005\n\u012c\n\n\u0003\u000b\u0003\u000b\u0003\u000b\u0005\u000b",
+    "\u0131\n\u000b\u0003\f\u0003\f\u0003\f\u0005\f\u0136\n\f\u0003\f\u0003",
+    "\f\u0003\f\u0003\f\u0005\f\u013c\n\f\u0007\f\u013e\n\f\f\f\u000e\f\u0141",
+    "\u000b\f\u0003\f\u0003\f\u0003\f\u0005\f\u0146\n\f\u0003\f\u0003\f\u0003",
+    "\f\u0003\f\u0005\f\u014c\n\f\u0007\f\u014e\n\f\f\f\u000e\f\u0151\u000b",
+    "\f\u0003\f\u0003\f\u0003\f\u0005\f\u0156\n\f\u0003\f\u0003\f\u0005\f",
+    "\u015a\n\f\u0005\f\u015c\n\f\u0003\f\u0003\f\u0005\f\u0160\n\f\u0003",
+    "\f\u0003\f\u0003\f\u0003\f\u0005\f\u0166\n\f\u0007\f\u0168\n\f\f\f\u000e",
+    "\f\u016b\u000b\f\u0003\f\u0003\f\u0003\f\u0005\f\u0170\n\f\u0003\f\u0003",
+    "\f\u0005\f\u0174\n\f\u0003\r\u0003\r\u0003\u000e\u0003\u000e\u0005\u000e",
+    "\u017a\n\u000e\u0003\u000f\u0003\u000f\u0003\u000f\u0007\u000f\u017f",
+    "\n\u000f\f\u000f\u000e\u000f\u0182\u000b\u000f\u0003\u000f\u0005\u000f",
+    "\u0185\n\u000f\u0003\u000f\u0003\u000f\u0003\u0010\u0003\u0010\u0003",
+    "\u0010\u0003\u0010\u0003\u0010\u0003\u0010\u0003\u0010\u0003\u0010\u0005",
+    "\u0010\u0191\n\u0010\u0003\u0011\u0003\u0011\u0003\u0011\u0003\u0011",
+    "\u0005\u0011\u0197\n\u0011\u0003\u0011\u0003\u0011\u0003\u0011\u0005",
+    "\u0011\u019c\n\u0011\u0007\u0011\u019e\n\u0011\f\u0011\u000e\u0011\u01a1",
+    "\u000b\u0011\u0005\u0011\u01a3\n\u0011\u0003\u0012\u0003\u0012\u0005",
+    "\u0012\u01a7\n\u0012\u0003\u0012\u0003\u0012\u0003\u0012\u0005\u0012",
+    "\u01ac\n\u0012\u0007\u0012\u01ae\n\u0012\f\u0012\u000e\u0012\u01b1\u000b",
+    "\u0012\u0003\u0012\u0005\u0012\u01b4\n\u0012\u0003\u0013\u0003\u0013",
+    "\u0003\u0014\u0003\u0014\u0003\u0014\u0003\u0015\u0003\u0015\u0003\u0016",
+    "\u0003\u0016\u0003\u0016\u0003\u0016\u0003\u0016\u0005\u0016\u01c2\n",
+    "\u0016\u0003\u0017\u0003\u0017\u0003\u0018\u0003\u0018\u0003\u0019\u0003",
+    "\u0019\u0005\u0019\u01ca\n\u0019\u0003\u001a\u0003\u001a\u0003\u001b",
+    "\u0003\u001b\u0003\u001b\u0003\u001b\u0005\u001b\u01d2\n\u001b\u0005",
+    "\u001b\u01d4\n\u001b\u0003\u001c\u0003\u001c\u0005\u001c\u01d8\n\u001c",
+    "\u0003\u001d\u0003\u001d\u0003\u001d\u0003\u001e\u0003\u001e\u0007\u001e",
+    "\u01df\n\u001e\f\u001e\u000e\u001e\u01e2\u000b\u001e\u0003\u001e\u0003",
+    "\u001e\u0006\u001e\u01e6\n\u001e\r\u001e\u000e\u001e\u01e7\u0005\u001e",
+    "\u01ea\n\u001e\u0003\u001e\u0003\u001e\u0003\u001e\u0003\u001e\u0003",
+    "\u001e\u0003\u001e\u0003\u001e\u0005\u001e\u01f3\n\u001e\u0003\u001f",
+    "\u0003\u001f\u0003\u001f\u0005\u001f\u01f8\n\u001f\u0003 \u0003 \u0003",
+    " \u0005 \u01fd\n \u0003!\u0003!\u0003!\u0007!\u0202\n!\f!\u000e!\u0205",
+    "\u000b!\u0003!\u0005!\u0208\n!\u0003\"\u0003\"\u0003\"\u0007\"\u020d",
+    "\n\"\f\"\u000e\"\u0210\u000b\"\u0003#\u0003#\u0003#\u0007#\u0215\n#",
+    "\f#\u000e#\u0218\u000b#\u0003$\u0003$\u0003$\u0003$\u0007$\u021e\n$",
+    "\f$\u000e$\u0221\u000b$\u0003%\u0003%\u0003%\u0003%\u0007%\u0227\n%",
+    "\f%\u000e%\u022a\u000b%\u0003&\u0003&\u0003&\u0003&\u0005&\u0230\n&",
+    "\u0003\'\u0003\'\u0003\'\u0003\'\u0003\'\u0003\'\u0003\'\u0003\'\u0005",
+    "\'\u023a\n\'\u0003(\u0003(\u0003(\u0003(\u0003(\u0003(\u0003(\u0003",
+    "(\u0003(\u0007(\u0245\n(\f(\u000e(\u0248\u000b(\u0003(\u0003(\u0003",
+    "(\u0005(\u024d\n(\u0003)\u0003)\u0003)\u0003)\u0003)\u0003)\u0003)\u0005",
+    ")\u0256\n)\u0003*\u0003*\u0003*\u0003*\u0003*\u0003*\u0003*\u0003*\u0003",
+    "*\u0005*\u0261\n*\u0003+\u0003+\u0003+\u0003+\u0003+\u0003+\u0003+\u0006",
+    "+\u026a\n+\r+\u000e+\u026b\u0003+\u0003+\u0003+\u0005+\u0271\n+\u0003",
+    "+\u0003+\u0003+\u0005+\u0276\n+\u0003+\u0003+\u0003+\u0005+\u027b\n",
+    "+\u0003,\u0003,\u0003,\u0003,\u0007,\u0281\n,\f,\u000e,\u0284\u000b",
+    ",\u0003,\u0003,\u0003,\u0003-\u0003-\u0003-\u0005-\u028c\n-\u0003.\u0003",
+    ".\u0003.\u0003.\u0005.\u0292\n.\u0005.\u0294\n.\u0003/\u0003/\u0003",
+    "/\u0003/\u0006/\u029a\n/\r/\u000e/\u029b\u0003/\u0003/\u0005/\u02a0",
+    "\n/\u00030\u00030\u00030\u00030\u00030\u00030\u00050\u02a8\n0\u0003",
+    "0\u00050\u02ab\n0\u00031\u00031\u00051\u02af\n1\u00032\u00032\u0005",
+    "2\u02b3\n2\u00032\u00032\u00032\u00033\u00033\u00053\u02ba\n3\u0003",
+    "3\u00033\u00033\u00034\u00034\u00034\u00074\u02c2\n4\f4\u000e4\u02c5",
+    "\u000b4\u00035\u00035\u00035\u00075\u02ca\n5\f5\u000e5\u02cd\u000b5",
+    "\u00036\u00036\u00036\u00056\u02d2\n6\u00037\u00037\u00037\u00037\u0007",
+    "7\u02d8\n7\f7\u000e7\u02db\u000b7\u00038\u00038\u00038\u00038\u0003",
+    "8\u00038\u00038\u00038\u00038\u00038\u00038\u00038\u00038\u00058\u02ea",
+    "\n8\u00039\u00059\u02ed\n9\u00039\u00039\u0003:\u0003:\u0003:\u0007",
+    ":\u02f4\n:\f:\u000e:\u02f7\u000b:\u0003;\u0003;\u0003;\u0007;\u02fc",
+    "\n;\f;\u000e;\u02ff\u000b;\u0003<\u0003<\u0003<\u0007<\u0304\n<\f<\u000e",
+    "<\u0307\u000b<\u0003=\u0003=\u0003=\u0003=\u0003=\u0007=\u030e\n=\f",
+    "=\u000e=\u0311\u000b=\u0003>\u0003>\u0003>\u0003>\u0003>\u0007>\u0318",
+    "\n>\f>\u000e>\u031b\u000b>\u0003?\u0003?\u0003?\u0003?\u0003?\u0003",
+    "?\u0003?\u0003?\u0003?\u0003?\u0003?\u0007?\u0328\n?\f?\u000e?\u032b",
+    "\u000b?\u0003@\u0003@\u0003@\u0003@\u0003@\u0003@\u0003@\u0005@\u0334",
+    "\n@\u0003A\u0003A\u0003A\u0005A\u0339\nA\u0003B\u0003B\u0007B\u033d",
+    "\nB\fB\u000eB\u0340\u000bB\u0003C\u0003C\u0003C\u0005C\u0345\nC\u0003",
+    "C\u0003C\u0003C\u0005C\u034a\nC\u0003C\u0003C\u0003C\u0005C\u034f\n",
+    "C\u0003C\u0003C\u0003C\u0003C\u0006C\u0355\nC\rC\u000eC\u0356\u0003",
+    "C\u0003C\u0003C\u0003C\u0005C\u035d\nC\u0003D\u0003D\u0003D\u0003D\u0007",
+    "D\u0363\nD\fD\u000eD\u0366\u000bD\u0003D\u0005D\u0369\nD\u0005D\u036b",
+    "\nD\u0003E\u0003E\u0005E\u036f\nE\u0003E\u0003E\u0003E\u0003E\u0003",
+    "E\u0003E\u0003E\u0005E\u0378\nE\u0003F\u0003F\u0003F\u0007F\u037d\n",
+    "F\fF\u000eF\u0380\u000bF\u0003F\u0005F\u0383\nF\u0003G\u0003G\u0005",
+    "G\u0387\nG\u0003G\u0003G\u0005G\u038b\nG\u0003G\u0005G\u038e\nG\u0005",
+    "G\u0390\nG\u0003H\u0003H\u0005H\u0394\nH\u0003I\u0003I\u0003I\u0007",
+    "I\u0399\nI\fI\u000eI\u039c\u000bI\u0003I\u0005I\u039f\nI\u0003J\u0003",
+    "J\u0003J\u0007J\u03a4\nJ\fJ\u000eJ\u03a7\u000bJ\u0003J\u0005J\u03aa",
+    "\nJ\u0003K\u0003K\u0003K\u0003K\u0003K\u0003K\u0003K\u0003K\u0003K\u0007",
+    "K\u03b5\nK\fK\u000eK\u03b8\u000bK\u0003K\u0005K\u03bb\nK\u0005K\u03bd",
+    "\nK\u0003K\u0003K\u0003K\u0003K\u0007K\u03c3\nK\fK\u000eK\u03c6\u000b",
+    "K\u0003K\u0005K\u03c9\nK\u0005K\u03cb\nK\u0005K\u03cd\nK\u0003L\u0003",
+    "L\u0003L\u0003L\u0005L\u03d3\nL\u0003L\u0005L\u03d6\nL\u0003L\u0003",
+    "L\u0003L\u0003M\u0003M\u0003M\u0007M\u03de\nM\fM\u000eM\u03e1\u000b",
+    "M\u0003M\u0003M\u0005M\u03e5\nM\u0003M\u0003M\u0003M\u0003M\u0007M\u03eb",
+    "\nM\fM\u000eM\u03ee\u000bM\u0003M\u0003M\u0003M\u0005M\u03f3\nM\u0003",
+    "M\u0003M\u0005M\u03f7\nM\u0003N\u0003N\u0005N\u03fb\nN\u0003N\u0003",
+    "N\u0003N\u0003N\u0005N\u0401\nN\u0003O\u0003O\u0005O\u0405\nO\u0003",
+    "P\u0003P\u0003P\u0003P\u0003P\u0005P\u040c\nP\u0003Q\u0003Q\u0003Q\u0005",
+    "Q\u0411\nQ\u0003R\u0003R\u0005R\u0415\nR\u0003S\u0003S\u0003S\u0005",
+    "S\u041a\nS\u0003T\u0003T\u0003U\u0003U\u0003U\u0005U\u0421\nU\u0003",
+    "V\u0003V\u0003V\u0002\u0002W\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012",
+    "\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.02468:<>@BDFHJLNPRTVXZ",
+    "\\^`bdfhjlnprtvxz|~\u0080\u0082\u0084\u0086\u0088\u008a\u008c\u008e",
+    "\u0090\u0092\u0094\u0096\u0098\u009a\u009c\u009e\u00a0\u00a2\u00a4\u00a6",
+    "\u00a8\u00aa\u0002\u0006\u0003\u0002P\\\u0003\u0002./\u0003\u0002&\'",
+    "\u0003\u0002(+\u0494\u0002\u00b1\u0003\u0002\u0002\u0002\u0004\u00b7",
+    "\u0003\u0002\u0002\u0002\u0006\u00bc\u0003\u0002\u0002\u0002\b\u00c5",
+    "\u0003\u0002\u0002\u0002\n\u00d1\u0003\u0002\u0002\u0002\f\u00d5\u0003",
+    "\u0002\u0002\u0002\u000e\u00da\u0003\u0002\u0002\u0002\u0010\u00e4\u0003",
+    "\u0002\u0002\u0002\u0012\u012b\u0003\u0002\u0002\u0002\u0014\u012d\u0003",
+    "\u0002\u0002\u0002\u0016\u0173\u0003\u0002\u0002\u0002\u0018\u0175\u0003",
+    "\u0002\u0002\u0002\u001a\u0179\u0003\u0002\u0002\u0002\u001c\u017b\u0003",
+    "\u0002\u0002\u0002\u001e\u0190\u0003\u0002\u0002\u0002 \u0192\u0003",
+    "\u0002\u0002\u0002\"\u01a6\u0003\u0002\u0002\u0002$\u01b5\u0003\u0002",
+    "\u0002\u0002&\u01b7\u0003\u0002\u0002\u0002(\u01ba\u0003\u0002\u0002",
+    "\u0002*\u01c1\u0003\u0002\u0002\u0002,\u01c3\u0003\u0002\u0002\u0002",
+    ".\u01c5\u0003\u0002\u0002\u00020\u01c7\u0003\u0002\u0002\u00022\u01cb",
+    "\u0003\u0002\u0002\u00024\u01cd\u0003\u0002\u0002\u00026\u01d7\u0003",
+    "\u0002\u0002\u00028\u01d9\u0003\u0002\u0002\u0002:\u01dc\u0003\u0002",
+    "\u0002\u0002<\u01f4\u0003\u0002\u0002\u0002>\u01f9\u0003\u0002\u0002",
+    "\u0002@\u01fe\u0003\u0002\u0002\u0002B\u0209\u0003\u0002\u0002\u0002",
+    "D\u0211\u0003\u0002\u0002\u0002F\u0219\u0003\u0002\u0002\u0002H\u0222",
+    "\u0003\u0002\u0002\u0002J\u022b\u0003\u0002\u0002\u0002L\u0239\u0003",
+    "\u0002\u0002\u0002N\u023b\u0003\u0002\u0002\u0002P\u024e\u0003\u0002",
+    "\u0002\u0002R\u0257\u0003\u0002\u0002\u0002T\u0262\u0003\u0002\u0002",
+    "\u0002V\u027c\u0003\u0002\u0002\u0002X\u0288\u0003\u0002\u0002\u0002",
+    "Z\u028d\u0003\u0002\u0002\u0002\\\u029f\u0003\u0002\u0002\u0002^\u02aa",
+    "\u0003\u0002\u0002\u0002`\u02ae\u0003\u0002\u0002\u0002b\u02b0\u0003",
+    "\u0002\u0002\u0002d\u02b7\u0003\u0002\u0002\u0002f\u02be\u0003\u0002",
+    "\u0002\u0002h\u02c6\u0003\u0002\u0002\u0002j\u02d1\u0003\u0002\u0002",
+    "\u0002l\u02d3\u0003\u0002\u0002\u0002n\u02e9\u0003\u0002\u0002\u0002",
+    "p\u02ec\u0003\u0002\u0002\u0002r\u02f0\u0003\u0002\u0002\u0002t\u02f8",
+    "\u0003\u0002\u0002\u0002v\u0300\u0003\u0002\u0002\u0002x\u0308\u0003",
+    "\u0002\u0002\u0002z\u0312\u0003\u0002\u0002\u0002|\u031c\u0003\u0002",
+    "\u0002\u0002~\u0333\u0003\u0002\u0002\u0002\u0080\u0335\u0003\u0002",
+    "\u0002\u0002\u0082\u033a\u0003\u0002\u0002\u0002\u0084\u035c\u0003\u0002",
+    "\u0002\u0002\u0086\u035e\u0003\u0002\u0002\u0002\u0088\u0377\u0003\u0002",
+    "\u0002\u0002\u008a\u0379\u0003\u0002\u0002\u0002\u008c\u038f\u0003\u0002",
+    "\u0002\u0002\u008e\u0391\u0003\u0002\u0002\u0002\u0090\u0395\u0003\u0002",
+    "\u0002\u0002\u0092\u03a0\u0003\u0002\u0002\u0002\u0094\u03cc\u0003\u0002",
+    "\u0002\u0002\u0096\u03ce\u0003\u0002\u0002\u0002\u0098\u03df\u0003\u0002",
+    "\u0002\u0002\u009a\u0400\u0003\u0002\u0002\u0002\u009c\u0404\u0003\u0002",
+    "\u0002\u0002\u009e\u0406\u0003\u0002\u0002\u0002\u00a0\u040d\u0003\u0002",
+    "\u0002\u0002\u00a2\u0412\u0003\u0002\u0002\u0002\u00a4\u0419\u0003\u0002",
+    "\u0002\u0002\u00a6\u041b\u0003\u0002\u0002\u0002\u00a8\u0420\u0003\u0002",
+    "\u0002\u0002\u00aa\u0422\u0003\u0002\u0002\u0002\u00ac\u00b2\u0007$",
+    "\u0002\u0002\u00ad\u00b2\u0005\u001c\u000f\u0002\u00ae\u00af\u0005L",
+    "\'\u0002\u00af\u00b0\u0007$\u0002\u0002\u00b0\u00b2\u0003\u0002\u0002",
+    "\u0002\u00b1\u00ac\u0003\u0002\u0002\u0002\u00b1\u00ad\u0003\u0002\u0002",
+    "\u0002\u00b1\u00ae\u0003\u0002\u0002\u0002\u00b2\u0003\u0003\u0002\u0002",
+    "\u0002\u00b3\u00b6\u0007$\u0002\u0002\u00b4\u00b6\u0005\u001a\u000e",
+    "\u0002\u00b5\u00b3\u0003\u0002\u0002\u0002\u00b5\u00b4\u0003\u0002\u0002",
+    "\u0002\u00b6\u00b9\u0003\u0002\u0002\u0002\u00b7\u00b5\u0003\u0002\u0002",
+    "\u0002\u00b7\u00b8\u0003\u0002\u0002\u0002\u00b8\u00ba\u0003\u0002\u0002",
+    "\u0002\u00b9\u00b7\u0003\u0002\u0002\u0002\u00ba\u00bb\u0007\u0002\u0002",
+    "\u0003\u00bb\u0005\u0003\u0002\u0002\u0002\u00bc\u00c0\u0005\u0092J",
+    "\u0002\u00bd\u00bf\u0007$\u0002\u0002\u00be\u00bd\u0003\u0002\u0002",
+    "\u0002\u00bf\u00c2\u0003\u0002\u0002\u0002\u00c0\u00be\u0003\u0002\u0002",
+    "\u0002\u00c0\u00c1\u0003\u0002\u0002\u0002\u00c1\u00c3\u0003\u0002\u0002",
+    "\u0002\u00c2\u00c0\u0003\u0002\u0002\u0002\u00c3\u00c4\u0007\u0002\u0002",
+    "\u0003\u00c4\u0007\u0003\u0002\u0002\u0002\u00c5\u00c6\u0007N\u0002",
+    "\u0002\u00c6\u00cc\u0005D#\u0002\u00c7\u00c9\u00071\u0002\u0002\u00c8",
+    "\u00ca\u0005\u0098M\u0002\u00c9\u00c8\u0003\u0002\u0002\u0002\u00c9",
+    "\u00ca\u0003\u0002\u0002\u0002\u00ca\u00cb\u0003\u0002\u0002\u0002\u00cb",
+    "\u00cd\u00072\u0002\u0002\u00cc\u00c7\u0003\u0002\u0002\u0002\u00cc",
+    "\u00cd\u0003\u0002\u0002\u0002\u00cd\u00ce\u0003\u0002\u0002\u0002\u00ce",
+    "\u00cf\u0007$\u0002\u0002\u00cf\t\u0003\u0002\u0002\u0002\u00d0\u00d2",
+    "\u0005\b\u0005\u0002\u00d1\u00d0\u0003\u0002\u0002\u0002\u00d2\u00d3",
+    "\u0003\u0002\u0002\u0002\u00d3\u00d1\u0003\u0002\u0002\u0002\u00d3\u00d4",
+    "\u0003\u0002\u0002\u0002\u00d4\u000b\u0003\u0002\u0002\u0002\u00d5\u00d8",
+    "\u0005\n\u0006\u0002\u00d6\u00d9\u0005\u0096L\u0002\u00d7\u00d9\u0005",
+    "\u000e\b\u0002\u00d8\u00d6\u0003\u0002\u0002\u0002\u00d8\u00d7\u0003",
+    "\u0002\u0002\u0002\u00d9\r\u0003\u0002\u0002\u0002\u00da\u00db\u0007",
+    "\u0003\u0002\u0002\u00db\u00dc\u0007%\u0002\u0002\u00dc\u00df\u0005",
+    "\u0010\t\u0002\u00dd\u00de\u0007O\u0002\u0002\u00de\u00e0\u0005^0\u0002",
+    "\u00df\u00dd\u0003\u0002\u0002\u0002\u00df\u00e0\u0003\u0002\u0002\u0002",
+    "\u00e0\u00e1\u0003\u0002\u0002\u0002\u00e1\u00e2\u00074\u0002\u0002",
+    "\u00e2\u00e3\u0005\\/\u0002\u00e3\u000f\u0003\u0002\u0002\u0002\u00e4",
+    "\u00e6\u00071\u0002\u0002\u00e5\u00e7\u0005\u0012\n\u0002\u00e6\u00e5",
+    "\u0003\u0002\u0002\u0002\u00e6\u00e7\u0003\u0002\u0002\u0002\u00e7\u00e8",
+    "\u0003\u0002\u0002\u0002\u00e8\u00e9\u00072\u0002\u0002\u00e9\u0011",
+    "\u0003\u0002\u0002\u0002\u00ea\u00ed\u0005\u0014\u000b\u0002\u00eb\u00ec",
+    "\u00077\u0002\u0002\u00ec\u00ee\u0005^0\u0002\u00ed\u00eb\u0003\u0002",
+    "\u0002\u0002\u00ed\u00ee\u0003\u0002\u0002\u0002\u00ee\u00f7\u0003\u0002",
+    "\u0002\u0002\u00ef\u00f0\u00073\u0002\u0002\u00f0\u00f3\u0005\u0014",
+    "\u000b\u0002\u00f1\u00f2\u00077\u0002\u0002\u00f2\u00f4\u0005^0\u0002",
+    "\u00f3\u00f1\u0003\u0002\u0002\u0002\u00f3\u00f4\u0003\u0002\u0002\u0002",
+    "\u00f4\u00f6\u0003\u0002\u0002\u0002\u00f5\u00ef\u0003\u0002\u0002\u0002",
+    "\u00f6\u00f9\u0003\u0002\u0002\u0002\u00f7\u00f5\u0003\u0002\u0002\u0002",
+    "\u00f7\u00f8\u0003\u0002\u0002\u0002\u00f8\u0113\u0003\u0002\u0002\u0002",
+    "\u00f9\u00f7\u0003\u0002\u0002\u0002\u00fa\u0111\u00073\u0002\u0002",
+    "\u00fb\u00fd\u00070\u0002\u0002\u00fc\u00fe\u0005\u0014\u000b\u0002",
+    "\u00fd\u00fc\u0003\u0002\u0002\u0002\u00fd\u00fe\u0003\u0002\u0002\u0002",
+    "\u00fe\u0107\u0003\u0002\u0002\u0002\u00ff\u0100\u00073\u0002\u0002",
+    "\u0100\u0103\u0005\u0014\u000b\u0002\u0101\u0102\u00077\u0002\u0002",
+    "\u0102\u0104\u0005^0\u0002\u0103\u0101\u0003\u0002\u0002\u0002\u0103",
+    "\u0104\u0003\u0002\u0002\u0002\u0104\u0106\u0003\u0002\u0002\u0002\u0105",
+    "\u00ff\u0003\u0002\u0002\u0002\u0106\u0109\u0003\u0002\u0002\u0002\u0107",
+    "\u0105\u0003\u0002\u0002\u0002\u0107\u0108\u0003\u0002\u0002\u0002\u0108",
+    "\u010d\u0003\u0002\u0002\u0002\u0109\u0107\u0003\u0002\u0002\u0002\u010a",
+    "\u010b\u00073\u0002\u0002\u010b\u010c\u00076\u0002\u0002\u010c\u010e",
+    "\u0005\u0014\u000b\u0002\u010d\u010a\u0003\u0002\u0002\u0002\u010d\u010e",
+    "\u0003\u0002\u0002\u0002\u010e\u0112\u0003\u0002\u0002\u0002\u010f\u0110",
+    "\u00076\u0002\u0002\u0110\u0112\u0005\u0014\u000b\u0002\u0111\u00fb",
+    "\u0003\u0002\u0002\u0002\u0111\u010f\u0003\u0002\u0002\u0002\u0111\u0112",
+    "\u0003\u0002\u0002\u0002\u0112\u0114\u0003\u0002\u0002\u0002\u0113\u00fa",
+    "\u0003\u0002\u0002\u0002\u0113\u0114\u0003\u0002\u0002\u0002\u0114\u012c",
+    "\u0003\u0002\u0002\u0002\u0115\u0117\u00070\u0002\u0002\u0116\u0118",
+    "\u0005\u0014\u000b\u0002\u0117\u0116\u0003\u0002\u0002\u0002\u0117\u0118",
+    "\u0003\u0002\u0002\u0002\u0118\u0121\u0003\u0002\u0002\u0002\u0119\u011a",
+    "\u00073\u0002\u0002\u011a\u011d\u0005\u0014\u000b\u0002\u011b\u011c",
+    "\u00077\u0002\u0002\u011c\u011e\u0005^0\u0002\u011d\u011b\u0003\u0002",
+    "\u0002\u0002\u011d\u011e\u0003\u0002\u0002\u0002\u011e\u0120\u0003\u0002",
+    "\u0002\u0002\u011f\u0119\u0003\u0002\u0002\u0002\u0120\u0123\u0003\u0002",
+    "\u0002\u0002\u0121\u011f\u0003\u0002\u0002\u0002\u0121\u0122\u0003\u0002",
+    "\u0002\u0002\u0122\u0127\u0003\u0002\u0002\u0002\u0123\u0121\u0003\u0002",
+    "\u0002\u0002\u0124\u0125\u00073\u0002\u0002\u0125\u0126\u00076\u0002",
+    "\u0002\u0126\u0128\u0005\u0014\u000b\u0002\u0127\u0124\u0003\u0002\u0002",
+    "\u0002\u0127\u0128\u0003\u0002\u0002\u0002\u0128\u012c\u0003\u0002\u0002",
+    "\u0002\u0129\u012a\u00076\u0002\u0002\u012a\u012c\u0005\u0014\u000b",
+    "\u0002\u012b\u00ea\u0003\u0002\u0002\u0002\u012b\u0115\u0003\u0002\u0002",
+    "\u0002\u012b\u0129\u0003\u0002\u0002\u0002\u012c\u0013\u0003\u0002\u0002",
+    "\u0002\u012d\u0130\u0007%\u0002\u0002\u012e\u012f\u00074\u0002\u0002",
+    "\u012f\u0131\u0005^0\u0002\u0130\u012e\u0003\u0002\u0002\u0002\u0130",
+    "\u0131\u0003\u0002\u0002\u0002\u0131\u0015\u0003\u0002\u0002\u0002\u0132",
+    "\u0135\u0005\u0018\r\u0002\u0133\u0134\u00077\u0002\u0002\u0134\u0136",
+    "\u0005^0\u0002\u0135\u0133\u0003\u0002\u0002\u0002\u0135\u0136\u0003",
+    "\u0002\u0002\u0002\u0136\u013f\u0003\u0002\u0002\u0002\u0137\u0138\u0007",
+    "3\u0002\u0002\u0138\u013b\u0005\u0018\r\u0002\u0139\u013a\u00077\u0002",
+    "\u0002\u013a\u013c\u0005^0\u0002\u013b\u0139\u0003\u0002\u0002\u0002",
+    "\u013b\u013c\u0003\u0002\u0002\u0002\u013c\u013e\u0003\u0002\u0002\u0002",
+    "\u013d\u0137\u0003\u0002\u0002\u0002\u013e\u0141\u0003\u0002\u0002\u0002",
+    "\u013f\u013d\u0003\u0002\u0002\u0002\u013f\u0140\u0003\u0002\u0002\u0002",
+    "\u0140\u015b\u0003\u0002\u0002\u0002\u0141\u013f\u0003\u0002\u0002\u0002",
+    "\u0142\u0159\u00073\u0002\u0002\u0143\u0145\u00070\u0002\u0002\u0144",
+    "\u0146\u0005\u0018\r\u0002\u0145\u0144\u0003\u0002\u0002\u0002\u0145",
+    "\u0146\u0003\u0002\u0002\u0002\u0146\u014f\u0003\u0002\u0002\u0002\u0147",
+    "\u0148\u00073\u0002\u0002\u0148\u014b\u0005\u0018\r\u0002\u0149\u014a",
+    "\u00077\u0002\u0002\u014a\u014c\u0005^0\u0002\u014b\u0149\u0003\u0002",
+    "\u0002\u0002\u014b\u014c\u0003\u0002\u0002\u0002\u014c\u014e\u0003\u0002",
+    "\u0002\u0002\u014d\u0147\u0003\u0002\u0002\u0002\u014e\u0151\u0003\u0002",
+    "\u0002\u0002\u014f\u014d\u0003\u0002\u0002\u0002\u014f\u0150\u0003\u0002",
+    "\u0002\u0002\u0150\u0155\u0003\u0002\u0002\u0002\u0151\u014f\u0003\u0002",
+    "\u0002\u0002\u0152\u0153\u00073\u0002\u0002\u0153\u0154\u00076\u0002",
+    "\u0002\u0154\u0156\u0005\u0018\r\u0002\u0155\u0152\u0003\u0002\u0002",
+    "\u0002\u0155\u0156\u0003\u0002\u0002\u0002\u0156\u015a\u0003\u0002\u0002",
+    "\u0002\u0157\u0158\u00076\u0002\u0002\u0158\u015a\u0005\u0018\r\u0002",
+    "\u0159\u0143\u0003\u0002\u0002\u0002\u0159\u0157\u0003\u0002\u0002\u0002",
+    "\u0159\u015a\u0003\u0002\u0002\u0002\u015a\u015c\u0003\u0002\u0002\u0002",
+    "\u015b\u0142\u0003\u0002\u0002\u0002\u015b\u015c\u0003\u0002\u0002\u0002",
+    "\u015c\u0174\u0003\u0002\u0002\u0002\u015d\u015f\u00070\u0002\u0002",
+    "\u015e\u0160\u0005\u0018\r\u0002\u015f\u015e\u0003\u0002\u0002\u0002",
+    "\u015f\u0160\u0003\u0002\u0002\u0002\u0160\u0169\u0003\u0002\u0002\u0002",
+    "\u0161\u0162\u00073\u0002\u0002\u0162\u0165\u0005\u0018\r\u0002\u0163",
+    "\u0164\u00077\u0002\u0002\u0164\u0166\u0005^0\u0002\u0165\u0163\u0003",
+    "\u0002\u0002\u0002\u0165\u0166\u0003\u0002\u0002\u0002\u0166\u0168\u0003",
+    "\u0002\u0002\u0002\u0167\u0161\u0003\u0002\u0002\u0002\u0168\u016b\u0003",
+    "\u0002\u0002\u0002\u0169\u0167\u0003\u0002\u0002\u0002\u0169\u016a\u0003",
+    "\u0002\u0002\u0002\u016a\u016f\u0003\u0002\u0002\u0002\u016b\u0169\u0003",
+    "\u0002\u0002\u0002\u016c\u016d\u00073\u0002\u0002\u016d\u016e\u0007",
+    "6\u0002\u0002\u016e\u0170\u0005\u0018\r\u0002\u016f\u016c\u0003\u0002",
+    "\u0002\u0002\u016f\u0170\u0003\u0002\u0002\u0002\u0170\u0174\u0003\u0002",
+    "\u0002\u0002\u0171\u0172\u00076\u0002\u0002\u0172\u0174\u0005\u0018",
+    "\r\u0002\u0173\u0132\u0003\u0002\u0002\u0002\u0173\u015d\u0003\u0002",
+    "\u0002\u0002\u0173\u0171\u0003\u0002\u0002\u0002\u0174\u0017\u0003\u0002",
+    "\u0002\u0002\u0175\u0176\u0007%\u0002\u0002\u0176\u0019\u0003\u0002",
+    "\u0002\u0002\u0177\u017a\u0005\u001c\u000f\u0002\u0178\u017a\u0005L",
+    "\'\u0002\u0179\u0177\u0003\u0002\u0002\u0002\u0179\u0178\u0003\u0002",
+    "\u0002\u0002\u017a\u001b\u0003\u0002\u0002\u0002\u017b\u0180\u0005\u001e",
+    "\u0010\u0002\u017c\u017d\u00075\u0002\u0002\u017d\u017f\u0005\u001e",
+    "\u0010\u0002\u017e\u017c\u0003\u0002\u0002\u0002\u017f\u0182\u0003\u0002",
+    "\u0002\u0002\u0180\u017e\u0003\u0002\u0002\u0002\u0180\u0181\u0003\u0002",
+    "\u0002\u0002\u0181\u0184\u0003\u0002\u0002\u0002\u0182\u0180\u0003\u0002",
+    "\u0002\u0002\u0183\u0185\u00075\u0002\u0002\u0184\u0183\u0003\u0002",
+    "\u0002\u0002\u0184\u0185\u0003\u0002\u0002\u0002\u0185\u0186\u0003\u0002",
+    "\u0002\u0002\u0186\u0187\u0007$\u0002\u0002\u0187\u001d\u0003\u0002",
+    "\u0002\u0002\u0188\u0191\u0005 \u0011\u0002\u0189\u0191\u0005&\u0014",
+    "\u0002\u018a\u0191\u0005(\u0015\u0002\u018b\u0191\u0005*\u0016\u0002",
+    "\u018c\u0191\u00056\u001c\u0002\u018d\u0191\u0005F$\u0002\u018e\u0191",
+    "\u0005H%\u0002\u018f\u0191\u0005J&\u0002\u0190\u0188\u0003\u0002\u0002",
+    "\u0002\u0190\u0189\u0003\u0002\u0002\u0002\u0190\u018a\u0003\u0002\u0002",
+    "\u0002\u0190\u018b\u0003\u0002\u0002\u0002\u0190\u018c\u0003\u0002\u0002",
+    "\u0002\u0190\u018d\u0003\u0002\u0002\u0002\u0190\u018e\u0003\u0002\u0002",
+    "\u0002\u0190\u018f\u0003\u0002\u0002\u0002\u0191\u001f\u0003\u0002\u0002",
+    "\u0002\u0192\u01a2\u0005\"\u0012\u0002\u0193\u0196\u0005$\u0013\u0002",
+    "\u0194\u0197\u0005\u00a2R\u0002\u0195\u0197\u0005\u0092J\u0002\u0196",
+    "\u0194\u0003\u0002\u0002\u0002\u0196\u0195\u0003\u0002\u0002\u0002\u0197",
+    "\u01a3\u0003\u0002\u0002\u0002\u0198\u019b\u00077\u0002\u0002\u0199",
+    "\u019c\u0005\u00a2R\u0002\u019a\u019c\u0005\"\u0012\u0002\u019b\u0199",
+    "\u0003\u0002\u0002\u0002\u019b\u019a\u0003\u0002\u0002\u0002\u019c\u019e",
+    "\u0003\u0002\u0002\u0002\u019d\u0198\u0003\u0002\u0002\u0002\u019e\u01a1",
+    "\u0003\u0002\u0002\u0002\u019f\u019d\u0003\u0002\u0002\u0002\u019f\u01a0",
+    "\u0003\u0002\u0002\u0002\u01a0\u01a3\u0003\u0002\u0002\u0002\u01a1\u019f",
+    "\u0003\u0002\u0002\u0002\u01a2\u0193\u0003\u0002\u0002\u0002\u01a2\u019f",
+    "\u0003\u0002\u0002\u0002\u01a3!\u0003\u0002\u0002\u0002\u01a4\u01a7",
+    "\u0005^0\u0002\u01a5\u01a7\u0005p9\u0002\u01a6\u01a4\u0003\u0002\u0002",
+    "\u0002\u01a6\u01a5\u0003\u0002\u0002\u0002\u01a7\u01af\u0003\u0002\u0002",
+    "\u0002\u01a8\u01ab\u00073\u0002\u0002\u01a9\u01ac\u0005^0\u0002\u01aa",
+    "\u01ac\u0005p9\u0002\u01ab\u01a9\u0003\u0002\u0002\u0002\u01ab\u01aa",
+    "\u0003\u0002\u0002\u0002\u01ac\u01ae\u0003\u0002\u0002\u0002\u01ad\u01a8",
+    "\u0003\u0002\u0002\u0002\u01ae\u01b1\u0003\u0002\u0002\u0002\u01af\u01ad",
+    "\u0003\u0002\u0002\u0002\u01af\u01b0\u0003\u0002\u0002\u0002\u01b0\u01b3",
+    "\u0003\u0002\u0002\u0002\u01b1\u01af\u0003\u0002\u0002\u0002\u01b2\u01b4",
+    "\u00073\u0002\u0002\u01b3\u01b2\u0003\u0002\u0002\u0002\u01b3\u01b4",
+    "\u0003\u0002\u0002\u0002\u01b4#\u0003\u0002\u0002\u0002\u01b5\u01b6",
+    "\t\u0002\u0002\u0002\u01b6%\u0003\u0002\u0002\u0002\u01b7\u01b8\u0007",
+    " \u0002\u0002\u01b8\u01b9\u0005\u0090I\u0002\u01b9\'\u0003\u0002\u0002",
+    "\u0002\u01ba\u01bb\u0007!\u0002\u0002\u01bb)\u0003\u0002\u0002\u0002",
+    "\u01bc\u01c2\u0005,\u0017\u0002\u01bd\u01c2\u0005.\u0018\u0002\u01be",
+    "\u01c2\u00050\u0019\u0002\u01bf\u01c2\u00054\u001b\u0002\u01c0\u01c2",
+    "\u00052\u001a\u0002\u01c1\u01bc\u0003\u0002\u0002\u0002\u01c1\u01bd",
+    "\u0003\u0002\u0002\u0002\u01c1\u01be\u0003\u0002\u0002\u0002\u01c1\u01bf",
+    "\u0003\u0002\u0002\u0002\u01c1\u01c0\u0003\u0002\u0002\u0002\u01c2+",
+    "\u0003\u0002\u0002\u0002\u01c3\u01c4\u0007#\u0002\u0002\u01c4-\u0003",
+    "\u0002\u0002\u0002\u01c5\u01c6\u0007\"\u0002\u0002\u01c6/\u0003\u0002",
+    "\u0002\u0002\u01c7\u01c9\u0007\u0004\u0002\u0002\u01c8\u01ca\u0005\u0092",
+    "J\u0002\u01c9\u01c8\u0003\u0002\u0002\u0002\u01c9\u01ca\u0003\u0002",
+    "\u0002\u0002\u01ca1\u0003\u0002\u0002\u0002\u01cb\u01cc\u0005\u00a2",
+    "R\u0002\u01cc3\u0003\u0002\u0002\u0002\u01cd\u01d3\u0007\u0005\u0002",
+    "\u0002\u01ce\u01d1\u0005^0\u0002\u01cf\u01d0\u0007\u0006\u0002\u0002",
+    "\u01d0\u01d2\u0005^0\u0002\u01d1\u01cf\u0003\u0002\u0002\u0002\u01d1",
+    "\u01d2\u0003\u0002\u0002\u0002\u01d2\u01d4\u0003\u0002\u0002\u0002\u01d3",
+    "\u01ce\u0003\u0002\u0002\u0002\u01d3\u01d4\u0003\u0002\u0002\u0002\u01d4",
+    "5\u0003\u0002\u0002\u0002\u01d5\u01d8\u00058\u001d\u0002\u01d6\u01d8",
+    "\u0005:\u001e\u0002\u01d7\u01d5\u0003\u0002\u0002\u0002\u01d7\u01d6",
+    "\u0003\u0002\u0002\u0002\u01d87\u0003\u0002\u0002\u0002\u01d9\u01da",
+    "\u0007\u0007\u0002\u0002\u01da\u01db\u0005B\"\u0002\u01db9\u0003\u0002",
+    "\u0002\u0002\u01dc\u01e9\u0007\u0006\u0002\u0002\u01dd\u01df\t\u0003",
+    "\u0002\u0002\u01de\u01dd\u0003\u0002\u0002\u0002\u01df\u01e2\u0003\u0002",
+    "\u0002\u0002\u01e0\u01de\u0003\u0002\u0002\u0002\u01e0\u01e1\u0003\u0002",
+    "\u0002\u0002\u01e1\u01e3\u0003\u0002\u0002\u0002\u01e2\u01e0\u0003\u0002",
+    "\u0002\u0002\u01e3\u01ea\u0005D#\u0002\u01e4\u01e6\t\u0003\u0002\u0002",
+    "\u01e5\u01e4\u0003\u0002\u0002\u0002\u01e6\u01e7\u0003\u0002\u0002\u0002",
+    "\u01e7\u01e5\u0003\u0002\u0002\u0002\u01e7\u01e8\u0003\u0002\u0002\u0002",
+    "\u01e8\u01ea\u0003\u0002\u0002\u0002\u01e9\u01e0\u0003\u0002\u0002\u0002",
+    "\u01e9\u01e5\u0003\u0002\u0002\u0002\u01ea\u01eb\u0003\u0002\u0002\u0002",
+    "\u01eb\u01f2\u0007\u0007\u0002\u0002\u01ec\u01f3\u00070\u0002\u0002",
+    "\u01ed\u01ee\u00071\u0002\u0002\u01ee\u01ef\u0005@!\u0002\u01ef\u01f0",
+    "\u00072\u0002\u0002\u01f0\u01f3\u0003\u0002\u0002\u0002\u01f1\u01f3",
+    "\u0005@!\u0002\u01f2\u01ec\u0003\u0002\u0002\u0002\u01f2\u01ed\u0003",
+    "\u0002\u0002\u0002\u01f2\u01f1\u0003\u0002\u0002\u0002\u01f3;\u0003",
+    "\u0002\u0002\u0002\u01f4\u01f7\u0007%\u0002\u0002\u01f5\u01f6\u0007",
+    "\b\u0002\u0002\u01f6\u01f8\u0007%\u0002\u0002\u01f7\u01f5\u0003\u0002",
+    "\u0002\u0002\u01f7\u01f8\u0003\u0002\u0002\u0002\u01f8=\u0003\u0002",
+    "\u0002\u0002\u01f9\u01fc\u0005D#\u0002\u01fa\u01fb\u0007\b\u0002\u0002",
+    "\u01fb\u01fd\u0007%\u0002\u0002\u01fc\u01fa\u0003\u0002\u0002\u0002",
+    "\u01fc\u01fd\u0003\u0002\u0002\u0002\u01fd?\u0003\u0002\u0002\u0002",
+    "\u01fe\u0203\u0005<\u001f\u0002\u01ff\u0200\u00073\u0002\u0002\u0200",
+    "\u0202\u0005<\u001f\u0002\u0201\u01ff\u0003\u0002\u0002\u0002\u0202",
+    "\u0205\u0003\u0002\u0002\u0002\u0203\u0201\u0003\u0002\u0002\u0002\u0203",
+    "\u0204\u0003\u0002\u0002\u0002\u0204\u0207\u0003\u0002\u0002\u0002\u0205",
+    "\u0203\u0003\u0002\u0002\u0002\u0206\u0208\u00073\u0002\u0002\u0207",
+    "\u0206\u0003\u0002\u0002\u0002\u0207\u0208\u0003\u0002\u0002\u0002\u0208",
+    "A\u0003\u0002\u0002\u0002\u0209\u020e\u0005> \u0002\u020a\u020b\u0007",
+    "3\u0002\u0002\u020b\u020d\u0005> \u0002\u020c\u020a\u0003\u0002\u0002",
+    "\u0002\u020d\u0210\u0003\u0002\u0002\u0002\u020e\u020c\u0003\u0002\u0002",
+    "\u0002\u020e\u020f\u0003\u0002\u0002\u0002\u020fC\u0003\u0002\u0002",
+    "\u0002\u0210\u020e\u0003\u0002\u0002\u0002\u0211\u0216\u0007%\u0002",
+    "\u0002\u0212\u0213\u0007.\u0002\u0002\u0213\u0215\u0007%\u0002\u0002",
+    "\u0214\u0212\u0003\u0002\u0002\u0002\u0215\u0218\u0003\u0002\u0002\u0002",
+    "\u0216\u0214\u0003\u0002\u0002\u0002\u0216\u0217\u0003\u0002\u0002\u0002",
+    "\u0217E\u0003\u0002\u0002\u0002\u0218\u0216\u0003\u0002\u0002\u0002",
+    "\u0219\u021a\u0007\t\u0002\u0002\u021a\u021f\u0007%\u0002\u0002\u021b",
+    "\u021c\u00073\u0002\u0002\u021c\u021e\u0007%\u0002\u0002\u021d\u021b",
+    "\u0003\u0002\u0002\u0002\u021e\u0221\u0003\u0002\u0002\u0002\u021f\u021d",
+    "\u0003\u0002\u0002\u0002\u021f\u0220\u0003\u0002\u0002\u0002\u0220G",
+    "\u0003\u0002\u0002\u0002\u0221\u021f\u0003\u0002\u0002\u0002\u0222\u0223",
+    "\u0007\n\u0002\u0002\u0223\u0228\u0007%\u0002\u0002\u0224\u0225\u0007",
+    "3\u0002\u0002\u0225\u0227\u0007%\u0002\u0002\u0226\u0224\u0003\u0002",
+    "\u0002\u0002\u0227\u022a\u0003\u0002\u0002\u0002\u0228\u0226\u0003\u0002",
+    "\u0002\u0002\u0228\u0229\u0003\u0002\u0002\u0002\u0229I\u0003\u0002",
+    "\u0002\u0002\u022a\u0228\u0003\u0002\u0002\u0002\u022b\u022c\u0007\u000b",
+    "\u0002\u0002\u022c\u022f\u0005^0\u0002\u022d\u022e\u00073\u0002\u0002",
+    "\u022e\u0230\u0005^0\u0002\u022f\u022d\u0003\u0002\u0002\u0002\u022f",
+    "\u0230\u0003\u0002\u0002\u0002\u0230K\u0003\u0002\u0002\u0002\u0231",
+    "\u023a\u0005N(\u0002\u0232\u023a\u0005P)\u0002\u0233\u023a\u0005R*\u0002",
+    "\u0234\u023a\u0005T+\u0002\u0235\u023a\u0005V,\u0002\u0236\u023a\u0005",
+    "\u000e\b\u0002\u0237\u023a\u0005\u0096L\u0002\u0238\u023a\u0005\f\u0007",
+    "\u0002\u0239\u0231\u0003\u0002\u0002\u0002\u0239\u0232\u0003\u0002\u0002",
+    "\u0002\u0239\u0233\u0003\u0002\u0002\u0002\u0239\u0234\u0003\u0002\u0002",
+    "\u0002\u0239\u0235\u0003\u0002\u0002\u0002\u0239\u0236\u0003\u0002\u0002",
+    "\u0002\u0239\u0237\u0003\u0002\u0002\u0002\u0239\u0238\u0003\u0002\u0002",
+    "\u0002\u023aM\u0003\u0002\u0002\u0002\u023b\u023c\u0007\f\u0002\u0002",
+    "\u023c\u023d\u0005^0\u0002\u023d\u023e\u00074\u0002\u0002\u023e\u0246",
+    "\u0005\\/\u0002\u023f\u0240\u0007\r\u0002\u0002\u0240\u0241\u0005^0",
+    "\u0002\u0241\u0242\u00074\u0002\u0002\u0242\u0243\u0005\\/\u0002\u0243",
+    "\u0245\u0003\u0002\u0002\u0002\u0244\u023f\u0003\u0002\u0002\u0002\u0245",
+    "\u0248\u0003\u0002\u0002\u0002\u0246\u0244\u0003\u0002\u0002\u0002\u0246",
+    "\u0247\u0003\u0002\u0002\u0002\u0247\u024c\u0003\u0002\u0002\u0002\u0248",
+    "\u0246\u0003\u0002\u0002\u0002\u0249\u024a\u0007\u000e\u0002\u0002\u024a",
+    "\u024b\u00074\u0002\u0002\u024b\u024d\u0005\\/\u0002\u024c\u0249\u0003",
+    "\u0002\u0002\u0002\u024c\u024d\u0003\u0002\u0002\u0002\u024dO\u0003",
+    "\u0002\u0002\u0002\u024e\u024f\u0007\u000f\u0002\u0002\u024f\u0250\u0005",
+    "^0\u0002\u0250\u0251\u00074\u0002\u0002\u0251\u0255\u0005\\/\u0002\u0252",
+    "\u0253\u0007\u000e\u0002\u0002\u0253\u0254\u00074\u0002\u0002\u0254",
+    "\u0256\u0005\\/\u0002\u0255\u0252\u0003\u0002\u0002\u0002\u0255\u0256",
+    "\u0003\u0002\u0002\u0002\u0256Q\u0003\u0002\u0002\u0002\u0257\u0258",
+    "\u0007\u0010\u0002\u0002\u0258\u0259\u0005\u0090I\u0002\u0259\u025a",
+    "\u0007\u0011\u0002\u0002\u025a\u025b\u0005\u0092J\u0002\u025b\u025c",
+    "\u00074\u0002\u0002\u025c\u0260\u0005\\/\u0002\u025d\u025e\u0007\u000e",
+    "\u0002\u0002\u025e\u025f\u00074\u0002\u0002\u025f\u0261\u0005\\/\u0002",
+    "\u0260\u025d\u0003\u0002\u0002\u0002\u0260\u0261\u0003\u0002\u0002\u0002",
+    "\u0261S\u0003\u0002\u0002\u0002\u0262\u0263\u0007\u0012\u0002\u0002",
+    "\u0263\u0264\u00074\u0002\u0002\u0264\u027a\u0005\\/\u0002\u0265\u0266",
+    "\u0005Z.\u0002\u0266\u0267\u00074\u0002\u0002\u0267\u0268\u0005\\/\u0002",
+    "\u0268\u026a\u0003\u0002\u0002\u0002\u0269\u0265\u0003\u0002\u0002\u0002",
+    "\u026a\u026b\u0003\u0002\u0002\u0002\u026b\u0269\u0003\u0002\u0002\u0002",
+    "\u026b\u026c\u0003\u0002\u0002\u0002\u026c\u0270\u0003\u0002\u0002\u0002",
+    "\u026d\u026e\u0007\u000e\u0002\u0002\u026e\u026f\u00074\u0002\u0002",
+    "\u026f\u0271\u0005\\/\u0002\u0270\u026d\u0003\u0002\u0002\u0002\u0270",
+    "\u0271\u0003\u0002\u0002\u0002\u0271\u0275\u0003\u0002\u0002\u0002\u0272",
+    "\u0273\u0007\u0013\u0002\u0002\u0273\u0274\u00074\u0002\u0002\u0274",
+    "\u0276\u0005\\/\u0002\u0275\u0272\u0003\u0002\u0002\u0002\u0275\u0276",
+    "\u0003\u0002\u0002\u0002\u0276\u027b\u0003\u0002\u0002\u0002\u0277\u0278",
+    "\u0007\u0013\u0002\u0002\u0278\u0279\u00074\u0002\u0002\u0279\u027b",
+    "\u0005\\/\u0002\u027a\u0269\u0003\u0002\u0002\u0002\u027a\u0277\u0003",
+    "\u0002\u0002\u0002\u027bU\u0003\u0002\u0002\u0002\u027c\u027d\u0007",
+    "\u0014\u0002\u0002\u027d\u0282\u0005X-\u0002\u027e\u027f\u00073\u0002",
+    "\u0002\u027f\u0281\u0005X-\u0002\u0280\u027e\u0003\u0002\u0002\u0002",
+    "\u0281\u0284\u0003\u0002\u0002\u0002\u0282\u0280\u0003\u0002\u0002\u0002",
+    "\u0282\u0283\u0003\u0002\u0002\u0002\u0283\u0285\u0003\u0002\u0002\u0002",
+    "\u0284\u0282\u0003\u0002\u0002\u0002\u0285\u0286\u00074\u0002\u0002",
+    "\u0286\u0287\u0005\\/\u0002\u0287W\u0003\u0002\u0002\u0002\u0288\u028b",
+    "\u0005^0\u0002\u0289\u028a\u0007\b\u0002\u0002\u028a\u028c\u0005r:\u0002",
+    "\u028b\u0289\u0003\u0002\u0002\u0002\u028b\u028c\u0003\u0002\u0002\u0002",
+    "\u028cY\u0003\u0002\u0002\u0002\u028d\u0293\u0007\u0015\u0002\u0002",
+    "\u028e\u0291\u0005^0\u0002\u028f\u0290\u0007\b\u0002\u0002\u0290\u0292",
+    "\u0007%\u0002\u0002\u0291\u028f\u0003\u0002\u0002\u0002\u0291\u0292",
+    "\u0003\u0002\u0002\u0002\u0292\u0294\u0003\u0002\u0002\u0002\u0293\u028e",
+    "\u0003\u0002\u0002\u0002\u0293\u0294\u0003\u0002\u0002\u0002\u0294[",
+    "\u0003\u0002\u0002\u0002\u0295\u02a0\u0005\u001c\u000f\u0002\u0296\u0297",
+    "\u0007$\u0002\u0002\u0297\u0299\u0007_\u0002\u0002\u0298\u029a\u0005",
+    "\u001a\u000e\u0002\u0299\u0298\u0003\u0002\u0002\u0002\u029a\u029b\u0003",
+    "\u0002\u0002\u0002\u029b\u0299\u0003\u0002\u0002\u0002\u029b\u029c\u0003",
+    "\u0002\u0002\u0002\u029c\u029d\u0003\u0002\u0002\u0002\u029d\u029e\u0007",
+    "`\u0002\u0002\u029e\u02a0\u0003\u0002\u0002\u0002\u029f\u0295\u0003",
+    "\u0002\u0002\u0002\u029f\u0296\u0003\u0002\u0002\u0002\u02a0]\u0003",
+    "\u0002\u0002\u0002\u02a1\u02a7\u0005f4\u0002\u02a2\u02a3\u0007\f\u0002",
+    "\u0002\u02a3\u02a4\u0005f4\u0002\u02a4\u02a5\u0007\u000e\u0002\u0002",
+    "\u02a5\u02a6\u0005^0\u0002\u02a6\u02a8\u0003\u0002\u0002\u0002\u02a7",
+    "\u02a2\u0003\u0002\u0002\u0002\u02a7\u02a8\u0003\u0002\u0002\u0002\u02a8",
+    "\u02ab\u0003\u0002\u0002\u0002\u02a9\u02ab\u0005b2\u0002\u02aa\u02a1",
+    "\u0003\u0002\u0002\u0002\u02aa\u02a9\u0003\u0002\u0002\u0002\u02ab_",
+    "\u0003\u0002\u0002\u0002\u02ac\u02af\u0005f4\u0002\u02ad\u02af\u0005",
+    "d3\u0002\u02ae\u02ac\u0003\u0002\u0002\u0002\u02ae\u02ad\u0003\u0002",
+    "\u0002\u0002\u02afa\u0003\u0002\u0002\u0002\u02b0\u02b2\u0007\u0016",
+    "\u0002\u0002\u02b1\u02b3\u0005\u0016\f\u0002\u02b2\u02b1\u0003\u0002",
+    "\u0002\u0002\u02b2\u02b3\u0003\u0002\u0002\u0002\u02b3\u02b4\u0003\u0002",
+    "\u0002\u0002\u02b4\u02b5\u00074\u0002\u0002\u02b5\u02b6\u0005^0\u0002",
+    "\u02b6c\u0003\u0002\u0002\u0002\u02b7\u02b9\u0007\u0016\u0002\u0002",
+    "\u02b8\u02ba\u0005\u0016\f\u0002\u02b9\u02b8\u0003\u0002\u0002\u0002",
+    "\u02b9\u02ba\u0003\u0002\u0002\u0002\u02ba\u02bb\u0003\u0002\u0002\u0002",
+    "\u02bb\u02bc\u00074\u0002\u0002\u02bc\u02bd\u0005`1\u0002\u02bde\u0003",
+    "\u0002\u0002\u0002\u02be\u02c3\u0005h5\u0002\u02bf\u02c0\u0007\u0017",
+    "\u0002\u0002\u02c0\u02c2\u0005h5\u0002\u02c1\u02bf\u0003\u0002\u0002",
+    "\u0002\u02c2\u02c5\u0003\u0002\u0002\u0002\u02c3\u02c1\u0003\u0002\u0002",
+    "\u0002\u02c3\u02c4\u0003\u0002\u0002\u0002\u02c4g\u0003\u0002\u0002",
+    "\u0002\u02c5\u02c3\u0003\u0002\u0002\u0002\u02c6\u02cb\u0005j6\u0002",
+    "\u02c7\u02c8\u0007\u0018\u0002\u0002\u02c8\u02ca\u0005j6\u0002\u02c9",
+    "\u02c7\u0003\u0002\u0002\u0002\u02ca\u02cd\u0003\u0002\u0002\u0002\u02cb",
+    "\u02c9\u0003\u0002\u0002\u0002\u02cb\u02cc\u0003\u0002\u0002\u0002\u02cc",
+    "i\u0003\u0002\u0002\u0002\u02cd\u02cb\u0003\u0002\u0002\u0002\u02ce",
+    "\u02cf\u0007\u0019\u0002\u0002\u02cf\u02d2\u0005j6\u0002\u02d0\u02d2",
+    "\u0005l7\u0002\u02d1\u02ce\u0003\u0002\u0002\u0002\u02d1\u02d0\u0003",
+    "\u0002\u0002\u0002\u02d2k\u0003\u0002\u0002\u0002\u02d3\u02d9\u0005",
+    "p9\u0002\u02d4\u02d5\u0005n8\u0002\u02d5\u02d6\u0005p9\u0002\u02d6\u02d8",
+    "\u0003\u0002\u0002\u0002\u02d7\u02d4\u0003\u0002\u0002\u0002\u02d8\u02db",
+    "\u0003\u0002\u0002\u0002\u02d9\u02d7\u0003\u0002\u0002\u0002\u02d9\u02da",
+    "\u0003\u0002\u0002\u0002\u02dam\u0003\u0002\u0002\u0002\u02db\u02d9",
+    "\u0003\u0002\u0002\u0002\u02dc\u02ea\u0007G\u0002\u0002\u02dd\u02ea",
+    "\u0007H\u0002\u0002\u02de\u02ea\u0007I\u0002\u0002\u02df\u02ea\u0007",
+    "J\u0002\u0002\u02e0\u02ea\u0007K\u0002\u0002\u02e1\u02ea\u0007L\u0002",
+    "\u0002\u02e2\u02ea\u0007M\u0002\u0002\u02e3\u02ea\u0007\u0011\u0002",
+    "\u0002\u02e4\u02e5\u0007\u0019\u0002\u0002\u02e5\u02ea\u0007\u0011\u0002",
+    "\u0002\u02e6\u02ea\u0007\u001a\u0002\u0002\u02e7\u02e8\u0007\u001a\u0002",
+    "\u0002\u02e8\u02ea\u0007\u0019\u0002\u0002\u02e9\u02dc\u0003\u0002\u0002",
+    "\u0002\u02e9\u02dd\u0003\u0002\u0002\u0002\u02e9\u02de\u0003\u0002\u0002",
+    "\u0002\u02e9\u02df\u0003\u0002\u0002\u0002\u02e9\u02e0\u0003\u0002\u0002",
+    "\u0002\u02e9\u02e1\u0003\u0002\u0002\u0002\u02e9\u02e2\u0003\u0002\u0002",
+    "\u0002\u02e9\u02e3\u0003\u0002\u0002\u0002\u02e9\u02e4\u0003\u0002\u0002",
+    "\u0002\u02e9\u02e6\u0003\u0002\u0002\u0002\u02e9\u02e7\u0003\u0002\u0002",
+    "\u0002\u02eao\u0003\u0002\u0002\u0002\u02eb\u02ed\u00070\u0002\u0002",
+    "\u02ec\u02eb\u0003\u0002\u0002\u0002\u02ec\u02ed\u0003\u0002\u0002\u0002",
+    "\u02ed\u02ee\u0003\u0002\u0002\u0002\u02ee\u02ef\u0005r:\u0002\u02ef",
+    "q\u0003\u0002\u0002\u0002\u02f0\u02f5\u0005t;\u0002\u02f1\u02f2\u0007",
+    ":\u0002\u0002\u02f2\u02f4\u0005t;\u0002\u02f3\u02f1\u0003\u0002\u0002",
+    "\u0002\u02f4\u02f7\u0003\u0002\u0002\u0002\u02f5\u02f3\u0003\u0002\u0002",
+    "\u0002\u02f5\u02f6\u0003\u0002\u0002\u0002\u02f6s\u0003\u0002\u0002",
+    "\u0002\u02f7\u02f5\u0003\u0002\u0002\u0002\u02f8\u02fd\u0005v<\u0002",
+    "\u02f9\u02fa\u0007;\u0002\u0002\u02fa\u02fc\u0005v<\u0002\u02fb\u02f9",
+    "\u0003\u0002\u0002\u0002\u02fc\u02ff\u0003\u0002\u0002\u0002\u02fd\u02fb",
+    "\u0003\u0002\u0002\u0002\u02fd\u02fe\u0003\u0002\u0002\u0002\u02feu",
+    "\u0003\u0002\u0002\u0002\u02ff\u02fd\u0003\u0002\u0002\u0002\u0300\u0305",
+    "\u0005x=\u0002\u0301\u0302\u0007<\u0002\u0002\u0302\u0304\u0005x=\u0002",
+    "\u0303\u0301\u0003\u0002\u0002\u0002\u0304\u0307\u0003\u0002\u0002\u0002",
+    "\u0305\u0303\u0003\u0002\u0002\u0002\u0305\u0306\u0003\u0002\u0002\u0002",
+    "\u0306w\u0003\u0002\u0002\u0002\u0307\u0305\u0003\u0002\u0002\u0002",
+    "\u0308\u030f\u0005z>\u0002\u0309\u030a\u0007=\u0002\u0002\u030a\u030e",
+    "\u0005z>\u0002\u030b\u030c\u0007>\u0002\u0002\u030c\u030e\u0005z>\u0002",
+    "\u030d\u0309\u0003\u0002\u0002\u0002\u030d\u030b\u0003\u0002\u0002\u0002",
+    "\u030e\u0311\u0003\u0002\u0002\u0002\u030f\u030d\u0003\u0002\u0002\u0002",
+    "\u030f\u0310\u0003\u0002\u0002\u0002\u0310y\u0003\u0002\u0002\u0002",
+    "\u0311\u030f\u0003\u0002\u0002\u0002\u0312\u0319\u0005|?\u0002\u0313",
+    "\u0314\u0007?\u0002\u0002\u0314\u0318\u0005|?\u0002\u0315\u0316\u0007",
+    "@\u0002\u0002\u0316\u0318\u0005|?\u0002\u0317\u0313\u0003\u0002\u0002",
+    "\u0002\u0317\u0315\u0003\u0002\u0002\u0002\u0318\u031b\u0003\u0002\u0002",
+    "\u0002\u0319\u0317\u0003\u0002\u0002\u0002\u0319\u031a\u0003\u0002\u0002",
+    "\u0002\u031a{\u0003\u0002\u0002\u0002\u031b\u0319\u0003\u0002\u0002",
+    "\u0002\u031c\u0329\u0005~@\u0002\u031d\u031e\u00070\u0002\u0002\u031e",
+    "\u0328\u0005~@\u0002\u031f\u0320\u0007A\u0002\u0002\u0320\u0328\u0005",
+    "~@\u0002\u0321\u0322\u0007B\u0002\u0002\u0322\u0328\u0005~@\u0002\u0323",
+    "\u0324\u0007C\u0002\u0002\u0324\u0328\u0005~@\u0002\u0325\u0326\u0007",
+    "N\u0002\u0002\u0326\u0328\u0005~@\u0002\u0327\u031d\u0003\u0002\u0002",
+    "\u0002\u0327\u031f\u0003\u0002\u0002\u0002\u0327\u0321\u0003\u0002\u0002",
+    "\u0002\u0327\u0323\u0003\u0002\u0002\u0002\u0327\u0325\u0003\u0002\u0002",
+    "\u0002\u0328\u032b\u0003\u0002\u0002\u0002\u0329\u0327\u0003\u0002\u0002",
+    "\u0002\u0329\u032a\u0003\u0002\u0002\u0002\u032a}\u0003\u0002\u0002",
+    "\u0002\u032b\u0329\u0003\u0002\u0002\u0002\u032c\u032d\u0007?\u0002",
+    "\u0002\u032d\u0334\u0005~@\u0002\u032e\u032f\u0007@\u0002\u0002\u032f",
+    "\u0334\u0005~@\u0002\u0330\u0331\u0007D\u0002\u0002\u0331\u0334\u0005",
+    "~@\u0002\u0332\u0334\u0005\u0080A\u0002\u0333\u032c\u0003\u0002\u0002",
+    "\u0002\u0333\u032e\u0003\u0002\u0002\u0002\u0333\u0330\u0003\u0002\u0002",
+    "\u0002\u0333\u0332\u0003\u0002\u0002\u0002\u0334\u007f\u0003\u0002\u0002",
+    "\u0002\u0335\u0338\u0005\u0082B\u0002\u0336\u0337\u00076\u0002\u0002",
+    "\u0337\u0339\u0005~@\u0002\u0338\u0336\u0003\u0002\u0002\u0002\u0338",
+    "\u0339\u0003\u0002\u0002\u0002\u0339\u0081\u0003\u0002\u0002\u0002\u033a",
+    "\u033e\u0005\u0084C\u0002\u033b\u033d\u0005\u0088E\u0002\u033c\u033b",
+    "\u0003\u0002\u0002\u0002\u033d\u0340\u0003\u0002\u0002\u0002\u033e\u033c",
+    "\u0003\u0002\u0002\u0002\u033e\u033f\u0003\u0002\u0002\u0002\u033f\u0083",
+    "\u0003\u0002\u0002\u0002\u0340\u033e\u0003\u0002\u0002\u0002\u0341\u0344",
+    "\u00071\u0002\u0002\u0342\u0345\u0005\u00a2R\u0002\u0343\u0345\u0005",
+    "\u0086D\u0002\u0344\u0342\u0003\u0002\u0002\u0002\u0344\u0343\u0003",
+    "\u0002\u0002\u0002\u0344\u0345\u0003\u0002\u0002\u0002\u0345\u0346\u0003",
+    "\u0002\u0002\u0002\u0346\u035d\u00072\u0002\u0002\u0347\u0349\u0007",
+    "8\u0002\u0002\u0348\u034a\u0005\u0086D\u0002\u0349\u0348\u0003\u0002",
+    "\u0002\u0002\u0349\u034a\u0003\u0002\u0002\u0002\u034a\u034b\u0003\u0002",
+    "\u0002\u0002\u034b\u035d\u00079\u0002\u0002\u034c\u034e\u0007E\u0002",
+    "\u0002\u034d\u034f\u0005\u0094K\u0002\u034e\u034d\u0003\u0002\u0002",
+    "\u0002\u034e\u034f\u0003\u0002\u0002\u0002\u034f\u0350\u0003\u0002\u0002",
+    "\u0002\u0350\u035d\u0007F\u0002\u0002\u0351\u035d\u0007%\u0002\u0002",
+    "\u0352\u035d\u0005\u00a8U\u0002\u0353\u0355\u0005\u00a6T\u0002\u0354",
+    "\u0353\u0003\u0002\u0002\u0002\u0355\u0356\u0003\u0002\u0002\u0002\u0356",
+    "\u0354\u0003\u0002\u0002\u0002\u0356\u0357\u0003\u0002\u0002\u0002\u0357",
+    "\u035d\u0003\u0002\u0002\u0002\u0358\u035d\u0007/\u0002\u0002\u0359",
+    "\u035d\u0007\u001b\u0002\u0002\u035a\u035d\u0007\u001c\u0002\u0002\u035b",
+    "\u035d\u0007\u001d\u0002\u0002\u035c\u0341\u0003\u0002\u0002\u0002\u035c",
+    "\u0347\u0003\u0002\u0002\u0002\u035c\u034c\u0003\u0002\u0002\u0002\u035c",
+    "\u0351\u0003\u0002\u0002\u0002\u035c\u0352\u0003\u0002\u0002\u0002\u035c",
+    "\u0354\u0003\u0002\u0002\u0002\u035c\u0358\u0003\u0002\u0002\u0002\u035c",
+    "\u0359\u0003\u0002\u0002\u0002\u035c\u035a\u0003\u0002\u0002\u0002\u035c",
+    "\u035b\u0003\u0002\u0002\u0002\u035d\u0085\u0003\u0002\u0002\u0002\u035e",
+    "\u036a\u0005^0\u0002\u035f\u036b\u0005\u009eP\u0002\u0360\u0361\u0007",
+    "3\u0002\u0002\u0361\u0363\u0005^0\u0002\u0362\u0360\u0003\u0002\u0002",
+    "\u0002\u0363\u0366\u0003\u0002\u0002\u0002\u0364\u0362\u0003\u0002\u0002",
+    "\u0002\u0364\u0365\u0003\u0002\u0002\u0002\u0365\u0368\u0003\u0002\u0002",
+    "\u0002\u0366\u0364\u0003\u0002\u0002\u0002\u0367\u0369\u00073\u0002",
+    "\u0002\u0368\u0367\u0003\u0002\u0002\u0002\u0368\u0369\u0003\u0002\u0002",
+    "\u0002\u0369\u036b\u0003\u0002\u0002\u0002\u036a\u035f\u0003\u0002\u0002",
+    "\u0002\u036a\u0364\u0003\u0002\u0002\u0002\u036b\u0087\u0003\u0002\u0002",
+    "\u0002\u036c\u036e\u00071\u0002\u0002\u036d\u036f\u0005\u0098M\u0002",
+    "\u036e\u036d\u0003\u0002\u0002\u0002\u036e\u036f\u0003\u0002\u0002\u0002",
+    "\u036f\u0370\u0003\u0002\u0002\u0002\u0370\u0378\u00072\u0002\u0002",
+    "\u0371\u0372\u00078\u0002\u0002\u0372\u0373\u0005\u008aF\u0002\u0373",
+    "\u0374\u00079\u0002\u0002\u0374\u0378\u0003\u0002\u0002\u0002\u0375",
+    "\u0376\u0007.\u0002\u0002\u0376\u0378\u0007%\u0002\u0002\u0377\u036c",
+    "\u0003\u0002\u0002\u0002\u0377\u0371\u0003\u0002\u0002\u0002\u0377\u0375",
+    "\u0003\u0002\u0002\u0002\u0378\u0089\u0003\u0002\u0002\u0002\u0379\u037e",
+    "\u0005\u008cG\u0002\u037a\u037b\u00073\u0002\u0002\u037b\u037d\u0005",
+    "\u008cG\u0002\u037c\u037a\u0003\u0002\u0002\u0002\u037d\u0380\u0003",
+    "\u0002\u0002\u0002\u037e\u037c\u0003\u0002\u0002\u0002\u037e\u037f\u0003",
+    "\u0002\u0002\u0002\u037f\u0382\u0003\u0002\u0002\u0002\u0380\u037e\u0003",
+    "\u0002\u0002\u0002\u0381\u0383\u00073\u0002\u0002\u0382\u0381\u0003",
+    "\u0002\u0002\u0002\u0382\u0383\u0003\u0002\u0002\u0002\u0383\u008b\u0003",
+    "\u0002\u0002\u0002\u0384\u0390\u0005^0\u0002\u0385\u0387\u0005^0\u0002",
+    "\u0386\u0385\u0003\u0002\u0002\u0002\u0386\u0387\u0003\u0002\u0002\u0002",
+    "\u0387\u0388\u0003\u0002\u0002\u0002\u0388\u038a\u00074\u0002\u0002",
+    "\u0389\u038b\u0005^0\u0002\u038a\u0389\u0003\u0002\u0002\u0002\u038a",
+    "\u038b\u0003\u0002\u0002\u0002\u038b\u038d\u0003\u0002\u0002\u0002\u038c",
+    "\u038e\u0005\u008eH\u0002\u038d\u038c\u0003\u0002\u0002\u0002\u038d",
+    "\u038e\u0003\u0002\u0002\u0002\u038e\u0390\u0003\u0002\u0002\u0002\u038f",
+    "\u0384\u0003\u0002\u0002\u0002\u038f\u0386\u0003\u0002\u0002\u0002\u0390",
+    "\u008d\u0003\u0002\u0002\u0002\u0391\u0393\u00074\u0002\u0002\u0392",
+    "\u0394\u0005^0\u0002\u0393\u0392\u0003\u0002\u0002\u0002\u0393\u0394",
+    "\u0003\u0002\u0002\u0002\u0394\u008f\u0003\u0002\u0002\u0002\u0395\u039a",
+    "\u0005p9\u0002\u0396\u0397\u00073\u0002\u0002\u0397\u0399\u0005p9\u0002",
+    "\u0398\u0396\u0003\u0002\u0002\u0002\u0399\u039c\u0003\u0002\u0002\u0002",
+    "\u039a\u0398\u0003\u0002\u0002\u0002\u039a\u039b\u0003\u0002\u0002\u0002",
+    "\u039b\u039e\u0003\u0002\u0002\u0002\u039c\u039a\u0003\u0002\u0002\u0002",
+    "\u039d\u039f\u00073\u0002\u0002\u039e\u039d\u0003\u0002\u0002\u0002",
+    "\u039e\u039f\u0003\u0002\u0002\u0002\u039f\u0091\u0003\u0002\u0002\u0002",
+    "\u03a0\u03a5\u0005^0\u0002\u03a1\u03a2\u00073\u0002\u0002\u03a2\u03a4",
+    "\u0005^0\u0002\u03a3\u03a1\u0003\u0002\u0002\u0002\u03a4\u03a7\u0003",
+    "\u0002\u0002\u0002\u03a5\u03a3\u0003\u0002\u0002\u0002\u03a5\u03a6\u0003",
+    "\u0002\u0002\u0002\u03a6\u03a9\u0003\u0002\u0002\u0002\u03a7\u03a5\u0003",
+    "\u0002\u0002\u0002\u03a8\u03aa\u00073\u0002\u0002\u03a9\u03a8\u0003",
+    "\u0002\u0002\u0002\u03a9\u03aa\u0003\u0002\u0002\u0002\u03aa\u0093\u0003",
+    "\u0002\u0002\u0002\u03ab\u03ac\u0005^0\u0002\u03ac\u03ad\u00074\u0002",
+    "\u0002\u03ad\u03bc\u0005^0\u0002\u03ae\u03bd\u0005\u009eP\u0002\u03af",
+    "\u03b0\u00073\u0002\u0002\u03b0\u03b1\u0005^0\u0002\u03b1\u03b2\u0007",
+    "4\u0002\u0002\u03b2\u03b3\u0005^0\u0002\u03b3\u03b5\u0003\u0002\u0002",
+    "\u0002\u03b4\u03af\u0003\u0002\u0002\u0002\u03b5\u03b8\u0003\u0002\u0002",
+    "\u0002\u03b6\u03b4\u0003\u0002\u0002\u0002\u03b6\u03b7\u0003\u0002\u0002",
+    "\u0002\u03b7\u03ba\u0003\u0002\u0002\u0002\u03b8\u03b6\u0003\u0002\u0002",
+    "\u0002\u03b9\u03bb\u00073\u0002\u0002\u03ba\u03b9\u0003\u0002\u0002",
+    "\u0002\u03ba\u03bb\u0003\u0002\u0002\u0002\u03bb\u03bd\u0003\u0002\u0002",
+    "\u0002\u03bc\u03ae\u0003\u0002\u0002\u0002\u03bc\u03b6\u0003\u0002\u0002",
+    "\u0002\u03bd\u03cd\u0003\u0002\u0002\u0002\u03be\u03ca\u0005^0\u0002",
+    "\u03bf\u03cb\u0005\u009eP\u0002\u03c0\u03c1\u00073\u0002\u0002\u03c1",
+    "\u03c3\u0005^0\u0002\u03c2\u03c0\u0003\u0002\u0002\u0002\u03c3\u03c6",
+    "\u0003\u0002\u0002\u0002\u03c4\u03c2\u0003\u0002\u0002\u0002\u03c4\u03c5",
+    "\u0003\u0002\u0002\u0002\u03c5\u03c8\u0003\u0002\u0002\u0002\u03c6\u03c4",
+    "\u0003\u0002\u0002\u0002\u03c7\u03c9\u00073\u0002\u0002\u03c8\u03c7",
+    "\u0003\u0002\u0002\u0002\u03c8\u03c9\u0003\u0002\u0002\u0002\u03c9\u03cb",
+    "\u0003\u0002\u0002\u0002\u03ca\u03bf\u0003\u0002\u0002\u0002\u03ca\u03c4",
+    "\u0003\u0002\u0002\u0002\u03cb\u03cd\u0003\u0002\u0002\u0002\u03cc\u03ab",
+    "\u0003\u0002\u0002\u0002\u03cc\u03be\u0003\u0002\u0002\u0002\u03cd\u0095",
+    "\u0003\u0002\u0002\u0002\u03ce\u03cf\u0007\u001e\u0002\u0002\u03cf\u03d5",
+    "\u0007%\u0002\u0002\u03d0\u03d2\u00071\u0002\u0002\u03d1\u03d3\u0005",
+    "\u0098M\u0002\u03d2\u03d1\u0003\u0002\u0002\u0002\u03d2\u03d3\u0003",
+    "\u0002\u0002\u0002\u03d3\u03d4\u0003\u0002\u0002\u0002\u03d4\u03d6\u0007",
+    "2\u0002\u0002\u03d5\u03d0\u0003\u0002\u0002\u0002\u03d5\u03d6\u0003",
+    "\u0002\u0002\u0002\u03d6\u03d7\u0003\u0002\u0002\u0002\u03d7\u03d8\u0007",
+    "4\u0002\u0002\u03d8\u03d9\u0005\\/\u0002\u03d9\u0097\u0003\u0002\u0002",
+    "\u0002\u03da\u03db\u0005\u009aN\u0002\u03db\u03dc\u00073\u0002\u0002",
+    "\u03dc\u03de\u0003\u0002\u0002\u0002\u03dd\u03da\u0003\u0002\u0002\u0002",
+    "\u03de\u03e1\u0003\u0002\u0002\u0002\u03df\u03dd\u0003\u0002\u0002\u0002",
+    "\u03df\u03e0\u0003\u0002\u0002\u0002\u03e0\u03f6\u0003\u0002\u0002\u0002",
+    "\u03e1\u03df\u0003\u0002\u0002\u0002\u03e2\u03e4\u0005\u009aN\u0002",
+    "\u03e3\u03e5\u00073\u0002\u0002\u03e4\u03e3\u0003\u0002\u0002\u0002",
+    "\u03e4\u03e5\u0003\u0002\u0002\u0002\u03e5\u03f7\u0003\u0002\u0002\u0002",
+    "\u03e6\u03e7\u00070\u0002\u0002\u03e7\u03ec\u0005^0\u0002\u03e8\u03e9",
+    "\u00073\u0002\u0002\u03e9\u03eb\u0005\u009aN\u0002\u03ea\u03e8\u0003",
+    "\u0002\u0002\u0002\u03eb\u03ee\u0003\u0002\u0002\u0002\u03ec\u03ea\u0003",
+    "\u0002\u0002\u0002\u03ec\u03ed\u0003\u0002\u0002\u0002\u03ed\u03f2\u0003",
+    "\u0002\u0002\u0002\u03ee\u03ec\u0003\u0002\u0002\u0002\u03ef\u03f0\u0007",
+    "3\u0002\u0002\u03f0\u03f1\u00076\u0002\u0002\u03f1\u03f3\u0005^0\u0002",
+    "\u03f2\u03ef\u0003\u0002\u0002\u0002\u03f2\u03f3\u0003\u0002\u0002\u0002",
+    "\u03f3\u03f7\u0003\u0002\u0002\u0002\u03f4\u03f5\u00076\u0002\u0002",
+    "\u03f5\u03f7\u0005^0\u0002\u03f6\u03e2\u0003\u0002\u0002\u0002\u03f6",
+    "\u03e6\u0003\u0002\u0002\u0002\u03f6\u03f4\u0003\u0002\u0002\u0002\u03f7",
+    "\u0099\u0003\u0002\u0002\u0002\u03f8\u03fa\u0005^0\u0002\u03f9\u03fb",
+    "\u0005\u009eP\u0002\u03fa\u03f9\u0003\u0002\u0002\u0002\u03fa\u03fb",
+    "\u0003\u0002\u0002\u0002\u03fb\u0401\u0003\u0002\u0002\u0002\u03fc\u03fd",
+    "\u0005^0\u0002\u03fd\u03fe\u00077\u0002\u0002\u03fe\u03ff\u0005^0\u0002",
+    "\u03ff\u0401\u0003\u0002\u0002\u0002\u0400\u03f8\u0003\u0002\u0002\u0002",
+    "\u0400\u03fc\u0003\u0002\u0002\u0002\u0401\u009b\u0003\u0002\u0002\u0002",
+    "\u0402\u0405\u0005\u009eP\u0002\u0403\u0405\u0005\u00a0Q\u0002\u0404",
+    "\u0402\u0003\u0002\u0002\u0002\u0404\u0403\u0003\u0002\u0002\u0002\u0405",
+    "\u009d\u0003\u0002\u0002\u0002\u0406\u0407\u0007\u0010\u0002\u0002\u0407",
+    "\u0408\u0005\u0090I\u0002\u0408\u0409\u0007\u0011\u0002\u0002\u0409",
+    "\u040b\u0005f4\u0002\u040a\u040c\u0005\u009cO\u0002\u040b\u040a\u0003",
+    "\u0002\u0002\u0002\u040b\u040c\u0003\u0002\u0002\u0002\u040c\u009f\u0003",
+    "\u0002\u0002\u0002\u040d\u040e\u0007\f\u0002\u0002\u040e\u0410\u0005",
+    "`1\u0002\u040f\u0411\u0005\u009cO\u0002\u0410\u040f\u0003\u0002\u0002",
+    "\u0002\u0410\u0411\u0003\u0002\u0002\u0002\u0411\u00a1\u0003\u0002\u0002",
+    "\u0002\u0412\u0414\u0007\u001f\u0002\u0002\u0413\u0415\u0005\u00a4S",
+    "\u0002\u0414\u0413\u0003\u0002\u0002\u0002\u0414\u0415\u0003\u0002\u0002",
+    "\u0002\u0415\u00a3\u0003\u0002\u0002\u0002\u0416\u0417\u0007\u0006\u0002",
+    "\u0002\u0417\u041a\u0005^0\u0002\u0418\u041a\u0005\u0092J\u0002\u0419",
+    "\u0416\u0003\u0002\u0002\u0002\u0419\u0418\u0003\u0002\u0002\u0002\u041a",
+    "\u00a5\u0003\u0002\u0002\u0002\u041b\u041c\t\u0004\u0002\u0002\u041c",
+    "\u00a7\u0003\u0002\u0002\u0002\u041d\u0421\u0005\u00aaV\u0002\u041e",
+    "\u0421\u0007,\u0002\u0002\u041f\u0421\u0007-\u0002\u0002\u0420\u041d",
+    "\u0003\u0002\u0002\u0002\u0420\u041e\u0003\u0002\u0002\u0002\u0420\u041f",
+    "\u0003\u0002\u0002\u0002\u0421\u00a9\u0003\u0002\u0002\u0002\u0422\u0423",
+    "\t\u0005\u0002\u0002\u0423\u00ab\u0003\u0002\u0002\u0002\u0098\u00b1",
+    "\u00b5\u00b7\u00c0\u00c9\u00cc\u00d3\u00d8\u00df\u00e6\u00ed\u00f3\u00f7",
+    "\u00fd\u0103\u0107\u010d\u0111\u0113\u0117\u011d\u0121\u0127\u012b\u0130",
+    "\u0135\u013b\u013f\u0145\u014b\u014f\u0155\u0159\u015b\u015f\u0165\u0169",
+    "\u016f\u0173\u0179\u0180\u0184\u0190\u0196\u019b\u019f\u01a2\u01a6\u01ab",
+    "\u01af\u01b3\u01c1\u01c9\u01d1\u01d3\u01d7\u01e0\u01e7\u01e9\u01f2\u01f7",
+    "\u01fc\u0203\u0207\u020e\u0216\u021f\u0228\u022f\u0239\u0246\u024c\u0255",
+    "\u0260\u026b\u0270\u0275\u027a\u0282\u028b\u0291\u0293\u029b\u029f\u02a7",
+    "\u02aa\u02ae\u02b2\u02b9\u02c3\u02cb\u02d1\u02d9\u02e9\u02ec\u02f5\u02fd",
+    "\u0305\u030d\u030f\u0317\u0319\u0327\u0329\u0333\u0338\u033e\u0344\u0349",
+    "\u034e\u0356\u035c\u0364\u0368\u036a\u036e\u0377\u037e\u0382\u0386\u038a",
+    "\u038d\u038f\u0393\u039a\u039e\u03a5\u03a9\u03b6\u03ba\u03bc\u03c4\u03c8",
+    "\u03ca\u03cc\u03d2\u03d5\u03df\u03e4\u03ec\u03f2\u03f6\u03fa\u0400\u0404",
+    "\u040b\u0410\u0414\u0419\u0420"].join("");
 
-  throw new TypeError('First argument must be a string, Buffer, ' + 'ArrayBuffer, Array, or array-like object.');
-}
-exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
-  if (typeof Buffer.allocUnsafeSlow === 'function') {
-    return Buffer.allocUnsafeSlow(size);
-  }
-  if (typeof size !== 'number') {
-    throw new TypeError('size must be a number');
-  }
-  if (size >= MAX_LEN) {
-    throw new RangeError('size is too large');
-  }
-  return new SlowBuffer(size);
+
+var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
+
+var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
+
+var sharedContextCache = new antlr4.PredictionContextCache();
+
+var literalNames = [ null, "'def'", "'return'", "'raise'", "'from'", "'import'", 
+                     "'as'", "'global'", "'nonlocal'", "'assert'", "'if'", 
+                     "'elif'", "'else'", "'while'", "'for'", "'in'", "'try'", 
+                     "'finally'", "'with'", "'except'", "'lambda'", "'or'", 
+                     "'and'", "'not'", "'is'", "'None'", "'True'", "'False'", 
+                     "'class'", "'yield'", "'del'", "'pass'", "'continue'", 
+                     "'break'", null, null, null, null, null, null, null, 
+                     null, null, null, "'.'", "'...'", "'*'", "'('", "')'", 
+                     "','", "':'", "';'", "'**'", "'='", "'['", "']'", "'|'", 
+                     "'^'", "'&'", "'<<'", "'>>'", "'+'", "'-'", "'/'", 
+                     "'%'", "'//'", "'~'", "'{'", "'}'", "'<'", "'>'", "'=='", 
+                     "'>='", "'<='", "'<>'", "'!='", "'@'", "'->'", "'+='", 
+                     "'-='", "'*='", "'@='", "'/='", "'%='", "'&='", "'|='", 
+                     "'^='", "'<<='", "'>>='", "'**='", "'//='" ];
+
+var symbolicNames = [ null, "DEF", "RETURN", "RAISE", "FROM", "IMPORT", 
+                      "AS", "GLOBAL", "NONLOCAL", "ASSERT", "IF", "ELIF", 
+                      "ELSE", "WHILE", "FOR", "IN", "TRY", "FINALLY", "WITH", 
+                      "EXCEPT", "LAMBDA", "OR", "AND", "NOT", "IS", "NONE", 
+                      "TRUE", "FALSE", "CLASS", "YIELD", "DEL", "PASS", 
+                      "CONTINUE", "BREAK", "NEWLINE", "NAME", "STRING_LITERAL", 
+                      "BYTES_LITERAL", "DECIMAL_INTEGER", "OCT_INTEGER", 
+                      "HEX_INTEGER", "BIN_INTEGER", "FLOAT_NUMBER", "IMAG_NUMBER", 
+                      "DOT", "ELLIPSIS", "STAR", "OPEN_PAREN", "CLOSE_PAREN", 
+                      "COMMA", "COLON", "SEMI_COLON", "POWER", "ASSIGN", 
+                      "OPEN_BRACK", "CLOSE_BRACK", "OR_OP", "XOR", "AND_OP", 
+                      "LEFT_SHIFT", "RIGHT_SHIFT", "ADD", "MINUS", "DIV", 
+                      "MOD", "IDIV", "NOT_OP", "OPEN_BRACE", "CLOSE_BRACE", 
+                      "LESS_THAN", "GREATER_THAN", "EQUALS", "GT_EQ", "LT_EQ", 
+                      "NOT_EQ_1", "NOT_EQ_2", "AT", "ARROW", "ADD_ASSIGN", 
+                      "SUB_ASSIGN", "MULT_ASSIGN", "AT_ASSIGN", "DIV_ASSIGN", 
+                      "MOD_ASSIGN", "AND_ASSIGN", "OR_ASSIGN", "XOR_ASSIGN", 
+                      "LEFT_SHIFT_ASSIGN", "RIGHT_SHIFT_ASSIGN", "POWER_ASSIGN", 
+                      "IDIV_ASSIGN", "SKIP_", "UNKNOWN_CHAR", "INDENT", 
+                      "DEDENT" ];
+
+var ruleNames =  [ "single_input", "file_input", "eval_input", "decorator", 
+                   "decorators", "decorated", "funcdef", "parameters", "typedargslist", 
+                   "tfpdef", "varargslist", "vfpdef", "stmt", "simple_stmt", 
+                   "small_stmt", "expr_stmt", "testlist_star_expr", "augassign", 
+                   "del_stmt", "pass_stmt", "flow_stmt", "break_stmt", "continue_stmt", 
+                   "return_stmt", "yield_stmt", "raise_stmt", "import_stmt", 
+                   "import_name", "import_from", "import_as_name", "dotted_as_name", 
+                   "import_as_names", "dotted_as_names", "dotted_name", 
+                   "global_stmt", "nonlocal_stmt", "assert_stmt", "compound_stmt", 
+                   "if_stmt", "while_stmt", "for_stmt", "try_stmt", "with_stmt", 
+                   "with_item", "except_clause", "suite", "test", "test_nocond", 
+                   "lambdef", "lambdef_nocond", "or_test", "and_test", "not_test", 
+                   "comparison", "comp_op", "star_expr", "expr", "xor_expr", 
+                   "and_expr", "shift_expr", "arith_expr", "term", "factor", 
+                   "power", "trailed_atom", "atom", "testlist_comp", "trailer", 
+                   "subscriptlist", "subscript", "sliceop", "exprlist", 
+                   "testlist", "dictorsetmaker", "classdef", "arglist", 
+                   "argument", "comp_iter", "comp_for", "comp_if", "yield_expr", 
+                   "yield_arg", "str", "number", "integer" ];
+
+function Python3Parser (input) {
+	antlr4.Parser.call(this, input);
+    this._interp = new antlr4.atn.ParserATNSimulator(this, atn, decisionsToDFA, sharedContextCache);
+    this.ruleNames = ruleNames;
+    this.literalNames = literalNames;
+    this.symbolicNames = symbolicNames;
+    return this;
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+Python3Parser.prototype = Object.create(antlr4.Parser.prototype);
+Python3Parser.prototype.constructor = Python3Parser;
+
+Object.defineProperty(Python3Parser.prototype, "atn", {
+	get : function() {
+		return atn;
+	}
+});
+
+Python3Parser.EOF = antlr4.Token.EOF;
+Python3Parser.DEF = 1;
+Python3Parser.RETURN = 2;
+Python3Parser.RAISE = 3;
+Python3Parser.FROM = 4;
+Python3Parser.IMPORT = 5;
+Python3Parser.AS = 6;
+Python3Parser.GLOBAL = 7;
+Python3Parser.NONLOCAL = 8;
+Python3Parser.ASSERT = 9;
+Python3Parser.IF = 10;
+Python3Parser.ELIF = 11;
+Python3Parser.ELSE = 12;
+Python3Parser.WHILE = 13;
+Python3Parser.FOR = 14;
+Python3Parser.IN = 15;
+Python3Parser.TRY = 16;
+Python3Parser.FINALLY = 17;
+Python3Parser.WITH = 18;
+Python3Parser.EXCEPT = 19;
+Python3Parser.LAMBDA = 20;
+Python3Parser.OR = 21;
+Python3Parser.AND = 22;
+Python3Parser.NOT = 23;
+Python3Parser.IS = 24;
+Python3Parser.NONE = 25;
+Python3Parser.TRUE = 26;
+Python3Parser.FALSE = 27;
+Python3Parser.CLASS = 28;
+Python3Parser.YIELD = 29;
+Python3Parser.DEL = 30;
+Python3Parser.PASS = 31;
+Python3Parser.CONTINUE = 32;
+Python3Parser.BREAK = 33;
+Python3Parser.NEWLINE = 34;
+Python3Parser.NAME = 35;
+Python3Parser.STRING_LITERAL = 36;
+Python3Parser.BYTES_LITERAL = 37;
+Python3Parser.DECIMAL_INTEGER = 38;
+Python3Parser.OCT_INTEGER = 39;
+Python3Parser.HEX_INTEGER = 40;
+Python3Parser.BIN_INTEGER = 41;
+Python3Parser.FLOAT_NUMBER = 42;
+Python3Parser.IMAG_NUMBER = 43;
+Python3Parser.DOT = 44;
+Python3Parser.ELLIPSIS = 45;
+Python3Parser.STAR = 46;
+Python3Parser.OPEN_PAREN = 47;
+Python3Parser.CLOSE_PAREN = 48;
+Python3Parser.COMMA = 49;
+Python3Parser.COLON = 50;
+Python3Parser.SEMI_COLON = 51;
+Python3Parser.POWER = 52;
+Python3Parser.ASSIGN = 53;
+Python3Parser.OPEN_BRACK = 54;
+Python3Parser.CLOSE_BRACK = 55;
+Python3Parser.OR_OP = 56;
+Python3Parser.XOR = 57;
+Python3Parser.AND_OP = 58;
+Python3Parser.LEFT_SHIFT = 59;
+Python3Parser.RIGHT_SHIFT = 60;
+Python3Parser.ADD = 61;
+Python3Parser.MINUS = 62;
+Python3Parser.DIV = 63;
+Python3Parser.MOD = 64;
+Python3Parser.IDIV = 65;
+Python3Parser.NOT_OP = 66;
+Python3Parser.OPEN_BRACE = 67;
+Python3Parser.CLOSE_BRACE = 68;
+Python3Parser.LESS_THAN = 69;
+Python3Parser.GREATER_THAN = 70;
+Python3Parser.EQUALS = 71;
+Python3Parser.GT_EQ = 72;
+Python3Parser.LT_EQ = 73;
+Python3Parser.NOT_EQ_1 = 74;
+Python3Parser.NOT_EQ_2 = 75;
+Python3Parser.AT = 76;
+Python3Parser.ARROW = 77;
+Python3Parser.ADD_ASSIGN = 78;
+Python3Parser.SUB_ASSIGN = 79;
+Python3Parser.MULT_ASSIGN = 80;
+Python3Parser.AT_ASSIGN = 81;
+Python3Parser.DIV_ASSIGN = 82;
+Python3Parser.MOD_ASSIGN = 83;
+Python3Parser.AND_ASSIGN = 84;
+Python3Parser.OR_ASSIGN = 85;
+Python3Parser.XOR_ASSIGN = 86;
+Python3Parser.LEFT_SHIFT_ASSIGN = 87;
+Python3Parser.RIGHT_SHIFT_ASSIGN = 88;
+Python3Parser.POWER_ASSIGN = 89;
+Python3Parser.IDIV_ASSIGN = 90;
+Python3Parser.SKIP_ = 91;
+Python3Parser.UNKNOWN_CHAR = 92;
+Python3Parser.INDENT = 93;
+Python3Parser.DEDENT = 94;
+
+Python3Parser.RULE_single_input = 0;
+Python3Parser.RULE_file_input = 1;
+Python3Parser.RULE_eval_input = 2;
+Python3Parser.RULE_decorator = 3;
+Python3Parser.RULE_decorators = 4;
+Python3Parser.RULE_decorated = 5;
+Python3Parser.RULE_funcdef = 6;
+Python3Parser.RULE_parameters = 7;
+Python3Parser.RULE_typedargslist = 8;
+Python3Parser.RULE_tfpdef = 9;
+Python3Parser.RULE_varargslist = 10;
+Python3Parser.RULE_vfpdef = 11;
+Python3Parser.RULE_stmt = 12;
+Python3Parser.RULE_simple_stmt = 13;
+Python3Parser.RULE_small_stmt = 14;
+Python3Parser.RULE_expr_stmt = 15;
+Python3Parser.RULE_testlist_star_expr = 16;
+Python3Parser.RULE_augassign = 17;
+Python3Parser.RULE_del_stmt = 18;
+Python3Parser.RULE_pass_stmt = 19;
+Python3Parser.RULE_flow_stmt = 20;
+Python3Parser.RULE_break_stmt = 21;
+Python3Parser.RULE_continue_stmt = 22;
+Python3Parser.RULE_return_stmt = 23;
+Python3Parser.RULE_yield_stmt = 24;
+Python3Parser.RULE_raise_stmt = 25;
+Python3Parser.RULE_import_stmt = 26;
+Python3Parser.RULE_import_name = 27;
+Python3Parser.RULE_import_from = 28;
+Python3Parser.RULE_import_as_name = 29;
+Python3Parser.RULE_dotted_as_name = 30;
+Python3Parser.RULE_import_as_names = 31;
+Python3Parser.RULE_dotted_as_names = 32;
+Python3Parser.RULE_dotted_name = 33;
+Python3Parser.RULE_global_stmt = 34;
+Python3Parser.RULE_nonlocal_stmt = 35;
+Python3Parser.RULE_assert_stmt = 36;
+Python3Parser.RULE_compound_stmt = 37;
+Python3Parser.RULE_if_stmt = 38;
+Python3Parser.RULE_while_stmt = 39;
+Python3Parser.RULE_for_stmt = 40;
+Python3Parser.RULE_try_stmt = 41;
+Python3Parser.RULE_with_stmt = 42;
+Python3Parser.RULE_with_item = 43;
+Python3Parser.RULE_except_clause = 44;
+Python3Parser.RULE_suite = 45;
+Python3Parser.RULE_test = 46;
+Python3Parser.RULE_test_nocond = 47;
+Python3Parser.RULE_lambdef = 48;
+Python3Parser.RULE_lambdef_nocond = 49;
+Python3Parser.RULE_or_test = 50;
+Python3Parser.RULE_and_test = 51;
+Python3Parser.RULE_not_test = 52;
+Python3Parser.RULE_comparison = 53;
+Python3Parser.RULE_comp_op = 54;
+Python3Parser.RULE_star_expr = 55;
+Python3Parser.RULE_expr = 56;
+Python3Parser.RULE_xor_expr = 57;
+Python3Parser.RULE_and_expr = 58;
+Python3Parser.RULE_shift_expr = 59;
+Python3Parser.RULE_arith_expr = 60;
+Python3Parser.RULE_term = 61;
+Python3Parser.RULE_factor = 62;
+Python3Parser.RULE_power = 63;
+Python3Parser.RULE_trailed_atom = 64;
+Python3Parser.RULE_atom = 65;
+Python3Parser.RULE_testlist_comp = 66;
+Python3Parser.RULE_trailer = 67;
+Python3Parser.RULE_subscriptlist = 68;
+Python3Parser.RULE_subscript = 69;
+Python3Parser.RULE_sliceop = 70;
+Python3Parser.RULE_exprlist = 71;
+Python3Parser.RULE_testlist = 72;
+Python3Parser.RULE_dictorsetmaker = 73;
+Python3Parser.RULE_classdef = 74;
+Python3Parser.RULE_arglist = 75;
+Python3Parser.RULE_argument = 76;
+Python3Parser.RULE_comp_iter = 77;
+Python3Parser.RULE_comp_for = 78;
+Python3Parser.RULE_comp_if = 79;
+Python3Parser.RULE_yield_expr = 80;
+Python3Parser.RULE_yield_arg = 81;
+Python3Parser.RULE_str = 82;
+Python3Parser.RULE_number = 83;
+Python3Parser.RULE_integer = 84;
+
+function Single_inputContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_single_input;
+    return this;
+}
+
+Single_inputContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Single_inputContext.prototype.constructor = Single_inputContext;
+
+Single_inputContext.prototype.NEWLINE = function() {
+    return this.getToken(Python3Parser.NEWLINE, 0);
+};
+
+Single_inputContext.prototype.simple_stmt = function() {
+    return this.getTypedRuleContext(Simple_stmtContext,0);
+};
+
+Single_inputContext.prototype.compound_stmt = function() {
+    return this.getTypedRuleContext(Compound_stmtContext,0);
+};
+
+
+
+
+Python3Parser.Single_inputContext = Single_inputContext;
+
+Python3Parser.prototype.single_input = function() {
+
+    var localctx = new Single_inputContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 0, Python3Parser.RULE_single_input);
+    try {
+        this.state = 175;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NEWLINE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 170;
+            this.match(Python3Parser.NEWLINE);
+            break;
+        case Python3Parser.RETURN:
+        case Python3Parser.RAISE:
+        case Python3Parser.FROM:
+        case Python3Parser.IMPORT:
+        case Python3Parser.GLOBAL:
+        case Python3Parser.NONLOCAL:
+        case Python3Parser.ASSERT:
+        case Python3Parser.LAMBDA:
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.YIELD:
+        case Python3Parser.DEL:
+        case Python3Parser.PASS:
+        case Python3Parser.CONTINUE:
+        case Python3Parser.BREAK:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 171;
+            this.simple_stmt();
+            break;
+        case Python3Parser.DEF:
+        case Python3Parser.IF:
+        case Python3Parser.WHILE:
+        case Python3Parser.FOR:
+        case Python3Parser.TRY:
+        case Python3Parser.WITH:
+        case Python3Parser.CLASS:
+        case Python3Parser.AT:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 172;
+            this.compound_stmt();
+            this.state = 173;
+            this.match(Python3Parser.NEWLINE);
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function File_inputContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_file_input;
+    return this;
+}
+
+File_inputContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+File_inputContext.prototype.constructor = File_inputContext;
+
+File_inputContext.prototype.EOF = function() {
+    return this.getToken(Python3Parser.EOF, 0);
+};
+
+File_inputContext.prototype.NEWLINE = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NEWLINE);
+    } else {
+        return this.getToken(Python3Parser.NEWLINE, i);
+    }
+};
+
+
+File_inputContext.prototype.stmt = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(StmtContext);
+    } else {
+        return this.getTypedRuleContext(StmtContext,i);
+    }
+};
+
+
+
+
+Python3Parser.File_inputContext = File_inputContext;
+
+Python3Parser.prototype.file_input = function() {
+
+    var localctx = new File_inputContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 2, Python3Parser.RULE_file_input);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 181;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << Python3Parser.DEF) | (1 << Python3Parser.RETURN) | (1 << Python3Parser.RAISE) | (1 << Python3Parser.FROM) | (1 << Python3Parser.IMPORT) | (1 << Python3Parser.GLOBAL) | (1 << Python3Parser.NONLOCAL) | (1 << Python3Parser.ASSERT) | (1 << Python3Parser.IF) | (1 << Python3Parser.WHILE) | (1 << Python3Parser.FOR) | (1 << Python3Parser.TRY) | (1 << Python3Parser.WITH) | (1 << Python3Parser.LAMBDA) | (1 << Python3Parser.NOT) | (1 << Python3Parser.NONE) | (1 << Python3Parser.TRUE) | (1 << Python3Parser.FALSE) | (1 << Python3Parser.CLASS) | (1 << Python3Parser.YIELD) | (1 << Python3Parser.DEL) | (1 << Python3Parser.PASS))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (Python3Parser.CONTINUE - 32)) | (1 << (Python3Parser.BREAK - 32)) | (1 << (Python3Parser.NEWLINE - 32)) | (1 << (Python3Parser.NAME - 32)) | (1 << (Python3Parser.STRING_LITERAL - 32)) | (1 << (Python3Parser.BYTES_LITERAL - 32)) | (1 << (Python3Parser.DECIMAL_INTEGER - 32)) | (1 << (Python3Parser.OCT_INTEGER - 32)) | (1 << (Python3Parser.HEX_INTEGER - 32)) | (1 << (Python3Parser.BIN_INTEGER - 32)) | (1 << (Python3Parser.FLOAT_NUMBER - 32)) | (1 << (Python3Parser.IMAG_NUMBER - 32)) | (1 << (Python3Parser.ELLIPSIS - 32)) | (1 << (Python3Parser.STAR - 32)) | (1 << (Python3Parser.OPEN_PAREN - 32)) | (1 << (Python3Parser.OPEN_BRACK - 32)) | (1 << (Python3Parser.ADD - 32)) | (1 << (Python3Parser.MINUS - 32)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (Python3Parser.NOT_OP - 66)) | (1 << (Python3Parser.OPEN_BRACE - 66)) | (1 << (Python3Parser.AT - 66)))) !== 0)) {
+            this.state = 179;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.NEWLINE:
+                this.state = 177;
+                this.match(Python3Parser.NEWLINE);
+                break;
+            case Python3Parser.DEF:
+            case Python3Parser.RETURN:
+            case Python3Parser.RAISE:
+            case Python3Parser.FROM:
+            case Python3Parser.IMPORT:
+            case Python3Parser.GLOBAL:
+            case Python3Parser.NONLOCAL:
+            case Python3Parser.ASSERT:
+            case Python3Parser.IF:
+            case Python3Parser.WHILE:
+            case Python3Parser.FOR:
+            case Python3Parser.TRY:
+            case Python3Parser.WITH:
+            case Python3Parser.LAMBDA:
+            case Python3Parser.NOT:
+            case Python3Parser.NONE:
+            case Python3Parser.TRUE:
+            case Python3Parser.FALSE:
+            case Python3Parser.CLASS:
+            case Python3Parser.YIELD:
+            case Python3Parser.DEL:
+            case Python3Parser.PASS:
+            case Python3Parser.CONTINUE:
+            case Python3Parser.BREAK:
+            case Python3Parser.NAME:
+            case Python3Parser.STRING_LITERAL:
+            case Python3Parser.BYTES_LITERAL:
+            case Python3Parser.DECIMAL_INTEGER:
+            case Python3Parser.OCT_INTEGER:
+            case Python3Parser.HEX_INTEGER:
+            case Python3Parser.BIN_INTEGER:
+            case Python3Parser.FLOAT_NUMBER:
+            case Python3Parser.IMAG_NUMBER:
+            case Python3Parser.ELLIPSIS:
+            case Python3Parser.STAR:
+            case Python3Parser.OPEN_PAREN:
+            case Python3Parser.OPEN_BRACK:
+            case Python3Parser.ADD:
+            case Python3Parser.MINUS:
+            case Python3Parser.NOT_OP:
+            case Python3Parser.OPEN_BRACE:
+            case Python3Parser.AT:
+                this.state = 178;
+                this.stmt();
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            this.state = 183;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+        this.state = 184;
+        this.match(Python3Parser.EOF);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Eval_inputContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_eval_input;
+    return this;
+}
+
+Eval_inputContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Eval_inputContext.prototype.constructor = Eval_inputContext;
+
+Eval_inputContext.prototype.testlist = function() {
+    return this.getTypedRuleContext(TestlistContext,0);
+};
+
+Eval_inputContext.prototype.EOF = function() {
+    return this.getToken(Python3Parser.EOF, 0);
+};
+
+Eval_inputContext.prototype.NEWLINE = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NEWLINE);
+    } else {
+        return this.getToken(Python3Parser.NEWLINE, i);
+    }
+};
+
+
+
+
+
+Python3Parser.Eval_inputContext = Eval_inputContext;
+
+Python3Parser.prototype.eval_input = function() {
+
+    var localctx = new Eval_inputContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 4, Python3Parser.RULE_eval_input);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 186;
+        this.testlist();
+        this.state = 190;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.NEWLINE) {
+            this.state = 187;
+            this.match(Python3Parser.NEWLINE);
+            this.state = 192;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+        this.state = 193;
+        this.match(Python3Parser.EOF);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function DecoratorContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_decorator;
+    return this;
+}
+
+DecoratorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+DecoratorContext.prototype.constructor = DecoratorContext;
+
+DecoratorContext.prototype.dotted_name = function() {
+    return this.getTypedRuleContext(Dotted_nameContext,0);
+};
+
+DecoratorContext.prototype.NEWLINE = function() {
+    return this.getToken(Python3Parser.NEWLINE, 0);
+};
+
+DecoratorContext.prototype.arglist = function() {
+    return this.getTypedRuleContext(ArglistContext,0);
+};
+
+
+
+
+Python3Parser.DecoratorContext = DecoratorContext;
+
+Python3Parser.prototype.decorator = function() {
+
+    var localctx = new DecoratorContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 6, Python3Parser.RULE_decorator);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 195;
+        this.match(Python3Parser.AT);
+        this.state = 196;
+        this.dotted_name();
+        this.state = 202;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.OPEN_PAREN) {
+            this.state = 197;
+            this.match(Python3Parser.OPEN_PAREN);
+            this.state = 199;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 52)) & ~0x1f) == 0 && ((1 << (_la - 52)) & ((1 << (Python3Parser.POWER - 52)) | (1 << (Python3Parser.OPEN_BRACK - 52)) | (1 << (Python3Parser.ADD - 52)) | (1 << (Python3Parser.MINUS - 52)) | (1 << (Python3Parser.NOT_OP - 52)) | (1 << (Python3Parser.OPEN_BRACE - 52)))) !== 0)) {
+                this.state = 198;
+                this.arglist();
+            }
+
+            this.state = 201;
+            this.match(Python3Parser.CLOSE_PAREN);
+        }
+
+        this.state = 204;
+        this.match(Python3Parser.NEWLINE);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function DecoratorsContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_decorators;
+    return this;
+}
+
+DecoratorsContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+DecoratorsContext.prototype.constructor = DecoratorsContext;
+
+DecoratorsContext.prototype.decorator = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(DecoratorContext);
+    } else {
+        return this.getTypedRuleContext(DecoratorContext,i);
+    }
+};
+
+
+
+
+Python3Parser.DecoratorsContext = DecoratorsContext;
+
+Python3Parser.prototype.decorators = function() {
+
+    var localctx = new DecoratorsContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 8, Python3Parser.RULE_decorators);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 207; 
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        do {
+            this.state = 206;
+            this.decorator();
+            this.state = 209; 
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        } while(_la===Python3Parser.AT);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function DecoratedContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_decorated;
+    return this;
+}
+
+DecoratedContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+DecoratedContext.prototype.constructor = DecoratedContext;
+
+DecoratedContext.prototype.decorators = function() {
+    return this.getTypedRuleContext(DecoratorsContext,0);
+};
+
+DecoratedContext.prototype.classdef = function() {
+    return this.getTypedRuleContext(ClassdefContext,0);
+};
+
+DecoratedContext.prototype.funcdef = function() {
+    return this.getTypedRuleContext(FuncdefContext,0);
+};
+
+
+
+
+Python3Parser.DecoratedContext = DecoratedContext;
+
+Python3Parser.prototype.decorated = function() {
+
+    var localctx = new DecoratedContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 10, Python3Parser.RULE_decorated);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 211;
+        this.decorators();
+        this.state = 214;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.CLASS:
+            this.state = 212;
+            this.classdef();
+            break;
+        case Python3Parser.DEF:
+            this.state = 213;
+            this.funcdef();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function FuncdefContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_funcdef;
+    return this;
+}
+
+FuncdefContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+FuncdefContext.prototype.constructor = FuncdefContext;
+
+FuncdefContext.prototype.DEF = function() {
+    return this.getToken(Python3Parser.DEF, 0);
+};
+
+FuncdefContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+FuncdefContext.prototype.parameters = function() {
+    return this.getTypedRuleContext(ParametersContext,0);
+};
+
+FuncdefContext.prototype.suite = function() {
+    return this.getTypedRuleContext(SuiteContext,0);
+};
+
+FuncdefContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+
+
+
+Python3Parser.FuncdefContext = FuncdefContext;
+
+Python3Parser.prototype.funcdef = function() {
+
+    var localctx = new FuncdefContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 12, Python3Parser.RULE_funcdef);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 216;
+        this.match(Python3Parser.DEF);
+        this.state = 217;
+        this.match(Python3Parser.NAME);
+        this.state = 218;
+        this.parameters();
+        this.state = 221;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.ARROW) {
+            this.state = 219;
+            this.match(Python3Parser.ARROW);
+            this.state = 220;
+            this.test();
+        }
+
+        this.state = 223;
+        this.match(Python3Parser.COLON);
+        this.state = 224;
+        this.suite();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ParametersContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_parameters;
+    return this;
+}
+
+ParametersContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ParametersContext.prototype.constructor = ParametersContext;
+
+ParametersContext.prototype.typedargslist = function() {
+    return this.getTypedRuleContext(TypedargslistContext,0);
+};
+
+
+
+
+Python3Parser.ParametersContext = ParametersContext;
+
+Python3Parser.prototype.parameters = function() {
+
+    var localctx = new ParametersContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 14, Python3Parser.RULE_parameters);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 226;
+        this.match(Python3Parser.OPEN_PAREN);
+        this.state = 228;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 35)) & ~0x1f) == 0 && ((1 << (_la - 35)) & ((1 << (Python3Parser.NAME - 35)) | (1 << (Python3Parser.STAR - 35)) | (1 << (Python3Parser.POWER - 35)))) !== 0)) {
+            this.state = 227;
+            this.typedargslist();
+        }
+
+        this.state = 230;
+        this.match(Python3Parser.CLOSE_PAREN);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TypedargslistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_typedargslist;
+    return this;
+}
+
+TypedargslistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TypedargslistContext.prototype.constructor = TypedargslistContext;
+
+TypedargslistContext.prototype.tfpdef = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TfpdefContext);
+    } else {
+        return this.getTypedRuleContext(TfpdefContext,i);
+    }
+};
+
+TypedargslistContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+
+
+
+Python3Parser.TypedargslistContext = TypedargslistContext;
+
+Python3Parser.prototype.typedargslist = function() {
+
+    var localctx = new TypedargslistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 16, Python3Parser.RULE_typedargslist);
+    var _la = 0; // Token type
+    try {
+        this.state = 297;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NAME:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 232;
+            this.tfpdef();
+            this.state = 235;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.ASSIGN) {
+                this.state = 233;
+                this.match(Python3Parser.ASSIGN);
+                this.state = 234;
+                this.test();
+            }
+
+            this.state = 245;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,12,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 237;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 238;
+                    this.tfpdef();
+                    this.state = 241;
+                    this._errHandler.sync(this);
+                    _la = this._input.LA(1);
+                    if(_la===Python3Parser.ASSIGN) {
+                        this.state = 239;
+                        this.match(Python3Parser.ASSIGN);
+                        this.state = 240;
+                        this.test();
+                    }
+             
+                }
+                this.state = 247;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,12,this._ctx);
+            }
+
+            this.state = 273;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 248;
+                this.match(Python3Parser.COMMA);
+                this.state = 271;
+                this._errHandler.sync(this);
+                switch (this._input.LA(1)) {
+                case Python3Parser.STAR:
+                	this.state = 249;
+                	this.match(Python3Parser.STAR);
+                	this.state = 251;
+                	this._errHandler.sync(this);
+                	_la = this._input.LA(1);
+                	if(_la===Python3Parser.NAME) {
+                	    this.state = 250;
+                	    this.tfpdef();
+                	}
+
+                	this.state = 261;
+                	this._errHandler.sync(this);
+                	var _alt = this._interp.adaptivePredict(this._input,15,this._ctx)
+                	while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                	    if(_alt===1) {
+                	        this.state = 253;
+                	        this.match(Python3Parser.COMMA);
+                	        this.state = 254;
+                	        this.tfpdef();
+                	        this.state = 257;
+                	        this._errHandler.sync(this);
+                	        _la = this._input.LA(1);
+                	        if(_la===Python3Parser.ASSIGN) {
+                	            this.state = 255;
+                	            this.match(Python3Parser.ASSIGN);
+                	            this.state = 256;
+                	            this.test();
+                	        }
+                	 
+                	    }
+                	    this.state = 263;
+                	    this._errHandler.sync(this);
+                	    _alt = this._interp.adaptivePredict(this._input,15,this._ctx);
+                	}
+
+                	this.state = 267;
+                	this._errHandler.sync(this);
+                	_la = this._input.LA(1);
+                	if(_la===Python3Parser.COMMA) {
+                	    this.state = 264;
+                	    this.match(Python3Parser.COMMA);
+                	    this.state = 265;
+                	    this.match(Python3Parser.POWER);
+                	    this.state = 266;
+                	    this.tfpdef();
+                	}
+
+                	break;
+                case Python3Parser.POWER:
+                	this.state = 269;
+                	this.match(Python3Parser.POWER);
+                	this.state = 270;
+                	this.tfpdef();
+                	break;
+                case Python3Parser.CLOSE_PAREN:
+                	break;
+                default:
+                	throw new antlr4.error.NoViableAltException(this);
+                }
+            }
+
+            break;
+        case Python3Parser.STAR:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 275;
+            this.match(Python3Parser.STAR);
+            this.state = 277;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.NAME) {
+                this.state = 276;
+                this.tfpdef();
+            }
+
+            this.state = 287;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,21,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 279;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 280;
+                    this.tfpdef();
+                    this.state = 283;
+                    this._errHandler.sync(this);
+                    _la = this._input.LA(1);
+                    if(_la===Python3Parser.ASSIGN) {
+                        this.state = 281;
+                        this.match(Python3Parser.ASSIGN);
+                        this.state = 282;
+                        this.test();
+                    }
+             
+                }
+                this.state = 289;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,21,this._ctx);
+            }
+
+            this.state = 293;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 290;
+                this.match(Python3Parser.COMMA);
+                this.state = 291;
+                this.match(Python3Parser.POWER);
+                this.state = 292;
+                this.tfpdef();
+            }
+
+            break;
+        case Python3Parser.POWER:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 295;
+            this.match(Python3Parser.POWER);
+            this.state = 296;
+            this.tfpdef();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TfpdefContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_tfpdef;
+    return this;
+}
+
+TfpdefContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TfpdefContext.prototype.constructor = TfpdefContext;
+
+TfpdefContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+TfpdefContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+
+
+
+Python3Parser.TfpdefContext = TfpdefContext;
+
+Python3Parser.prototype.tfpdef = function() {
+
+    var localctx = new TfpdefContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 18, Python3Parser.RULE_tfpdef);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 299;
+        this.match(Python3Parser.NAME);
+        this.state = 302;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COLON) {
+            this.state = 300;
+            this.match(Python3Parser.COLON);
+            this.state = 301;
+            this.test();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function VarargslistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_varargslist;
+    return this;
+}
+
+VarargslistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+VarargslistContext.prototype.constructor = VarargslistContext;
+
+VarargslistContext.prototype.vfpdef = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(VfpdefContext);
+    } else {
+        return this.getTypedRuleContext(VfpdefContext,i);
+    }
+};
+
+VarargslistContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+
+
+
+Python3Parser.VarargslistContext = VarargslistContext;
+
+Python3Parser.prototype.varargslist = function() {
+
+    var localctx = new VarargslistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 20, Python3Parser.RULE_varargslist);
+    var _la = 0; // Token type
+    try {
+        this.state = 369;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NAME:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 304;
+            this.vfpdef();
+            this.state = 307;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.ASSIGN) {
+                this.state = 305;
+                this.match(Python3Parser.ASSIGN);
+                this.state = 306;
+                this.test();
+            }
+
+            this.state = 317;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,27,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 309;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 310;
+                    this.vfpdef();
+                    this.state = 313;
+                    this._errHandler.sync(this);
+                    _la = this._input.LA(1);
+                    if(_la===Python3Parser.ASSIGN) {
+                        this.state = 311;
+                        this.match(Python3Parser.ASSIGN);
+                        this.state = 312;
+                        this.test();
+                    }
+             
+                }
+                this.state = 319;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,27,this._ctx);
+            }
+
+            this.state = 345;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 320;
+                this.match(Python3Parser.COMMA);
+                this.state = 343;
+                this._errHandler.sync(this);
+                switch (this._input.LA(1)) {
+                case Python3Parser.STAR:
+                	this.state = 321;
+                	this.match(Python3Parser.STAR);
+                	this.state = 323;
+                	this._errHandler.sync(this);
+                	_la = this._input.LA(1);
+                	if(_la===Python3Parser.NAME) {
+                	    this.state = 322;
+                	    this.vfpdef();
+                	}
+
+                	this.state = 333;
+                	this._errHandler.sync(this);
+                	var _alt = this._interp.adaptivePredict(this._input,30,this._ctx)
+                	while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                	    if(_alt===1) {
+                	        this.state = 325;
+                	        this.match(Python3Parser.COMMA);
+                	        this.state = 326;
+                	        this.vfpdef();
+                	        this.state = 329;
+                	        this._errHandler.sync(this);
+                	        _la = this._input.LA(1);
+                	        if(_la===Python3Parser.ASSIGN) {
+                	            this.state = 327;
+                	            this.match(Python3Parser.ASSIGN);
+                	            this.state = 328;
+                	            this.test();
+                	        }
+                	 
+                	    }
+                	    this.state = 335;
+                	    this._errHandler.sync(this);
+                	    _alt = this._interp.adaptivePredict(this._input,30,this._ctx);
+                	}
+
+                	this.state = 339;
+                	this._errHandler.sync(this);
+                	_la = this._input.LA(1);
+                	if(_la===Python3Parser.COMMA) {
+                	    this.state = 336;
+                	    this.match(Python3Parser.COMMA);
+                	    this.state = 337;
+                	    this.match(Python3Parser.POWER);
+                	    this.state = 338;
+                	    this.vfpdef();
+                	}
+
+                	break;
+                case Python3Parser.POWER:
+                	this.state = 341;
+                	this.match(Python3Parser.POWER);
+                	this.state = 342;
+                	this.vfpdef();
+                	break;
+                case Python3Parser.COLON:
+                	break;
+                default:
+                	throw new antlr4.error.NoViableAltException(this);
+                }
+            }
+
+            break;
+        case Python3Parser.STAR:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 347;
+            this.match(Python3Parser.STAR);
+            this.state = 349;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.NAME) {
+                this.state = 348;
+                this.vfpdef();
+            }
+
+            this.state = 359;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,36,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 351;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 352;
+                    this.vfpdef();
+                    this.state = 355;
+                    this._errHandler.sync(this);
+                    _la = this._input.LA(1);
+                    if(_la===Python3Parser.ASSIGN) {
+                        this.state = 353;
+                        this.match(Python3Parser.ASSIGN);
+                        this.state = 354;
+                        this.test();
+                    }
+             
+                }
+                this.state = 361;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,36,this._ctx);
+            }
+
+            this.state = 365;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 362;
+                this.match(Python3Parser.COMMA);
+                this.state = 363;
+                this.match(Python3Parser.POWER);
+                this.state = 364;
+                this.vfpdef();
+            }
+
+            break;
+        case Python3Parser.POWER:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 367;
+            this.match(Python3Parser.POWER);
+            this.state = 368;
+            this.vfpdef();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function VfpdefContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_vfpdef;
+    return this;
+}
+
+VfpdefContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+VfpdefContext.prototype.constructor = VfpdefContext;
+
+VfpdefContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+
+
+
+Python3Parser.VfpdefContext = VfpdefContext;
+
+Python3Parser.prototype.vfpdef = function() {
+
+    var localctx = new VfpdefContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 22, Python3Parser.RULE_vfpdef);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 371;
+        this.match(Python3Parser.NAME);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function StmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_stmt;
+    return this;
+}
+
+StmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+StmtContext.prototype.constructor = StmtContext;
+
+StmtContext.prototype.simple_stmt = function() {
+    return this.getTypedRuleContext(Simple_stmtContext,0);
+};
+
+StmtContext.prototype.compound_stmt = function() {
+    return this.getTypedRuleContext(Compound_stmtContext,0);
+};
+
+
+
+
+Python3Parser.StmtContext = StmtContext;
+
+Python3Parser.prototype.stmt = function() {
+
+    var localctx = new StmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 24, Python3Parser.RULE_stmt);
+    try {
+        this.state = 375;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.RETURN:
+        case Python3Parser.RAISE:
+        case Python3Parser.FROM:
+        case Python3Parser.IMPORT:
+        case Python3Parser.GLOBAL:
+        case Python3Parser.NONLOCAL:
+        case Python3Parser.ASSERT:
+        case Python3Parser.LAMBDA:
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.YIELD:
+        case Python3Parser.DEL:
+        case Python3Parser.PASS:
+        case Python3Parser.CONTINUE:
+        case Python3Parser.BREAK:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 373;
+            this.simple_stmt();
+            break;
+        case Python3Parser.DEF:
+        case Python3Parser.IF:
+        case Python3Parser.WHILE:
+        case Python3Parser.FOR:
+        case Python3Parser.TRY:
+        case Python3Parser.WITH:
+        case Python3Parser.CLASS:
+        case Python3Parser.AT:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 374;
+            this.compound_stmt();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Simple_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_simple_stmt;
+    return this;
+}
+
+Simple_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Simple_stmtContext.prototype.constructor = Simple_stmtContext;
+
+Simple_stmtContext.prototype.small_stmt = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Small_stmtContext);
+    } else {
+        return this.getTypedRuleContext(Small_stmtContext,i);
+    }
+};
+
+Simple_stmtContext.prototype.NEWLINE = function() {
+    return this.getToken(Python3Parser.NEWLINE, 0);
+};
+
+
+
+
+Python3Parser.Simple_stmtContext = Simple_stmtContext;
+
+Python3Parser.prototype.simple_stmt = function() {
+
+    var localctx = new Simple_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 26, Python3Parser.RULE_simple_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 377;
+        this.small_stmt();
+        this.state = 382;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,40,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 378;
+                this.match(Python3Parser.SEMI_COLON);
+                this.state = 379;
+                this.small_stmt(); 
+            }
+            this.state = 384;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,40,this._ctx);
+        }
+
+        this.state = 386;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.SEMI_COLON) {
+            this.state = 385;
+            this.match(Python3Parser.SEMI_COLON);
+        }
+
+        this.state = 388;
+        this.match(Python3Parser.NEWLINE);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Small_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_small_stmt;
+    return this;
+}
+
+Small_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Small_stmtContext.prototype.constructor = Small_stmtContext;
+
+Small_stmtContext.prototype.expr_stmt = function() {
+    return this.getTypedRuleContext(Expr_stmtContext,0);
+};
+
+Small_stmtContext.prototype.del_stmt = function() {
+    return this.getTypedRuleContext(Del_stmtContext,0);
+};
+
+Small_stmtContext.prototype.pass_stmt = function() {
+    return this.getTypedRuleContext(Pass_stmtContext,0);
+};
+
+Small_stmtContext.prototype.flow_stmt = function() {
+    return this.getTypedRuleContext(Flow_stmtContext,0);
+};
+
+Small_stmtContext.prototype.import_stmt = function() {
+    return this.getTypedRuleContext(Import_stmtContext,0);
+};
+
+Small_stmtContext.prototype.global_stmt = function() {
+    return this.getTypedRuleContext(Global_stmtContext,0);
+};
+
+Small_stmtContext.prototype.nonlocal_stmt = function() {
+    return this.getTypedRuleContext(Nonlocal_stmtContext,0);
+};
+
+Small_stmtContext.prototype.assert_stmt = function() {
+    return this.getTypedRuleContext(Assert_stmtContext,0);
+};
+
+
+
+
+Python3Parser.Small_stmtContext = Small_stmtContext;
+
+Python3Parser.prototype.small_stmt = function() {
+
+    var localctx = new Small_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 28, Python3Parser.RULE_small_stmt);
+    try {
+        this.state = 398;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.LAMBDA:
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 390;
+            this.expr_stmt();
+            break;
+        case Python3Parser.DEL:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 391;
+            this.del_stmt();
+            break;
+        case Python3Parser.PASS:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 392;
+            this.pass_stmt();
+            break;
+        case Python3Parser.RETURN:
+        case Python3Parser.RAISE:
+        case Python3Parser.YIELD:
+        case Python3Parser.CONTINUE:
+        case Python3Parser.BREAK:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 393;
+            this.flow_stmt();
+            break;
+        case Python3Parser.FROM:
+        case Python3Parser.IMPORT:
+            this.enterOuterAlt(localctx, 5);
+            this.state = 394;
+            this.import_stmt();
+            break;
+        case Python3Parser.GLOBAL:
+            this.enterOuterAlt(localctx, 6);
+            this.state = 395;
+            this.global_stmt();
+            break;
+        case Python3Parser.NONLOCAL:
+            this.enterOuterAlt(localctx, 7);
+            this.state = 396;
+            this.nonlocal_stmt();
+            break;
+        case Python3Parser.ASSERT:
+            this.enterOuterAlt(localctx, 8);
+            this.state = 397;
+            this.assert_stmt();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Expr_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_expr_stmt;
+    return this;
+}
+
+Expr_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Expr_stmtContext.prototype.constructor = Expr_stmtContext;
+
+Expr_stmtContext.prototype.testlist_star_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Testlist_star_exprContext);
+    } else {
+        return this.getTypedRuleContext(Testlist_star_exprContext,i);
+    }
+};
+
+Expr_stmtContext.prototype.augassign = function() {
+    return this.getTypedRuleContext(AugassignContext,0);
+};
+
+Expr_stmtContext.prototype.yield_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Yield_exprContext);
+    } else {
+        return this.getTypedRuleContext(Yield_exprContext,i);
+    }
+};
+
+Expr_stmtContext.prototype.testlist = function() {
+    return this.getTypedRuleContext(TestlistContext,0);
+};
+
+
+
+
+Python3Parser.Expr_stmtContext = Expr_stmtContext;
+
+Python3Parser.prototype.expr_stmt = function() {
+
+    var localctx = new Expr_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 30, Python3Parser.RULE_expr_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 400;
+        this.testlist_star_expr();
+        this.state = 416;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.ADD_ASSIGN:
+        case Python3Parser.SUB_ASSIGN:
+        case Python3Parser.MULT_ASSIGN:
+        case Python3Parser.AT_ASSIGN:
+        case Python3Parser.DIV_ASSIGN:
+        case Python3Parser.MOD_ASSIGN:
+        case Python3Parser.AND_ASSIGN:
+        case Python3Parser.OR_ASSIGN:
+        case Python3Parser.XOR_ASSIGN:
+        case Python3Parser.LEFT_SHIFT_ASSIGN:
+        case Python3Parser.RIGHT_SHIFT_ASSIGN:
+        case Python3Parser.POWER_ASSIGN:
+        case Python3Parser.IDIV_ASSIGN:
+            this.state = 401;
+            this.augassign();
+            this.state = 404;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.YIELD:
+                this.state = 402;
+                this.yield_expr();
+                break;
+            case Python3Parser.LAMBDA:
+            case Python3Parser.NOT:
+            case Python3Parser.NONE:
+            case Python3Parser.TRUE:
+            case Python3Parser.FALSE:
+            case Python3Parser.NAME:
+            case Python3Parser.STRING_LITERAL:
+            case Python3Parser.BYTES_LITERAL:
+            case Python3Parser.DECIMAL_INTEGER:
+            case Python3Parser.OCT_INTEGER:
+            case Python3Parser.HEX_INTEGER:
+            case Python3Parser.BIN_INTEGER:
+            case Python3Parser.FLOAT_NUMBER:
+            case Python3Parser.IMAG_NUMBER:
+            case Python3Parser.ELLIPSIS:
+            case Python3Parser.STAR:
+            case Python3Parser.OPEN_PAREN:
+            case Python3Parser.OPEN_BRACK:
+            case Python3Parser.ADD:
+            case Python3Parser.MINUS:
+            case Python3Parser.NOT_OP:
+            case Python3Parser.OPEN_BRACE:
+                this.state = 403;
+                this.testlist();
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            break;
+        case Python3Parser.NEWLINE:
+        case Python3Parser.SEMI_COLON:
+        case Python3Parser.ASSIGN:
+            this.state = 413;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            while(_la===Python3Parser.ASSIGN) {
+                this.state = 406;
+                this.match(Python3Parser.ASSIGN);
+                this.state = 409;
+                this._errHandler.sync(this);
+                switch(this._input.LA(1)) {
+                case Python3Parser.YIELD:
+                    this.state = 407;
+                    this.yield_expr();
+                    break;
+                case Python3Parser.LAMBDA:
+                case Python3Parser.NOT:
+                case Python3Parser.NONE:
+                case Python3Parser.TRUE:
+                case Python3Parser.FALSE:
+                case Python3Parser.NAME:
+                case Python3Parser.STRING_LITERAL:
+                case Python3Parser.BYTES_LITERAL:
+                case Python3Parser.DECIMAL_INTEGER:
+                case Python3Parser.OCT_INTEGER:
+                case Python3Parser.HEX_INTEGER:
+                case Python3Parser.BIN_INTEGER:
+                case Python3Parser.FLOAT_NUMBER:
+                case Python3Parser.IMAG_NUMBER:
+                case Python3Parser.ELLIPSIS:
+                case Python3Parser.STAR:
+                case Python3Parser.OPEN_PAREN:
+                case Python3Parser.OPEN_BRACK:
+                case Python3Parser.ADD:
+                case Python3Parser.MINUS:
+                case Python3Parser.NOT_OP:
+                case Python3Parser.OPEN_BRACE:
+                    this.state = 408;
+                    this.testlist_star_expr();
+                    break;
+                default:
+                    throw new antlr4.error.NoViableAltException(this);
+                }
+                this.state = 415;
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            }
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Testlist_star_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_testlist_star_expr;
+    return this;
+}
+
+Testlist_star_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Testlist_star_exprContext.prototype.constructor = Testlist_star_exprContext;
+
+Testlist_star_exprContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+Testlist_star_exprContext.prototype.star_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Star_exprContext);
+    } else {
+        return this.getTypedRuleContext(Star_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Testlist_star_exprContext = Testlist_star_exprContext;
+
+Python3Parser.prototype.testlist_star_expr = function() {
+
+    var localctx = new Testlist_star_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 32, Python3Parser.RULE_testlist_star_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 420;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,47,this._ctx);
+        switch(la_) {
+        case 1:
+            this.state = 418;
+            this.test();
+            break;
+
+        case 2:
+            this.state = 419;
+            this.star_expr();
+            break;
+
+        }
+        this.state = 429;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,49,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 422;
+                this.match(Python3Parser.COMMA);
+                this.state = 425;
+                this._errHandler.sync(this);
+                var la_ = this._interp.adaptivePredict(this._input,48,this._ctx);
+                switch(la_) {
+                case 1:
+                    this.state = 423;
+                    this.test();
+                    break;
+
+                case 2:
+                    this.state = 424;
+                    this.star_expr();
+                    break;
+
+                } 
+            }
+            this.state = 431;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,49,this._ctx);
+        }
+
+        this.state = 433;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 432;
+            this.match(Python3Parser.COMMA);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function AugassignContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_augassign;
+    return this;
+}
+
+AugassignContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+AugassignContext.prototype.constructor = AugassignContext;
+
+
+
+
+
+Python3Parser.AugassignContext = AugassignContext;
+
+Python3Parser.prototype.augassign = function() {
+
+    var localctx = new AugassignContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 34, Python3Parser.RULE_augassign);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 435;
+        _la = this._input.LA(1);
+        if(!(((((_la - 78)) & ~0x1f) == 0 && ((1 << (_la - 78)) & ((1 << (Python3Parser.ADD_ASSIGN - 78)) | (1 << (Python3Parser.SUB_ASSIGN - 78)) | (1 << (Python3Parser.MULT_ASSIGN - 78)) | (1 << (Python3Parser.AT_ASSIGN - 78)) | (1 << (Python3Parser.DIV_ASSIGN - 78)) | (1 << (Python3Parser.MOD_ASSIGN - 78)) | (1 << (Python3Parser.AND_ASSIGN - 78)) | (1 << (Python3Parser.OR_ASSIGN - 78)) | (1 << (Python3Parser.XOR_ASSIGN - 78)) | (1 << (Python3Parser.LEFT_SHIFT_ASSIGN - 78)) | (1 << (Python3Parser.RIGHT_SHIFT_ASSIGN - 78)) | (1 << (Python3Parser.POWER_ASSIGN - 78)) | (1 << (Python3Parser.IDIV_ASSIGN - 78)))) !== 0))) {
+        this._errHandler.recoverInline(this);
+        }
+        else {
+        	this._errHandler.reportMatch(this);
+            this.consume();
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Del_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_del_stmt;
+    return this;
+}
+
+Del_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Del_stmtContext.prototype.constructor = Del_stmtContext;
+
+Del_stmtContext.prototype.DEL = function() {
+    return this.getToken(Python3Parser.DEL, 0);
+};
+
+Del_stmtContext.prototype.exprlist = function() {
+    return this.getTypedRuleContext(ExprlistContext,0);
+};
+
+
+
+
+Python3Parser.Del_stmtContext = Del_stmtContext;
+
+Python3Parser.prototype.del_stmt = function() {
+
+    var localctx = new Del_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 36, Python3Parser.RULE_del_stmt);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 437;
+        this.match(Python3Parser.DEL);
+        this.state = 438;
+        this.exprlist();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Pass_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_pass_stmt;
+    return this;
+}
+
+Pass_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Pass_stmtContext.prototype.constructor = Pass_stmtContext;
+
+Pass_stmtContext.prototype.PASS = function() {
+    return this.getToken(Python3Parser.PASS, 0);
+};
+
+
+
+
+Python3Parser.Pass_stmtContext = Pass_stmtContext;
+
+Python3Parser.prototype.pass_stmt = function() {
+
+    var localctx = new Pass_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 38, Python3Parser.RULE_pass_stmt);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 440;
+        this.match(Python3Parser.PASS);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Flow_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_flow_stmt;
+    return this;
+}
+
+Flow_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Flow_stmtContext.prototype.constructor = Flow_stmtContext;
+
+Flow_stmtContext.prototype.break_stmt = function() {
+    return this.getTypedRuleContext(Break_stmtContext,0);
+};
+
+Flow_stmtContext.prototype.continue_stmt = function() {
+    return this.getTypedRuleContext(Continue_stmtContext,0);
+};
+
+Flow_stmtContext.prototype.return_stmt = function() {
+    return this.getTypedRuleContext(Return_stmtContext,0);
+};
+
+Flow_stmtContext.prototype.raise_stmt = function() {
+    return this.getTypedRuleContext(Raise_stmtContext,0);
+};
+
+Flow_stmtContext.prototype.yield_stmt = function() {
+    return this.getTypedRuleContext(Yield_stmtContext,0);
+};
+
+
+
+
+Python3Parser.Flow_stmtContext = Flow_stmtContext;
+
+Python3Parser.prototype.flow_stmt = function() {
+
+    var localctx = new Flow_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 40, Python3Parser.RULE_flow_stmt);
+    try {
+        this.state = 447;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.BREAK:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 442;
+            this.break_stmt();
+            break;
+        case Python3Parser.CONTINUE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 443;
+            this.continue_stmt();
+            break;
+        case Python3Parser.RETURN:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 444;
+            this.return_stmt();
+            break;
+        case Python3Parser.RAISE:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 445;
+            this.raise_stmt();
+            break;
+        case Python3Parser.YIELD:
+            this.enterOuterAlt(localctx, 5);
+            this.state = 446;
+            this.yield_stmt();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Break_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_break_stmt;
+    return this;
+}
+
+Break_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Break_stmtContext.prototype.constructor = Break_stmtContext;
+
+Break_stmtContext.prototype.BREAK = function() {
+    return this.getToken(Python3Parser.BREAK, 0);
+};
+
+
+
+
+Python3Parser.Break_stmtContext = Break_stmtContext;
+
+Python3Parser.prototype.break_stmt = function() {
+
+    var localctx = new Break_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 42, Python3Parser.RULE_break_stmt);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 449;
+        this.match(Python3Parser.BREAK);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Continue_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_continue_stmt;
+    return this;
+}
+
+Continue_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Continue_stmtContext.prototype.constructor = Continue_stmtContext;
+
+Continue_stmtContext.prototype.CONTINUE = function() {
+    return this.getToken(Python3Parser.CONTINUE, 0);
+};
+
+
+
+
+Python3Parser.Continue_stmtContext = Continue_stmtContext;
+
+Python3Parser.prototype.continue_stmt = function() {
+
+    var localctx = new Continue_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 44, Python3Parser.RULE_continue_stmt);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 451;
+        this.match(Python3Parser.CONTINUE);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Return_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_return_stmt;
+    return this;
+}
+
+Return_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Return_stmtContext.prototype.constructor = Return_stmtContext;
+
+Return_stmtContext.prototype.RETURN = function() {
+    return this.getToken(Python3Parser.RETURN, 0);
+};
+
+Return_stmtContext.prototype.testlist = function() {
+    return this.getTypedRuleContext(TestlistContext,0);
+};
+
+
+
+
+Python3Parser.Return_stmtContext = Return_stmtContext;
+
+Python3Parser.prototype.return_stmt = function() {
+
+    var localctx = new Return_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 46, Python3Parser.RULE_return_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 453;
+        this.match(Python3Parser.RETURN);
+        this.state = 455;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+            this.state = 454;
+            this.testlist();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Yield_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_yield_stmt;
+    return this;
+}
+
+Yield_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Yield_stmtContext.prototype.constructor = Yield_stmtContext;
+
+Yield_stmtContext.prototype.yield_expr = function() {
+    return this.getTypedRuleContext(Yield_exprContext,0);
+};
+
+
+
+
+Python3Parser.Yield_stmtContext = Yield_stmtContext;
+
+Python3Parser.prototype.yield_stmt = function() {
+
+    var localctx = new Yield_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 48, Python3Parser.RULE_yield_stmt);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 457;
+        this.yield_expr();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Raise_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_raise_stmt;
+    return this;
+}
+
+Raise_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Raise_stmtContext.prototype.constructor = Raise_stmtContext;
+
+Raise_stmtContext.prototype.RAISE = function() {
+    return this.getToken(Python3Parser.RAISE, 0);
+};
+
+Raise_stmtContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+Raise_stmtContext.prototype.FROM = function() {
+    return this.getToken(Python3Parser.FROM, 0);
+};
+
+
+
+
+Python3Parser.Raise_stmtContext = Raise_stmtContext;
+
+Python3Parser.prototype.raise_stmt = function() {
+
+    var localctx = new Raise_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 50, Python3Parser.RULE_raise_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 459;
+        this.match(Python3Parser.RAISE);
+        this.state = 465;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+            this.state = 460;
+            this.test();
+            this.state = 463;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.FROM) {
+                this.state = 461;
+                this.match(Python3Parser.FROM);
+                this.state = 462;
+                this.test();
+            }
+
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Import_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_import_stmt;
+    return this;
+}
+
+Import_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Import_stmtContext.prototype.constructor = Import_stmtContext;
+
+Import_stmtContext.prototype.import_name = function() {
+    return this.getTypedRuleContext(Import_nameContext,0);
+};
+
+Import_stmtContext.prototype.import_from = function() {
+    return this.getTypedRuleContext(Import_fromContext,0);
+};
+
+
+
+
+Python3Parser.Import_stmtContext = Import_stmtContext;
+
+Python3Parser.prototype.import_stmt = function() {
+
+    var localctx = new Import_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 52, Python3Parser.RULE_import_stmt);
+    try {
+        this.state = 469;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.IMPORT:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 467;
+            this.import_name();
+            break;
+        case Python3Parser.FROM:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 468;
+            this.import_from();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Import_nameContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_import_name;
+    return this;
+}
+
+Import_nameContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Import_nameContext.prototype.constructor = Import_nameContext;
+
+Import_nameContext.prototype.IMPORT = function() {
+    return this.getToken(Python3Parser.IMPORT, 0);
+};
+
+Import_nameContext.prototype.dotted_as_names = function() {
+    return this.getTypedRuleContext(Dotted_as_namesContext,0);
+};
+
+
+
+
+Python3Parser.Import_nameContext = Import_nameContext;
+
+Python3Parser.prototype.import_name = function() {
+
+    var localctx = new Import_nameContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 54, Python3Parser.RULE_import_name);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 471;
+        this.match(Python3Parser.IMPORT);
+        this.state = 472;
+        this.dotted_as_names();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Import_fromContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_import_from;
+    return this;
+}
+
+Import_fromContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Import_fromContext.prototype.constructor = Import_fromContext;
+
+Import_fromContext.prototype.FROM = function() {
+    return this.getToken(Python3Parser.FROM, 0);
+};
+
+Import_fromContext.prototype.IMPORT = function() {
+    return this.getToken(Python3Parser.IMPORT, 0);
+};
+
+Import_fromContext.prototype.dotted_name = function() {
+    return this.getTypedRuleContext(Dotted_nameContext,0);
+};
+
+Import_fromContext.prototype.import_as_names = function() {
+    return this.getTypedRuleContext(Import_as_namesContext,0);
+};
+
+
+
+
+Python3Parser.Import_fromContext = Import_fromContext;
+
+Python3Parser.prototype.import_from = function() {
+
+    var localctx = new Import_fromContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 56, Python3Parser.RULE_import_from);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 474;
+        this.match(Python3Parser.FROM);
+        this.state = 487;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,58,this._ctx);
+        switch(la_) {
+        case 1:
+            this.state = 478;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            while(_la===Python3Parser.DOT || _la===Python3Parser.ELLIPSIS) {
+                this.state = 475;
+                _la = this._input.LA(1);
+                if(!(_la===Python3Parser.DOT || _la===Python3Parser.ELLIPSIS)) {
+                this._errHandler.recoverInline(this);
+                }
+                else {
+                	this._errHandler.reportMatch(this);
+                    this.consume();
+                }
+                this.state = 480;
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            }
+            this.state = 481;
+            this.dotted_name();
+            break;
+
+        case 2:
+            this.state = 483; 
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            do {
+                this.state = 482;
+                _la = this._input.LA(1);
+                if(!(_la===Python3Parser.DOT || _la===Python3Parser.ELLIPSIS)) {
+                this._errHandler.recoverInline(this);
+                }
+                else {
+                	this._errHandler.reportMatch(this);
+                    this.consume();
+                }
+                this.state = 485; 
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            } while(_la===Python3Parser.DOT || _la===Python3Parser.ELLIPSIS);
+            break;
+
+        }
+        this.state = 489;
+        this.match(Python3Parser.IMPORT);
+        this.state = 496;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.STAR:
+            this.state = 490;
+            this.match(Python3Parser.STAR);
+            break;
+        case Python3Parser.OPEN_PAREN:
+            this.state = 491;
+            this.match(Python3Parser.OPEN_PAREN);
+            this.state = 492;
+            this.import_as_names();
+            this.state = 493;
+            this.match(Python3Parser.CLOSE_PAREN);
+            break;
+        case Python3Parser.NAME:
+            this.state = 495;
+            this.import_as_names();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Import_as_nameContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_import_as_name;
+    return this;
+}
+
+Import_as_nameContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Import_as_nameContext.prototype.constructor = Import_as_nameContext;
+
+Import_as_nameContext.prototype.NAME = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NAME);
+    } else {
+        return this.getToken(Python3Parser.NAME, i);
+    }
+};
+
+
+Import_as_nameContext.prototype.AS = function() {
+    return this.getToken(Python3Parser.AS, 0);
+};
+
+
+
+
+Python3Parser.Import_as_nameContext = Import_as_nameContext;
+
+Python3Parser.prototype.import_as_name = function() {
+
+    var localctx = new Import_as_nameContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 58, Python3Parser.RULE_import_as_name);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 498;
+        this.match(Python3Parser.NAME);
+        this.state = 501;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.AS) {
+            this.state = 499;
+            this.match(Python3Parser.AS);
+            this.state = 500;
+            this.match(Python3Parser.NAME);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Dotted_as_nameContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_dotted_as_name;
+    return this;
+}
+
+Dotted_as_nameContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Dotted_as_nameContext.prototype.constructor = Dotted_as_nameContext;
+
+Dotted_as_nameContext.prototype.dotted_name = function() {
+    return this.getTypedRuleContext(Dotted_nameContext,0);
+};
+
+Dotted_as_nameContext.prototype.AS = function() {
+    return this.getToken(Python3Parser.AS, 0);
+};
+
+Dotted_as_nameContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+
+
+
+Python3Parser.Dotted_as_nameContext = Dotted_as_nameContext;
+
+Python3Parser.prototype.dotted_as_name = function() {
+
+    var localctx = new Dotted_as_nameContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 60, Python3Parser.RULE_dotted_as_name);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 503;
+        this.dotted_name();
+        this.state = 506;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.AS) {
+            this.state = 504;
+            this.match(Python3Parser.AS);
+            this.state = 505;
+            this.match(Python3Parser.NAME);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Import_as_namesContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_import_as_names;
+    return this;
+}
+
+Import_as_namesContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Import_as_namesContext.prototype.constructor = Import_as_namesContext;
+
+Import_as_namesContext.prototype.import_as_name = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Import_as_nameContext);
+    } else {
+        return this.getTypedRuleContext(Import_as_nameContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Import_as_namesContext = Import_as_namesContext;
+
+Python3Parser.prototype.import_as_names = function() {
+
+    var localctx = new Import_as_namesContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 62, Python3Parser.RULE_import_as_names);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 508;
+        this.import_as_name();
+        this.state = 513;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,62,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 509;
+                this.match(Python3Parser.COMMA);
+                this.state = 510;
+                this.import_as_name(); 
+            }
+            this.state = 515;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,62,this._ctx);
+        }
+
+        this.state = 517;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 516;
+            this.match(Python3Parser.COMMA);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Dotted_as_namesContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_dotted_as_names;
+    return this;
+}
+
+Dotted_as_namesContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Dotted_as_namesContext.prototype.constructor = Dotted_as_namesContext;
+
+Dotted_as_namesContext.prototype.dotted_as_name = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Dotted_as_nameContext);
+    } else {
+        return this.getTypedRuleContext(Dotted_as_nameContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Dotted_as_namesContext = Dotted_as_namesContext;
+
+Python3Parser.prototype.dotted_as_names = function() {
+
+    var localctx = new Dotted_as_namesContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 64, Python3Parser.RULE_dotted_as_names);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 519;
+        this.dotted_as_name();
+        this.state = 524;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.COMMA) {
+            this.state = 520;
+            this.match(Python3Parser.COMMA);
+            this.state = 521;
+            this.dotted_as_name();
+            this.state = 526;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Dotted_nameContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_dotted_name;
+    return this;
+}
+
+Dotted_nameContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Dotted_nameContext.prototype.constructor = Dotted_nameContext;
+
+Dotted_nameContext.prototype.NAME = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NAME);
+    } else {
+        return this.getToken(Python3Parser.NAME, i);
+    }
+};
+
+
+
+
+
+Python3Parser.Dotted_nameContext = Dotted_nameContext;
+
+Python3Parser.prototype.dotted_name = function() {
+
+    var localctx = new Dotted_nameContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 66, Python3Parser.RULE_dotted_name);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 527;
+        this.match(Python3Parser.NAME);
+        this.state = 532;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.DOT) {
+            this.state = 528;
+            this.match(Python3Parser.DOT);
+            this.state = 529;
+            this.match(Python3Parser.NAME);
+            this.state = 534;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Global_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_global_stmt;
+    return this;
+}
+
+Global_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Global_stmtContext.prototype.constructor = Global_stmtContext;
+
+Global_stmtContext.prototype.GLOBAL = function() {
+    return this.getToken(Python3Parser.GLOBAL, 0);
+};
+
+Global_stmtContext.prototype.NAME = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NAME);
+    } else {
+        return this.getToken(Python3Parser.NAME, i);
+    }
+};
+
+
+
+
+
+Python3Parser.Global_stmtContext = Global_stmtContext;
+
+Python3Parser.prototype.global_stmt = function() {
+
+    var localctx = new Global_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 68, Python3Parser.RULE_global_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 535;
+        this.match(Python3Parser.GLOBAL);
+        this.state = 536;
+        this.match(Python3Parser.NAME);
+        this.state = 541;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.COMMA) {
+            this.state = 537;
+            this.match(Python3Parser.COMMA);
+            this.state = 538;
+            this.match(Python3Parser.NAME);
+            this.state = 543;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Nonlocal_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_nonlocal_stmt;
+    return this;
+}
+
+Nonlocal_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Nonlocal_stmtContext.prototype.constructor = Nonlocal_stmtContext;
+
+Nonlocal_stmtContext.prototype.NONLOCAL = function() {
+    return this.getToken(Python3Parser.NONLOCAL, 0);
+};
+
+Nonlocal_stmtContext.prototype.NAME = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.NAME);
+    } else {
+        return this.getToken(Python3Parser.NAME, i);
+    }
+};
+
+
+
+
+
+Python3Parser.Nonlocal_stmtContext = Nonlocal_stmtContext;
+
+Python3Parser.prototype.nonlocal_stmt = function() {
+
+    var localctx = new Nonlocal_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 70, Python3Parser.RULE_nonlocal_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 544;
+        this.match(Python3Parser.NONLOCAL);
+        this.state = 545;
+        this.match(Python3Parser.NAME);
+        this.state = 550;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.COMMA) {
+            this.state = 546;
+            this.match(Python3Parser.COMMA);
+            this.state = 547;
+            this.match(Python3Parser.NAME);
+            this.state = 552;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Assert_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_assert_stmt;
+    return this;
+}
+
+Assert_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Assert_stmtContext.prototype.constructor = Assert_stmtContext;
+
+Assert_stmtContext.prototype.ASSERT = function() {
+    return this.getToken(Python3Parser.ASSERT, 0);
+};
+
+Assert_stmtContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Assert_stmtContext = Assert_stmtContext;
+
+Python3Parser.prototype.assert_stmt = function() {
+
+    var localctx = new Assert_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 72, Python3Parser.RULE_assert_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 553;
+        this.match(Python3Parser.ASSERT);
+        this.state = 554;
+        this.test();
+        this.state = 557;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 555;
+            this.match(Python3Parser.COMMA);
+            this.state = 556;
+            this.test();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Compound_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_compound_stmt;
+    return this;
+}
+
+Compound_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Compound_stmtContext.prototype.constructor = Compound_stmtContext;
+
+Compound_stmtContext.prototype.if_stmt = function() {
+    return this.getTypedRuleContext(If_stmtContext,0);
+};
+
+Compound_stmtContext.prototype.while_stmt = function() {
+    return this.getTypedRuleContext(While_stmtContext,0);
+};
+
+Compound_stmtContext.prototype.for_stmt = function() {
+    return this.getTypedRuleContext(For_stmtContext,0);
+};
+
+Compound_stmtContext.prototype.try_stmt = function() {
+    return this.getTypedRuleContext(Try_stmtContext,0);
+};
+
+Compound_stmtContext.prototype.with_stmt = function() {
+    return this.getTypedRuleContext(With_stmtContext,0);
+};
+
+Compound_stmtContext.prototype.funcdef = function() {
+    return this.getTypedRuleContext(FuncdefContext,0);
+};
+
+Compound_stmtContext.prototype.classdef = function() {
+    return this.getTypedRuleContext(ClassdefContext,0);
+};
+
+Compound_stmtContext.prototype.decorated = function() {
+    return this.getTypedRuleContext(DecoratedContext,0);
+};
+
+
+
+
+Python3Parser.Compound_stmtContext = Compound_stmtContext;
+
+Python3Parser.prototype.compound_stmt = function() {
+
+    var localctx = new Compound_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 74, Python3Parser.RULE_compound_stmt);
+    try {
+        this.state = 567;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.IF:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 559;
+            this.if_stmt();
+            break;
+        case Python3Parser.WHILE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 560;
+            this.while_stmt();
+            break;
+        case Python3Parser.FOR:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 561;
+            this.for_stmt();
+            break;
+        case Python3Parser.TRY:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 562;
+            this.try_stmt();
+            break;
+        case Python3Parser.WITH:
+            this.enterOuterAlt(localctx, 5);
+            this.state = 563;
+            this.with_stmt();
+            break;
+        case Python3Parser.DEF:
+            this.enterOuterAlt(localctx, 6);
+            this.state = 564;
+            this.funcdef();
+            break;
+        case Python3Parser.CLASS:
+            this.enterOuterAlt(localctx, 7);
+            this.state = 565;
+            this.classdef();
+            break;
+        case Python3Parser.AT:
+            this.enterOuterAlt(localctx, 8);
+            this.state = 566;
+            this.decorated();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function If_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_if_stmt;
+    return this;
+}
+
+If_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+If_stmtContext.prototype.constructor = If_stmtContext;
+
+If_stmtContext.prototype.IF = function() {
+    return this.getToken(Python3Parser.IF, 0);
+};
+
+If_stmtContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+If_stmtContext.prototype.suite = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(SuiteContext);
+    } else {
+        return this.getTypedRuleContext(SuiteContext,i);
+    }
+};
+
+If_stmtContext.prototype.ELIF = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.ELIF);
+    } else {
+        return this.getToken(Python3Parser.ELIF, i);
+    }
+};
+
+
+If_stmtContext.prototype.ELSE = function() {
+    return this.getToken(Python3Parser.ELSE, 0);
+};
+
+
+
+
+Python3Parser.If_stmtContext = If_stmtContext;
+
+Python3Parser.prototype.if_stmt = function() {
+
+    var localctx = new If_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 76, Python3Parser.RULE_if_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 569;
+        this.match(Python3Parser.IF);
+        this.state = 570;
+        this.test();
+        this.state = 571;
+        this.match(Python3Parser.COLON);
+        this.state = 572;
+        this.suite();
+        this.state = 580;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.ELIF) {
+            this.state = 573;
+            this.match(Python3Parser.ELIF);
+            this.state = 574;
+            this.test();
+            this.state = 575;
+            this.match(Python3Parser.COLON);
+            this.state = 576;
+            this.suite();
+            this.state = 582;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+        this.state = 586;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.ELSE) {
+            this.state = 583;
+            this.match(Python3Parser.ELSE);
+            this.state = 584;
+            this.match(Python3Parser.COLON);
+            this.state = 585;
+            this.suite();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function While_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_while_stmt;
+    return this;
+}
+
+While_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+While_stmtContext.prototype.constructor = While_stmtContext;
+
+While_stmtContext.prototype.WHILE = function() {
+    return this.getToken(Python3Parser.WHILE, 0);
+};
+
+While_stmtContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+While_stmtContext.prototype.suite = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(SuiteContext);
+    } else {
+        return this.getTypedRuleContext(SuiteContext,i);
+    }
+};
+
+While_stmtContext.prototype.ELSE = function() {
+    return this.getToken(Python3Parser.ELSE, 0);
+};
+
+
+
+
+Python3Parser.While_stmtContext = While_stmtContext;
+
+Python3Parser.prototype.while_stmt = function() {
+
+    var localctx = new While_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 78, Python3Parser.RULE_while_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 588;
+        this.match(Python3Parser.WHILE);
+        this.state = 589;
+        this.test();
+        this.state = 590;
+        this.match(Python3Parser.COLON);
+        this.state = 591;
+        this.suite();
+        this.state = 595;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.ELSE) {
+            this.state = 592;
+            this.match(Python3Parser.ELSE);
+            this.state = 593;
+            this.match(Python3Parser.COLON);
+            this.state = 594;
+            this.suite();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function For_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_for_stmt;
+    return this;
+}
+
+For_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+For_stmtContext.prototype.constructor = For_stmtContext;
+
+For_stmtContext.prototype.FOR = function() {
+    return this.getToken(Python3Parser.FOR, 0);
+};
+
+For_stmtContext.prototype.exprlist = function() {
+    return this.getTypedRuleContext(ExprlistContext,0);
+};
+
+For_stmtContext.prototype.IN = function() {
+    return this.getToken(Python3Parser.IN, 0);
+};
+
+For_stmtContext.prototype.testlist = function() {
+    return this.getTypedRuleContext(TestlistContext,0);
+};
+
+For_stmtContext.prototype.suite = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(SuiteContext);
+    } else {
+        return this.getTypedRuleContext(SuiteContext,i);
+    }
+};
+
+For_stmtContext.prototype.ELSE = function() {
+    return this.getToken(Python3Parser.ELSE, 0);
+};
+
+
+
+
+Python3Parser.For_stmtContext = For_stmtContext;
+
+Python3Parser.prototype.for_stmt = function() {
+
+    var localctx = new For_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 80, Python3Parser.RULE_for_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 597;
+        this.match(Python3Parser.FOR);
+        this.state = 598;
+        this.exprlist();
+        this.state = 599;
+        this.match(Python3Parser.IN);
+        this.state = 600;
+        this.testlist();
+        this.state = 601;
+        this.match(Python3Parser.COLON);
+        this.state = 602;
+        this.suite();
+        this.state = 606;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.ELSE) {
+            this.state = 603;
+            this.match(Python3Parser.ELSE);
+            this.state = 604;
+            this.match(Python3Parser.COLON);
+            this.state = 605;
+            this.suite();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Try_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_try_stmt;
+    return this;
+}
+
+Try_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Try_stmtContext.prototype.constructor = Try_stmtContext;
+
+Try_stmtContext.prototype.TRY = function() {
+    return this.getToken(Python3Parser.TRY, 0);
+};
+
+Try_stmtContext.prototype.suite = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(SuiteContext);
+    } else {
+        return this.getTypedRuleContext(SuiteContext,i);
+    }
+};
+
+Try_stmtContext.prototype.FINALLY = function() {
+    return this.getToken(Python3Parser.FINALLY, 0);
+};
+
+Try_stmtContext.prototype.except_clause = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Except_clauseContext);
+    } else {
+        return this.getTypedRuleContext(Except_clauseContext,i);
+    }
+};
+
+Try_stmtContext.prototype.ELSE = function() {
+    return this.getToken(Python3Parser.ELSE, 0);
+};
+
+
+
+
+Python3Parser.Try_stmtContext = Try_stmtContext;
+
+Python3Parser.prototype.try_stmt = function() {
+
+    var localctx = new Try_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 82, Python3Parser.RULE_try_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 608;
+        this.match(Python3Parser.TRY);
+        this.state = 609;
+        this.match(Python3Parser.COLON);
+        this.state = 610;
+        this.suite();
+        this.state = 632;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.EXCEPT:
+            this.state = 615; 
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            do {
+                this.state = 611;
+                this.except_clause();
+                this.state = 612;
+                this.match(Python3Parser.COLON);
+                this.state = 613;
+                this.suite();
+                this.state = 617; 
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            } while(_la===Python3Parser.EXCEPT);
+            this.state = 622;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.ELSE) {
+                this.state = 619;
+                this.match(Python3Parser.ELSE);
+                this.state = 620;
+                this.match(Python3Parser.COLON);
+                this.state = 621;
+                this.suite();
+            }
+
+            this.state = 627;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.FINALLY) {
+                this.state = 624;
+                this.match(Python3Parser.FINALLY);
+                this.state = 625;
+                this.match(Python3Parser.COLON);
+                this.state = 626;
+                this.suite();
+            }
+
+            break;
+        case Python3Parser.FINALLY:
+            this.state = 629;
+            this.match(Python3Parser.FINALLY);
+            this.state = 630;
+            this.match(Python3Parser.COLON);
+            this.state = 631;
+            this.suite();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function With_stmtContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_with_stmt;
+    return this;
+}
+
+With_stmtContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+With_stmtContext.prototype.constructor = With_stmtContext;
+
+With_stmtContext.prototype.WITH = function() {
+    return this.getToken(Python3Parser.WITH, 0);
+};
+
+With_stmtContext.prototype.with_item = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(With_itemContext);
+    } else {
+        return this.getTypedRuleContext(With_itemContext,i);
+    }
+};
+
+With_stmtContext.prototype.suite = function() {
+    return this.getTypedRuleContext(SuiteContext,0);
+};
+
+
+
+
+Python3Parser.With_stmtContext = With_stmtContext;
+
+Python3Parser.prototype.with_stmt = function() {
+
+    var localctx = new With_stmtContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 84, Python3Parser.RULE_with_stmt);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 634;
+        this.match(Python3Parser.WITH);
+        this.state = 635;
+        this.with_item();
+        this.state = 640;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.COMMA) {
+            this.state = 636;
+            this.match(Python3Parser.COMMA);
+            this.state = 637;
+            this.with_item();
+            this.state = 642;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+        this.state = 643;
+        this.match(Python3Parser.COLON);
+        this.state = 644;
+        this.suite();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function With_itemContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_with_item;
+    return this;
+}
+
+With_itemContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+With_itemContext.prototype.constructor = With_itemContext;
+
+With_itemContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+With_itemContext.prototype.AS = function() {
+    return this.getToken(Python3Parser.AS, 0);
+};
+
+With_itemContext.prototype.expr = function() {
+    return this.getTypedRuleContext(ExprContext,0);
+};
+
+
+
+
+Python3Parser.With_itemContext = With_itemContext;
+
+Python3Parser.prototype.with_item = function() {
+
+    var localctx = new With_itemContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 86, Python3Parser.RULE_with_item);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 646;
+        this.test();
+        this.state = 649;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.AS) {
+            this.state = 647;
+            this.match(Python3Parser.AS);
+            this.state = 648;
+            this.expr();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Except_clauseContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_except_clause;
+    return this;
+}
+
+Except_clauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Except_clauseContext.prototype.constructor = Except_clauseContext;
+
+Except_clauseContext.prototype.EXCEPT = function() {
+    return this.getToken(Python3Parser.EXCEPT, 0);
+};
+
+Except_clauseContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+Except_clauseContext.prototype.AS = function() {
+    return this.getToken(Python3Parser.AS, 0);
+};
+
+Except_clauseContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+
+
+
+Python3Parser.Except_clauseContext = Except_clauseContext;
+
+Python3Parser.prototype.except_clause = function() {
+
+    var localctx = new Except_clauseContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 88, Python3Parser.RULE_except_clause);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 651;
+        this.match(Python3Parser.EXCEPT);
+        this.state = 657;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+            this.state = 652;
+            this.test();
+            this.state = 655;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.AS) {
+                this.state = 653;
+                this.match(Python3Parser.AS);
+                this.state = 654;
+                this.match(Python3Parser.NAME);
+            }
+
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function SuiteContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_suite;
+    return this;
+}
+
+SuiteContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+SuiteContext.prototype.constructor = SuiteContext;
+
+SuiteContext.prototype.simple_stmt = function() {
+    return this.getTypedRuleContext(Simple_stmtContext,0);
+};
+
+SuiteContext.prototype.NEWLINE = function() {
+    return this.getToken(Python3Parser.NEWLINE, 0);
+};
+
+SuiteContext.prototype.INDENT = function() {
+    return this.getToken(Python3Parser.INDENT, 0);
+};
+
+SuiteContext.prototype.DEDENT = function() {
+    return this.getToken(Python3Parser.DEDENT, 0);
+};
+
+SuiteContext.prototype.stmt = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(StmtContext);
+    } else {
+        return this.getTypedRuleContext(StmtContext,i);
+    }
+};
+
+
+
+
+Python3Parser.SuiteContext = SuiteContext;
+
+Python3Parser.prototype.suite = function() {
+
+    var localctx = new SuiteContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 90, Python3Parser.RULE_suite);
+    var _la = 0; // Token type
+    try {
+        this.state = 669;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.RETURN:
+        case Python3Parser.RAISE:
+        case Python3Parser.FROM:
+        case Python3Parser.IMPORT:
+        case Python3Parser.GLOBAL:
+        case Python3Parser.NONLOCAL:
+        case Python3Parser.ASSERT:
+        case Python3Parser.LAMBDA:
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.YIELD:
+        case Python3Parser.DEL:
+        case Python3Parser.PASS:
+        case Python3Parser.CONTINUE:
+        case Python3Parser.BREAK:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 659;
+            this.simple_stmt();
+            break;
+        case Python3Parser.NEWLINE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 660;
+            this.match(Python3Parser.NEWLINE);
+            this.state = 661;
+            this.match(Python3Parser.INDENT);
+            this.state = 663; 
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            do {
+                this.state = 662;
+                this.stmt();
+                this.state = 665; 
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << Python3Parser.DEF) | (1 << Python3Parser.RETURN) | (1 << Python3Parser.RAISE) | (1 << Python3Parser.FROM) | (1 << Python3Parser.IMPORT) | (1 << Python3Parser.GLOBAL) | (1 << Python3Parser.NONLOCAL) | (1 << Python3Parser.ASSERT) | (1 << Python3Parser.IF) | (1 << Python3Parser.WHILE) | (1 << Python3Parser.FOR) | (1 << Python3Parser.TRY) | (1 << Python3Parser.WITH) | (1 << Python3Parser.LAMBDA) | (1 << Python3Parser.NOT) | (1 << Python3Parser.NONE) | (1 << Python3Parser.TRUE) | (1 << Python3Parser.FALSE) | (1 << Python3Parser.CLASS) | (1 << Python3Parser.YIELD) | (1 << Python3Parser.DEL) | (1 << Python3Parser.PASS))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (Python3Parser.CONTINUE - 32)) | (1 << (Python3Parser.BREAK - 32)) | (1 << (Python3Parser.NAME - 32)) | (1 << (Python3Parser.STRING_LITERAL - 32)) | (1 << (Python3Parser.BYTES_LITERAL - 32)) | (1 << (Python3Parser.DECIMAL_INTEGER - 32)) | (1 << (Python3Parser.OCT_INTEGER - 32)) | (1 << (Python3Parser.HEX_INTEGER - 32)) | (1 << (Python3Parser.BIN_INTEGER - 32)) | (1 << (Python3Parser.FLOAT_NUMBER - 32)) | (1 << (Python3Parser.IMAG_NUMBER - 32)) | (1 << (Python3Parser.ELLIPSIS - 32)) | (1 << (Python3Parser.STAR - 32)) | (1 << (Python3Parser.OPEN_PAREN - 32)) | (1 << (Python3Parser.OPEN_BRACK - 32)) | (1 << (Python3Parser.ADD - 32)) | (1 << (Python3Parser.MINUS - 32)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (Python3Parser.NOT_OP - 66)) | (1 << (Python3Parser.OPEN_BRACE - 66)) | (1 << (Python3Parser.AT - 66)))) !== 0));
+            this.state = 667;
+            this.match(Python3Parser.DEDENT);
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TestContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_test;
+    return this;
+}
+
+TestContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TestContext.prototype.constructor = TestContext;
+
+TestContext.prototype.or_test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Or_testContext);
+    } else {
+        return this.getTypedRuleContext(Or_testContext,i);
+    }
+};
+
+TestContext.prototype.IF = function() {
+    return this.getToken(Python3Parser.IF, 0);
+};
+
+TestContext.prototype.ELSE = function() {
+    return this.getToken(Python3Parser.ELSE, 0);
+};
+
+TestContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+TestContext.prototype.lambdef = function() {
+    return this.getTypedRuleContext(LambdefContext,0);
+};
+
+
+
+
+Python3Parser.TestContext = TestContext;
+
+Python3Parser.prototype.test = function() {
+
+    var localctx = new TestContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 92, Python3Parser.RULE_test);
+    var _la = 0; // Token type
+    try {
+        this.state = 680;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 671;
+            this.or_test();
+            this.state = 677;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.IF) {
+                this.state = 672;
+                this.match(Python3Parser.IF);
+                this.state = 673;
+                this.or_test();
+                this.state = 674;
+                this.match(Python3Parser.ELSE);
+                this.state = 675;
+                this.test();
+            }
+
+            break;
+        case Python3Parser.LAMBDA:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 679;
+            this.lambdef();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Test_nocondContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_test_nocond;
+    return this;
+}
+
+Test_nocondContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Test_nocondContext.prototype.constructor = Test_nocondContext;
+
+Test_nocondContext.prototype.or_test = function() {
+    return this.getTypedRuleContext(Or_testContext,0);
+};
+
+Test_nocondContext.prototype.lambdef_nocond = function() {
+    return this.getTypedRuleContext(Lambdef_nocondContext,0);
+};
+
+
+
+
+Python3Parser.Test_nocondContext = Test_nocondContext;
+
+Python3Parser.prototype.test_nocond = function() {
+
+    var localctx = new Test_nocondContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 94, Python3Parser.RULE_test_nocond);
+    try {
+        this.state = 684;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 682;
+            this.or_test();
+            break;
+        case Python3Parser.LAMBDA:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 683;
+            this.lambdef_nocond();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function LambdefContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_lambdef;
+    return this;
+}
+
+LambdefContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+LambdefContext.prototype.constructor = LambdefContext;
+
+LambdefContext.prototype.LAMBDA = function() {
+    return this.getToken(Python3Parser.LAMBDA, 0);
+};
+
+LambdefContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+LambdefContext.prototype.varargslist = function() {
+    return this.getTypedRuleContext(VarargslistContext,0);
+};
+
+
+
+
+Python3Parser.LambdefContext = LambdefContext;
+
+Python3Parser.prototype.lambdef = function() {
+
+    var localctx = new LambdefContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 96, Python3Parser.RULE_lambdef);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 686;
+        this.match(Python3Parser.LAMBDA);
+        this.state = 688;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 35)) & ~0x1f) == 0 && ((1 << (_la - 35)) & ((1 << (Python3Parser.NAME - 35)) | (1 << (Python3Parser.STAR - 35)) | (1 << (Python3Parser.POWER - 35)))) !== 0)) {
+            this.state = 687;
+            this.varargslist();
+        }
+
+        this.state = 690;
+        this.match(Python3Parser.COLON);
+        this.state = 691;
+        this.test();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Lambdef_nocondContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_lambdef_nocond;
+    return this;
+}
+
+Lambdef_nocondContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Lambdef_nocondContext.prototype.constructor = Lambdef_nocondContext;
+
+Lambdef_nocondContext.prototype.LAMBDA = function() {
+    return this.getToken(Python3Parser.LAMBDA, 0);
+};
+
+Lambdef_nocondContext.prototype.test_nocond = function() {
+    return this.getTypedRuleContext(Test_nocondContext,0);
+};
+
+Lambdef_nocondContext.prototype.varargslist = function() {
+    return this.getTypedRuleContext(VarargslistContext,0);
+};
+
+
+
+
+Python3Parser.Lambdef_nocondContext = Lambdef_nocondContext;
+
+Python3Parser.prototype.lambdef_nocond = function() {
+
+    var localctx = new Lambdef_nocondContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 98, Python3Parser.RULE_lambdef_nocond);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 693;
+        this.match(Python3Parser.LAMBDA);
+        this.state = 695;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 35)) & ~0x1f) == 0 && ((1 << (_la - 35)) & ((1 << (Python3Parser.NAME - 35)) | (1 << (Python3Parser.STAR - 35)) | (1 << (Python3Parser.POWER - 35)))) !== 0)) {
+            this.state = 694;
+            this.varargslist();
+        }
+
+        this.state = 697;
+        this.match(Python3Parser.COLON);
+        this.state = 698;
+        this.test_nocond();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Or_testContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_or_test;
+    return this;
+}
+
+Or_testContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Or_testContext.prototype.constructor = Or_testContext;
+
+Or_testContext.prototype.and_test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(And_testContext);
+    } else {
+        return this.getTypedRuleContext(And_testContext,i);
+    }
+};
+
+Or_testContext.prototype.OR = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.OR);
+    } else {
+        return this.getToken(Python3Parser.OR, i);
+    }
+};
+
+
+
+
+
+Python3Parser.Or_testContext = Or_testContext;
+
+Python3Parser.prototype.or_test = function() {
+
+    var localctx = new Or_testContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 100, Python3Parser.RULE_or_test);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 700;
+        this.and_test();
+        this.state = 705;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.OR) {
+            this.state = 701;
+            this.match(Python3Parser.OR);
+            this.state = 702;
+            this.and_test();
+            this.state = 707;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function And_testContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_and_test;
+    return this;
+}
+
+And_testContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+And_testContext.prototype.constructor = And_testContext;
+
+And_testContext.prototype.not_test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Not_testContext);
+    } else {
+        return this.getTypedRuleContext(Not_testContext,i);
+    }
+};
+
+And_testContext.prototype.AND = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(Python3Parser.AND);
+    } else {
+        return this.getToken(Python3Parser.AND, i);
+    }
+};
+
+
+
+
+
+Python3Parser.And_testContext = And_testContext;
+
+Python3Parser.prototype.and_test = function() {
+
+    var localctx = new And_testContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 102, Python3Parser.RULE_and_test);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 708;
+        this.not_test();
+        this.state = 713;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.AND) {
+            this.state = 709;
+            this.match(Python3Parser.AND);
+            this.state = 710;
+            this.not_test();
+            this.state = 715;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Not_testContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_not_test;
+    return this;
+}
+
+Not_testContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Not_testContext.prototype.constructor = Not_testContext;
+
+Not_testContext.prototype.NOT = function() {
+    return this.getToken(Python3Parser.NOT, 0);
+};
+
+Not_testContext.prototype.not_test = function() {
+    return this.getTypedRuleContext(Not_testContext,0);
+};
+
+Not_testContext.prototype.comparison = function() {
+    return this.getTypedRuleContext(ComparisonContext,0);
+};
+
+
+
+
+Python3Parser.Not_testContext = Not_testContext;
+
+Python3Parser.prototype.not_test = function() {
+
+    var localctx = new Not_testContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 104, Python3Parser.RULE_not_test);
+    try {
+        this.state = 719;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.NOT:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 716;
+            this.match(Python3Parser.NOT);
+            this.state = 717;
+            this.not_test();
+            break;
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 718;
+            this.comparison();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ComparisonContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_comparison;
+    return this;
+}
+
+ComparisonContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ComparisonContext.prototype.constructor = ComparisonContext;
+
+ComparisonContext.prototype.star_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Star_exprContext);
+    } else {
+        return this.getTypedRuleContext(Star_exprContext,i);
+    }
+};
+
+ComparisonContext.prototype.comp_op = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Comp_opContext);
+    } else {
+        return this.getTypedRuleContext(Comp_opContext,i);
+    }
+};
+
+
+
+
+Python3Parser.ComparisonContext = ComparisonContext;
+
+Python3Parser.prototype.comparison = function() {
+
+    var localctx = new ComparisonContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 106, Python3Parser.RULE_comparison);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 721;
+        this.star_expr();
+        this.state = 727;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << Python3Parser.IN) | (1 << Python3Parser.NOT) | (1 << Python3Parser.IS))) !== 0) || ((((_la - 69)) & ~0x1f) == 0 && ((1 << (_la - 69)) & ((1 << (Python3Parser.LESS_THAN - 69)) | (1 << (Python3Parser.GREATER_THAN - 69)) | (1 << (Python3Parser.EQUALS - 69)) | (1 << (Python3Parser.GT_EQ - 69)) | (1 << (Python3Parser.LT_EQ - 69)) | (1 << (Python3Parser.NOT_EQ_1 - 69)) | (1 << (Python3Parser.NOT_EQ_2 - 69)))) !== 0)) {
+            this.state = 722;
+            this.comp_op();
+            this.state = 723;
+            this.star_expr();
+            this.state = 729;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Comp_opContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_comp_op;
+    return this;
+}
+
+Comp_opContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Comp_opContext.prototype.constructor = Comp_opContext;
+
+Comp_opContext.prototype.IN = function() {
+    return this.getToken(Python3Parser.IN, 0);
+};
+
+Comp_opContext.prototype.NOT = function() {
+    return this.getToken(Python3Parser.NOT, 0);
+};
+
+Comp_opContext.prototype.IS = function() {
+    return this.getToken(Python3Parser.IS, 0);
+};
+
+
+
+
+Python3Parser.Comp_opContext = Comp_opContext;
+
+Python3Parser.prototype.comp_op = function() {
+
+    var localctx = new Comp_opContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 108, Python3Parser.RULE_comp_op);
+    try {
+        this.state = 743;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,93,this._ctx);
+        switch(la_) {
+        case 1:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 730;
+            this.match(Python3Parser.LESS_THAN);
+            break;
+
+        case 2:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 731;
+            this.match(Python3Parser.GREATER_THAN);
+            break;
+
+        case 3:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 732;
+            this.match(Python3Parser.EQUALS);
+            break;
+
+        case 4:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 733;
+            this.match(Python3Parser.GT_EQ);
+            break;
+
+        case 5:
+            this.enterOuterAlt(localctx, 5);
+            this.state = 734;
+            this.match(Python3Parser.LT_EQ);
+            break;
+
+        case 6:
+            this.enterOuterAlt(localctx, 6);
+            this.state = 735;
+            this.match(Python3Parser.NOT_EQ_1);
+            break;
+
+        case 7:
+            this.enterOuterAlt(localctx, 7);
+            this.state = 736;
+            this.match(Python3Parser.NOT_EQ_2);
+            break;
+
+        case 8:
+            this.enterOuterAlt(localctx, 8);
+            this.state = 737;
+            this.match(Python3Parser.IN);
+            break;
+
+        case 9:
+            this.enterOuterAlt(localctx, 9);
+            this.state = 738;
+            this.match(Python3Parser.NOT);
+            this.state = 739;
+            this.match(Python3Parser.IN);
+            break;
+
+        case 10:
+            this.enterOuterAlt(localctx, 10);
+            this.state = 740;
+            this.match(Python3Parser.IS);
+            break;
+
+        case 11:
+            this.enterOuterAlt(localctx, 11);
+            this.state = 741;
+            this.match(Python3Parser.IS);
+            this.state = 742;
+            this.match(Python3Parser.NOT);
+            break;
+
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Star_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_star_expr;
+    return this;
+}
+
+Star_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Star_exprContext.prototype.constructor = Star_exprContext;
+
+Star_exprContext.prototype.expr = function() {
+    return this.getTypedRuleContext(ExprContext,0);
+};
+
+
+
+
+Python3Parser.Star_exprContext = Star_exprContext;
+
+Python3Parser.prototype.star_expr = function() {
+
+    var localctx = new Star_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 110, Python3Parser.RULE_star_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 746;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.STAR) {
+            this.state = 745;
+            this.match(Python3Parser.STAR);
+        }
+
+        this.state = 748;
+        this.expr();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ExprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_expr;
+    return this;
+}
+
+ExprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ExprContext.prototype.constructor = ExprContext;
+
+ExprContext.prototype.xor_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Xor_exprContext);
+    } else {
+        return this.getTypedRuleContext(Xor_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.ExprContext = ExprContext;
+
+Python3Parser.prototype.expr = function() {
+
+    var localctx = new ExprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 112, Python3Parser.RULE_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 750;
+        this.xor_expr();
+        this.state = 755;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.OR_OP) {
+            this.state = 751;
+            this.match(Python3Parser.OR_OP);
+            this.state = 752;
+            this.xor_expr();
+            this.state = 757;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Xor_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_xor_expr;
+    return this;
+}
+
+Xor_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Xor_exprContext.prototype.constructor = Xor_exprContext;
+
+Xor_exprContext.prototype.and_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(And_exprContext);
+    } else {
+        return this.getTypedRuleContext(And_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Xor_exprContext = Xor_exprContext;
+
+Python3Parser.prototype.xor_expr = function() {
+
+    var localctx = new Xor_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 114, Python3Parser.RULE_xor_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 758;
+        this.and_expr();
+        this.state = 763;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.XOR) {
+            this.state = 759;
+            this.match(Python3Parser.XOR);
+            this.state = 760;
+            this.and_expr();
+            this.state = 765;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function And_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_and_expr;
+    return this;
+}
+
+And_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+And_exprContext.prototype.constructor = And_exprContext;
+
+And_exprContext.prototype.shift_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Shift_exprContext);
+    } else {
+        return this.getTypedRuleContext(Shift_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.And_exprContext = And_exprContext;
+
+Python3Parser.prototype.and_expr = function() {
+
+    var localctx = new And_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 116, Python3Parser.RULE_and_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 766;
+        this.shift_expr();
+        this.state = 771;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.AND_OP) {
+            this.state = 767;
+            this.match(Python3Parser.AND_OP);
+            this.state = 768;
+            this.shift_expr();
+            this.state = 773;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Shift_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_shift_expr;
+    return this;
+}
+
+Shift_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Shift_exprContext.prototype.constructor = Shift_exprContext;
+
+Shift_exprContext.prototype.arith_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Arith_exprContext);
+    } else {
+        return this.getTypedRuleContext(Arith_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Shift_exprContext = Shift_exprContext;
+
+Python3Parser.prototype.shift_expr = function() {
+
+    var localctx = new Shift_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 118, Python3Parser.RULE_shift_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 774;
+        this.arith_expr();
+        this.state = 781;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.LEFT_SHIFT || _la===Python3Parser.RIGHT_SHIFT) {
+            this.state = 779;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.LEFT_SHIFT:
+                this.state = 775;
+                this.match(Python3Parser.LEFT_SHIFT);
+                this.state = 776;
+                this.arith_expr();
+                break;
+            case Python3Parser.RIGHT_SHIFT:
+                this.state = 777;
+                this.match(Python3Parser.RIGHT_SHIFT);
+                this.state = 778;
+                this.arith_expr();
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            this.state = 783;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Arith_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_arith_expr;
+    return this;
+}
+
+Arith_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Arith_exprContext.prototype.constructor = Arith_exprContext;
+
+Arith_exprContext.prototype.term = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TermContext);
+    } else {
+        return this.getTypedRuleContext(TermContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Arith_exprContext = Arith_exprContext;
+
+Python3Parser.prototype.arith_expr = function() {
+
+    var localctx = new Arith_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 120, Python3Parser.RULE_arith_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 784;
+        this.term();
+        this.state = 791;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===Python3Parser.ADD || _la===Python3Parser.MINUS) {
+            this.state = 789;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.ADD:
+                this.state = 785;
+                this.match(Python3Parser.ADD);
+                this.state = 786;
+                this.term();
+                break;
+            case Python3Parser.MINUS:
+                this.state = 787;
+                this.match(Python3Parser.MINUS);
+                this.state = 788;
+                this.term();
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            this.state = 793;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TermContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_term;
+    return this;
+}
+
+TermContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TermContext.prototype.constructor = TermContext;
+
+TermContext.prototype.factor = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(FactorContext);
+    } else {
+        return this.getTypedRuleContext(FactorContext,i);
+    }
+};
+
+
+
+
+Python3Parser.TermContext = TermContext;
+
+Python3Parser.prototype.term = function() {
+
+    var localctx = new TermContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 122, Python3Parser.RULE_term);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 794;
+        this.factor();
+        this.state = 807;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(((((_la - 46)) & ~0x1f) == 0 && ((1 << (_la - 46)) & ((1 << (Python3Parser.STAR - 46)) | (1 << (Python3Parser.DIV - 46)) | (1 << (Python3Parser.MOD - 46)) | (1 << (Python3Parser.IDIV - 46)) | (1 << (Python3Parser.AT - 46)))) !== 0)) {
+            this.state = 805;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.STAR:
+                this.state = 795;
+                this.match(Python3Parser.STAR);
+                this.state = 796;
+                this.factor();
+                break;
+            case Python3Parser.DIV:
+                this.state = 797;
+                this.match(Python3Parser.DIV);
+                this.state = 798;
+                this.factor();
+                break;
+            case Python3Parser.MOD:
+                this.state = 799;
+                this.match(Python3Parser.MOD);
+                this.state = 800;
+                this.factor();
+                break;
+            case Python3Parser.IDIV:
+                this.state = 801;
+                this.match(Python3Parser.IDIV);
+                this.state = 802;
+                this.factor();
+                break;
+            case Python3Parser.AT:
+                this.state = 803;
+                this.match(Python3Parser.AT);
+                this.state = 804;
+                this.factor();
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            this.state = 809;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function FactorContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_factor;
+    return this;
+}
+
+FactorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+FactorContext.prototype.constructor = FactorContext;
+
+FactorContext.prototype.factor = function() {
+    return this.getTypedRuleContext(FactorContext,0);
+};
+
+FactorContext.prototype.power = function() {
+    return this.getTypedRuleContext(PowerContext,0);
+};
+
+
+
+
+Python3Parser.FactorContext = FactorContext;
+
+Python3Parser.prototype.factor = function() {
+
+    var localctx = new FactorContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 124, Python3Parser.RULE_factor);
+    try {
+        this.state = 817;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.ADD:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 810;
+            this.match(Python3Parser.ADD);
+            this.state = 811;
+            this.factor();
+            break;
+        case Python3Parser.MINUS:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 812;
+            this.match(Python3Parser.MINUS);
+            this.state = 813;
+            this.factor();
+            break;
+        case Python3Parser.NOT_OP:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 814;
+            this.match(Python3Parser.NOT_OP);
+            this.state = 815;
+            this.factor();
+            break;
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 816;
+            this.power();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function PowerContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_power;
+    return this;
+}
+
+PowerContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+PowerContext.prototype.constructor = PowerContext;
+
+PowerContext.prototype.trailed_atom = function() {
+    return this.getTypedRuleContext(Trailed_atomContext,0);
+};
+
+PowerContext.prototype.factor = function() {
+    return this.getTypedRuleContext(FactorContext,0);
+};
+
+
+
+
+Python3Parser.PowerContext = PowerContext;
+
+Python3Parser.prototype.power = function() {
+
+    var localctx = new PowerContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 126, Python3Parser.RULE_power);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 819;
+        this.trailed_atom();
+        this.state = 822;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.POWER) {
+            this.state = 820;
+            this.match(Python3Parser.POWER);
+            this.state = 821;
+            this.factor();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Trailed_atomContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_trailed_atom;
+    return this;
+}
+
+Trailed_atomContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Trailed_atomContext.prototype.constructor = Trailed_atomContext;
+
+Trailed_atomContext.prototype.atom = function() {
+    return this.getTypedRuleContext(AtomContext,0);
+};
+
+Trailed_atomContext.prototype.trailer = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TrailerContext);
+    } else {
+        return this.getTypedRuleContext(TrailerContext,i);
+    }
+};
+
+
+
+
+Python3Parser.Trailed_atomContext = Trailed_atomContext;
+
+Python3Parser.prototype.trailed_atom = function() {
+
+    var localctx = new Trailed_atomContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 128, Python3Parser.RULE_trailed_atom);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 824;
+        this.atom();
+        this.state = 828;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(((((_la - 44)) & ~0x1f) == 0 && ((1 << (_la - 44)) & ((1 << (Python3Parser.DOT - 44)) | (1 << (Python3Parser.OPEN_PAREN - 44)) | (1 << (Python3Parser.OPEN_BRACK - 44)))) !== 0)) {
+            this.state = 825;
+            this.trailer();
+            this.state = 830;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function AtomContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_atom;
+    return this;
+}
+
+AtomContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+AtomContext.prototype.constructor = AtomContext;
+
+AtomContext.prototype.yield_expr = function() {
+    return this.getTypedRuleContext(Yield_exprContext,0);
+};
+
+AtomContext.prototype.testlist_comp = function() {
+    return this.getTypedRuleContext(Testlist_compContext,0);
+};
+
+AtomContext.prototype.dictorsetmaker = function() {
+    return this.getTypedRuleContext(DictorsetmakerContext,0);
+};
+
+AtomContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+AtomContext.prototype.number = function() {
+    return this.getTypedRuleContext(NumberContext,0);
+};
+
+AtomContext.prototype.str = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(StrContext);
+    } else {
+        return this.getTypedRuleContext(StrContext,i);
+    }
+};
+
+AtomContext.prototype.NONE = function() {
+    return this.getToken(Python3Parser.NONE, 0);
+};
+
+AtomContext.prototype.TRUE = function() {
+    return this.getToken(Python3Parser.TRUE, 0);
+};
+
+AtomContext.prototype.FALSE = function() {
+    return this.getToken(Python3Parser.FALSE, 0);
+};
+
+
+
+
+Python3Parser.AtomContext = AtomContext;
+
+Python3Parser.prototype.atom = function() {
+
+    var localctx = new AtomContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 130, Python3Parser.RULE_atom);
+    var _la = 0; // Token type
+    try {
+        this.state = 858;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.OPEN_PAREN:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 831;
+            this.match(Python3Parser.OPEN_PAREN);
+            this.state = 834;
+            this._errHandler.sync(this);
+            switch (this._input.LA(1)) {
+            case Python3Parser.YIELD:
+            	this.state = 832;
+            	this.yield_expr();
+            	break;
+            case Python3Parser.LAMBDA:
+            case Python3Parser.NOT:
+            case Python3Parser.NONE:
+            case Python3Parser.TRUE:
+            case Python3Parser.FALSE:
+            case Python3Parser.NAME:
+            case Python3Parser.STRING_LITERAL:
+            case Python3Parser.BYTES_LITERAL:
+            case Python3Parser.DECIMAL_INTEGER:
+            case Python3Parser.OCT_INTEGER:
+            case Python3Parser.HEX_INTEGER:
+            case Python3Parser.BIN_INTEGER:
+            case Python3Parser.FLOAT_NUMBER:
+            case Python3Parser.IMAG_NUMBER:
+            case Python3Parser.ELLIPSIS:
+            case Python3Parser.STAR:
+            case Python3Parser.OPEN_PAREN:
+            case Python3Parser.OPEN_BRACK:
+            case Python3Parser.ADD:
+            case Python3Parser.MINUS:
+            case Python3Parser.NOT_OP:
+            case Python3Parser.OPEN_BRACE:
+            	this.state = 833;
+            	this.testlist_comp();
+            	break;
+            case Python3Parser.CLOSE_PAREN:
+            	break;
+            default:
+            	throw new antlr4.error.NoViableAltException(this);
+            }
+            this.state = 836;
+            this.match(Python3Parser.CLOSE_PAREN);
+            break;
+        case Python3Parser.OPEN_BRACK:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 837;
+            this.match(Python3Parser.OPEN_BRACK);
+            this.state = 839;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+                this.state = 838;
+                this.testlist_comp();
+            }
+
+            this.state = 841;
+            this.match(Python3Parser.CLOSE_BRACK);
+            break;
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 842;
+            this.match(Python3Parser.OPEN_BRACE);
+            this.state = 844;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+                this.state = 843;
+                this.dictorsetmaker();
+            }
+
+            this.state = 846;
+            this.match(Python3Parser.CLOSE_BRACE);
+            break;
+        case Python3Parser.NAME:
+            this.enterOuterAlt(localctx, 4);
+            this.state = 847;
+            this.match(Python3Parser.NAME);
+            break;
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+            this.enterOuterAlt(localctx, 5);
+            this.state = 848;
+            this.number();
+            break;
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+            this.enterOuterAlt(localctx, 6);
+            this.state = 850; 
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            do {
+                this.state = 849;
+                this.str();
+                this.state = 852; 
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+            } while(_la===Python3Parser.STRING_LITERAL || _la===Python3Parser.BYTES_LITERAL);
+            break;
+        case Python3Parser.ELLIPSIS:
+            this.enterOuterAlt(localctx, 7);
+            this.state = 854;
+            this.match(Python3Parser.ELLIPSIS);
+            break;
+        case Python3Parser.NONE:
+            this.enterOuterAlt(localctx, 8);
+            this.state = 855;
+            this.match(Python3Parser.NONE);
+            break;
+        case Python3Parser.TRUE:
+            this.enterOuterAlt(localctx, 9);
+            this.state = 856;
+            this.match(Python3Parser.TRUE);
+            break;
+        case Python3Parser.FALSE:
+            this.enterOuterAlt(localctx, 10);
+            this.state = 857;
+            this.match(Python3Parser.FALSE);
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Testlist_compContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_testlist_comp;
+    return this;
+}
+
+Testlist_compContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Testlist_compContext.prototype.constructor = Testlist_compContext;
+
+Testlist_compContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+Testlist_compContext.prototype.comp_for = function() {
+    return this.getTypedRuleContext(Comp_forContext,0);
+};
+
+
+
+
+Python3Parser.Testlist_compContext = Testlist_compContext;
+
+Python3Parser.prototype.testlist_comp = function() {
+
+    var localctx = new Testlist_compContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 132, Python3Parser.RULE_testlist_comp);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 860;
+        this.test();
+        this.state = 872;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.FOR:
+            this.state = 861;
+            this.comp_for();
+            break;
+        case Python3Parser.CLOSE_PAREN:
+        case Python3Parser.COMMA:
+        case Python3Parser.CLOSE_BRACK:
+            this.state = 866;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,112,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 862;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 863;
+                    this.test(); 
+                }
+                this.state = 868;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,112,this._ctx);
+            }
+
+            this.state = 870;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 869;
+                this.match(Python3Parser.COMMA);
+            }
+
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TrailerContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_trailer;
+    return this;
+}
+
+TrailerContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TrailerContext.prototype.constructor = TrailerContext;
+
+TrailerContext.prototype.arglist = function() {
+    return this.getTypedRuleContext(ArglistContext,0);
+};
+
+TrailerContext.prototype.subscriptlist = function() {
+    return this.getTypedRuleContext(SubscriptlistContext,0);
+};
+
+TrailerContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+
+
+
+Python3Parser.TrailerContext = TrailerContext;
+
+Python3Parser.prototype.trailer = function() {
+
+    var localctx = new TrailerContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 134, Python3Parser.RULE_trailer);
+    var _la = 0; // Token type
+    try {
+        this.state = 885;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.OPEN_PAREN:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 874;
+            this.match(Python3Parser.OPEN_PAREN);
+            this.state = 876;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 52)) & ~0x1f) == 0 && ((1 << (_la - 52)) & ((1 << (Python3Parser.POWER - 52)) | (1 << (Python3Parser.OPEN_BRACK - 52)) | (1 << (Python3Parser.ADD - 52)) | (1 << (Python3Parser.MINUS - 52)) | (1 << (Python3Parser.NOT_OP - 52)) | (1 << (Python3Parser.OPEN_BRACE - 52)))) !== 0)) {
+                this.state = 875;
+                this.arglist();
+            }
+
+            this.state = 878;
+            this.match(Python3Parser.CLOSE_PAREN);
+            break;
+        case Python3Parser.OPEN_BRACK:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 879;
+            this.match(Python3Parser.OPEN_BRACK);
+            this.state = 880;
+            this.subscriptlist();
+            this.state = 881;
+            this.match(Python3Parser.CLOSE_BRACK);
+            break;
+        case Python3Parser.DOT:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 883;
+            this.match(Python3Parser.DOT);
+            this.state = 884;
+            this.match(Python3Parser.NAME);
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function SubscriptlistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_subscriptlist;
+    return this;
+}
+
+SubscriptlistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+SubscriptlistContext.prototype.constructor = SubscriptlistContext;
+
+SubscriptlistContext.prototype.subscript = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(SubscriptContext);
+    } else {
+        return this.getTypedRuleContext(SubscriptContext,i);
+    }
+};
+
+
+
+
+Python3Parser.SubscriptlistContext = SubscriptlistContext;
+
+Python3Parser.prototype.subscriptlist = function() {
+
+    var localctx = new SubscriptlistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 136, Python3Parser.RULE_subscriptlist);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 887;
+        this.subscript();
+        this.state = 892;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,117,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 888;
+                this.match(Python3Parser.COMMA);
+                this.state = 889;
+                this.subscript(); 
+            }
+            this.state = 894;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,117,this._ctx);
+        }
+
+        this.state = 896;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 895;
+            this.match(Python3Parser.COMMA);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function SubscriptContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_subscript;
+    return this;
+}
+
+SubscriptContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+SubscriptContext.prototype.constructor = SubscriptContext;
+
+SubscriptContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+SubscriptContext.prototype.sliceop = function() {
+    return this.getTypedRuleContext(SliceopContext,0);
+};
+
+
+
+
+Python3Parser.SubscriptContext = SubscriptContext;
+
+Python3Parser.prototype.subscript = function() {
+
+    var localctx = new SubscriptContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 138, Python3Parser.RULE_subscript);
+    var _la = 0; // Token type
+    try {
+        this.state = 909;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,122,this._ctx);
+        switch(la_) {
+        case 1:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 898;
+            this.test();
+            break;
+
+        case 2:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 900;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+                this.state = 899;
+                this.test();
+            }
+
+            this.state = 902;
+            this.match(Python3Parser.COLON);
+            this.state = 904;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+                this.state = 903;
+                this.test();
+            }
+
+            this.state = 907;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COLON) {
+                this.state = 906;
+                this.sliceop();
+            }
+
+            break;
+
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function SliceopContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_sliceop;
+    return this;
+}
+
+SliceopContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+SliceopContext.prototype.constructor = SliceopContext;
+
+SliceopContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+
+
+
+Python3Parser.SliceopContext = SliceopContext;
+
+Python3Parser.prototype.sliceop = function() {
+
+    var localctx = new SliceopContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 140, Python3Parser.RULE_sliceop);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 911;
+        this.match(Python3Parser.COLON);
+        this.state = 913;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 54)) & ~0x1f) == 0 && ((1 << (_la - 54)) & ((1 << (Python3Parser.OPEN_BRACK - 54)) | (1 << (Python3Parser.ADD - 54)) | (1 << (Python3Parser.MINUS - 54)) | (1 << (Python3Parser.NOT_OP - 54)) | (1 << (Python3Parser.OPEN_BRACE - 54)))) !== 0)) {
+            this.state = 912;
+            this.test();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ExprlistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_exprlist;
+    return this;
+}
+
+ExprlistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ExprlistContext.prototype.constructor = ExprlistContext;
+
+ExprlistContext.prototype.star_expr = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(Star_exprContext);
+    } else {
+        return this.getTypedRuleContext(Star_exprContext,i);
+    }
+};
+
+
+
+
+Python3Parser.ExprlistContext = ExprlistContext;
+
+Python3Parser.prototype.exprlist = function() {
+
+    var localctx = new ExprlistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 142, Python3Parser.RULE_exprlist);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 915;
+        this.star_expr();
+        this.state = 920;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,124,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 916;
+                this.match(Python3Parser.COMMA);
+                this.state = 917;
+                this.star_expr(); 
+            }
+            this.state = 922;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,124,this._ctx);
+        }
+
+        this.state = 924;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 923;
+            this.match(Python3Parser.COMMA);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TestlistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_testlist;
+    return this;
+}
+
+TestlistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TestlistContext.prototype.constructor = TestlistContext;
+
+TestlistContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+
+
+
+Python3Parser.TestlistContext = TestlistContext;
+
+Python3Parser.prototype.testlist = function() {
+
+    var localctx = new TestlistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 144, Python3Parser.RULE_testlist);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 926;
+        this.test();
+        this.state = 931;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,126,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 927;
+                this.match(Python3Parser.COMMA);
+                this.state = 928;
+                this.test(); 
+            }
+            this.state = 933;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,126,this._ctx);
+        }
+
+        this.state = 935;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.COMMA) {
+            this.state = 934;
+            this.match(Python3Parser.COMMA);
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function DictorsetmakerContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_dictorsetmaker;
+    return this;
+}
+
+DictorsetmakerContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+DictorsetmakerContext.prototype.constructor = DictorsetmakerContext;
+
+DictorsetmakerContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+DictorsetmakerContext.prototype.comp_for = function() {
+    return this.getTypedRuleContext(Comp_forContext,0);
+};
+
+
+
+
+Python3Parser.DictorsetmakerContext = DictorsetmakerContext;
+
+Python3Parser.prototype.dictorsetmaker = function() {
+
+    var localctx = new DictorsetmakerContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 146, Python3Parser.RULE_dictorsetmaker);
+    var _la = 0; // Token type
+    try {
+        this.state = 970;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,134,this._ctx);
+        switch(la_) {
+        case 1:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 937;
+            this.test();
+            this.state = 938;
+            this.match(Python3Parser.COLON);
+            this.state = 939;
+            this.test();
+            this.state = 954;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.FOR:
+                this.state = 940;
+                this.comp_for();
+                break;
+            case Python3Parser.COMMA:
+            case Python3Parser.CLOSE_BRACE:
+                this.state = 948;
+                this._errHandler.sync(this);
+                var _alt = this._interp.adaptivePredict(this._input,128,this._ctx)
+                while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                    if(_alt===1) {
+                        this.state = 941;
+                        this.match(Python3Parser.COMMA);
+                        this.state = 942;
+                        this.test();
+                        this.state = 943;
+                        this.match(Python3Parser.COLON);
+                        this.state = 944;
+                        this.test(); 
+                    }
+                    this.state = 950;
+                    this._errHandler.sync(this);
+                    _alt = this._interp.adaptivePredict(this._input,128,this._ctx);
+                }
+
+                this.state = 952;
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+                if(_la===Python3Parser.COMMA) {
+                    this.state = 951;
+                    this.match(Python3Parser.COMMA);
+                }
+
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            break;
+
+        case 2:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 956;
+            this.test();
+            this.state = 968;
+            this._errHandler.sync(this);
+            switch(this._input.LA(1)) {
+            case Python3Parser.FOR:
+                this.state = 957;
+                this.comp_for();
+                break;
+            case Python3Parser.COMMA:
+            case Python3Parser.CLOSE_BRACE:
+                this.state = 962;
+                this._errHandler.sync(this);
+                var _alt = this._interp.adaptivePredict(this._input,131,this._ctx)
+                while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                    if(_alt===1) {
+                        this.state = 958;
+                        this.match(Python3Parser.COMMA);
+                        this.state = 959;
+                        this.test(); 
+                    }
+                    this.state = 964;
+                    this._errHandler.sync(this);
+                    _alt = this._interp.adaptivePredict(this._input,131,this._ctx);
+                }
+
+                this.state = 966;
+                this._errHandler.sync(this);
+                _la = this._input.LA(1);
+                if(_la===Python3Parser.COMMA) {
+                    this.state = 965;
+                    this.match(Python3Parser.COMMA);
+                }
+
+                break;
+            default:
+                throw new antlr4.error.NoViableAltException(this);
+            }
+            break;
+
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ClassdefContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_classdef;
+    return this;
+}
+
+ClassdefContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ClassdefContext.prototype.constructor = ClassdefContext;
+
+ClassdefContext.prototype.CLASS = function() {
+    return this.getToken(Python3Parser.CLASS, 0);
+};
+
+ClassdefContext.prototype.NAME = function() {
+    return this.getToken(Python3Parser.NAME, 0);
+};
+
+ClassdefContext.prototype.suite = function() {
+    return this.getTypedRuleContext(SuiteContext,0);
+};
+
+ClassdefContext.prototype.arglist = function() {
+    return this.getTypedRuleContext(ArglistContext,0);
+};
+
+
+
+
+Python3Parser.ClassdefContext = ClassdefContext;
+
+Python3Parser.prototype.classdef = function() {
+
+    var localctx = new ClassdefContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 148, Python3Parser.RULE_classdef);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 972;
+        this.match(Python3Parser.CLASS);
+        this.state = 973;
+        this.match(Python3Parser.NAME);
+        this.state = 979;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.OPEN_PAREN) {
+            this.state = 974;
+            this.match(Python3Parser.OPEN_PAREN);
+            this.state = 976;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(((((_la - 20)) & ~0x1f) == 0 && ((1 << (_la - 20)) & ((1 << (Python3Parser.LAMBDA - 20)) | (1 << (Python3Parser.NOT - 20)) | (1 << (Python3Parser.NONE - 20)) | (1 << (Python3Parser.TRUE - 20)) | (1 << (Python3Parser.FALSE - 20)) | (1 << (Python3Parser.NAME - 20)) | (1 << (Python3Parser.STRING_LITERAL - 20)) | (1 << (Python3Parser.BYTES_LITERAL - 20)) | (1 << (Python3Parser.DECIMAL_INTEGER - 20)) | (1 << (Python3Parser.OCT_INTEGER - 20)) | (1 << (Python3Parser.HEX_INTEGER - 20)) | (1 << (Python3Parser.BIN_INTEGER - 20)) | (1 << (Python3Parser.FLOAT_NUMBER - 20)) | (1 << (Python3Parser.IMAG_NUMBER - 20)) | (1 << (Python3Parser.ELLIPSIS - 20)) | (1 << (Python3Parser.STAR - 20)) | (1 << (Python3Parser.OPEN_PAREN - 20)))) !== 0) || ((((_la - 52)) & ~0x1f) == 0 && ((1 << (_la - 52)) & ((1 << (Python3Parser.POWER - 52)) | (1 << (Python3Parser.OPEN_BRACK - 52)) | (1 << (Python3Parser.ADD - 52)) | (1 << (Python3Parser.MINUS - 52)) | (1 << (Python3Parser.NOT_OP - 52)) | (1 << (Python3Parser.OPEN_BRACE - 52)))) !== 0)) {
+                this.state = 975;
+                this.arglist();
+            }
+
+            this.state = 978;
+            this.match(Python3Parser.CLOSE_PAREN);
+        }
+
+        this.state = 981;
+        this.match(Python3Parser.COLON);
+        this.state = 982;
+        this.suite();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ArglistContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_arglist;
+    return this;
+}
+
+ArglistContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ArglistContext.prototype.constructor = ArglistContext;
+
+ArglistContext.prototype.argument = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(ArgumentContext);
+    } else {
+        return this.getTypedRuleContext(ArgumentContext,i);
+    }
+};
+
+ArglistContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+
+
+
+Python3Parser.ArglistContext = ArglistContext;
+
+Python3Parser.prototype.arglist = function() {
+
+    var localctx = new ArglistContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 150, Python3Parser.RULE_arglist);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 989;
+        this._errHandler.sync(this);
+        var _alt = this._interp.adaptivePredict(this._input,137,this._ctx)
+        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+            if(_alt===1) {
+                this.state = 984;
+                this.argument();
+                this.state = 985;
+                this.match(Python3Parser.COMMA); 
+            }
+            this.state = 991;
+            this._errHandler.sync(this);
+            _alt = this._interp.adaptivePredict(this._input,137,this._ctx);
+        }
+
+        this.state = 1012;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,141,this._ctx);
+        switch(la_) {
+        case 1:
+            this.state = 992;
+            this.argument();
+            this.state = 994;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 993;
+                this.match(Python3Parser.COMMA);
+            }
+
+            break;
+
+        case 2:
+            this.state = 996;
+            this.match(Python3Parser.STAR);
+            this.state = 997;
+            this.test();
+            this.state = 1002;
+            this._errHandler.sync(this);
+            var _alt = this._interp.adaptivePredict(this._input,139,this._ctx)
+            while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+                if(_alt===1) {
+                    this.state = 998;
+                    this.match(Python3Parser.COMMA);
+                    this.state = 999;
+                    this.argument(); 
+                }
+                this.state = 1004;
+                this._errHandler.sync(this);
+                _alt = this._interp.adaptivePredict(this._input,139,this._ctx);
+            }
+
+            this.state = 1008;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.COMMA) {
+                this.state = 1005;
+                this.match(Python3Parser.COMMA);
+                this.state = 1006;
+                this.match(Python3Parser.POWER);
+                this.state = 1007;
+                this.test();
+            }
+
+            break;
+
+        case 3:
+            this.state = 1010;
+            this.match(Python3Parser.POWER);
+            this.state = 1011;
+            this.test();
+            break;
+
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function ArgumentContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_argument;
+    return this;
+}
+
+ArgumentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ArgumentContext.prototype.constructor = ArgumentContext;
+
+ArgumentContext.prototype.test = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TestContext);
+    } else {
+        return this.getTypedRuleContext(TestContext,i);
+    }
+};
+
+ArgumentContext.prototype.comp_for = function() {
+    return this.getTypedRuleContext(Comp_forContext,0);
+};
+
+
+
+
+Python3Parser.ArgumentContext = ArgumentContext;
+
+Python3Parser.prototype.argument = function() {
+
+    var localctx = new ArgumentContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 152, Python3Parser.RULE_argument);
+    var _la = 0; // Token type
+    try {
+        this.state = 1022;
+        this._errHandler.sync(this);
+        var la_ = this._interp.adaptivePredict(this._input,143,this._ctx);
+        switch(la_) {
+        case 1:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 1014;
+            this.test();
+            this.state = 1016;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+            if(_la===Python3Parser.FOR) {
+                this.state = 1015;
+                this.comp_for();
+            }
+
+            break;
+
+        case 2:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 1018;
+            this.test();
+            this.state = 1019;
+            this.match(Python3Parser.ASSIGN);
+            this.state = 1020;
+            this.test();
+            break;
+
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Comp_iterContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_comp_iter;
+    return this;
+}
+
+Comp_iterContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Comp_iterContext.prototype.constructor = Comp_iterContext;
+
+Comp_iterContext.prototype.comp_for = function() {
+    return this.getTypedRuleContext(Comp_forContext,0);
+};
+
+Comp_iterContext.prototype.comp_if = function() {
+    return this.getTypedRuleContext(Comp_ifContext,0);
+};
+
+
+
+
+Python3Parser.Comp_iterContext = Comp_iterContext;
+
+Python3Parser.prototype.comp_iter = function() {
+
+    var localctx = new Comp_iterContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 154, Python3Parser.RULE_comp_iter);
+    try {
+        this.state = 1026;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.FOR:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 1024;
+            this.comp_for();
+            break;
+        case Python3Parser.IF:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 1025;
+            this.comp_if();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Comp_forContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_comp_for;
+    return this;
+}
+
+Comp_forContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Comp_forContext.prototype.constructor = Comp_forContext;
+
+Comp_forContext.prototype.FOR = function() {
+    return this.getToken(Python3Parser.FOR, 0);
+};
+
+Comp_forContext.prototype.exprlist = function() {
+    return this.getTypedRuleContext(ExprlistContext,0);
+};
+
+Comp_forContext.prototype.IN = function() {
+    return this.getToken(Python3Parser.IN, 0);
+};
+
+Comp_forContext.prototype.or_test = function() {
+    return this.getTypedRuleContext(Or_testContext,0);
+};
+
+Comp_forContext.prototype.comp_iter = function() {
+    return this.getTypedRuleContext(Comp_iterContext,0);
+};
+
+
+
+
+Python3Parser.Comp_forContext = Comp_forContext;
+
+Python3Parser.prototype.comp_for = function() {
+
+    var localctx = new Comp_forContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 156, Python3Parser.RULE_comp_for);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 1028;
+        this.match(Python3Parser.FOR);
+        this.state = 1029;
+        this.exprlist();
+        this.state = 1030;
+        this.match(Python3Parser.IN);
+        this.state = 1031;
+        this.or_test();
+        this.state = 1033;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.IF || _la===Python3Parser.FOR) {
+            this.state = 1032;
+            this.comp_iter();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Comp_ifContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_comp_if;
+    return this;
+}
+
+Comp_ifContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Comp_ifContext.prototype.constructor = Comp_ifContext;
+
+Comp_ifContext.prototype.IF = function() {
+    return this.getToken(Python3Parser.IF, 0);
+};
+
+Comp_ifContext.prototype.test_nocond = function() {
+    return this.getTypedRuleContext(Test_nocondContext,0);
+};
+
+Comp_ifContext.prototype.comp_iter = function() {
+    return this.getTypedRuleContext(Comp_iterContext,0);
+};
+
+
+
+
+Python3Parser.Comp_ifContext = Comp_ifContext;
+
+Python3Parser.prototype.comp_if = function() {
+
+    var localctx = new Comp_ifContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 158, Python3Parser.RULE_comp_if);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 1035;
+        this.match(Python3Parser.IF);
+        this.state = 1036;
+        this.test_nocond();
+        this.state = 1038;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(_la===Python3Parser.IF || _la===Python3Parser.FOR) {
+            this.state = 1037;
+            this.comp_iter();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Yield_exprContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_yield_expr;
+    return this;
+}
+
+Yield_exprContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Yield_exprContext.prototype.constructor = Yield_exprContext;
+
+Yield_exprContext.prototype.YIELD = function() {
+    return this.getToken(Python3Parser.YIELD, 0);
+};
+
+Yield_exprContext.prototype.yield_arg = function() {
+    return this.getTypedRuleContext(Yield_argContext,0);
+};
+
+
+
+
+Python3Parser.Yield_exprContext = Yield_exprContext;
+
+Python3Parser.prototype.yield_expr = function() {
+
+    var localctx = new Yield_exprContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 160, Python3Parser.RULE_yield_expr);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 1040;
+        this.match(Python3Parser.YIELD);
+        this.state = 1042;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        if(((((_la - 4)) & ~0x1f) == 0 && ((1 << (_la - 4)) & ((1 << (Python3Parser.FROM - 4)) | (1 << (Python3Parser.LAMBDA - 4)) | (1 << (Python3Parser.NOT - 4)) | (1 << (Python3Parser.NONE - 4)) | (1 << (Python3Parser.TRUE - 4)) | (1 << (Python3Parser.FALSE - 4)) | (1 << (Python3Parser.NAME - 4)))) !== 0) || ((((_la - 36)) & ~0x1f) == 0 && ((1 << (_la - 36)) & ((1 << (Python3Parser.STRING_LITERAL - 36)) | (1 << (Python3Parser.BYTES_LITERAL - 36)) | (1 << (Python3Parser.DECIMAL_INTEGER - 36)) | (1 << (Python3Parser.OCT_INTEGER - 36)) | (1 << (Python3Parser.HEX_INTEGER - 36)) | (1 << (Python3Parser.BIN_INTEGER - 36)) | (1 << (Python3Parser.FLOAT_NUMBER - 36)) | (1 << (Python3Parser.IMAG_NUMBER - 36)) | (1 << (Python3Parser.ELLIPSIS - 36)) | (1 << (Python3Parser.STAR - 36)) | (1 << (Python3Parser.OPEN_PAREN - 36)) | (1 << (Python3Parser.OPEN_BRACK - 36)) | (1 << (Python3Parser.ADD - 36)) | (1 << (Python3Parser.MINUS - 36)) | (1 << (Python3Parser.NOT_OP - 36)) | (1 << (Python3Parser.OPEN_BRACE - 36)))) !== 0)) {
+            this.state = 1041;
+            this.yield_arg();
+        }
+
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function Yield_argContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_yield_arg;
+    return this;
+}
+
+Yield_argContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+Yield_argContext.prototype.constructor = Yield_argContext;
+
+Yield_argContext.prototype.FROM = function() {
+    return this.getToken(Python3Parser.FROM, 0);
+};
+
+Yield_argContext.prototype.test = function() {
+    return this.getTypedRuleContext(TestContext,0);
+};
+
+Yield_argContext.prototype.testlist = function() {
+    return this.getTypedRuleContext(TestlistContext,0);
+};
+
+
+
+
+Python3Parser.Yield_argContext = Yield_argContext;
+
+Python3Parser.prototype.yield_arg = function() {
+
+    var localctx = new Yield_argContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 162, Python3Parser.RULE_yield_arg);
+    try {
+        this.state = 1047;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.FROM:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 1044;
+            this.match(Python3Parser.FROM);
+            this.state = 1045;
+            this.test();
+            break;
+        case Python3Parser.LAMBDA:
+        case Python3Parser.NOT:
+        case Python3Parser.NONE:
+        case Python3Parser.TRUE:
+        case Python3Parser.FALSE:
+        case Python3Parser.NAME:
+        case Python3Parser.STRING_LITERAL:
+        case Python3Parser.BYTES_LITERAL:
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+        case Python3Parser.FLOAT_NUMBER:
+        case Python3Parser.IMAG_NUMBER:
+        case Python3Parser.ELLIPSIS:
+        case Python3Parser.STAR:
+        case Python3Parser.OPEN_PAREN:
+        case Python3Parser.OPEN_BRACK:
+        case Python3Parser.ADD:
+        case Python3Parser.MINUS:
+        case Python3Parser.NOT_OP:
+        case Python3Parser.OPEN_BRACE:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 1046;
+            this.testlist();
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function StrContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_str;
+    return this;
+}
+
+StrContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+StrContext.prototype.constructor = StrContext;
+
+StrContext.prototype.STRING_LITERAL = function() {
+    return this.getToken(Python3Parser.STRING_LITERAL, 0);
+};
+
+StrContext.prototype.BYTES_LITERAL = function() {
+    return this.getToken(Python3Parser.BYTES_LITERAL, 0);
+};
+
+
+
+
+Python3Parser.StrContext = StrContext;
+
+Python3Parser.prototype.str = function() {
+
+    var localctx = new StrContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 164, Python3Parser.RULE_str);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 1049;
+        _la = this._input.LA(1);
+        if(!(_la===Python3Parser.STRING_LITERAL || _la===Python3Parser.BYTES_LITERAL)) {
+        this._errHandler.recoverInline(this);
+        }
+        else {
+        	this._errHandler.reportMatch(this);
+            this.consume();
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function NumberContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_number;
+    return this;
+}
+
+NumberContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+NumberContext.prototype.constructor = NumberContext;
+
+NumberContext.prototype.integer = function() {
+    return this.getTypedRuleContext(IntegerContext,0);
+};
+
+NumberContext.prototype.FLOAT_NUMBER = function() {
+    return this.getToken(Python3Parser.FLOAT_NUMBER, 0);
+};
+
+NumberContext.prototype.IMAG_NUMBER = function() {
+    return this.getToken(Python3Parser.IMAG_NUMBER, 0);
+};
+
+
+
+
+Python3Parser.NumberContext = NumberContext;
+
+Python3Parser.prototype.number = function() {
+
+    var localctx = new NumberContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 166, Python3Parser.RULE_number);
+    try {
+        this.state = 1054;
+        this._errHandler.sync(this);
+        switch(this._input.LA(1)) {
+        case Python3Parser.DECIMAL_INTEGER:
+        case Python3Parser.OCT_INTEGER:
+        case Python3Parser.HEX_INTEGER:
+        case Python3Parser.BIN_INTEGER:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 1051;
+            this.integer();
+            break;
+        case Python3Parser.FLOAT_NUMBER:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 1052;
+            this.match(Python3Parser.FLOAT_NUMBER);
+            break;
+        case Python3Parser.IMAG_NUMBER:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 1053;
+            this.match(Python3Parser.IMAG_NUMBER);
+            break;
+        default:
+            throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function IntegerContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = Python3Parser.RULE_integer;
+    return this;
+}
+
+IntegerContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+IntegerContext.prototype.constructor = IntegerContext;
+
+IntegerContext.prototype.DECIMAL_INTEGER = function() {
+    return this.getToken(Python3Parser.DECIMAL_INTEGER, 0);
+};
+
+IntegerContext.prototype.OCT_INTEGER = function() {
+    return this.getToken(Python3Parser.OCT_INTEGER, 0);
+};
+
+IntegerContext.prototype.HEX_INTEGER = function() {
+    return this.getToken(Python3Parser.HEX_INTEGER, 0);
+};
+
+IntegerContext.prototype.BIN_INTEGER = function() {
+    return this.getToken(Python3Parser.BIN_INTEGER, 0);
+};
+
+
+
+
+Python3Parser.IntegerContext = IntegerContext;
+
+Python3Parser.prototype.integer = function() {
+
+    var localctx = new IntegerContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 168, Python3Parser.RULE_integer);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 1056;
+        _la = this._input.LA(1);
+        if(!(((((_la - 38)) & ~0x1f) == 0 && ((1 << (_la - 38)) & ((1 << (Python3Parser.DECIMAL_INTEGER - 38)) | (1 << (Python3Parser.OCT_INTEGER - 38)) | (1 << (Python3Parser.HEX_INTEGER - 38)) | (1 << (Python3Parser.BIN_INTEGER - 38)))) !== 0))) {
+        this._errHandler.recoverInline(this);
+        }
+        else {
+        	this._errHandler.reportMatch(this);
+            this.consume();
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+
+exports.Python3Parser = Python3Parser;
+
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (!process.version ||
-    process.version.indexOf('v0.') === 0 ||
-    process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
-  module.exports = nextTick;
-} else {
-  module.exports = process.nextTick;
-}
-
-function nextTick(fn, arg1, arg2, arg3) {
-  if (typeof fn !== 'function') {
-    throw new TypeError('"callback" argument must be a function');
-  }
-  var len = arguments.length;
-  var args, i;
-  switch (len) {
-  case 0:
-  case 1:
-    return process.nextTick(fn);
-  case 2:
-    return process.nextTick(function afterTickOne() {
-      fn.call(null, arg1);
-    });
-  case 3:
-    return process.nextTick(function afterTickTwo() {
-      fn.call(null, arg1, arg2);
-    });
-  case 4:
-    return process.nextTick(function afterTickThree() {
-      fn.call(null, arg1, arg2, arg3);
-    });
-  default:
-    args = new Array(len - 1);
-    i = 0;
-    while (i < args.length) {
-      args[i++] = arguments[i];
-    }
-    return process.nextTick(function afterTick() {
-      fn.apply(null, args);
-    });
-  }
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// a transform stream is a readable/writable stream where you do
-// something with the data.  Sometimes it's called a "filter",
-// but that's not a great name for it, since that implies a thing where
-// some bits pass through, and others are simply ignored.  (That would
-// be a valid example of a transform, of course.)
-//
-// While the output is causally related to the input, it's not a
-// necessarily symmetric or synchronous transformation.  For example,
-// a zlib stream might take multiple plain-text writes(), and then
-// emit a single compressed chunk some time in the future.
-//
-// Here's how this works:
-//
-// The Transform stream has all the aspects of the readable and writable
-// stream classes.  When you write(chunk), that calls _write(chunk,cb)
-// internally, and returns false if there's a lot of pending writes
-// buffered up.  When you call read(), that calls _read(n) until
-// there's enough pending readable data buffered up.
-//
-// In a transform stream, the written data is placed in a buffer.  When
-// _read(n) is called, it transforms the queued up data, calling the
-// buffered _write cb's as it consumes chunks.  If consuming a single
-// written chunk would result in multiple output chunks, then the first
-// outputted bit calls the readcb, and subsequent chunks just go into
-// the read buffer, and will cause it to emit 'readable' if necessary.
-//
-// This way, back-pressure is actually determined by the reading side,
-// since _read has to be called to start processing a new chunk.  However,
-// a pathological inflate type of transform can cause excessive buffering
-// here.  For example, imagine a stream where every byte of input is
-// interpreted as an integer from 0-255, and then results in that many
-// bytes of output.  Writing the 4 bytes {ff,ff,ff,ff} would result in
-// 1kb of data being output.  In this case, you could write a very small
-// amount of input, and end up with a very large amount of output.  In
-// such a pathological inflating mechanism, there'd be no way to tell
-// the system to stop doing the transform.  A single 4MB write could
-// cause the system to run out of memory.
-//
-// However, even in such a pathological case, only a single written chunk
-// would be consumed, and then the rest would wait (un-transformed) until
-// the results of the previous transformed chunk were consumed.
-
-
-
-module.exports = Transform;
-
-var Duplex = __webpack_require__(12);
-
-/*<replacement>*/
-var util = __webpack_require__(18);
-util.inherits = __webpack_require__(16);
-/*</replacement>*/
-
-util.inherits(Transform, Duplex);
-
-function TransformState(stream) {
-  this.afterTransform = function (er, data) {
-    return afterTransform(stream, er, data);
-  };
-
-  this.needTransform = false;
-  this.transforming = false;
-  this.writecb = null;
-  this.writechunk = null;
-  this.writeencoding = null;
-}
-
-function afterTransform(stream, er, data) {
-  var ts = stream._transformState;
-  ts.transforming = false;
-
-  var cb = ts.writecb;
-
-  if (!cb) return stream.emit('error', new Error('no writecb in Transform class'));
-
-  ts.writechunk = null;
-  ts.writecb = null;
-
-  if (data !== null && data !== undefined) stream.push(data);
-
-  cb(er);
-
-  var rs = stream._readableState;
-  rs.reading = false;
-  if (rs.needReadable || rs.length < rs.highWaterMark) {
-    stream._read(rs.highWaterMark);
-  }
-}
-
-function Transform(options) {
-  if (!(this instanceof Transform)) return new Transform(options);
-
-  Duplex.call(this, options);
-
-  this._transformState = new TransformState(this);
-
-  var stream = this;
-
-  // start out asking for a readable event once data is transformed.
-  this._readableState.needReadable = true;
-
-  // we have implemented the _read method, and done the other things
-  // that Readable wants before the first _read call, so unset the
-  // sync guard flag.
-  this._readableState.sync = false;
-
-  if (options) {
-    if (typeof options.transform === 'function') this._transform = options.transform;
-
-    if (typeof options.flush === 'function') this._flush = options.flush;
-  }
-
-  // When the writable side finishes, then flush out anything remaining.
-  this.once('prefinish', function () {
-    if (typeof this._flush === 'function') this._flush(function (er, data) {
-      done(stream, er, data);
-    });else done(stream);
-  });
-}
-
-Transform.prototype.push = function (chunk, encoding) {
-  this._transformState.needTransform = false;
-  return Duplex.prototype.push.call(this, chunk, encoding);
-};
-
-// This is the part where you do stuff!
-// override this function in implementation classes.
-// 'chunk' is an input chunk.
-//
-// Call `push(newChunk)` to pass along transformed output
-// to the readable side.  You may call 'push' zero or more times.
-//
-// Call `cb(err)` when you are done with this chunk.  If you pass
-// an error, then that'll put the hurt on the whole operation.  If you
-// never call cb(), then you'll never get another chunk.
-Transform.prototype._transform = function (chunk, encoding, cb) {
-  throw new Error('_transform() is not implemented');
-};
-
-Transform.prototype._write = function (chunk, encoding, cb) {
-  var ts = this._transformState;
-  ts.writecb = cb;
-  ts.writechunk = chunk;
-  ts.writeencoding = encoding;
-  if (!ts.transforming) {
-    var rs = this._readableState;
-    if (ts.needTransform || rs.needReadable || rs.length < rs.highWaterMark) this._read(rs.highWaterMark);
-  }
-};
-
-// Doesn't matter what the args are here.
-// _transform does all the work.
-// That we got here means that the readable side wants more data.
-Transform.prototype._read = function (n) {
-  var ts = this._transformState;
-
-  if (ts.writechunk !== null && ts.writecb && !ts.transforming) {
-    ts.transforming = true;
-    this._transform(ts.writechunk, ts.writeencoding, ts.afterTransform);
-  } else {
-    // mark that we need a transform, so that any data that comes in
-    // will get processed, now that we've asked for it.
-    ts.needTransform = true;
-  }
-};
-
-function done(stream, er, data) {
-  if (er) return stream.emit('error', er);
-
-  if (data !== null && data !== undefined) stream.push(data);
-
-  // if there's nothing in the write buffer, then that means
-  // that nothing more will ever be provided
-  var ws = stream._writableState;
-  var ts = stream._transformState;
-
-  if (ws.length) throw new Error('Calling transform done when ws.length != 0');
-
-  if (ts.transforming) throw new Error('Calling transform done when still transforming');
-
-  return stream.push(null);
-}
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process, setImmediate) {// A bit simpler than readable streams.
-// Implement an async ._write(chunk, encoding, cb), and it'll handle all
-// the drain event emission and buffering.
-
-
-
-module.exports = Writable;
-
-/*<replacement>*/
-var processNextTick = __webpack_require__(33);
-/*</replacement>*/
-
-/*<replacement>*/
-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
-/*</replacement>*/
-
-/*<replacement>*/
-var Duplex;
-/*</replacement>*/
-
-Writable.WritableState = WritableState;
-
-/*<replacement>*/
-var util = __webpack_require__(18);
-util.inherits = __webpack_require__(16);
-/*</replacement>*/
-
-/*<replacement>*/
-var internalUtil = {
-  deprecate: __webpack_require__(92)
-};
-/*</replacement>*/
-
-/*<replacement>*/
-var Stream;
-(function () {
-  try {
-    Stream = __webpack_require__(27);
-  } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__(26).EventEmitter;
-  }
-})();
-/*</replacement>*/
-
-var Buffer = __webpack_require__(11).Buffer;
-/*<replacement>*/
-var bufferShim = __webpack_require__(31);
-/*</replacement>*/
-
-util.inherits(Writable, Stream);
-
-function nop() {}
-
-function WriteReq(chunk, encoding, cb) {
-  this.chunk = chunk;
-  this.encoding = encoding;
-  this.callback = cb;
-  this.next = null;
-}
-
-function WritableState(options, stream) {
-  Duplex = Duplex || __webpack_require__(12);
-
-  options = options || {};
-
-  // object stream flag to indicate whether or not this stream
-  // contains buffers or objects.
-  this.objectMode = !!options.objectMode;
-
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
-
-  // the point at which write() starts returning false
-  // Note: 0 is a valid value, means that we always return false if
-  // the entire buffer is not flushed immediately on write()
-  var hwm = options.highWaterMark;
-  var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
-
-  // cast to ints.
-  this.highWaterMark = ~ ~this.highWaterMark;
-
-  // drain event flag.
-  this.needDrain = false;
-  // at the start of calling end()
-  this.ending = false;
-  // when end() has been called, and returned
-  this.ended = false;
-  // when 'finish' is emitted
-  this.finished = false;
-
-  // should we decode strings into buffers before passing to _write?
-  // this is here so that some node-core streams can optimize string
-  // handling at a lower level.
-  var noDecode = options.decodeStrings === false;
-  this.decodeStrings = !noDecode;
-
-  // Crypto is kind of old and crusty.  Historically, its default string
-  // encoding is 'binary' so we have to make this configurable.
-  // Everything else in the universe uses 'utf8', though.
-  this.defaultEncoding = options.defaultEncoding || 'utf8';
-
-  // not an actual buffer we keep track of, but a measurement
-  // of how much we're waiting to get pushed to some underlying
-  // socket or file.
-  this.length = 0;
-
-  // a flag to see when we're in the middle of a write.
-  this.writing = false;
-
-  // when true all writes will be buffered until .uncork() call
-  this.corked = 0;
-
-  // a flag to be able to tell if the onwrite cb is called immediately,
-  // or on a later tick.  We set this to true at first, because any
-  // actions that shouldn't happen until "later" should generally also
-  // not happen before the first write call.
-  this.sync = true;
-
-  // a flag to know if we're processing previously buffered items, which
-  // may call the _write() callback in the same tick, so that we don't
-  // end up in an overlapped onwrite situation.
-  this.bufferProcessing = false;
-
-  // the callback that's passed to _write(chunk,cb)
-  this.onwrite = function (er) {
-    onwrite(stream, er);
-  };
-
-  // the callback that the user supplies to write(chunk,encoding,cb)
-  this.writecb = null;
-
-  // the amount that is being written when _write is called.
-  this.writelen = 0;
-
-  this.bufferedRequest = null;
-  this.lastBufferedRequest = null;
-
-  // number of pending user-supplied write callbacks
-  // this must be 0 before 'finish' can be emitted
-  this.pendingcb = 0;
-
-  // emit prefinish if the only thing we're waiting for is _write cbs
-  // This is relevant for synchronous Transform streams
-  this.prefinished = false;
-
-  // True if the error was already emitted and should not be thrown again
-  this.errorEmitted = false;
-
-  // count buffered requests
-  this.bufferedRequestCount = 0;
-
-  // allocate the first CorkedRequest, there is always
-  // one allocated and free to use, and we maintain at most two
-  this.corkedRequestsFree = new CorkedRequest(this);
-}
-
-WritableState.prototype.getBuffer = function getBuffer() {
-  var current = this.bufferedRequest;
-  var out = [];
-  while (current) {
-    out.push(current);
-    current = current.next;
-  }
-  return out;
-};
-
-(function () {
-  try {
-    Object.defineProperty(WritableState.prototype, 'buffer', {
-      get: internalUtil.deprecate(function () {
-        return this.getBuffer();
-      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')
-    });
-  } catch (_) {}
-})();
-
-// Test _writableState for inheritance to account for Duplex streams,
-// whose prototype chain only points to Readable.
-var realHasInstance;
-if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {
-  realHasInstance = Function.prototype[Symbol.hasInstance];
-  Object.defineProperty(Writable, Symbol.hasInstance, {
-    value: function (object) {
-      if (realHasInstance.call(this, object)) return true;
-
-      return object && object._writableState instanceof WritableState;
-    }
-  });
-} else {
-  realHasInstance = function (object) {
-    return object instanceof this;
-  };
-}
-
-function Writable(options) {
-  Duplex = Duplex || __webpack_require__(12);
-
-  // Writable ctor is applied to Duplexes, too.
-  // `realHasInstance` is necessary because using plain `instanceof`
-  // would return false, as no `_writableState` property is attached.
-
-  // Trying to use the custom `instanceof` for Writable here will also break the
-  // Node.js LazyTransform implementation, which has a non-trivial getter for
-  // `_writableState` that would lead to infinite recursion.
-  if (!realHasInstance.call(Writable, this) && !(this instanceof Duplex)) {
-    return new Writable(options);
-  }
-
-  this._writableState = new WritableState(options, this);
-
-  // legacy.
-  this.writable = true;
-
-  if (options) {
-    if (typeof options.write === 'function') this._write = options.write;
-
-    if (typeof options.writev === 'function') this._writev = options.writev;
-  }
-
-  Stream.call(this);
-}
-
-// Otherwise people can pipe Writable streams, which is just wrong.
-Writable.prototype.pipe = function () {
-  this.emit('error', new Error('Cannot pipe, not readable'));
-};
-
-function writeAfterEnd(stream, cb) {
-  var er = new Error('write after end');
-  // TODO: defer error events consistently everywhere, not just the cb
-  stream.emit('error', er);
-  processNextTick(cb, er);
-}
-
-// If we get something that is not a buffer, string, null, or undefined,
-// and we're not in objectMode, then that's an error.
-// Otherwise stream chunks are all considered to be of length=1, and the
-// watermarks determine how many objects to keep in the buffer, rather than
-// how many bytes or characters.
-function validChunk(stream, state, chunk, cb) {
-  var valid = true;
-  var er = false;
-  // Always throw error if a null is written
-  // if we are not in object mode then throw
-  // if it is not a buffer, string, or undefined.
-  if (chunk === null) {
-    er = new TypeError('May not write null values to stream');
-  } else if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
-    er = new TypeError('Invalid non-string/buffer chunk');
-  }
-  if (er) {
-    stream.emit('error', er);
-    processNextTick(cb, er);
-    valid = false;
-  }
-  return valid;
-}
-
-Writable.prototype.write = function (chunk, encoding, cb) {
-  var state = this._writableState;
-  var ret = false;
-
-  if (typeof encoding === 'function') {
-    cb = encoding;
-    encoding = null;
-  }
-
-  if (Buffer.isBuffer(chunk)) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
-
-  if (typeof cb !== 'function') cb = nop;
-
-  if (state.ended) writeAfterEnd(this, cb);else if (validChunk(this, state, chunk, cb)) {
-    state.pendingcb++;
-    ret = writeOrBuffer(this, state, chunk, encoding, cb);
-  }
-
-  return ret;
-};
-
-Writable.prototype.cork = function () {
-  var state = this._writableState;
-
-  state.corked++;
-};
-
-Writable.prototype.uncork = function () {
-  var state = this._writableState;
-
-  if (state.corked) {
-    state.corked--;
-
-    if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);
-  }
-};
-
-Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
-  // node::ParseEncoding() requires lower case.
-  if (typeof encoding === 'string') encoding = encoding.toLowerCase();
-  if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);
-  this._writableState.defaultEncoding = encoding;
-  return this;
-};
-
-function decodeChunk(state, chunk, encoding) {
-  if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
-    chunk = bufferShim.from(chunk, encoding);
-  }
-  return chunk;
-}
-
-// if we're already writing something, then just put this
-// in the queue, and wait our turn.  Otherwise, call _write
-// If we return false, then we need a drain event, so set that flag.
-function writeOrBuffer(stream, state, chunk, encoding, cb) {
-  chunk = decodeChunk(state, chunk, encoding);
-
-  if (Buffer.isBuffer(chunk)) encoding = 'buffer';
-  var len = state.objectMode ? 1 : chunk.length;
-
-  state.length += len;
-
-  var ret = state.length < state.highWaterMark;
-  // we must ensure that previous needDrain will not be reset to false.
-  if (!ret) state.needDrain = true;
-
-  if (state.writing || state.corked) {
-    var last = state.lastBufferedRequest;
-    state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
-    if (last) {
-      last.next = state.lastBufferedRequest;
-    } else {
-      state.bufferedRequest = state.lastBufferedRequest;
-    }
-    state.bufferedRequestCount += 1;
-  } else {
-    doWrite(stream, state, false, len, chunk, encoding, cb);
-  }
-
-  return ret;
-}
-
-function doWrite(stream, state, writev, len, chunk, encoding, cb) {
-  state.writelen = len;
-  state.writecb = cb;
-  state.writing = true;
-  state.sync = true;
-  if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);
-  state.sync = false;
-}
-
-function onwriteError(stream, state, sync, er, cb) {
-  --state.pendingcb;
-  if (sync) processNextTick(cb, er);else cb(er);
-
-  stream._writableState.errorEmitted = true;
-  stream.emit('error', er);
-}
-
-function onwriteStateUpdate(state) {
-  state.writing = false;
-  state.writecb = null;
-  state.length -= state.writelen;
-  state.writelen = 0;
-}
-
-function onwrite(stream, er) {
-  var state = stream._writableState;
-  var sync = state.sync;
-  var cb = state.writecb;
-
-  onwriteStateUpdate(state);
-
-  if (er) onwriteError(stream, state, sync, er, cb);else {
-    // Check if we're actually ready to finish, but don't emit yet
-    var finished = needFinish(state);
-
-    if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
-      clearBuffer(stream, state);
-    }
-
-    if (sync) {
-      /*<replacement>*/
-      asyncWrite(afterWrite, stream, state, finished, cb);
-      /*</replacement>*/
-    } else {
-        afterWrite(stream, state, finished, cb);
-      }
-  }
-}
-
-function afterWrite(stream, state, finished, cb) {
-  if (!finished) onwriteDrain(stream, state);
-  state.pendingcb--;
-  cb();
-  finishMaybe(stream, state);
-}
-
-// Must force callback to be called on nextTick, so that we don't
-// emit 'drain' before the write() consumer gets the 'false' return
-// value, and has a chance to attach a 'drain' listener.
-function onwriteDrain(stream, state) {
-  if (state.length === 0 && state.needDrain) {
-    state.needDrain = false;
-    stream.emit('drain');
-  }
-}
-
-// if there's something in the buffer waiting, then process it
-function clearBuffer(stream, state) {
-  state.bufferProcessing = true;
-  var entry = state.bufferedRequest;
-
-  if (stream._writev && entry && entry.next) {
-    // Fast case, write everything using _writev()
-    var l = state.bufferedRequestCount;
-    var buffer = new Array(l);
-    var holder = state.corkedRequestsFree;
-    holder.entry = entry;
-
-    var count = 0;
-    while (entry) {
-      buffer[count] = entry;
-      entry = entry.next;
-      count += 1;
-    }
-
-    doWrite(stream, state, true, state.length, buffer, '', holder.finish);
-
-    // doWrite is almost always async, defer these to save a bit of time
-    // as the hot path ends with doWrite
-    state.pendingcb++;
-    state.lastBufferedRequest = null;
-    if (holder.next) {
-      state.corkedRequestsFree = holder.next;
-      holder.next = null;
-    } else {
-      state.corkedRequestsFree = new CorkedRequest(state);
-    }
-  } else {
-    // Slow case, write chunks one-by-one
-    while (entry) {
-      var chunk = entry.chunk;
-      var encoding = entry.encoding;
-      var cb = entry.callback;
-      var len = state.objectMode ? 1 : chunk.length;
-
-      doWrite(stream, state, false, len, chunk, encoding, cb);
-      entry = entry.next;
-      // if we didn't call the onwrite immediately, then
-      // it means that we need to wait until it does.
-      // also, that means that the chunk and cb are currently
-      // being processed, so move the buffer counter past them.
-      if (state.writing) {
-        break;
-      }
-    }
-
-    if (entry === null) state.lastBufferedRequest = null;
-  }
-
-  state.bufferedRequestCount = 0;
-  state.bufferedRequest = entry;
-  state.bufferProcessing = false;
-}
-
-Writable.prototype._write = function (chunk, encoding, cb) {
-  cb(new Error('_write() is not implemented'));
-};
-
-Writable.prototype._writev = null;
-
-Writable.prototype.end = function (chunk, encoding, cb) {
-  var state = this._writableState;
-
-  if (typeof chunk === 'function') {
-    cb = chunk;
-    chunk = null;
-    encoding = null;
-  } else if (typeof encoding === 'function') {
-    cb = encoding;
-    encoding = null;
-  }
-
-  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);
-
-  // .end() fully uncorks
-  if (state.corked) {
-    state.corked = 1;
-    this.uncork();
-  }
-
-  // ignore unnecessary end() calls.
-  if (!state.ending && !state.finished) endWritable(this, state, cb);
-};
-
-function needFinish(state) {
-  return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
-}
-
-function prefinish(stream, state) {
-  if (!state.prefinished) {
-    state.prefinished = true;
-    stream.emit('prefinish');
-  }
-}
-
-function finishMaybe(stream, state) {
-  var need = needFinish(state);
-  if (need) {
-    if (state.pendingcb === 0) {
-      prefinish(stream, state);
-      state.finished = true;
-      stream.emit('finish');
-    } else {
-      prefinish(stream, state);
-    }
-  }
-  return need;
-}
-
-function endWritable(stream, state, cb) {
-  state.ending = true;
-  finishMaybe(stream, state);
-  if (cb) {
-    if (state.finished) processNextTick(cb);else stream.once('finish', cb);
-  }
-  state.ended = true;
-  stream.writable = false;
-}
-
-// It seems a linked list but it is not
-// there will be only 2 of these for each stream
-function CorkedRequest(state) {
-  var _this = this;
-
-  this.next = null;
-  this.entry = null;
-
-  this.finish = function (err) {
-    var entry = _this.entry;
-    _this.entry = null;
-    while (entry) {
-      var cb = entry.callback;
-      state.pendingcb--;
-      cb(err);
-      entry = entry.next;
-    }
-    if (state.corkedRequestsFree) {
-      state.corkedRequestsFree.next = _this;
-    } else {
-      state.corkedRequestsFree = _this;
-    }
-  };
-}
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(91).setImmediate))
-
-/***/ }),
-/* 36 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -8831,8 +13410,8 @@ function CorkedRequest(state) {
 //
 
 var Token = __webpack_require__(1).Token;
-__webpack_require__(44);
-__webpack_require__(45);
+__webpack_require__(30);
+__webpack_require__(31);
 
 // Vacuum all input from a string and then treat it like a buffer.
 
@@ -8961,7 +13540,7 @@ exports.InputStream = InputStream;
 
 
 /***/ }),
-/* 37 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -8972,8 +13551,8 @@ exports.InputStream = InputStream;
 //
 
 var Token = __webpack_require__(1).Token;
-var ConsoleErrorListener = __webpack_require__(25).ConsoleErrorListener;
-var ProxyErrorListener = __webpack_require__(25).ProxyErrorListener;
+var ConsoleErrorListener = __webpack_require__(17).ConsoleErrorListener;
+var ProxyErrorListener = __webpack_require__(17).ProxyErrorListener;
 
 function Recognizer() {
     this._listeners = [ ConsoleErrorListener.INSTANCE ];
@@ -9114,7 +13693,7 @@ exports.Recognizer = Recognizer;
 
 
 /***/ }),
-/* 38 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -9145,7 +13724,7 @@ exports.ATNDeserializationOptions = ATNDeserializationOptions;
 
 
 /***/ }),
-/* 39 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -9154,8 +13733,8 @@ exports.ATNDeserializationOptions = ATNDeserializationOptions;
  */
 
 var Token = __webpack_require__(1).Token;
-var ATN = __webpack_require__(8).ATN;
-var ATNType = __webpack_require__(61).ATNType;
+var ATN = __webpack_require__(7).ATN;
+var ATNType = __webpack_require__(43).ATNType;
 var ATNStates = __webpack_require__(4);
 var ATNState = ATNStates.ATNState;
 var BasicState = ATNStates.BasicState;
@@ -9172,7 +13751,7 @@ var StarLoopEntryState = ATNStates.StarLoopEntryState;
 var PlusBlockStartState = ATNStates.PlusBlockStartState;
 var StarBlockStartState = ATNStates.StarBlockStartState;
 var BasicBlockStartState = ATNStates.BasicBlockStartState;
-var Transitions = __webpack_require__(9);
+var Transitions = __webpack_require__(8);
 var Transition = Transitions.Transition;
 var AtomTransition = Transitions.AtomTransition;
 var SetTransition = Transitions.SetTransition;
@@ -9186,8 +13765,8 @@ var PredicateTransition = Transitions.PredicateTransition;
 var PrecedencePredicateTransition = Transitions.PrecedencePredicateTransition;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 var Interval = __webpack_require__(2).Interval;
-var ATNDeserializationOptions = __webpack_require__(38).ATNDeserializationOptions;
-var LexerActions = __webpack_require__(41);
+var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
+var LexerActions = __webpack_require__(27);
 var LexerActionType = LexerActions.LexerActionType;
 var LexerSkipAction = LexerActions.LexerSkipAction;
 var LexerChannelAction = LexerActions.LexerChannelAction;
@@ -9816,7 +14395,7 @@ ATNDeserializer.prototype.lexerActionFactory = function(type, data1, data2) {
 exports.ATNDeserializer = ATNDeserializer;
 
 /***/ }),
-/* 40 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -9826,9 +14405,9 @@ exports.ATNDeserializer = ATNDeserializer;
  */
 ///
 
-var DFAState = __webpack_require__(15).DFAState;
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
-var getCachedPredictionContext = __webpack_require__(7).getCachedPredictionContext;
+var DFAState = __webpack_require__(11).DFAState;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
+var getCachedPredictionContext = __webpack_require__(6).getCachedPredictionContext;
 
 function ATNSimulator(atn, sharedContextCache) {
 
@@ -9873,7 +14452,7 @@ exports.ATNSimulator = ATNSimulator;
 
 
 /***/ }),
-/* 41 */
+/* 27 */
 /***/ (function(module, exports) {
 
 //
@@ -10244,7 +14823,7 @@ exports.LexerPopModeAction = LexerPopModeAction;
 exports.LexerModeAction = LexerModeAction;
 
 /***/ }),
-/* 42 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -10262,11 +14841,11 @@ var Set = __webpack_require__(0).Set;
 var Map = __webpack_require__(0).Map;
 var BitSet = __webpack_require__(0).BitSet;
 var AltDict = __webpack_require__(0).AltDict;
-var ATN = __webpack_require__(8).ATN;
+var ATN = __webpack_require__(7).ATN;
 var RuleStopState = __webpack_require__(4).RuleStopState;
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
-var ATNConfig = __webpack_require__(23).ATNConfig;
-var SemanticContext = __webpack_require__(14).SemanticContext;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
+var ATNConfig = __webpack_require__(15).ATNConfig;
+var SemanticContext = __webpack_require__(10).SemanticContext;
 var Hash = __webpack_require__(0).Hash;
 var hashStuff = __webpack_require__(0).hashStuff;
 var equalArrays = __webpack_require__(0).equalArrays;
@@ -10809,7 +15388,7 @@ exports.PredictionMode = PredictionMode;
 
 
 /***/ }),
-/* 43 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -11570,7 +16149,7 @@ exports.BailErrorStrategy = BailErrorStrategy;
 exports.DefaultErrorStrategy = DefaultErrorStrategy;
 
 /***/ }),
-/* 44 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/codepointat v0.2.0 by @mathias */
@@ -11630,7 +16209,7 @@ if (!String.prototype.codePointAt) {
 
 
 /***/ }),
-/* 45 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
@@ -11698,7 +16277,7 @@ if (!String.fromCodePoint) {
 
 
 /***/ }),
-/* 46 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -11711,9 +16290,9 @@ var Token = __webpack_require__(1).Token;
 var RuleNode = __webpack_require__(3).RuleNode;
 var ErrorNode = __webpack_require__(3).ErrorNode;
 var TerminalNode = __webpack_require__(3).TerminalNode;
-var ParserRuleContext = __webpack_require__(29).ParserRuleContext;
-var RuleContext = __webpack_require__(22).RuleContext;
-var INVALID_ALT_NUMBER = __webpack_require__(8).INVALID_ALT_NUMBER;
+var ParserRuleContext = __webpack_require__(19).ParserRuleContext;
+var RuleContext = __webpack_require__(14).RuleContext;
+var INVALID_ALT_NUMBER = __webpack_require__(7).INVALID_ALT_NUMBER;
 
 
 /** A set of utility routines useful for all kinds of ANTLR trees. */
@@ -11843,1055 +16422,53 @@ Trees.descendants = function(t) {
 exports.Trees = Trees;
 
 /***/ }),
-/* 47 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let lang_runtime_config = __webpack_require__(30);
+let antlr = __webpack_require__(12);
 
-let listener_classname = lang_runtime_config.language + 'Listener';
-//let BaseListener = require(lang_runtime_config.cache_dir + '/' + listener_classname + '.js')[listener_classname];
-let BaseListener = function() {};
-
-let GeneratorListener = function(profile_data) {
-    BaseListener.call(this);
-    this.profile_data = profile_data;
+function ErrorListener(callback) {
+    antlr.error.ErrorListener.call(this);
+    this.callback = callback;
     return this;
+}
+
+ErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
+ErrorListener.prototype.constructor = ErrorListener;
+
+ErrorListener.prototype.syntaxError = function(recognizer, offendingSymbol, line, column, msg, e) {
+    this.callback('syntaxError', recognizer, offendingSymbol, line, column, msg, e);
 };
 
-GeneratorListener.prototype = Object.create(BaseListener.prototype);
-GeneratorListener.prototype.constructor = GeneratorListener;
-
-GeneratorListener.prototype.exitMain = function(ctx) {
-    return 'abc';
+ErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
+    // This really shouldn't happen...
 };
 
-module.exports = GeneratorListener;
+ErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
+};
+
+ErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
+};
+
+module.exports = ErrorListener;
 
 
 /***/ }),
-/* 48 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var fs = __webpack_require__(19)
-
-module.exports = clone(fs)
-
-function clone (obj) {
-  if (obj === null || typeof obj !== 'object')
-    return obj
-
-  if (obj instanceof Object)
-    var copy = { __proto__: obj.__proto__ }
-  else
-    var copy = Object.create(null)
-
-  Object.getOwnPropertyNames(obj).forEach(function (key) {
-    Object.defineProperty(copy, key, Object.getOwnPropertyDescriptor(obj, key))
-  })
-
-  return copy
-}
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
+module.exports = {
+    'language': 'Python3',
+    'entry_rule': 'file_input',
+    'rules': __webpack_require__(54),
 };
 
 
 /***/ }),
-/* 50 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-// a passthrough stream.
-// basically just the most minimal sort of Transform stream.
-// Every written chunk gets output as-is.
-
-
-
-module.exports = PassThrough;
-
-var Transform = __webpack_require__(34);
-
-/*<replacement>*/
-var util = __webpack_require__(18);
-util.inherits = __webpack_require__(16);
-/*</replacement>*/
-
-util.inherits(PassThrough, Transform);
-
-function PassThrough(options) {
-  if (!(this instanceof PassThrough)) return new PassThrough(options);
-
-  Transform.call(this, options);
-}
-
-PassThrough.prototype._transform = function (chunk, encoding, cb) {
-  cb(null, chunk);
-};
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-module.exports = Readable;
-
-/*<replacement>*/
-var processNextTick = __webpack_require__(33);
-/*</replacement>*/
-
-/*<replacement>*/
-var isArray = __webpack_require__(49);
-/*</replacement>*/
-
-/*<replacement>*/
-var Duplex;
-/*</replacement>*/
-
-Readable.ReadableState = ReadableState;
-
-/*<replacement>*/
-var EE = __webpack_require__(26).EventEmitter;
-
-var EElistenerCount = function (emitter, type) {
-  return emitter.listeners(type).length;
-};
-/*</replacement>*/
-
-/*<replacement>*/
-var Stream;
-(function () {
-  try {
-    Stream = __webpack_require__(27);
-  } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__(26).EventEmitter;
-  }
-})();
-/*</replacement>*/
-
-var Buffer = __webpack_require__(11).Buffer;
-/*<replacement>*/
-var bufferShim = __webpack_require__(31);
-/*</replacement>*/
-
-/*<replacement>*/
-var util = __webpack_require__(18);
-util.inherits = __webpack_require__(16);
-/*</replacement>*/
-
-/*<replacement>*/
-var debugUtil = __webpack_require__(95);
-var debug = void 0;
-if (debugUtil && debugUtil.debuglog) {
-  debug = debugUtil.debuglog('stream');
-} else {
-  debug = function () {};
-}
-/*</replacement>*/
-
-var BufferList = __webpack_require__(85);
-var StringDecoder;
-
-util.inherits(Readable, Stream);
-
-function prependListener(emitter, event, fn) {
-  // Sadly this is not cacheable as some libraries bundle their own
-  // event emitter implementation with them.
-  if (typeof emitter.prependListener === 'function') {
-    return emitter.prependListener(event, fn);
-  } else {
-    // This is a hack to make sure that our error handler is attached before any
-    // userland ones.  NEVER DO THIS. This is here only because this code needs
-    // to continue to work with older versions of Node.js that do not include
-    // the prependListener() method. The goal is to eventually remove this hack.
-    if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
-  }
-}
-
-function ReadableState(options, stream) {
-  Duplex = Duplex || __webpack_require__(12);
-
-  options = options || {};
-
-  // object stream flag. Used to make read(n) ignore n and to
-  // make all the buffer merging and length checks go away
-  this.objectMode = !!options.objectMode;
-
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
-
-  // the point at which it stops calling _read() to fill the buffer
-  // Note: 0 is a valid value, means "don't call _read preemptively ever"
-  var hwm = options.highWaterMark;
-  var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
-
-  // cast to ints.
-  this.highWaterMark = ~ ~this.highWaterMark;
-
-  // A linked list is used to store data chunks instead of an array because the
-  // linked list can remove elements from the beginning faster than
-  // array.shift()
-  this.buffer = new BufferList();
-  this.length = 0;
-  this.pipes = null;
-  this.pipesCount = 0;
-  this.flowing = null;
-  this.ended = false;
-  this.endEmitted = false;
-  this.reading = false;
-
-  // a flag to be able to tell if the onwrite cb is called immediately,
-  // or on a later tick.  We set this to true at first, because any
-  // actions that shouldn't happen until "later" should generally also
-  // not happen before the first write call.
-  this.sync = true;
-
-  // whenever we return null, then we set a flag to say
-  // that we're awaiting a 'readable' event emission.
-  this.needReadable = false;
-  this.emittedReadable = false;
-  this.readableListening = false;
-  this.resumeScheduled = false;
-
-  // Crypto is kind of old and crusty.  Historically, its default string
-  // encoding is 'binary' so we have to make this configurable.
-  // Everything else in the universe uses 'utf8', though.
-  this.defaultEncoding = options.defaultEncoding || 'utf8';
-
-  // when piping, we only care about 'readable' events that happen
-  // after read()ing all the bytes and not getting any pushback.
-  this.ranOut = false;
-
-  // the number of writers that are awaiting a drain event in .pipe()s
-  this.awaitDrain = 0;
-
-  // if true, a maybeReadMore has been scheduled
-  this.readingMore = false;
-
-  this.decoder = null;
-  this.encoding = null;
-  if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__(52).StringDecoder;
-    this.decoder = new StringDecoder(options.encoding);
-    this.encoding = options.encoding;
-  }
-}
-
-function Readable(options) {
-  Duplex = Duplex || __webpack_require__(12);
-
-  if (!(this instanceof Readable)) return new Readable(options);
-
-  this._readableState = new ReadableState(options, this);
-
-  // legacy
-  this.readable = true;
-
-  if (options && typeof options.read === 'function') this._read = options.read;
-
-  Stream.call(this);
-}
-
-// Manually shove something into the read() buffer.
-// This returns true if the highWaterMark has not been hit yet,
-// similar to how Writable.write() returns true if you should
-// write() some more.
-Readable.prototype.push = function (chunk, encoding) {
-  var state = this._readableState;
-
-  if (!state.objectMode && typeof chunk === 'string') {
-    encoding = encoding || state.defaultEncoding;
-    if (encoding !== state.encoding) {
-      chunk = bufferShim.from(chunk, encoding);
-      encoding = '';
-    }
-  }
-
-  return readableAddChunk(this, state, chunk, encoding, false);
-};
-
-// Unshift should *always* be something directly out of read()
-Readable.prototype.unshift = function (chunk) {
-  var state = this._readableState;
-  return readableAddChunk(this, state, chunk, '', true);
-};
-
-Readable.prototype.isPaused = function () {
-  return this._readableState.flowing === false;
-};
-
-function readableAddChunk(stream, state, chunk, encoding, addToFront) {
-  var er = chunkInvalid(state, chunk);
-  if (er) {
-    stream.emit('error', er);
-  } else if (chunk === null) {
-    state.reading = false;
-    onEofChunk(stream, state);
-  } else if (state.objectMode || chunk && chunk.length > 0) {
-    if (state.ended && !addToFront) {
-      var e = new Error('stream.push() after EOF');
-      stream.emit('error', e);
-    } else if (state.endEmitted && addToFront) {
-      var _e = new Error('stream.unshift() after end event');
-      stream.emit('error', _e);
-    } else {
-      var skipAdd;
-      if (state.decoder && !addToFront && !encoding) {
-        chunk = state.decoder.write(chunk);
-        skipAdd = !state.objectMode && chunk.length === 0;
-      }
-
-      if (!addToFront) state.reading = false;
-
-      // Don't add to the buffer if we've decoded to an empty string chunk and
-      // we're not in object mode
-      if (!skipAdd) {
-        // if we want the data now, just emit it.
-        if (state.flowing && state.length === 0 && !state.sync) {
-          stream.emit('data', chunk);
-          stream.read(0);
-        } else {
-          // update the buffer info.
-          state.length += state.objectMode ? 1 : chunk.length;
-          if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
-
-          if (state.needReadable) emitReadable(stream);
-        }
-      }
-
-      maybeReadMore(stream, state);
-    }
-  } else if (!addToFront) {
-    state.reading = false;
-  }
-
-  return needMoreData(state);
-}
-
-// if it's past the high water mark, we can push in some more.
-// Also, if we have no data yet, we can stand some
-// more bytes.  This is to work around cases where hwm=0,
-// such as the repl.  Also, if the push() triggered a
-// readable event, and the user called read(largeNumber) such that
-// needReadable was set, then we ought to push more, so that another
-// 'readable' event will be triggered.
-function needMoreData(state) {
-  return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);
-}
-
-// backwards compatibility.
-Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__(52).StringDecoder;
-  this._readableState.decoder = new StringDecoder(enc);
-  this._readableState.encoding = enc;
-  return this;
-};
-
-// Don't raise the hwm > 8MB
-var MAX_HWM = 0x800000;
-function computeNewHighWaterMark(n) {
-  if (n >= MAX_HWM) {
-    n = MAX_HWM;
-  } else {
-    // Get the next highest power of 2 to prevent increasing hwm excessively in
-    // tiny amounts
-    n--;
-    n |= n >>> 1;
-    n |= n >>> 2;
-    n |= n >>> 4;
-    n |= n >>> 8;
-    n |= n >>> 16;
-    n++;
-  }
-  return n;
-}
-
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function howMuchToRead(n, state) {
-  if (n <= 0 || state.length === 0 && state.ended) return 0;
-  if (state.objectMode) return 1;
-  if (n !== n) {
-    // Only flow one buffer at a time
-    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
-  }
-  // If we're asking for more than the current hwm, then raise the hwm.
-  if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
-  if (n <= state.length) return n;
-  // Don't have enough
-  if (!state.ended) {
-    state.needReadable = true;
-    return 0;
-  }
-  return state.length;
-}
-
-// you can override either this method, or the async _read(n) below.
-Readable.prototype.read = function (n) {
-  debug('read', n);
-  n = parseInt(n, 10);
-  var state = this._readableState;
-  var nOrig = n;
-
-  if (n !== 0) state.emittedReadable = false;
-
-  // if we're doing read(0) to trigger a readable event, but we
-  // already have a bunch of data in the buffer, then just trigger
-  // the 'readable' event and move on.
-  if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {
-    debug('read: emitReadable', state.length, state.ended);
-    if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
-    return null;
-  }
-
-  n = howMuchToRead(n, state);
-
-  // if we've ended, and we're now clear, then finish it up.
-  if (n === 0 && state.ended) {
-    if (state.length === 0) endReadable(this);
-    return null;
-  }
-
-  // All the actual chunk generation logic needs to be
-  // *below* the call to _read.  The reason is that in certain
-  // synthetic stream cases, such as passthrough streams, _read
-  // may be a completely synchronous operation which may change
-  // the state of the read buffer, providing enough data when
-  // before there was *not* enough.
-  //
-  // So, the steps are:
-  // 1. Figure out what the state of things will be after we do
-  // a read from the buffer.
-  //
-  // 2. If that resulting state will trigger a _read, then call _read.
-  // Note that this may be asynchronous, or synchronous.  Yes, it is
-  // deeply ugly to write APIs this way, but that still doesn't mean
-  // that the Readable class should behave improperly, as streams are
-  // designed to be sync/async agnostic.
-  // Take note if the _read call is sync or async (ie, if the read call
-  // has returned yet), so that we know whether or not it's safe to emit
-  // 'readable' etc.
-  //
-  // 3. Actually pull the requested chunks out of the buffer and return.
-
-  // if we need a readable event, then we need to do some reading.
-  var doRead = state.needReadable;
-  debug('need readable', doRead);
-
-  // if we currently have less than the highWaterMark, then also read some
-  if (state.length === 0 || state.length - n < state.highWaterMark) {
-    doRead = true;
-    debug('length less than watermark', doRead);
-  }
-
-  // however, if we've ended, then there's no point, and if we're already
-  // reading, then it's unnecessary.
-  if (state.ended || state.reading) {
-    doRead = false;
-    debug('reading or ended', doRead);
-  } else if (doRead) {
-    debug('do read');
-    state.reading = true;
-    state.sync = true;
-    // if the length is currently zero, then we *need* a readable event.
-    if (state.length === 0) state.needReadable = true;
-    // call internal read method
-    this._read(state.highWaterMark);
-    state.sync = false;
-    // If _read pushed data synchronously, then `reading` will be false,
-    // and we need to re-evaluate how much data we can return to the user.
-    if (!state.reading) n = howMuchToRead(nOrig, state);
-  }
-
-  var ret;
-  if (n > 0) ret = fromList(n, state);else ret = null;
-
-  if (ret === null) {
-    state.needReadable = true;
-    n = 0;
-  } else {
-    state.length -= n;
-  }
-
-  if (state.length === 0) {
-    // If we have nothing in the buffer, then we want to know
-    // as soon as we *do* get something into the buffer.
-    if (!state.ended) state.needReadable = true;
-
-    // If we tried to read() past the EOF, then emit end on the next tick.
-    if (nOrig !== n && state.ended) endReadable(this);
-  }
-
-  if (ret !== null) this.emit('data', ret);
-
-  return ret;
-};
-
-function chunkInvalid(state, chunk) {
-  var er = null;
-  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
-    er = new TypeError('Invalid non-string/buffer chunk');
-  }
-  return er;
-}
-
-function onEofChunk(stream, state) {
-  if (state.ended) return;
-  if (state.decoder) {
-    var chunk = state.decoder.end();
-    if (chunk && chunk.length) {
-      state.buffer.push(chunk);
-      state.length += state.objectMode ? 1 : chunk.length;
-    }
-  }
-  state.ended = true;
-
-  // emit 'readable' now to make sure it gets picked up.
-  emitReadable(stream);
-}
-
-// Don't emit readable right away in sync mode, because this can trigger
-// another read() call => stack overflow.  This way, it might trigger
-// a nextTick recursion warning, but that's not so bad.
-function emitReadable(stream) {
-  var state = stream._readableState;
-  state.needReadable = false;
-  if (!state.emittedReadable) {
-    debug('emitReadable', state.flowing);
-    state.emittedReadable = true;
-    if (state.sync) processNextTick(emitReadable_, stream);else emitReadable_(stream);
-  }
-}
-
-function emitReadable_(stream) {
-  debug('emit readable');
-  stream.emit('readable');
-  flow(stream);
-}
-
-// at this point, the user has presumably seen the 'readable' event,
-// and called read() to consume some data.  that may have triggered
-// in turn another _read(n) call, in which case reading = true if
-// it's in progress.
-// However, if we're not ended, or reading, and the length < hwm,
-// then go ahead and try to read some more preemptively.
-function maybeReadMore(stream, state) {
-  if (!state.readingMore) {
-    state.readingMore = true;
-    processNextTick(maybeReadMore_, stream, state);
-  }
-}
-
-function maybeReadMore_(stream, state) {
-  var len = state.length;
-  while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
-    debug('maybeReadMore read 0');
-    stream.read(0);
-    if (len === state.length)
-      // didn't get any data, stop spinning.
-      break;else len = state.length;
-  }
-  state.readingMore = false;
-}
-
-// abstract method.  to be overridden in specific implementation classes.
-// call cb(er, data) where data is <= n in length.
-// for virtual (non-string, non-buffer) streams, "length" is somewhat
-// arbitrary, and perhaps not very meaningful.
-Readable.prototype._read = function (n) {
-  this.emit('error', new Error('_read() is not implemented'));
-};
-
-Readable.prototype.pipe = function (dest, pipeOpts) {
-  var src = this;
-  var state = this._readableState;
-
-  switch (state.pipesCount) {
-    case 0:
-      state.pipes = dest;
-      break;
-    case 1:
-      state.pipes = [state.pipes, dest];
-      break;
-    default:
-      state.pipes.push(dest);
-      break;
-  }
-  state.pipesCount += 1;
-  debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
-
-  var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
-
-  var endFn = doEnd ? onend : cleanup;
-  if (state.endEmitted) processNextTick(endFn);else src.once('end', endFn);
-
-  dest.on('unpipe', onunpipe);
-  function onunpipe(readable) {
-    debug('onunpipe');
-    if (readable === src) {
-      cleanup();
-    }
-  }
-
-  function onend() {
-    debug('onend');
-    dest.end();
-  }
-
-  // when the dest drains, it reduces the awaitDrain counter
-  // on the source.  This would be more elegant with a .once()
-  // handler in flow(), but adding and removing repeatedly is
-  // too slow.
-  var ondrain = pipeOnDrain(src);
-  dest.on('drain', ondrain);
-
-  var cleanedUp = false;
-  function cleanup() {
-    debug('cleanup');
-    // cleanup event handlers once the pipe is broken
-    dest.removeListener('close', onclose);
-    dest.removeListener('finish', onfinish);
-    dest.removeListener('drain', ondrain);
-    dest.removeListener('error', onerror);
-    dest.removeListener('unpipe', onunpipe);
-    src.removeListener('end', onend);
-    src.removeListener('end', cleanup);
-    src.removeListener('data', ondata);
-
-    cleanedUp = true;
-
-    // if the reader is waiting for a drain event from this
-    // specific writer, then it would cause it to never start
-    // flowing again.
-    // So, if this is awaiting a drain, then we just call it now.
-    // If we don't know, then assume that we are waiting for one.
-    if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
-  }
-
-  // If the user pushes more data while we're writing to dest then we'll end up
-  // in ondata again. However, we only want to increase awaitDrain once because
-  // dest will only emit one 'drain' event for the multiple writes.
-  // => Introduce a guard on increasing awaitDrain.
-  var increasedAwaitDrain = false;
-  src.on('data', ondata);
-  function ondata(chunk) {
-    debug('ondata');
-    increasedAwaitDrain = false;
-    var ret = dest.write(chunk);
-    if (false === ret && !increasedAwaitDrain) {
-      // If the user unpiped during `dest.write()`, it is possible
-      // to get stuck in a permanently paused state if that write
-      // also returned false.
-      // => Check whether `dest` is still a piping destination.
-      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
-        debug('false write response, pause', src._readableState.awaitDrain);
-        src._readableState.awaitDrain++;
-        increasedAwaitDrain = true;
-      }
-      src.pause();
-    }
-  }
-
-  // if the dest has an error, then stop piping into it.
-  // however, don't suppress the throwing behavior for this.
-  function onerror(er) {
-    debug('onerror', er);
-    unpipe();
-    dest.removeListener('error', onerror);
-    if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);
-  }
-
-  // Make sure our error handler is attached before userland ones.
-  prependListener(dest, 'error', onerror);
-
-  // Both close and finish should trigger unpipe, but only once.
-  function onclose() {
-    dest.removeListener('finish', onfinish);
-    unpipe();
-  }
-  dest.once('close', onclose);
-  function onfinish() {
-    debug('onfinish');
-    dest.removeListener('close', onclose);
-    unpipe();
-  }
-  dest.once('finish', onfinish);
-
-  function unpipe() {
-    debug('unpipe');
-    src.unpipe(dest);
-  }
-
-  // tell the dest that it's being piped to
-  dest.emit('pipe', src);
-
-  // start the flow if it hasn't been started already.
-  if (!state.flowing) {
-    debug('pipe resume');
-    src.resume();
-  }
-
-  return dest;
-};
-
-function pipeOnDrain(src) {
-  return function () {
-    var state = src._readableState;
-    debug('pipeOnDrain', state.awaitDrain);
-    if (state.awaitDrain) state.awaitDrain--;
-    if (state.awaitDrain === 0 && EElistenerCount(src, 'data')) {
-      state.flowing = true;
-      flow(src);
-    }
-  };
-}
-
-Readable.prototype.unpipe = function (dest) {
-  var state = this._readableState;
-
-  // if we're not piping anywhere, then do nothing.
-  if (state.pipesCount === 0) return this;
-
-  // just one destination.  most common case.
-  if (state.pipesCount === 1) {
-    // passed in one, but it's not the right one.
-    if (dest && dest !== state.pipes) return this;
-
-    if (!dest) dest = state.pipes;
-
-    // got a match.
-    state.pipes = null;
-    state.pipesCount = 0;
-    state.flowing = false;
-    if (dest) dest.emit('unpipe', this);
-    return this;
-  }
-
-  // slow case. multiple pipe destinations.
-
-  if (!dest) {
-    // remove all.
-    var dests = state.pipes;
-    var len = state.pipesCount;
-    state.pipes = null;
-    state.pipesCount = 0;
-    state.flowing = false;
-
-    for (var i = 0; i < len; i++) {
-      dests[i].emit('unpipe', this);
-    }return this;
-  }
-
-  // try to find the right one.
-  var index = indexOf(state.pipes, dest);
-  if (index === -1) return this;
-
-  state.pipes.splice(index, 1);
-  state.pipesCount -= 1;
-  if (state.pipesCount === 1) state.pipes = state.pipes[0];
-
-  dest.emit('unpipe', this);
-
-  return this;
-};
-
-// set up data events if they are asked for
-// Ensure readable listeners eventually get something
-Readable.prototype.on = function (ev, fn) {
-  var res = Stream.prototype.on.call(this, ev, fn);
-
-  if (ev === 'data') {
-    // Start flowing on next tick if stream isn't explicitly paused
-    if (this._readableState.flowing !== false) this.resume();
-  } else if (ev === 'readable') {
-    var state = this._readableState;
-    if (!state.endEmitted && !state.readableListening) {
-      state.readableListening = state.needReadable = true;
-      state.emittedReadable = false;
-      if (!state.reading) {
-        processNextTick(nReadingNextTick, this);
-      } else if (state.length) {
-        emitReadable(this, state);
-      }
-    }
-  }
-
-  return res;
-};
-Readable.prototype.addListener = Readable.prototype.on;
-
-function nReadingNextTick(self) {
-  debug('readable nexttick read 0');
-  self.read(0);
-}
-
-// pause() and resume() are remnants of the legacy readable stream API
-// If the user uses them, then switch into old mode.
-Readable.prototype.resume = function () {
-  var state = this._readableState;
-  if (!state.flowing) {
-    debug('resume');
-    state.flowing = true;
-    resume(this, state);
-  }
-  return this;
-};
-
-function resume(stream, state) {
-  if (!state.resumeScheduled) {
-    state.resumeScheduled = true;
-    processNextTick(resume_, stream, state);
-  }
-}
-
-function resume_(stream, state) {
-  if (!state.reading) {
-    debug('resume read 0');
-    stream.read(0);
-  }
-
-  state.resumeScheduled = false;
-  state.awaitDrain = 0;
-  stream.emit('resume');
-  flow(stream);
-  if (state.flowing && !state.reading) stream.read(0);
-}
-
-Readable.prototype.pause = function () {
-  debug('call pause flowing=%j', this._readableState.flowing);
-  if (false !== this._readableState.flowing) {
-    debug('pause');
-    this._readableState.flowing = false;
-    this.emit('pause');
-  }
-  return this;
-};
-
-function flow(stream) {
-  var state = stream._readableState;
-  debug('flow', state.flowing);
-  while (state.flowing && stream.read() !== null) {}
-}
-
-// wrap an old-style stream as the async data source.
-// This is *not* part of the readable stream interface.
-// It is an ugly unfortunate mess of history.
-Readable.prototype.wrap = function (stream) {
-  var state = this._readableState;
-  var paused = false;
-
-  var self = this;
-  stream.on('end', function () {
-    debug('wrapped end');
-    if (state.decoder && !state.ended) {
-      var chunk = state.decoder.end();
-      if (chunk && chunk.length) self.push(chunk);
-    }
-
-    self.push(null);
-  });
-
-  stream.on('data', function (chunk) {
-    debug('wrapped data');
-    if (state.decoder) chunk = state.decoder.write(chunk);
-
-    // don't skip over falsy values in objectMode
-    if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
-
-    var ret = self.push(chunk);
-    if (!ret) {
-      paused = true;
-      stream.pause();
-    }
-  });
-
-  // proxy all the other methods.
-  // important when wrapping filters and duplexes.
-  for (var i in stream) {
-    if (this[i] === undefined && typeof stream[i] === 'function') {
-      this[i] = function (method) {
-        return function () {
-          return stream[method].apply(stream, arguments);
-        };
-      }(i);
-    }
-  }
-
-  // proxy certain important events.
-  var events = ['error', 'close', 'destroy', 'pause', 'resume'];
-  forEach(events, function (ev) {
-    stream.on(ev, self.emit.bind(self, ev));
-  });
-
-  // when we try to consume some more bytes, simply unpause the
-  // underlying stream.
-  self._read = function (n) {
-    debug('wrapped _read', n);
-    if (paused) {
-      paused = false;
-      stream.resume();
-    }
-  };
-
-  return self;
-};
-
-// exposed for testing purposes only.
-Readable._fromList = fromList;
-
-// Pluck off n bytes from an array of buffers.
-// Length is the combined lengths of all the buffers in the list.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function fromList(n, state) {
-  // nothing buffered
-  if (state.length === 0) return null;
-
-  var ret;
-  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
-    // read it all, truncate the list
-    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
-    state.buffer.clear();
-  } else {
-    // read part of list
-    ret = fromListPartial(n, state.buffer, state.decoder);
-  }
-
-  return ret;
-}
-
-// Extracts only enough buffered data to satisfy the amount requested.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function fromListPartial(n, list, hasStrings) {
-  var ret;
-  if (n < list.head.data.length) {
-    // slice is the same for buffers and strings
-    ret = list.head.data.slice(0, n);
-    list.head.data = list.head.data.slice(n);
-  } else if (n === list.head.data.length) {
-    // first chunk is a perfect match
-    ret = list.shift();
-  } else {
-    // result spans more than one buffer
-    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);
-  }
-  return ret;
-}
-
-// Copies a specified amount of characters from the list of buffered data
-// chunks.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function copyFromBufferString(n, list) {
-  var p = list.head;
-  var c = 1;
-  var ret = p.data;
-  n -= ret.length;
-  while (p = p.next) {
-    var str = p.data;
-    var nb = n > str.length ? str.length : n;
-    if (nb === str.length) ret += str;else ret += str.slice(0, n);
-    n -= nb;
-    if (n === 0) {
-      if (nb === str.length) {
-        ++c;
-        if (p.next) list.head = p.next;else list.head = list.tail = null;
-      } else {
-        list.head = p;
-        p.data = str.slice(nb);
-      }
-      break;
-    }
-    ++c;
-  }
-  list.length -= c;
-  return ret;
-}
-
-// Copies a specified amount of bytes from the list of buffered data chunks.
-// This function is designed to be inlinable, so please take care when making
-// changes to the function body.
-function copyFromBuffer(n, list) {
-  var ret = bufferShim.allocUnsafe(n);
-  var p = list.head;
-  var c = 1;
-  p.data.copy(ret);
-  n -= p.data.length;
-  while (p = p.next) {
-    var buf = p.data;
-    var nb = n > buf.length ? buf.length : n;
-    buf.copy(ret, ret.length - n, 0, nb);
-    n -= nb;
-    if (n === 0) {
-      if (nb === buf.length) {
-        ++c;
-        if (p.next) list.head = p.next;else list.head = list.tail = null;
-      } else {
-        list.head = p;
-        p.data = buf.slice(nb);
-      }
-      break;
-    }
-    ++c;
-  }
-  list.length -= c;
-  return ret;
-}
-
-function endReadable(stream) {
-  var state = stream._readableState;
-
-  // If we get here before consuming all the bytes, then that is a
-  // bug in node.  Should never happen.
-  if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
-
-  if (!state.endEmitted) {
-    state.ended = true;
-    processNextTick(endReadableNT, state, stream);
-  }
-}
-
-function endReadableNT(state, stream) {
-  // Check that we didn't get one last unshift.
-  if (!state.endEmitted && state.length === 0) {
-    state.endEmitted = true;
-    stream.readable = false;
-    stream.emit('end');
-  }
-}
-
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
-  }
-}
-
-function indexOf(xs, x) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    if (xs[i] === x) return i;
-  }
-  return -1;
-}
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Copyright Joyent, Inc. and other Node contributors.
+/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -12912,864 +16489,1281 @@ function indexOf(xs, x) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Buffer = __webpack_require__(11).Buffer;
-
-var isBufferEncoding = Buffer.isEncoding
-  || function(encoding) {
-       switch (encoding && encoding.toLowerCase()) {
-         case 'hex': case 'utf8': case 'utf-8': case 'ascii': case 'binary': case 'base64': case 'ucs2': case 'ucs-2': case 'utf16le': case 'utf-16le': case 'raw': return true;
-         default: return false;
-       }
-     }
-
-
-function assertEncoding(encoding) {
-  if (encoding && !isBufferEncoding(encoding)) {
-    throw new Error('Unknown encoding: ' + encoding);
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
   }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
 }
 
-// StringDecoder provides an interface for efficiently splitting a series of
-// buffers into a series of JS strings without breaking apart multi-byte
-// characters. CESU-8 is handled as part of the UTF-8 encoding.
-//
-// @TODO Handling all encodings inside a single object makes it very difficult
-// to reason about this code, so it should be split up in the future.
-// @TODO There should be a utf8-strict encoding that rejects invalid UTF-8 code
-// points as used by CESU-8.
-var StringDecoder = exports.StringDecoder = function(encoding) {
-  this.encoding = (encoding || 'utf8').toLowerCase().replace(/[-_]/, '');
-  assertEncoding(encoding);
-  switch (this.encoding) {
-    case 'utf8':
-      // CESU-8 represents each of Surrogate Pair by 3-bytes
-      this.surrogateSize = 3;
-      break;
-    case 'ucs2':
-    case 'utf16le':
-      // UTF-16 represents each of Surrogate Pair by 2-bytes
-      this.surrogateSize = 2;
-      this.detectIncompleteChar = utf16DetectIncompleteChar;
-      break;
-    case 'base64':
-      // Base-64 stores 3 bytes in 4 chars, and pads the remainder.
-      this.surrogateSize = 3;
-      this.detectIncompleteChar = base64DetectIncompleteChar;
-      break;
-    default:
-      this.write = passThroughWrite;
-      return;
-  }
-
-  // Enough space to store all bytes of a single character. UTF-8 needs 4
-  // bytes, but CESU-8 may require up to 6 (3 bytes per surrogate).
-  this.charBuffer = new Buffer(6);
-  // Number of bytes received for the current incomplete multi-byte character.
-  this.charReceived = 0;
-  // Number of bytes expected for the current incomplete multi-byte character.
-  this.charLength = 0;
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
 };
 
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
 
-// write decodes the given buffer and returns it as JS string that is
-// guaranteed to not contain any partial multi-byte characters. Any partial
-// character found at the end of the buffer is buffered up, and will be
-// returned when calling write again with the remaining bytes.
-//
-// Note: Converting a Buffer containing an orphan surrogate to a String
-// currently works, but converting a String to a Buffer (via `new Buffer`, or
-// Buffer#write) will replace incomplete surrogates with the unicode
-// replacement character. See https://codereview.chromium.org/121173009/ .
-StringDecoder.prototype.write = function(buffer) {
-  var charStr = '';
-  // if our last write ended with an incomplete multibyte character
-  while (this.charLength) {
-    // determine how many remaining bytes this buffer has to offer for this char
-    var available = (buffer.length >= this.charLength - this.charReceived) ?
-        this.charLength - this.charReceived :
-        buffer.length;
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
 
-    // add the new bytes to the char buffer
-    buffer.copy(this.charBuffer, this.charReceived, 0, available);
-    this.charReceived += available;
-
-    if (this.charReceived < this.charLength) {
-      // still not enough chars in this buffer? wait for more ...
-      return '';
-    }
-
-    // remove bytes belonging to the current character from the buffer
-    buffer = buffer.slice(available, buffer.length);
-
-    // get the character that was split
-    charStr = this.charBuffer.slice(0, this.charLength).toString(this.encoding);
-
-    // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
-    var charCode = charStr.charCodeAt(charStr.length - 1);
-    if (charCode >= 0xD800 && charCode <= 0xDBFF) {
-      this.charLength += this.surrogateSize;
-      charStr = '';
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
       continue;
     }
-    this.charReceived = this.charLength = 0;
 
-    // if there are no more bytes in this buffer, just emit our char
-    if (buffer.length === 0) {
-      return charStr;
-    }
-    break;
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
   }
 
-  // determine and set charLength / charReceived
-  this.detectIncompleteChar(buffer);
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
 
-  var end = buffer.length;
-  if (this.charLength) {
-    // buffer the incomplete character bytes we got
-    buffer.copy(this.charBuffer, 0, buffer.length - this.charReceived, end);
-    end -= this.charReceived;
-  }
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
 
-  charStr += buffer.toString(this.encoding, 0, end);
-
-  var end = charStr.length - 1;
-  var charCode = charStr.charCodeAt(end);
-  // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
-  if (charCode >= 0xD800 && charCode <= 0xDBFF) {
-    var size = this.surrogateSize;
-    this.charLength += size;
-    this.charReceived += size;
-    this.charBuffer.copy(this.charBuffer, size, 0, size);
-    buffer.copy(this.charBuffer, 0, 0, size);
-    return charStr.substring(0, end);
-  }
-
-  // or just emit the charStr
-  return charStr;
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
 };
 
-// detectIncompleteChar determines if there is an incomplete UTF-8 character at
-// the end of the given buffer. If so, it sets this.charLength to the byte
-// length that character, and sets this.charReceived to the number of bytes
-// that are available for this character.
-StringDecoder.prototype.detectIncompleteChar = function(buffer) {
-  // determine how many bytes we have to check at the end of this buffer
-  var i = (buffer.length >= 3) ? 3 : buffer.length;
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
 
-  // Figure out if one of the last i bytes of our buffer announces an
-  // incomplete char.
-  for (; i > 0; i--) {
-    var c = buffer[buffer.length - i];
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
 
-    // See http://en.wikipedia.org/wiki/UTF-8#Description
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
 
-    // 110XXXXX
-    if (i == 1 && c >> 5 == 0x06) {
-      this.charLength = 2;
-      break;
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
     }
 
-    // 1110XXXX
-    if (i <= 2 && c >> 4 == 0x0E) {
-      this.charLength = 3;
-      break;
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
     }
 
-    // 11110XXX
-    if (i <= 3 && c >> 3 == 0x1E) {
-      this.charLength = 4;
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
       break;
     }
   }
-  this.charReceived = i;
-};
 
-StringDecoder.prototype.end = function(buffer) {
-  var res = '';
-  if (buffer && buffer.length)
-    res = this.write(buffer);
-
-  if (this.charReceived) {
-    var cr = this.charReceived;
-    var buf = this.charBuffer;
-    var enc = this.encoding;
-    res += buf.slice(0, cr).toString(enc);
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
   }
 
-  return res;
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
 };
 
-function passThroughWrite(buffer) {
-  return buffer.toString(this.encoding);
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
 }
 
-function utf16DetectIncompleteChar(buffer) {
-  this.charReceived = buffer.length % 2;
-  this.charLength = this.charReceived ? 2 : 0;
-}
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
 
-function base64DetectIncompleteChar(buffer) {
-  this.charReceived = buffer.length % 3;
-  this.charLength = this.charReceived ? 3 : 0;
-}
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
 
 /***/ }),
-/* 53 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
+// Generated from Python3.g4 by ANTLR 4.6
+// jshint ignore: start
+var antlr4 = __webpack_require__(12);
 
-var formatRegExp = /%[sdj%]/g;
-exports.format = function(f) {
-  if (!isString(f)) {
-    var objects = [];
-    for (var i = 0; i < arguments.length; i++) {
-      objects.push(inspect(arguments[i]));
-    }
-    return objects.join(' ');
+
+var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
+    "\u0002^\u0347\b\u0001\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004",
+    "\u0004\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t",
+    "\u0007\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004",
+    "\f\t\f\u0004\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010",
+    "\t\u0010\u0004\u0011\t\u0011\u0004\u0012\t\u0012\u0004\u0013\t\u0013",
+    "\u0004\u0014\t\u0014\u0004\u0015\t\u0015\u0004\u0016\t\u0016\u0004\u0017",
+    "\t\u0017\u0004\u0018\t\u0018\u0004\u0019\t\u0019\u0004\u001a\t\u001a",
+    "\u0004\u001b\t\u001b\u0004\u001c\t\u001c\u0004\u001d\t\u001d\u0004\u001e",
+    "\t\u001e\u0004\u001f\t\u001f\u0004 \t \u0004!\t!\u0004\"\t\"\u0004#",
+    "\t#\u0004$\t$\u0004%\t%\u0004&\t&\u0004\'\t\'\u0004(\t(\u0004)\t)\u0004",
+    "*\t*\u0004+\t+\u0004,\t,\u0004-\t-\u0004.\t.\u0004/\t/\u00040\t0\u0004",
+    "1\t1\u00042\t2\u00043\t3\u00044\t4\u00045\t5\u00046\t6\u00047\t7\u0004",
+    "8\t8\u00049\t9\u0004:\t:\u0004;\t;\u0004<\t<\u0004=\t=\u0004>\t>\u0004",
+    "?\t?\u0004@\t@\u0004A\tA\u0004B\tB\u0004C\tC\u0004D\tD\u0004E\tE\u0004",
+    "F\tF\u0004G\tG\u0004H\tH\u0004I\tI\u0004J\tJ\u0004K\tK\u0004L\tL\u0004",
+    "M\tM\u0004N\tN\u0004O\tO\u0004P\tP\u0004Q\tQ\u0004R\tR\u0004S\tS\u0004",
+    "T\tT\u0004U\tU\u0004V\tV\u0004W\tW\u0004X\tX\u0004Y\tY\u0004Z\tZ\u0004",
+    "[\t[\u0004\\\t\\\u0004]\t]\u0004^\t^\u0004_\t_\u0004`\t`\u0004a\ta\u0004",
+    "b\tb\u0004c\tc\u0004d\td\u0004e\te\u0004f\tf\u0004g\tg\u0004h\th\u0004",
+    "i\ti\u0004j\tj\u0004k\tk\u0004l\tl\u0004m\tm\u0004n\tn\u0004o\to\u0004",
+    "p\tp\u0004q\tq\u0004r\tr\u0004s\ts\u0004t\tt\u0004u\tu\u0004v\tv\u0004",
+    "w\tw\u0004x\tx\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003",
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
+    "\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003",
+    "\u0004\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003",
+    "\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003",
+    "\u0006\u0003\u0007\u0003\u0007\u0003\u0007\u0003\b\u0003\b\u0003\b\u0003",
+    "\b\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0003\t\u0003\t\u0003\t\u0003",
+    "\t\u0003\t\u0003\t\u0003\t\u0003\n\u0003\n\u0003\n\u0003\n\u0003\n\u0003",
+    "\n\u0003\n\u0003\u000b\u0003\u000b\u0003\u000b\u0003\f\u0003\f\u0003",
+    "\f\u0003\f\u0003\f\u0003\r\u0003\r\u0003\r\u0003\r\u0003\r\u0003\u000e",
+    "\u0003\u000e\u0003\u000e\u0003\u000e\u0003\u000e\u0003\u000e\u0003\u000f",
+    "\u0003\u000f\u0003\u000f\u0003\u000f\u0003\u0010\u0003\u0010\u0003\u0010",
+    "\u0003\u0011\u0003\u0011\u0003\u0011\u0003\u0011\u0003\u0012\u0003\u0012",
+    "\u0003\u0012\u0003\u0012\u0003\u0012\u0003\u0012\u0003\u0012\u0003\u0012",
+    "\u0003\u0013\u0003\u0013\u0003\u0013\u0003\u0013\u0003\u0013\u0003\u0014",
+    "\u0003\u0014\u0003\u0014\u0003\u0014\u0003\u0014\u0003\u0014\u0003\u0014",
+    "\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015",
+    "\u0003\u0015\u0003\u0016\u0003\u0016\u0003\u0016\u0003\u0017\u0003\u0017",
+    "\u0003\u0017\u0003\u0017\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0018",
+    "\u0003\u0019\u0003\u0019\u0003\u0019\u0003\u001a\u0003\u001a\u0003\u001a",
+    "\u0003\u001a\u0003\u001a\u0003\u001b\u0003\u001b\u0003\u001b\u0003\u001b",
+    "\u0003\u001b\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c",
+    "\u0003\u001c\u0003\u001d\u0003\u001d\u0003\u001d\u0003\u001d\u0003\u001d",
+    "\u0003\u001d\u0003\u001e\u0003\u001e\u0003\u001e\u0003\u001e\u0003\u001e",
+    "\u0003\u001e\u0003\u001f\u0003\u001f\u0003\u001f\u0003\u001f\u0003 ",
+    "\u0003 \u0003 \u0003 \u0003 \u0003!\u0003!\u0003!\u0003!\u0003!\u0003",
+    "!\u0003!\u0003!\u0003!\u0003\"\u0003\"\u0003\"\u0003\"\u0003\"\u0003",
+    "\"\u0003#\u0003#\u0003#\u0005#\u01a7\n#\u0003#\u0003#\u0005#\u01ab\n",
+    "#\u0003#\u0005#\u01ae\n#\u0005#\u01b0\n#\u0003#\u0003#\u0003$\u0003",
+    "$\u0007$\u01b6\n$\f$\u000e$\u01b9\u000b$\u0003%\u0005%\u01bc\n%\u0003",
+    "%\u0005%\u01bf\n%\u0003%\u0003%\u0005%\u01c3\n%\u0003&\u0003&\u0005",
+    "&\u01c7\n&\u0003&\u0003&\u0005&\u01cb\n&\u0003\'\u0003\'\u0007\'\u01cf",
+    "\n\'\f\'\u000e\'\u01d2\u000b\'\u0003\'\u0006\'\u01d5\n\'\r\'\u000e\'",
+    "\u01d6\u0005\'\u01d9\n\'\u0003(\u0003(\u0003(\u0006(\u01de\n(\r(\u000e",
+    "(\u01df\u0003)\u0003)\u0003)\u0006)\u01e5\n)\r)\u000e)\u01e6\u0003*",
+    "\u0003*\u0003*\u0006*\u01ec\n*\r*\u000e*\u01ed\u0003+\u0003+\u0005+",
+    "\u01f2\n+\u0003,\u0003,\u0005,\u01f6\n,\u0003,\u0003,\u0003-\u0003-",
+    "\u0003.\u0003.\u0003.\u0003.\u0003/\u0003/\u00030\u00030\u00030\u0003",
+    "1\u00031\u00031\u00032\u00032\u00033\u00033\u00034\u00034\u00035\u0003",
+    "5\u00035\u00036\u00036\u00037\u00037\u00037\u00038\u00038\u00038\u0003",
+    "9\u00039\u0003:\u0003:\u0003;\u0003;\u0003<\u0003<\u0003<\u0003=\u0003",
+    "=\u0003=\u0003>\u0003>\u0003?\u0003?\u0003@\u0003@\u0003A\u0003A\u0003",
+    "B\u0003B\u0003B\u0003C\u0003C\u0003D\u0003D\u0003D\u0003E\u0003E\u0003",
+    "E\u0003F\u0003F\u0003G\u0003G\u0003H\u0003H\u0003H\u0003I\u0003I\u0003",
+    "I\u0003J\u0003J\u0003J\u0003K\u0003K\u0003K\u0003L\u0003L\u0003L\u0003",
+    "M\u0003M\u0003N\u0003N\u0003N\u0003O\u0003O\u0003O\u0003P\u0003P\u0003",
+    "P\u0003Q\u0003Q\u0003Q\u0003R\u0003R\u0003R\u0003S\u0003S\u0003S\u0003",
+    "T\u0003T\u0003T\u0003U\u0003U\u0003U\u0003V\u0003V\u0003V\u0003W\u0003",
+    "W\u0003W\u0003X\u0003X\u0003X\u0003X\u0003Y\u0003Y\u0003Y\u0003Y\u0003",
+    "Z\u0003Z\u0003Z\u0003Z\u0003[\u0003[\u0003[\u0003[\u0003\\\u0003\\\u0003",
+    "\\\u0005\\\u027e\n\\\u0003\\\u0003\\\u0003]\u0003]\u0003^\u0003^\u0003",
+    "^\u0007^\u0287\n^\f^\u000e^\u028a\u000b^\u0003^\u0003^\u0003^\u0003",
+    "^\u0007^\u0290\n^\f^\u000e^\u0293\u000b^\u0003^\u0005^\u0296\n^\u0003",
+    "_\u0003_\u0003_\u0003_\u0003_\u0007_\u029d\n_\f_\u000e_\u02a0\u000b",
+    "_\u0003_\u0003_\u0003_\u0003_\u0003_\u0003_\u0003_\u0003_\u0007_\u02aa",
+    "\n_\f_\u000e_\u02ad\u000b_\u0003_\u0003_\u0003_\u0005_\u02b2\n_\u0003",
+    "`\u0003`\u0005`\u02b6\n`\u0003a\u0003a\u0003b\u0003b\u0003b\u0003c\u0003",
+    "c\u0003d\u0003d\u0003e\u0003e\u0003f\u0003f\u0003g\u0003g\u0003h\u0005",
+    "h\u02c8\nh\u0003h\u0003h\u0003h\u0003h\u0005h\u02ce\nh\u0003i\u0003",
+    "i\u0005i\u02d2\ni\u0003i\u0003i\u0003j\u0006j\u02d7\nj\rj\u000ej\u02d8",
+    "\u0003k\u0003k\u0006k\u02dd\nk\rk\u000ek\u02de\u0003l\u0003l\u0005l",
+    "\u02e3\nl\u0003l\u0006l\u02e6\nl\rl\u000el\u02e7\u0003m\u0003m\u0003",
+    "m\u0007m\u02ed\nm\fm\u000em\u02f0\u000bm\u0003m\u0003m\u0003m\u0003",
+    "m\u0007m\u02f6\nm\fm\u000em\u02f9\u000bm\u0003m\u0005m\u02fc\nm\u0003",
+    "n\u0003n\u0003n\u0003n\u0003n\u0007n\u0303\nn\fn\u000en\u0306\u000b",
+    "n\u0003n\u0003n\u0003n\u0003n\u0003n\u0003n\u0003n\u0003n\u0007n\u0310",
+    "\nn\fn\u000en\u0313\u000bn\u0003n\u0003n\u0003n\u0005n\u0318\nn\u0003",
+    "o\u0003o\u0005o\u031c\no\u0003p\u0005p\u031f\np\u0003q\u0005q\u0322",
+    "\nq\u0003r\u0005r\u0325\nr\u0003s\u0003s\u0003s\u0003t\u0006t\u032b",
+    "\nt\rt\u000et\u032c\u0003u\u0003u\u0007u\u0331\nu\fu\u000eu\u0334\u000b",
+    "u\u0003v\u0003v\u0005v\u0338\nv\u0003v\u0005v\u033b\nv\u0003v\u0003",
+    "v\u0005v\u033f\nv\u0003w\u0005w\u0342\nw\u0003x\u0003x\u0005x\u0346",
+    "\nx\u0006\u029e\u02ab\u0304\u0311\u0002y\u0003\u0003\u0005\u0004\u0007",
+    "\u0005\t\u0006\u000b\u0007\r\b\u000f\t\u0011\n\u0013\u000b\u0015\f\u0017",
+    "\r\u0019\u000e\u001b\u000f\u001d\u0010\u001f\u0011!\u0012#\u0013%\u0014",
+    "\'\u0015)\u0016+\u0017-\u0018/\u00191\u001a3\u001b5\u001c7\u001d9\u001e",
+    ";\u001f= ?!A\"C#E$G%I&K\'M(O)Q*S+U,W-Y.[/]0_1a2c3e4g5i6k7m8o9q:s;u<",
+    "w=y>{?}@\u007fA\u0081B\u0083C\u0085D\u0087E\u0089F\u008bG\u008dH\u008f",
+    "I\u0091J\u0093K\u0095L\u0097M\u0099N\u009bO\u009dP\u009fQ\u00a1R\u00a3",
+    "S\u00a5T\u00a7U\u00a9V\u00abW\u00adX\u00afY\u00b1Z\u00b3[\u00b5\\\u00b7",
+    "]\u00b9^\u00bb\u0002\u00bd\u0002\u00bf\u0002\u00c1\u0002\u00c3\u0002",
+    "\u00c5\u0002\u00c7\u0002\u00c9\u0002\u00cb\u0002\u00cd\u0002\u00cf\u0002",
+    "\u00d1\u0002\u00d3\u0002\u00d5\u0002\u00d7\u0002\u00d9\u0002\u00db\u0002",
+    "\u00dd\u0002\u00df\u0002\u00e1\u0002\u00e3\u0002\u00e5\u0002\u00e7\u0002",
+    "\u00e9\u0002\u00eb\u0002\u00ed\u0002\u00ef\u0002\u0003\u0002\u001a\u0004",
+    "\u0002WWww\u0004\u0002TTtt\u0004\u0002DDdd\u0004\u0002QQqq\u0004\u0002",
+    "ZZzz\u0004\u0002LLll\u0006\u0002\f\f\u000f\u000f))^^\u0006\u0002\f\f",
+    "\u000f\u000f$$^^\u0003\u0002^^\u0003\u00023;\u0003\u00022;\u0003\u0002",
+    "29\u0005\u00022;CHch\u0003\u000223\u0004\u0002GGgg\u0004\u0002--//\u0007",
+    "\u0002\u0002\u000b\r\u000e\u0010(*]_\u0081\u0007\u0002\u0002\u000b\r",
+    "\u000e\u0010#%]_\u0081\u0004\u0002\u0002]_\u0081\u0003\u0002\u0002\u0081",
+    "\u0004\u0002\u000b\u000b\"\"\u0004\u0002\f\f\u000f\u000f\u0129\u0002",
+    "C\\aac|\u00ac\u00ac\u00b7\u00b7\u00bc\u00bc\u00c2\u00d8\u00da\u00f8",
+    "\u00fa\u0243\u0252\u02c3\u02c8\u02d3\u02e2\u02e6\u02f0\u02f0\u037c\u037c",
+    "\u0388\u0388\u038a\u038c\u038e\u038e\u0390\u03a3\u03a5\u03d0\u03d2\u03f7",
+    "\u03f9\u0483\u048c\u04d0\u04d2\u04fb\u0502\u0511\u0533\u0558\u055b\u055b",
+    "\u0563\u0589\u05d2\u05ec\u05f2\u05f4\u0623\u063c\u0642\u064c\u0670\u0671",
+    "\u0673\u06d5\u06d7\u06d7\u06e7\u06e8\u06f0\u06f1\u06fc\u06fe\u0701\u0701",
+    "\u0712\u0712\u0714\u0731\u074f\u076f\u0782\u07a7\u07b3\u07b3\u0906\u093b",
+    "\u093f\u093f\u0952\u0952\u095a\u0963\u097f\u097f\u0987\u098e\u0991\u0992",
+    "\u0995\u09aa\u09ac\u09b2\u09b4\u09b4\u09b8\u09bb\u09bf\u09bf\u09d0\u09d0",
+    "\u09de\u09df\u09e1\u09e3\u09f2\u09f3\u0a07\u0a0c\u0a11\u0a12\u0a15\u0a2a",
+    "\u0a2c\u0a32\u0a34\u0a35\u0a37\u0a38\u0a3a\u0a3b\u0a5b\u0a5e\u0a60\u0a60",
+    "\u0a74\u0a76\u0a87\u0a8f\u0a91\u0a93\u0a95\u0aaa\u0aac\u0ab2\u0ab4\u0ab5",
+    "\u0ab7\u0abb\u0abf\u0abf\u0ad2\u0ad2\u0ae2\u0ae3\u0b07\u0b0e\u0b11\u0b12",
+    "\u0b15\u0b2a\u0b2c\u0b32\u0b34\u0b35\u0b37\u0b3b\u0b3f\u0b3f\u0b5e\u0b5f",
+    "\u0b61\u0b63\u0b73\u0b73\u0b85\u0b85\u0b87\u0b8c\u0b90\u0b92\u0b94\u0b97",
+    "\u0b9b\u0b9c\u0b9e\u0b9e\u0ba0\u0ba1\u0ba5\u0ba6\u0baa\u0bac\u0bb0\u0bbb",
+    "\u0c07\u0c0e\u0c10\u0c12\u0c14\u0c2a\u0c2c\u0c35\u0c37\u0c3b\u0c62\u0c63",
+    "\u0c87\u0c8e\u0c90\u0c92\u0c94\u0caa\u0cac\u0cb5\u0cb7\u0cbb\u0cbf\u0cbf",
+    "\u0ce0\u0ce0\u0ce2\u0ce3\u0d07\u0d0e\u0d10\u0d12\u0d14\u0d2a\u0d2c\u0d3b",
+    "\u0d62\u0d63\u0d87\u0d98\u0d9c\u0db3\u0db5\u0dbd\u0dbf\u0dbf\u0dc2\u0dc8",
+    "\u0e03\u0e32\u0e34\u0e35\u0e42\u0e48\u0e83\u0e84\u0e86\u0e86\u0e89\u0e8a",
+    "\u0e8c\u0e8c\u0e8f\u0e8f\u0e96\u0e99\u0e9b\u0ea1\u0ea3\u0ea5\u0ea7\u0ea7",
+    "\u0ea9\u0ea9\u0eac\u0ead\u0eaf\u0eb2\u0eb4\u0eb5\u0ebf\u0ebf\u0ec2\u0ec6",
+    "\u0ec8\u0ec8\u0ede\u0edf\u0f02\u0f02\u0f42\u0f49\u0f4b\u0f6c\u0f8a\u0f8d",
+    "\u1002\u1023\u1025\u1029\u102b\u102c\u1052\u1057\u10a2\u10c7\u10d2\u10fc",
+    "\u10fe\u10fe\u1102\u115b\u1161\u11a4\u11aa\u11fb\u1202\u124a\u124c\u124f",
+    "\u1252\u1258\u125a\u125a\u125c\u125f\u1262\u128a\u128c\u128f\u1292\u12b2",
+    "\u12b4\u12b7\u12ba\u12c0\u12c2\u12c2\u12c4\u12c7\u12ca\u12d8\u12da\u1312",
+    "\u1314\u1317\u131a\u135c\u1382\u1391\u13a2\u13f6\u1403\u166e\u1671\u1678",
+    "\u1683\u169c\u16a2\u16ec\u16f0\u16f2\u1702\u170e\u1710\u1713\u1722\u1733",
+    "\u1742\u1753\u1762\u176e\u1770\u1772\u1782\u17b5\u17d9\u17d9\u17de\u17de",
+    "\u1822\u1879\u1882\u18aa\u1902\u191e\u1952\u196f\u1972\u1976\u1982\u19ab",
+    "\u19c3\u19c9\u1a02\u1a18\u1d02\u1dc1\u1e02\u1e9d\u1ea2\u1efb\u1f02\u1f17",
+    "\u1f1a\u1f1f\u1f22\u1f47\u1f4a\u1f4f\u1f52\u1f59\u1f5b\u1f5b\u1f5d\u1f5d",
+    "\u1f5f\u1f5f\u1f61\u1f7f\u1f82\u1fb6\u1fb8\u1fbe\u1fc0\u1fc0\u1fc4\u1fc6",
+    "\u1fc8\u1fce\u1fd2\u1fd5\u1fd8\u1fdd\u1fe2\u1fee\u1ff4\u1ff6\u1ff8\u1ffe",
+    "\u2073\u2073\u2081\u2081\u2092\u2096\u2104\u2104\u2109\u2109\u210c\u2115",
+    "\u2117\u2117\u211a\u211f\u2126\u2126\u2128\u2128\u212a\u212a\u212c\u2133",
+    "\u2135\u213b\u213e\u2141\u2147\u214b\u2162\u2185\u2c02\u2c30\u2c32\u2c60",
+    "\u2c82\u2ce6\u2d02\u2d27\u2d32\u2d67\u2d71\u2d71\u2d82\u2d98\u2da2\u2da8",
+    "\u2daa\u2db0\u2db2\u2db8\u2dba\u2dc0\u2dc2\u2dc8\u2dca\u2dd0\u2dd2\u2dd8",
+    "\u2dda\u2de0\u3007\u3009\u3023\u302b\u3033\u3037\u303a\u303e\u3043\u3098",
+    "\u309d\u30a1\u30a3\u30fc\u30fe\u3101\u3107\u312e\u3133\u3190\u31a2\u31b9",
+    "\u31f2\u3201\u3402\u4db7\u4e02\u9fbd\ua002\ua48e\ua802\ua803\ua805\ua807",
+    "\ua809\ua80c\ua80e\ua824\uac02\ud7a5\uf902\ufa2f\ufa32\ufa6c\ufa72\ufadb",
+    "\ufb02\ufb08\ufb15\ufb19\ufb1f\ufb1f\ufb21\ufb2a\ufb2c\ufb38\ufb3a\ufb3e",
+    "\ufb40\ufb40\ufb42\ufb43\ufb45\ufb46\ufb48\ufbb3\ufbd5\ufd3f\ufd52\ufd91",
+    "\ufd94\ufdc9\ufdf2\ufdfd\ufe72\ufe76\ufe78\ufefe\uff23\uff3c\uff43\uff5c",
+    "\uff68\uffc0\uffc4\uffc9\uffcc\uffd1\uffd4\uffd9\uffdc\uffde\u0096\u0002",
+    "2;\u0302\u0371\u0485\u0488\u0593\u05bb\u05bd\u05bf\u05c1\u05c1\u05c3",
+    "\u05c4\u05c6\u05c7\u05c9\u05c9\u0612\u0617\u064d\u0660\u0662\u066b\u0672",
+    "\u0672\u06d8\u06de\u06e1\u06e6\u06e9\u06ea\u06ec\u06ef\u06f2\u06fb\u0713",
+    "\u0713\u0732\u074c\u07a8\u07b2\u0903\u0905\u093e\u093e\u0940\u094f\u0953",
+    "\u0956\u0964\u0965\u0968\u0971\u0983\u0985\u09be\u09be\u09c0\u09c6\u09c9",
+    "\u09ca\u09cd\u09cf\u09d9\u09d9\u09e4\u09e5\u09e8\u09f1\u0a03\u0a05\u0a3e",
+    "\u0a3e\u0a40\u0a44\u0a49\u0a4a\u0a4d\u0a4f\u0a68\u0a73\u0a83\u0a85\u0abe",
+    "\u0abe\u0ac0\u0ac7\u0ac9\u0acb\u0acd\u0acf\u0ae4\u0ae5\u0ae8\u0af1\u0b03",
+    "\u0b05\u0b3e\u0b3e\u0b40\u0b45\u0b49\u0b4a\u0b4d\u0b4f\u0b58\u0b59\u0b68",
+    "\u0b71\u0b84\u0b84\u0bc0\u0bc4\u0bc8\u0bca\u0bcc\u0bcf\u0bd9\u0bd9\u0be8",
+    "\u0bf1\u0c03\u0c05\u0c40\u0c46\u0c48\u0c4a\u0c4c\u0c4f\u0c57\u0c58\u0c68",
+    "\u0c71\u0c84\u0c85\u0cbe\u0cbe\u0cc0\u0cc6\u0cc8\u0cca\u0ccc\u0ccf\u0cd7",
+    "\u0cd8\u0ce8\u0cf1\u0d04\u0d05\u0d40\u0d45\u0d48\u0d4a\u0d4c\u0d4f\u0d59",
+    "\u0d59\u0d68\u0d71\u0d84\u0d85\u0dcc\u0dcc\u0dd1\u0dd6\u0dd8\u0dd8\u0dda",
+    "\u0de1\u0df4\u0df5\u0e33\u0e33\u0e36\u0e3c\u0e49\u0e50\u0e52\u0e5b\u0eb3",
+    "\u0eb3\u0eb6\u0ebb\u0ebd\u0ebe\u0eca\u0ecf\u0ed2\u0edb\u0f1a\u0f1b\u0f22",
+    "\u0f2b\u0f37\u0f37\u0f39\u0f39\u0f3b\u0f3b\u0f40\u0f41\u0f73\u0f86\u0f88",
+    "\u0f89\u0f92\u0f99\u0f9b\u0fbe\u0fc8\u0fc8\u102e\u1034\u1038\u103b\u1042",
+    "\u104b\u1058\u105b\u1361\u1361\u136b\u1373\u1714\u1716\u1734\u1736\u1754",
+    "\u1755\u1774\u1775\u17b8\u17d5\u17df\u17df\u17e2\u17eb\u180d\u180f\u1812",
+    "\u181b\u18ab\u18ab\u1922\u192d\u1932\u193d\u1948\u1951\u19b2\u19c2\u19ca",
+    "\u19cb\u19d2\u19db\u1a19\u1a1d\u1dc2\u1dc5\u2041\u2042\u2056\u2056\u20d2",
+    "\u20de\u20e3\u20e3\u20e7\u20ed\u302c\u3031\u309b\u309c\ua804\ua804\ua808",
+    "\ua808\ua80d\ua80d\ua825\ua829\ufb20\ufb20\ufe02\ufe11\ufe22\ufe25\ufe35",
+    "\ufe36\ufe4f\ufe51\uff12\uff1b\uff41\uff41\u035e\u0002\u0003\u0003\u0002",
+    "\u0002\u0002\u0002\u0005\u0003\u0002\u0002\u0002\u0002\u0007\u0003\u0002",
+    "\u0002\u0002\u0002\t\u0003\u0002\u0002\u0002\u0002\u000b\u0003\u0002",
+    "\u0002\u0002\u0002\r\u0003\u0002\u0002\u0002\u0002\u000f\u0003\u0002",
+    "\u0002\u0002\u0002\u0011\u0003\u0002\u0002\u0002\u0002\u0013\u0003\u0002",
+    "\u0002\u0002\u0002\u0015\u0003\u0002\u0002\u0002\u0002\u0017\u0003\u0002",
+    "\u0002\u0002\u0002\u0019\u0003\u0002\u0002\u0002\u0002\u001b\u0003\u0002",
+    "\u0002\u0002\u0002\u001d\u0003\u0002\u0002\u0002\u0002\u001f\u0003\u0002",
+    "\u0002\u0002\u0002!\u0003\u0002\u0002\u0002\u0002#\u0003\u0002\u0002",
+    "\u0002\u0002%\u0003\u0002\u0002\u0002\u0002\'\u0003\u0002\u0002\u0002",
+    "\u0002)\u0003\u0002\u0002\u0002\u0002+\u0003\u0002\u0002\u0002\u0002",
+    "-\u0003\u0002\u0002\u0002\u0002/\u0003\u0002\u0002\u0002\u00021\u0003",
+    "\u0002\u0002\u0002\u00023\u0003\u0002\u0002\u0002\u00025\u0003\u0002",
+    "\u0002\u0002\u00027\u0003\u0002\u0002\u0002\u00029\u0003\u0002\u0002",
+    "\u0002\u0002;\u0003\u0002\u0002\u0002\u0002=\u0003\u0002\u0002\u0002",
+    "\u0002?\u0003\u0002\u0002\u0002\u0002A\u0003\u0002\u0002\u0002\u0002",
+    "C\u0003\u0002\u0002\u0002\u0002E\u0003\u0002\u0002\u0002\u0002G\u0003",
+    "\u0002\u0002\u0002\u0002I\u0003\u0002\u0002\u0002\u0002K\u0003\u0002",
+    "\u0002\u0002\u0002M\u0003\u0002\u0002\u0002\u0002O\u0003\u0002\u0002",
+    "\u0002\u0002Q\u0003\u0002\u0002\u0002\u0002S\u0003\u0002\u0002\u0002",
+    "\u0002U\u0003\u0002\u0002\u0002\u0002W\u0003\u0002\u0002\u0002\u0002",
+    "Y\u0003\u0002\u0002\u0002\u0002[\u0003\u0002\u0002\u0002\u0002]\u0003",
+    "\u0002\u0002\u0002\u0002_\u0003\u0002\u0002\u0002\u0002a\u0003\u0002",
+    "\u0002\u0002\u0002c\u0003\u0002\u0002\u0002\u0002e\u0003\u0002\u0002",
+    "\u0002\u0002g\u0003\u0002\u0002\u0002\u0002i\u0003\u0002\u0002\u0002",
+    "\u0002k\u0003\u0002\u0002\u0002\u0002m\u0003\u0002\u0002\u0002\u0002",
+    "o\u0003\u0002\u0002\u0002\u0002q\u0003\u0002\u0002\u0002\u0002s\u0003",
+    "\u0002\u0002\u0002\u0002u\u0003\u0002\u0002\u0002\u0002w\u0003\u0002",
+    "\u0002\u0002\u0002y\u0003\u0002\u0002\u0002\u0002{\u0003\u0002\u0002",
+    "\u0002\u0002}\u0003\u0002\u0002\u0002\u0002\u007f\u0003\u0002\u0002",
+    "\u0002\u0002\u0081\u0003\u0002\u0002\u0002\u0002\u0083\u0003\u0002\u0002",
+    "\u0002\u0002\u0085\u0003\u0002\u0002\u0002\u0002\u0087\u0003\u0002\u0002",
+    "\u0002\u0002\u0089\u0003\u0002\u0002\u0002\u0002\u008b\u0003\u0002\u0002",
+    "\u0002\u0002\u008d\u0003\u0002\u0002\u0002\u0002\u008f\u0003\u0002\u0002",
+    "\u0002\u0002\u0091\u0003\u0002\u0002\u0002\u0002\u0093\u0003\u0002\u0002",
+    "\u0002\u0002\u0095\u0003\u0002\u0002\u0002\u0002\u0097\u0003\u0002\u0002",
+    "\u0002\u0002\u0099\u0003\u0002\u0002\u0002\u0002\u009b\u0003\u0002\u0002",
+    "\u0002\u0002\u009d\u0003\u0002\u0002\u0002\u0002\u009f\u0003\u0002\u0002",
+    "\u0002\u0002\u00a1\u0003\u0002\u0002\u0002\u0002\u00a3\u0003\u0002\u0002",
+    "\u0002\u0002\u00a5\u0003\u0002\u0002\u0002\u0002\u00a7\u0003\u0002\u0002",
+    "\u0002\u0002\u00a9\u0003\u0002\u0002\u0002\u0002\u00ab\u0003\u0002\u0002",
+    "\u0002\u0002\u00ad\u0003\u0002\u0002\u0002\u0002\u00af\u0003\u0002\u0002",
+    "\u0002\u0002\u00b1\u0003\u0002\u0002\u0002\u0002\u00b3\u0003\u0002\u0002",
+    "\u0002\u0002\u00b5\u0003\u0002\u0002\u0002\u0002\u00b7\u0003\u0002\u0002",
+    "\u0002\u0002\u00b9\u0003\u0002\u0002\u0002\u0003\u00f1\u0003\u0002\u0002",
+    "\u0002\u0005\u00f5\u0003\u0002\u0002\u0002\u0007\u00fc\u0003\u0002\u0002",
+    "\u0002\t\u0102\u0003\u0002\u0002\u0002\u000b\u0107\u0003\u0002\u0002",
+    "\u0002\r\u010e\u0003\u0002\u0002\u0002\u000f\u0111\u0003\u0002\u0002",
+    "\u0002\u0011\u0118\u0003\u0002\u0002\u0002\u0013\u0121\u0003\u0002\u0002",
+    "\u0002\u0015\u0128\u0003\u0002\u0002\u0002\u0017\u012b\u0003\u0002\u0002",
+    "\u0002\u0019\u0130\u0003\u0002\u0002\u0002\u001b\u0135\u0003\u0002\u0002",
+    "\u0002\u001d\u013b\u0003\u0002\u0002\u0002\u001f\u013f\u0003\u0002\u0002",
+    "\u0002!\u0142\u0003\u0002\u0002\u0002#\u0146\u0003\u0002\u0002\u0002",
+    "%\u014e\u0003\u0002\u0002\u0002\'\u0153\u0003\u0002\u0002\u0002)\u015a",
+    "\u0003\u0002\u0002\u0002+\u0161\u0003\u0002\u0002\u0002-\u0164\u0003",
+    "\u0002\u0002\u0002/\u0168\u0003\u0002\u0002\u00021\u016c\u0003\u0002",
+    "\u0002\u00023\u016f\u0003\u0002\u0002\u00025\u0174\u0003\u0002\u0002",
+    "\u00027\u0179\u0003\u0002\u0002\u00029\u017f\u0003\u0002\u0002\u0002",
+    ";\u0185\u0003\u0002\u0002\u0002=\u018b\u0003\u0002\u0002\u0002?\u018f",
+    "\u0003\u0002\u0002\u0002A\u0194\u0003\u0002\u0002\u0002C\u019d\u0003",
+    "\u0002\u0002\u0002E\u01af\u0003\u0002\u0002\u0002G\u01b3\u0003\u0002",
+    "\u0002\u0002I\u01bb\u0003\u0002\u0002\u0002K\u01c4\u0003\u0002\u0002",
+    "\u0002M\u01d8\u0003\u0002\u0002\u0002O\u01da\u0003\u0002\u0002\u0002",
+    "Q\u01e1\u0003\u0002\u0002\u0002S\u01e8\u0003\u0002\u0002\u0002U\u01f1",
+    "\u0003\u0002\u0002\u0002W\u01f5\u0003\u0002\u0002\u0002Y\u01f9\u0003",
+    "\u0002\u0002\u0002[\u01fb\u0003\u0002\u0002\u0002]\u01ff\u0003\u0002",
+    "\u0002\u0002_\u0201\u0003\u0002\u0002\u0002a\u0204\u0003\u0002\u0002",
+    "\u0002c\u0207\u0003\u0002\u0002\u0002e\u0209\u0003\u0002\u0002\u0002",
+    "g\u020b\u0003\u0002\u0002\u0002i\u020d\u0003\u0002\u0002\u0002k\u0210",
+    "\u0003\u0002\u0002\u0002m\u0212\u0003\u0002\u0002\u0002o\u0215\u0003",
+    "\u0002\u0002\u0002q\u0218\u0003\u0002\u0002\u0002s\u021a\u0003\u0002",
+    "\u0002\u0002u\u021c\u0003\u0002\u0002\u0002w\u021e\u0003\u0002\u0002",
+    "\u0002y\u0221\u0003\u0002\u0002\u0002{\u0224\u0003\u0002\u0002\u0002",
+    "}\u0226\u0003\u0002\u0002\u0002\u007f\u0228\u0003\u0002\u0002\u0002",
+    "\u0081\u022a\u0003\u0002\u0002\u0002\u0083\u022c\u0003\u0002\u0002\u0002",
+    "\u0085\u022f\u0003\u0002\u0002\u0002\u0087\u0231\u0003\u0002\u0002\u0002",
+    "\u0089\u0234\u0003\u0002\u0002\u0002\u008b\u0237\u0003\u0002\u0002\u0002",
+    "\u008d\u0239\u0003\u0002\u0002\u0002\u008f\u023b\u0003\u0002\u0002\u0002",
+    "\u0091\u023e\u0003\u0002\u0002\u0002\u0093\u0241\u0003\u0002\u0002\u0002",
+    "\u0095\u0244\u0003\u0002\u0002\u0002\u0097\u0247\u0003\u0002\u0002\u0002",
+    "\u0099\u024a\u0003\u0002\u0002\u0002\u009b\u024c\u0003\u0002\u0002\u0002",
+    "\u009d\u024f\u0003\u0002\u0002\u0002\u009f\u0252\u0003\u0002\u0002\u0002",
+    "\u00a1\u0255\u0003\u0002\u0002\u0002\u00a3\u0258\u0003\u0002\u0002\u0002",
+    "\u00a5\u025b\u0003\u0002\u0002\u0002\u00a7\u025e\u0003\u0002\u0002\u0002",
+    "\u00a9\u0261\u0003\u0002\u0002\u0002\u00ab\u0264\u0003\u0002\u0002\u0002",
+    "\u00ad\u0267\u0003\u0002\u0002\u0002\u00af\u026a\u0003\u0002\u0002\u0002",
+    "\u00b1\u026e\u0003\u0002\u0002\u0002\u00b3\u0272\u0003\u0002\u0002\u0002",
+    "\u00b5\u0276\u0003\u0002\u0002\u0002\u00b7\u027d\u0003\u0002\u0002\u0002",
+    "\u00b9\u0281\u0003\u0002\u0002\u0002\u00bb\u0295\u0003\u0002\u0002\u0002",
+    "\u00bd\u02b1\u0003\u0002\u0002\u0002\u00bf\u02b5\u0003\u0002\u0002\u0002",
+    "\u00c1\u02b7\u0003\u0002\u0002\u0002\u00c3\u02b9\u0003\u0002\u0002\u0002",
+    "\u00c5\u02bc\u0003\u0002\u0002\u0002\u00c7\u02be\u0003\u0002\u0002\u0002",
+    "\u00c9\u02c0\u0003\u0002\u0002\u0002\u00cb\u02c2\u0003\u0002\u0002\u0002",
+    "\u00cd\u02c4\u0003\u0002\u0002\u0002\u00cf\u02cd\u0003\u0002\u0002\u0002",
+    "\u00d1\u02d1\u0003\u0002\u0002\u0002\u00d3\u02d6\u0003\u0002\u0002\u0002",
+    "\u00d5\u02da\u0003\u0002\u0002\u0002\u00d7\u02e0\u0003\u0002\u0002\u0002",
+    "\u00d9\u02fb\u0003\u0002\u0002\u0002\u00db\u0317\u0003\u0002\u0002\u0002",
+    "\u00dd\u031b\u0003\u0002\u0002\u0002\u00df\u031e\u0003\u0002\u0002\u0002",
+    "\u00e1\u0321\u0003\u0002\u0002\u0002\u00e3\u0324\u0003\u0002\u0002\u0002",
+    "\u00e5\u0326\u0003\u0002\u0002\u0002\u00e7\u032a\u0003\u0002\u0002\u0002",
+    "\u00e9\u032e\u0003\u0002\u0002\u0002\u00eb\u0335\u0003\u0002\u0002\u0002",
+    "\u00ed\u0341\u0003\u0002\u0002\u0002\u00ef\u0345\u0003\u0002\u0002\u0002",
+    "\u00f1\u00f2\u0007f\u0002\u0002\u00f2\u00f3\u0007g\u0002\u0002\u00f3",
+    "\u00f4\u0007h\u0002\u0002\u00f4\u0004\u0003\u0002\u0002\u0002\u00f5",
+    "\u00f6\u0007t\u0002\u0002\u00f6\u00f7\u0007g\u0002\u0002\u00f7\u00f8",
+    "\u0007v\u0002\u0002\u00f8\u00f9\u0007w\u0002\u0002\u00f9\u00fa\u0007",
+    "t\u0002\u0002\u00fa\u00fb\u0007p\u0002\u0002\u00fb\u0006\u0003\u0002",
+    "\u0002\u0002\u00fc\u00fd\u0007t\u0002\u0002\u00fd\u00fe\u0007c\u0002",
+    "\u0002\u00fe\u00ff\u0007k\u0002\u0002\u00ff\u0100\u0007u\u0002\u0002",
+    "\u0100\u0101\u0007g\u0002\u0002\u0101\b\u0003\u0002\u0002\u0002\u0102",
+    "\u0103\u0007h\u0002\u0002\u0103\u0104\u0007t\u0002\u0002\u0104\u0105",
+    "\u0007q\u0002\u0002\u0105\u0106\u0007o\u0002\u0002\u0106\n\u0003\u0002",
+    "\u0002\u0002\u0107\u0108\u0007k\u0002\u0002\u0108\u0109\u0007o\u0002",
+    "\u0002\u0109\u010a\u0007r\u0002\u0002\u010a\u010b\u0007q\u0002\u0002",
+    "\u010b\u010c\u0007t\u0002\u0002\u010c\u010d\u0007v\u0002\u0002\u010d",
+    "\f\u0003\u0002\u0002\u0002\u010e\u010f\u0007c\u0002\u0002\u010f\u0110",
+    "\u0007u\u0002\u0002\u0110\u000e\u0003\u0002\u0002\u0002\u0111\u0112",
+    "\u0007i\u0002\u0002\u0112\u0113\u0007n\u0002\u0002\u0113\u0114\u0007",
+    "q\u0002\u0002\u0114\u0115\u0007d\u0002\u0002\u0115\u0116\u0007c\u0002",
+    "\u0002\u0116\u0117\u0007n\u0002\u0002\u0117\u0010\u0003\u0002\u0002",
+    "\u0002\u0118\u0119\u0007p\u0002\u0002\u0119\u011a\u0007q\u0002\u0002",
+    "\u011a\u011b\u0007p\u0002\u0002\u011b\u011c\u0007n\u0002\u0002\u011c",
+    "\u011d\u0007q\u0002\u0002\u011d\u011e\u0007e\u0002\u0002\u011e\u011f",
+    "\u0007c\u0002\u0002\u011f\u0120\u0007n\u0002\u0002\u0120\u0012\u0003",
+    "\u0002\u0002\u0002\u0121\u0122\u0007c\u0002\u0002\u0122\u0123\u0007",
+    "u\u0002\u0002\u0123\u0124\u0007u\u0002\u0002\u0124\u0125\u0007g\u0002",
+    "\u0002\u0125\u0126\u0007t\u0002\u0002\u0126\u0127\u0007v\u0002\u0002",
+    "\u0127\u0014\u0003\u0002\u0002\u0002\u0128\u0129\u0007k\u0002\u0002",
+    "\u0129\u012a\u0007h\u0002\u0002\u012a\u0016\u0003\u0002\u0002\u0002",
+    "\u012b\u012c\u0007g\u0002\u0002\u012c\u012d\u0007n\u0002\u0002\u012d",
+    "\u012e\u0007k\u0002\u0002\u012e\u012f\u0007h\u0002\u0002\u012f\u0018",
+    "\u0003\u0002\u0002\u0002\u0130\u0131\u0007g\u0002\u0002\u0131\u0132",
+    "\u0007n\u0002\u0002\u0132\u0133\u0007u\u0002\u0002\u0133\u0134\u0007",
+    "g\u0002\u0002\u0134\u001a\u0003\u0002\u0002\u0002\u0135\u0136\u0007",
+    "y\u0002\u0002\u0136\u0137\u0007j\u0002\u0002\u0137\u0138\u0007k\u0002",
+    "\u0002\u0138\u0139\u0007n\u0002\u0002\u0139\u013a\u0007g\u0002\u0002",
+    "\u013a\u001c\u0003\u0002\u0002\u0002\u013b\u013c\u0007h\u0002\u0002",
+    "\u013c\u013d\u0007q\u0002\u0002\u013d\u013e\u0007t\u0002\u0002\u013e",
+    "\u001e\u0003\u0002\u0002\u0002\u013f\u0140\u0007k\u0002\u0002\u0140",
+    "\u0141\u0007p\u0002\u0002\u0141 \u0003\u0002\u0002\u0002\u0142\u0143",
+    "\u0007v\u0002\u0002\u0143\u0144\u0007t\u0002\u0002\u0144\u0145\u0007",
+    "{\u0002\u0002\u0145\"\u0003\u0002\u0002\u0002\u0146\u0147\u0007h\u0002",
+    "\u0002\u0147\u0148\u0007k\u0002\u0002\u0148\u0149\u0007p\u0002\u0002",
+    "\u0149\u014a\u0007c\u0002\u0002\u014a\u014b\u0007n\u0002\u0002\u014b",
+    "\u014c\u0007n\u0002\u0002\u014c\u014d\u0007{\u0002\u0002\u014d$\u0003",
+    "\u0002\u0002\u0002\u014e\u014f\u0007y\u0002\u0002\u014f\u0150\u0007",
+    "k\u0002\u0002\u0150\u0151\u0007v\u0002\u0002\u0151\u0152\u0007j\u0002",
+    "\u0002\u0152&\u0003\u0002\u0002\u0002\u0153\u0154\u0007g\u0002\u0002",
+    "\u0154\u0155\u0007z\u0002\u0002\u0155\u0156\u0007e\u0002\u0002\u0156",
+    "\u0157\u0007g\u0002\u0002\u0157\u0158\u0007r\u0002\u0002\u0158\u0159",
+    "\u0007v\u0002\u0002\u0159(\u0003\u0002\u0002\u0002\u015a\u015b\u0007",
+    "n\u0002\u0002\u015b\u015c\u0007c\u0002\u0002\u015c\u015d\u0007o\u0002",
+    "\u0002\u015d\u015e\u0007d\u0002\u0002\u015e\u015f\u0007f\u0002\u0002",
+    "\u015f\u0160\u0007c\u0002\u0002\u0160*\u0003\u0002\u0002\u0002\u0161",
+    "\u0162\u0007q\u0002\u0002\u0162\u0163\u0007t\u0002\u0002\u0163,\u0003",
+    "\u0002\u0002\u0002\u0164\u0165\u0007c\u0002\u0002\u0165\u0166\u0007",
+    "p\u0002\u0002\u0166\u0167\u0007f\u0002\u0002\u0167.\u0003\u0002\u0002",
+    "\u0002\u0168\u0169\u0007p\u0002\u0002\u0169\u016a\u0007q\u0002\u0002",
+    "\u016a\u016b\u0007v\u0002\u0002\u016b0\u0003\u0002\u0002\u0002\u016c",
+    "\u016d\u0007k\u0002\u0002\u016d\u016e\u0007u\u0002\u0002\u016e2\u0003",
+    "\u0002\u0002\u0002\u016f\u0170\u0007P\u0002\u0002\u0170\u0171\u0007",
+    "q\u0002\u0002\u0171\u0172\u0007p\u0002\u0002\u0172\u0173\u0007g\u0002",
+    "\u0002\u01734\u0003\u0002\u0002\u0002\u0174\u0175\u0007V\u0002\u0002",
+    "\u0175\u0176\u0007t\u0002\u0002\u0176\u0177\u0007w\u0002\u0002\u0177",
+    "\u0178\u0007g\u0002\u0002\u01786\u0003\u0002\u0002\u0002\u0179\u017a",
+    "\u0007H\u0002\u0002\u017a\u017b\u0007c\u0002\u0002\u017b\u017c\u0007",
+    "n\u0002\u0002\u017c\u017d\u0007u\u0002\u0002\u017d\u017e\u0007g\u0002",
+    "\u0002\u017e8\u0003\u0002\u0002\u0002\u017f\u0180\u0007e\u0002\u0002",
+    "\u0180\u0181\u0007n\u0002\u0002\u0181\u0182\u0007c\u0002\u0002\u0182",
+    "\u0183\u0007u\u0002\u0002\u0183\u0184\u0007u\u0002\u0002\u0184:\u0003",
+    "\u0002\u0002\u0002\u0185\u0186\u0007{\u0002\u0002\u0186\u0187\u0007",
+    "k\u0002\u0002\u0187\u0188\u0007g\u0002\u0002\u0188\u0189\u0007n\u0002",
+    "\u0002\u0189\u018a\u0007f\u0002\u0002\u018a<\u0003\u0002\u0002\u0002",
+    "\u018b\u018c\u0007f\u0002\u0002\u018c\u018d\u0007g\u0002\u0002\u018d",
+    "\u018e\u0007n\u0002\u0002\u018e>\u0003\u0002\u0002\u0002\u018f\u0190",
+    "\u0007r\u0002\u0002\u0190\u0191\u0007c\u0002\u0002\u0191\u0192\u0007",
+    "u\u0002\u0002\u0192\u0193\u0007u\u0002\u0002\u0193@\u0003\u0002\u0002",
+    "\u0002\u0194\u0195\u0007e\u0002\u0002\u0195\u0196\u0007q\u0002\u0002",
+    "\u0196\u0197\u0007p\u0002\u0002\u0197\u0198\u0007v\u0002\u0002\u0198",
+    "\u0199\u0007k\u0002\u0002\u0199\u019a\u0007p\u0002\u0002\u019a\u019b",
+    "\u0007w\u0002\u0002\u019b\u019c\u0007g\u0002\u0002\u019cB\u0003\u0002",
+    "\u0002\u0002\u019d\u019e\u0007d\u0002\u0002\u019e\u019f\u0007t\u0002",
+    "\u0002\u019f\u01a0\u0007g\u0002\u0002\u01a0\u01a1\u0007c\u0002\u0002",
+    "\u01a1\u01a2\u0007m\u0002\u0002\u01a2D\u0003\u0002\u0002\u0002\u01a3",
+    "\u01a4\u0006#\u0002\u0002\u01a4\u01b0\u0005\u00e7t\u0002\u01a5\u01a7",
+    "\u0007\u000f\u0002\u0002\u01a6\u01a5\u0003\u0002\u0002\u0002\u01a6\u01a7",
+    "\u0003\u0002\u0002\u0002\u01a7\u01a8\u0003\u0002\u0002\u0002\u01a8\u01ab",
+    "\u0007\f\u0002\u0002\u01a9\u01ab\u0007\u000f\u0002\u0002\u01aa\u01a6",
+    "\u0003\u0002\u0002\u0002\u01aa\u01a9\u0003\u0002\u0002\u0002\u01ab\u01ad",
+    "\u0003\u0002\u0002\u0002\u01ac\u01ae\u0005\u00e7t\u0002\u01ad\u01ac",
+    "\u0003\u0002\u0002\u0002\u01ad\u01ae\u0003\u0002\u0002\u0002\u01ae\u01b0",
+    "\u0003\u0002\u0002\u0002\u01af\u01a3\u0003\u0002\u0002\u0002\u01af\u01aa",
+    "\u0003\u0002\u0002\u0002\u01b0\u01b1\u0003\u0002\u0002\u0002\u01b1\u01b2",
+    "\b#\u0002\u0002\u01b2F\u0003\u0002\u0002\u0002\u01b3\u01b7\u0005\u00ed",
+    "w\u0002\u01b4\u01b6\u0005\u00efx\u0002\u01b5\u01b4\u0003\u0002\u0002",
+    "\u0002\u01b6\u01b9\u0003\u0002\u0002\u0002\u01b7\u01b5\u0003\u0002\u0002",
+    "\u0002\u01b7\u01b8\u0003\u0002\u0002\u0002\u01b8H\u0003\u0002\u0002",
+    "\u0002\u01b9\u01b7\u0003\u0002\u0002\u0002\u01ba\u01bc\t\u0002\u0002",
+    "\u0002\u01bb\u01ba\u0003\u0002\u0002\u0002\u01bb\u01bc\u0003\u0002\u0002",
+    "\u0002\u01bc\u01be\u0003\u0002\u0002\u0002\u01bd\u01bf\t\u0003\u0002",
+    "\u0002\u01be\u01bd\u0003\u0002\u0002\u0002\u01be\u01bf\u0003\u0002\u0002",
+    "\u0002\u01bf\u01c2\u0003\u0002\u0002\u0002\u01c0\u01c3\u0005\u00bb^",
+    "\u0002\u01c1\u01c3\u0005\u00bd_\u0002\u01c2\u01c0\u0003\u0002\u0002",
+    "\u0002\u01c2\u01c1\u0003\u0002\u0002\u0002\u01c3J\u0003\u0002\u0002",
+    "\u0002\u01c4\u01c6\t\u0004\u0002\u0002\u01c5\u01c7\t\u0003\u0002\u0002",
+    "\u01c6\u01c5\u0003\u0002\u0002\u0002\u01c6\u01c7\u0003\u0002\u0002\u0002",
+    "\u01c7\u01ca\u0003\u0002\u0002\u0002\u01c8\u01cb\u0005\u00d9m\u0002",
+    "\u01c9\u01cb\u0005\u00dbn\u0002\u01ca\u01c8\u0003\u0002\u0002\u0002",
+    "\u01ca\u01c9\u0003\u0002\u0002\u0002\u01cbL\u0003\u0002\u0002\u0002",
+    "\u01cc\u01d0\u0005\u00c5c\u0002\u01cd\u01cf\u0005\u00c7d\u0002\u01ce",
+    "\u01cd\u0003\u0002\u0002\u0002\u01cf\u01d2\u0003\u0002\u0002\u0002\u01d0",
+    "\u01ce\u0003\u0002\u0002\u0002\u01d0\u01d1\u0003\u0002\u0002\u0002\u01d1",
+    "\u01d9\u0003\u0002\u0002\u0002\u01d2\u01d0\u0003\u0002\u0002\u0002\u01d3",
+    "\u01d5\u00072\u0002\u0002\u01d4\u01d3\u0003\u0002\u0002\u0002\u01d5",
+    "\u01d6\u0003\u0002\u0002\u0002\u01d6\u01d4\u0003\u0002\u0002\u0002\u01d6",
+    "\u01d7\u0003\u0002\u0002\u0002\u01d7\u01d9\u0003\u0002\u0002\u0002\u01d8",
+    "\u01cc\u0003\u0002\u0002\u0002\u01d8\u01d4\u0003\u0002\u0002\u0002\u01d9",
+    "N\u0003\u0002\u0002\u0002\u01da\u01db\u00072\u0002\u0002\u01db\u01dd",
+    "\t\u0005\u0002\u0002\u01dc\u01de\u0005\u00c9e\u0002\u01dd\u01dc\u0003",
+    "\u0002\u0002\u0002\u01de\u01df\u0003\u0002\u0002\u0002\u01df\u01dd\u0003",
+    "\u0002\u0002\u0002\u01df\u01e0\u0003\u0002\u0002\u0002\u01e0P\u0003",
+    "\u0002\u0002\u0002\u01e1\u01e2\u00072\u0002\u0002\u01e2\u01e4\t\u0006",
+    "\u0002\u0002\u01e3\u01e5\u0005\u00cbf\u0002\u01e4\u01e3\u0003\u0002",
+    "\u0002\u0002\u01e5\u01e6\u0003\u0002\u0002\u0002\u01e6\u01e4\u0003\u0002",
+    "\u0002\u0002\u01e6\u01e7\u0003\u0002\u0002\u0002\u01e7R\u0003\u0002",
+    "\u0002\u0002\u01e8\u01e9\u00072\u0002\u0002\u01e9\u01eb\t\u0004\u0002",
+    "\u0002\u01ea\u01ec\u0005\u00cdg\u0002\u01eb\u01ea\u0003\u0002\u0002",
+    "\u0002\u01ec\u01ed\u0003\u0002\u0002\u0002\u01ed\u01eb\u0003\u0002\u0002",
+    "\u0002\u01ed\u01ee\u0003\u0002\u0002\u0002\u01eeT\u0003\u0002\u0002",
+    "\u0002\u01ef\u01f2\u0005\u00cfh\u0002\u01f0\u01f2\u0005\u00d1i\u0002",
+    "\u01f1\u01ef\u0003\u0002\u0002\u0002\u01f1\u01f0\u0003\u0002\u0002\u0002",
+    "\u01f2V\u0003\u0002\u0002\u0002\u01f3\u01f6\u0005U+\u0002\u01f4\u01f6",
+    "\u0005\u00d3j\u0002\u01f5\u01f3\u0003\u0002\u0002\u0002\u01f5\u01f4",
+    "\u0003\u0002\u0002\u0002\u01f6\u01f7\u0003\u0002\u0002\u0002\u01f7\u01f8",
+    "\t\u0007\u0002\u0002\u01f8X\u0003\u0002\u0002\u0002\u01f9\u01fa\u0007",
+    "0\u0002\u0002\u01faZ\u0003\u0002\u0002\u0002\u01fb\u01fc\u00070\u0002",
+    "\u0002\u01fc\u01fd\u00070\u0002\u0002\u01fd\u01fe\u00070\u0002\u0002",
+    "\u01fe\\\u0003\u0002\u0002\u0002\u01ff\u0200\u0007,\u0002\u0002\u0200",
+    "^\u0003\u0002\u0002\u0002\u0201\u0202\u0007*\u0002\u0002\u0202\u0203",
+    "\b0\u0003\u0002\u0203`\u0003\u0002\u0002\u0002\u0204\u0205\u0007+\u0002",
+    "\u0002\u0205\u0206\b1\u0004\u0002\u0206b\u0003\u0002\u0002\u0002\u0207",
+    "\u0208\u0007.\u0002\u0002\u0208d\u0003\u0002\u0002\u0002\u0209\u020a",
+    "\u0007<\u0002\u0002\u020af\u0003\u0002\u0002\u0002\u020b\u020c\u0007",
+    "=\u0002\u0002\u020ch\u0003\u0002\u0002\u0002\u020d\u020e\u0007,\u0002",
+    "\u0002\u020e\u020f\u0007,\u0002\u0002\u020fj\u0003\u0002\u0002\u0002",
+    "\u0210\u0211\u0007?\u0002\u0002\u0211l\u0003\u0002\u0002\u0002\u0212",
+    "\u0213\u0007]\u0002\u0002\u0213\u0214\b7\u0005\u0002\u0214n\u0003\u0002",
+    "\u0002\u0002\u0215\u0216\u0007_\u0002\u0002\u0216\u0217\b8\u0006\u0002",
+    "\u0217p\u0003\u0002\u0002\u0002\u0218\u0219\u0007~\u0002\u0002\u0219",
+    "r\u0003\u0002\u0002\u0002\u021a\u021b\u0007`\u0002\u0002\u021bt\u0003",
+    "\u0002\u0002\u0002\u021c\u021d\u0007(\u0002\u0002\u021dv\u0003\u0002",
+    "\u0002\u0002\u021e\u021f\u0007>\u0002\u0002\u021f\u0220\u0007>\u0002",
+    "\u0002\u0220x\u0003\u0002\u0002\u0002\u0221\u0222\u0007@\u0002\u0002",
+    "\u0222\u0223\u0007@\u0002\u0002\u0223z\u0003\u0002\u0002\u0002\u0224",
+    "\u0225\u0007-\u0002\u0002\u0225|\u0003\u0002\u0002\u0002\u0226\u0227",
+    "\u0007/\u0002\u0002\u0227~\u0003\u0002\u0002\u0002\u0228\u0229\u0007",
+    "1\u0002\u0002\u0229\u0080\u0003\u0002\u0002\u0002\u022a\u022b\u0007",
+    "\'\u0002\u0002\u022b\u0082\u0003\u0002\u0002\u0002\u022c\u022d\u0007",
+    "1\u0002\u0002\u022d\u022e\u00071\u0002\u0002\u022e\u0084\u0003\u0002",
+    "\u0002\u0002\u022f\u0230\u0007\u0080\u0002\u0002\u0230\u0086\u0003\u0002",
+    "\u0002\u0002\u0231\u0232\u0007}\u0002\u0002\u0232\u0233\bD\u0007\u0002",
+    "\u0233\u0088\u0003\u0002\u0002\u0002\u0234\u0235\u0007\u007f\u0002\u0002",
+    "\u0235\u0236\bE\b\u0002\u0236\u008a\u0003\u0002\u0002\u0002\u0237\u0238",
+    "\u0007>\u0002\u0002\u0238\u008c\u0003\u0002\u0002\u0002\u0239\u023a",
+    "\u0007@\u0002\u0002\u023a\u008e\u0003\u0002\u0002\u0002\u023b\u023c",
+    "\u0007?\u0002\u0002\u023c\u023d\u0007?\u0002\u0002\u023d\u0090\u0003",
+    "\u0002\u0002\u0002\u023e\u023f\u0007@\u0002\u0002\u023f\u0240\u0007",
+    "?\u0002\u0002\u0240\u0092\u0003\u0002\u0002\u0002\u0241\u0242\u0007",
+    ">\u0002\u0002\u0242\u0243\u0007?\u0002\u0002\u0243\u0094\u0003\u0002",
+    "\u0002\u0002\u0244\u0245\u0007>\u0002\u0002\u0245\u0246\u0007@\u0002",
+    "\u0002\u0246\u0096\u0003\u0002\u0002\u0002\u0247\u0248\u0007#\u0002",
+    "\u0002\u0248\u0249\u0007?\u0002\u0002\u0249\u0098\u0003\u0002\u0002",
+    "\u0002\u024a\u024b\u0007B\u0002\u0002\u024b\u009a\u0003\u0002\u0002",
+    "\u0002\u024c\u024d\u0007/\u0002\u0002\u024d\u024e\u0007@\u0002\u0002",
+    "\u024e\u009c\u0003\u0002\u0002\u0002\u024f\u0250\u0007-\u0002\u0002",
+    "\u0250\u0251\u0007?\u0002\u0002\u0251\u009e\u0003\u0002\u0002\u0002",
+    "\u0252\u0253\u0007/\u0002\u0002\u0253\u0254\u0007?\u0002\u0002\u0254",
+    "\u00a0\u0003\u0002\u0002\u0002\u0255\u0256\u0007,\u0002\u0002\u0256",
+    "\u0257\u0007?\u0002\u0002\u0257\u00a2\u0003\u0002\u0002\u0002\u0258",
+    "\u0259\u0007B\u0002\u0002\u0259\u025a\u0007?\u0002\u0002\u025a\u00a4",
+    "\u0003\u0002\u0002\u0002\u025b\u025c\u00071\u0002\u0002\u025c\u025d",
+    "\u0007?\u0002\u0002\u025d\u00a6\u0003\u0002\u0002\u0002\u025e\u025f",
+    "\u0007\'\u0002\u0002\u025f\u0260\u0007?\u0002\u0002\u0260\u00a8\u0003",
+    "\u0002\u0002\u0002\u0261\u0262\u0007(\u0002\u0002\u0262\u0263\u0007",
+    "?\u0002\u0002\u0263\u00aa\u0003\u0002\u0002\u0002\u0264\u0265\u0007",
+    "~\u0002\u0002\u0265\u0266\u0007?\u0002\u0002\u0266\u00ac\u0003\u0002",
+    "\u0002\u0002\u0267\u0268\u0007`\u0002\u0002\u0268\u0269\u0007?\u0002",
+    "\u0002\u0269\u00ae\u0003\u0002\u0002\u0002\u026a\u026b\u0007>\u0002",
+    "\u0002\u026b\u026c\u0007>\u0002\u0002\u026c\u026d\u0007?\u0002\u0002",
+    "\u026d\u00b0\u0003\u0002\u0002\u0002\u026e\u026f\u0007@\u0002\u0002",
+    "\u026f\u0270\u0007@\u0002\u0002\u0270\u0271\u0007?\u0002\u0002\u0271",
+    "\u00b2\u0003\u0002\u0002\u0002\u0272\u0273\u0007,\u0002\u0002\u0273",
+    "\u0274\u0007,\u0002\u0002\u0274\u0275\u0007?\u0002\u0002\u0275\u00b4",
+    "\u0003\u0002\u0002\u0002\u0276\u0277\u00071\u0002\u0002\u0277\u0278",
+    "\u00071\u0002\u0002\u0278\u0279\u0007?\u0002\u0002\u0279\u00b6\u0003",
+    "\u0002\u0002\u0002\u027a\u027e\u0005\u00e7t\u0002\u027b\u027e\u0005",
+    "\u00e9u\u0002\u027c\u027e\u0005\u00ebv\u0002\u027d\u027a\u0003\u0002",
+    "\u0002\u0002\u027d\u027b\u0003\u0002\u0002\u0002\u027d\u027c\u0003\u0002",
+    "\u0002\u0002\u027e\u027f\u0003\u0002\u0002\u0002\u027f\u0280\b\\\t\u0002",
+    "\u0280\u00b8\u0003\u0002\u0002\u0002\u0281\u0282\u000b\u0002\u0002\u0002",
+    "\u0282\u00ba\u0003\u0002\u0002\u0002\u0283\u0288\u0007)\u0002\u0002",
+    "\u0284\u0287\u0005\u00c3b\u0002\u0285\u0287\n\b\u0002\u0002\u0286\u0284",
+    "\u0003\u0002\u0002\u0002\u0286\u0285\u0003\u0002\u0002\u0002\u0287\u028a",
+    "\u0003\u0002\u0002\u0002\u0288\u0286\u0003\u0002\u0002\u0002\u0288\u0289",
+    "\u0003\u0002\u0002\u0002\u0289\u028b\u0003\u0002\u0002\u0002\u028a\u0288",
+    "\u0003\u0002\u0002\u0002\u028b\u0296\u0007)\u0002\u0002\u028c\u0291",
+    "\u0007$\u0002\u0002\u028d\u0290\u0005\u00c3b\u0002\u028e\u0290\n\t\u0002",
+    "\u0002\u028f\u028d\u0003\u0002\u0002\u0002\u028f\u028e\u0003\u0002\u0002",
+    "\u0002\u0290\u0293\u0003\u0002\u0002\u0002\u0291\u028f\u0003\u0002\u0002",
+    "\u0002\u0291\u0292\u0003\u0002\u0002\u0002\u0292\u0294\u0003\u0002\u0002",
+    "\u0002\u0293\u0291\u0003\u0002\u0002\u0002\u0294\u0296\u0007$\u0002",
+    "\u0002\u0295\u0283\u0003\u0002\u0002\u0002\u0295\u028c\u0003\u0002\u0002",
+    "\u0002\u0296\u00bc\u0003\u0002\u0002\u0002\u0297\u0298\u0007)\u0002",
+    "\u0002\u0298\u0299\u0007)\u0002\u0002\u0299\u029a\u0007)\u0002\u0002",
+    "\u029a\u029e\u0003\u0002\u0002\u0002\u029b\u029d\u0005\u00bf`\u0002",
+    "\u029c\u029b\u0003\u0002\u0002\u0002\u029d\u02a0\u0003\u0002\u0002\u0002",
+    "\u029e\u029f\u0003\u0002\u0002\u0002\u029e\u029c\u0003\u0002\u0002\u0002",
+    "\u029f\u02a1\u0003\u0002\u0002\u0002\u02a0\u029e\u0003\u0002\u0002\u0002",
+    "\u02a1\u02a2\u0007)\u0002\u0002\u02a2\u02a3\u0007)\u0002\u0002\u02a3",
+    "\u02b2\u0007)\u0002\u0002\u02a4\u02a5\u0007$\u0002\u0002\u02a5\u02a6",
+    "\u0007$\u0002\u0002\u02a6\u02a7\u0007$\u0002\u0002\u02a7\u02ab\u0003",
+    "\u0002\u0002\u0002\u02a8\u02aa\u0005\u00bf`\u0002\u02a9\u02a8\u0003",
+    "\u0002\u0002\u0002\u02aa\u02ad\u0003\u0002\u0002\u0002\u02ab\u02ac\u0003",
+    "\u0002\u0002\u0002\u02ab\u02a9\u0003\u0002\u0002\u0002\u02ac\u02ae\u0003",
+    "\u0002\u0002\u0002\u02ad\u02ab\u0003\u0002\u0002\u0002\u02ae\u02af\u0007",
+    "$\u0002\u0002\u02af\u02b0\u0007$\u0002\u0002\u02b0\u02b2\u0007$\u0002",
+    "\u0002\u02b1\u0297\u0003\u0002\u0002\u0002\u02b1\u02a4\u0003\u0002\u0002",
+    "\u0002\u02b2\u00be\u0003\u0002\u0002\u0002\u02b3\u02b6\u0005\u00c1a",
+    "\u0002\u02b4\u02b6\u0005\u00c3b\u0002\u02b5\u02b3\u0003\u0002\u0002",
+    "\u0002\u02b5\u02b4\u0003\u0002\u0002\u0002\u02b6\u00c0\u0003\u0002\u0002",
+    "\u0002\u02b7\u02b8\n\n\u0002\u0002\u02b8\u00c2\u0003\u0002\u0002\u0002",
+    "\u02b9\u02ba\u0007^\u0002\u0002\u02ba\u02bb\u000b\u0002\u0002\u0002",
+    "\u02bb\u00c4\u0003\u0002\u0002\u0002\u02bc\u02bd\t\u000b\u0002\u0002",
+    "\u02bd\u00c6\u0003\u0002\u0002\u0002\u02be\u02bf\t\f\u0002\u0002\u02bf",
+    "\u00c8\u0003\u0002\u0002\u0002\u02c0\u02c1\t\r\u0002\u0002\u02c1\u00ca",
+    "\u0003\u0002\u0002\u0002\u02c2\u02c3\t\u000e\u0002\u0002\u02c3\u00cc",
+    "\u0003\u0002\u0002\u0002\u02c4\u02c5\t\u000f\u0002\u0002\u02c5\u00ce",
+    "\u0003\u0002\u0002\u0002\u02c6\u02c8\u0005\u00d3j\u0002\u02c7\u02c6",
+    "\u0003\u0002\u0002\u0002\u02c7\u02c8\u0003\u0002\u0002\u0002\u02c8\u02c9",
+    "\u0003\u0002\u0002\u0002\u02c9\u02ce\u0005\u00d5k\u0002\u02ca\u02cb",
+    "\u0005\u00d3j\u0002\u02cb\u02cc\u00070\u0002\u0002\u02cc\u02ce\u0003",
+    "\u0002\u0002\u0002\u02cd\u02c7\u0003\u0002\u0002\u0002\u02cd\u02ca\u0003",
+    "\u0002\u0002\u0002\u02ce\u00d0\u0003\u0002\u0002\u0002\u02cf\u02d2\u0005",
+    "\u00d3j\u0002\u02d0\u02d2\u0005\u00cfh\u0002\u02d1\u02cf\u0003\u0002",
+    "\u0002\u0002\u02d1\u02d0\u0003\u0002\u0002\u0002\u02d2\u02d3\u0003\u0002",
+    "\u0002\u0002\u02d3\u02d4\u0005\u00d7l\u0002\u02d4\u00d2\u0003\u0002",
+    "\u0002\u0002\u02d5\u02d7\u0005\u00c7d\u0002\u02d6\u02d5\u0003\u0002",
+    "\u0002\u0002\u02d7\u02d8\u0003\u0002\u0002\u0002\u02d8\u02d6\u0003\u0002",
+    "\u0002\u0002\u02d8\u02d9\u0003\u0002\u0002\u0002\u02d9\u00d4\u0003\u0002",
+    "\u0002\u0002\u02da\u02dc\u00070\u0002\u0002\u02db\u02dd\u0005\u00c7",
+    "d\u0002\u02dc\u02db\u0003\u0002\u0002\u0002\u02dd\u02de\u0003\u0002",
+    "\u0002\u0002\u02de\u02dc\u0003\u0002\u0002\u0002\u02de\u02df\u0003\u0002",
+    "\u0002\u0002\u02df\u00d6\u0003\u0002\u0002\u0002\u02e0\u02e2\t\u0010",
+    "\u0002\u0002\u02e1\u02e3\t\u0011\u0002\u0002\u02e2\u02e1\u0003\u0002",
+    "\u0002\u0002\u02e2\u02e3\u0003\u0002\u0002\u0002\u02e3\u02e5\u0003\u0002",
+    "\u0002\u0002\u02e4\u02e6\u0005\u00c7d\u0002\u02e5\u02e4\u0003\u0002",
+    "\u0002\u0002\u02e6\u02e7\u0003\u0002\u0002\u0002\u02e7\u02e5\u0003\u0002",
+    "\u0002\u0002\u02e7\u02e8\u0003\u0002\u0002\u0002\u02e8\u00d8\u0003\u0002",
+    "\u0002\u0002\u02e9\u02ee\u0007)\u0002\u0002\u02ea\u02ed\u0005\u00df",
+    "p\u0002\u02eb\u02ed\u0005\u00e5s\u0002\u02ec\u02ea\u0003\u0002\u0002",
+    "\u0002\u02ec\u02eb\u0003\u0002\u0002\u0002\u02ed\u02f0\u0003\u0002\u0002",
+    "\u0002\u02ee\u02ec\u0003\u0002\u0002\u0002\u02ee\u02ef\u0003\u0002\u0002",
+    "\u0002\u02ef\u02f1\u0003\u0002\u0002\u0002\u02f0\u02ee\u0003\u0002\u0002",
+    "\u0002\u02f1\u02fc\u0007)\u0002\u0002\u02f2\u02f7\u0007$\u0002\u0002",
+    "\u02f3\u02f6\u0005\u00e1q\u0002\u02f4\u02f6\u0005\u00e5s\u0002\u02f5",
+    "\u02f3\u0003\u0002\u0002\u0002\u02f5\u02f4\u0003\u0002\u0002\u0002\u02f6",
+    "\u02f9\u0003\u0002\u0002\u0002\u02f7\u02f5\u0003\u0002\u0002\u0002\u02f7",
+    "\u02f8\u0003\u0002\u0002\u0002\u02f8\u02fa\u0003\u0002\u0002\u0002\u02f9",
+    "\u02f7\u0003\u0002\u0002\u0002\u02fa\u02fc\u0007$\u0002\u0002\u02fb",
+    "\u02e9\u0003\u0002\u0002\u0002\u02fb\u02f2\u0003\u0002\u0002\u0002\u02fc",
+    "\u00da\u0003\u0002\u0002\u0002\u02fd\u02fe\u0007)\u0002\u0002\u02fe",
+    "\u02ff\u0007)\u0002\u0002\u02ff\u0300\u0007)\u0002\u0002\u0300\u0304",
+    "\u0003\u0002\u0002\u0002\u0301\u0303\u0005\u00ddo\u0002\u0302\u0301",
+    "\u0003\u0002\u0002\u0002\u0303\u0306\u0003\u0002\u0002\u0002\u0304\u0305",
+    "\u0003\u0002\u0002\u0002\u0304\u0302\u0003\u0002\u0002\u0002\u0305\u0307",
+    "\u0003\u0002\u0002\u0002\u0306\u0304\u0003\u0002\u0002\u0002\u0307\u0308",
+    "\u0007)\u0002\u0002\u0308\u0309\u0007)\u0002\u0002\u0309\u0318\u0007",
+    ")\u0002\u0002\u030a\u030b\u0007$\u0002\u0002\u030b\u030c\u0007$\u0002",
+    "\u0002\u030c\u030d\u0007$\u0002\u0002\u030d\u0311\u0003\u0002\u0002",
+    "\u0002\u030e\u0310\u0005\u00ddo\u0002\u030f\u030e\u0003\u0002\u0002",
+    "\u0002\u0310\u0313\u0003\u0002\u0002\u0002\u0311\u0312\u0003\u0002\u0002",
+    "\u0002\u0311\u030f\u0003\u0002\u0002\u0002\u0312\u0314\u0003\u0002\u0002",
+    "\u0002\u0313\u0311\u0003\u0002\u0002\u0002\u0314\u0315\u0007$\u0002",
+    "\u0002\u0315\u0316\u0007$\u0002\u0002\u0316\u0318\u0007$\u0002\u0002",
+    "\u0317\u02fd\u0003\u0002\u0002\u0002\u0317\u030a\u0003\u0002\u0002\u0002",
+    "\u0318\u00dc\u0003\u0002\u0002\u0002\u0319\u031c\u0005\u00e3r\u0002",
+    "\u031a\u031c\u0005\u00e5s\u0002\u031b\u0319\u0003\u0002\u0002\u0002",
+    "\u031b\u031a\u0003\u0002\u0002\u0002\u031c\u00de\u0003\u0002\u0002\u0002",
+    "\u031d\u031f\t\u0012\u0002\u0002\u031e\u031d\u0003\u0002\u0002\u0002",
+    "\u031f\u00e0\u0003\u0002\u0002\u0002\u0320\u0322\t\u0013\u0002\u0002",
+    "\u0321\u0320\u0003\u0002\u0002\u0002\u0322\u00e2\u0003\u0002\u0002\u0002",
+    "\u0323\u0325\t\u0014\u0002\u0002\u0324\u0323\u0003\u0002\u0002\u0002",
+    "\u0325\u00e4\u0003\u0002\u0002\u0002\u0326\u0327\u0007^\u0002\u0002",
+    "\u0327\u0328\t\u0015\u0002\u0002\u0328\u00e6\u0003\u0002\u0002\u0002",
+    "\u0329\u032b\t\u0016\u0002\u0002\u032a\u0329\u0003\u0002\u0002\u0002",
+    "\u032b\u032c\u0003\u0002\u0002\u0002\u032c\u032a\u0003\u0002\u0002\u0002",
+    "\u032c\u032d\u0003\u0002\u0002\u0002\u032d\u00e8\u0003\u0002\u0002\u0002",
+    "\u032e\u0332\u0007%\u0002\u0002\u032f\u0331\n\u0017\u0002\u0002\u0330",
+    "\u032f\u0003\u0002\u0002\u0002\u0331\u0334\u0003\u0002\u0002\u0002\u0332",
+    "\u0330\u0003\u0002\u0002\u0002\u0332\u0333\u0003\u0002\u0002\u0002\u0333",
+    "\u00ea\u0003\u0002\u0002\u0002\u0334\u0332\u0003\u0002\u0002\u0002\u0335",
+    "\u0337\u0007^\u0002\u0002\u0336\u0338\u0005\u00e7t\u0002\u0337\u0336",
+    "\u0003\u0002\u0002\u0002\u0337\u0338\u0003\u0002\u0002\u0002\u0338\u033e",
+    "\u0003\u0002\u0002\u0002\u0339\u033b\u0007\u000f\u0002\u0002\u033a\u0339",
+    "\u0003\u0002\u0002\u0002\u033a\u033b\u0003\u0002\u0002\u0002\u033b\u033c",
+    "\u0003\u0002\u0002\u0002\u033c\u033f\u0007\f\u0002\u0002\u033d\u033f",
+    "\u0007\u000f\u0002\u0002\u033e\u033a\u0003\u0002\u0002\u0002\u033e\u033d",
+    "\u0003\u0002\u0002\u0002\u033f\u00ec\u0003\u0002\u0002\u0002\u0340\u0342",
+    "\t\u0018\u0002\u0002\u0341\u0340\u0003\u0002\u0002\u0002\u0342\u00ee",
+    "\u0003\u0002\u0002\u0002\u0343\u0346\u0005\u00edw\u0002\u0344\u0346",
+    "\t\u0019\u0002\u0002\u0345\u0343\u0003\u0002\u0002\u0002\u0345\u0344",
+    "\u0003\u0002\u0002\u0002\u0346\u00f0\u0003\u0002\u0002\u00029\u0002",
+    "\u01a6\u01aa\u01ad\u01af\u01b7\u01bb\u01be\u01c2\u01c6\u01ca\u01d0\u01d6",
+    "\u01d8\u01df\u01e6\u01ed\u01f1\u01f5\u027d\u0286\u0288\u028f\u0291\u0295",
+    "\u029e\u02ab\u02b1\u02b5\u02c7\u02cd\u02d1\u02d8\u02de\u02e2\u02e7\u02ec",
+    "\u02ee\u02f5\u02f7\u02fb\u0304\u0311\u0317\u031b\u031e\u0321\u0324\u032c",
+    "\u0332\u0337\u033a\u033e\u0341\u0345\n\u0003#\u0002\u00030\u0003\u0003",
+    "1\u0004\u00037\u0005\u00038\u0006\u0003D\u0007\u0003E\b\b\u0002\u0002"].join("");
+
+
+var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
+
+var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
+
+function Python3Lexer(input) {
+	antlr4.Lexer.call(this, input);
+    this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
+    return this;
+}
+
+Python3Lexer.prototype = Object.create(antlr4.Lexer.prototype);
+Python3Lexer.prototype.constructor = Python3Lexer;
+
+Python3Lexer.EOF = antlr4.Token.EOF;
+Python3Lexer.DEF = 1;
+Python3Lexer.RETURN = 2;
+Python3Lexer.RAISE = 3;
+Python3Lexer.FROM = 4;
+Python3Lexer.IMPORT = 5;
+Python3Lexer.AS = 6;
+Python3Lexer.GLOBAL = 7;
+Python3Lexer.NONLOCAL = 8;
+Python3Lexer.ASSERT = 9;
+Python3Lexer.IF = 10;
+Python3Lexer.ELIF = 11;
+Python3Lexer.ELSE = 12;
+Python3Lexer.WHILE = 13;
+Python3Lexer.FOR = 14;
+Python3Lexer.IN = 15;
+Python3Lexer.TRY = 16;
+Python3Lexer.FINALLY = 17;
+Python3Lexer.WITH = 18;
+Python3Lexer.EXCEPT = 19;
+Python3Lexer.LAMBDA = 20;
+Python3Lexer.OR = 21;
+Python3Lexer.AND = 22;
+Python3Lexer.NOT = 23;
+Python3Lexer.IS = 24;
+Python3Lexer.NONE = 25;
+Python3Lexer.TRUE = 26;
+Python3Lexer.FALSE = 27;
+Python3Lexer.CLASS = 28;
+Python3Lexer.YIELD = 29;
+Python3Lexer.DEL = 30;
+Python3Lexer.PASS = 31;
+Python3Lexer.CONTINUE = 32;
+Python3Lexer.BREAK = 33;
+Python3Lexer.NEWLINE = 34;
+Python3Lexer.NAME = 35;
+Python3Lexer.STRING_LITERAL = 36;
+Python3Lexer.BYTES_LITERAL = 37;
+Python3Lexer.DECIMAL_INTEGER = 38;
+Python3Lexer.OCT_INTEGER = 39;
+Python3Lexer.HEX_INTEGER = 40;
+Python3Lexer.BIN_INTEGER = 41;
+Python3Lexer.FLOAT_NUMBER = 42;
+Python3Lexer.IMAG_NUMBER = 43;
+Python3Lexer.DOT = 44;
+Python3Lexer.ELLIPSIS = 45;
+Python3Lexer.STAR = 46;
+Python3Lexer.OPEN_PAREN = 47;
+Python3Lexer.CLOSE_PAREN = 48;
+Python3Lexer.COMMA = 49;
+Python3Lexer.COLON = 50;
+Python3Lexer.SEMI_COLON = 51;
+Python3Lexer.POWER = 52;
+Python3Lexer.ASSIGN = 53;
+Python3Lexer.OPEN_BRACK = 54;
+Python3Lexer.CLOSE_BRACK = 55;
+Python3Lexer.OR_OP = 56;
+Python3Lexer.XOR = 57;
+Python3Lexer.AND_OP = 58;
+Python3Lexer.LEFT_SHIFT = 59;
+Python3Lexer.RIGHT_SHIFT = 60;
+Python3Lexer.ADD = 61;
+Python3Lexer.MINUS = 62;
+Python3Lexer.DIV = 63;
+Python3Lexer.MOD = 64;
+Python3Lexer.IDIV = 65;
+Python3Lexer.NOT_OP = 66;
+Python3Lexer.OPEN_BRACE = 67;
+Python3Lexer.CLOSE_BRACE = 68;
+Python3Lexer.LESS_THAN = 69;
+Python3Lexer.GREATER_THAN = 70;
+Python3Lexer.EQUALS = 71;
+Python3Lexer.GT_EQ = 72;
+Python3Lexer.LT_EQ = 73;
+Python3Lexer.NOT_EQ_1 = 74;
+Python3Lexer.NOT_EQ_2 = 75;
+Python3Lexer.AT = 76;
+Python3Lexer.ARROW = 77;
+Python3Lexer.ADD_ASSIGN = 78;
+Python3Lexer.SUB_ASSIGN = 79;
+Python3Lexer.MULT_ASSIGN = 80;
+Python3Lexer.AT_ASSIGN = 81;
+Python3Lexer.DIV_ASSIGN = 82;
+Python3Lexer.MOD_ASSIGN = 83;
+Python3Lexer.AND_ASSIGN = 84;
+Python3Lexer.OR_ASSIGN = 85;
+Python3Lexer.XOR_ASSIGN = 86;
+Python3Lexer.LEFT_SHIFT_ASSIGN = 87;
+Python3Lexer.RIGHT_SHIFT_ASSIGN = 88;
+Python3Lexer.POWER_ASSIGN = 89;
+Python3Lexer.IDIV_ASSIGN = 90;
+Python3Lexer.SKIP_ = 91;
+Python3Lexer.UNKNOWN_CHAR = 92;
+
+
+Python3Lexer.prototype.modeNames = [ "DEFAULT_MODE" ];
+
+Python3Lexer.prototype.literalNames = [ null, "'def'", "'return'", "'raise'", 
+                                        "'from'", "'import'", "'as'", "'global'", 
+                                        "'nonlocal'", "'assert'", "'if'", 
+                                        "'elif'", "'else'", "'while'", "'for'", 
+                                        "'in'", "'try'", "'finally'", "'with'", 
+                                        "'except'", "'lambda'", "'or'", 
+                                        "'and'", "'not'", "'is'", "'None'", 
+                                        "'True'", "'False'", "'class'", 
+                                        "'yield'", "'del'", "'pass'", "'continue'", 
+                                        "'break'", null, null, null, null, 
+                                        null, null, null, null, null, null, 
+                                        "'.'", "'...'", "'*'", "'('", "')'", 
+                                        "','", "':'", "';'", "'**'", "'='", 
+                                        "'['", "']'", "'|'", "'^'", "'&'", 
+                                        "'<<'", "'>>'", "'+'", "'-'", "'/'", 
+                                        "'%'", "'//'", "'~'", "'{'", "'}'", 
+                                        "'<'", "'>'", "'=='", "'>='", "'<='", 
+                                        "'<>'", "'!='", "'@'", "'->'", "'+='", 
+                                        "'-='", "'*='", "'@='", "'/='", 
+                                        "'%='", "'&='", "'|='", "'^='", 
+                                        "'<<='", "'>>='", "'**='", "'//='" ];
+
+Python3Lexer.prototype.symbolicNames = [ null, "DEF", "RETURN", "RAISE", 
+                                         "FROM", "IMPORT", "AS", "GLOBAL", 
+                                         "NONLOCAL", "ASSERT", "IF", "ELIF", 
+                                         "ELSE", "WHILE", "FOR", "IN", "TRY", 
+                                         "FINALLY", "WITH", "EXCEPT", "LAMBDA", 
+                                         "OR", "AND", "NOT", "IS", "NONE", 
+                                         "TRUE", "FALSE", "CLASS", "YIELD", 
+                                         "DEL", "PASS", "CONTINUE", "BREAK", 
+                                         "NEWLINE", "NAME", "STRING_LITERAL", 
+                                         "BYTES_LITERAL", "DECIMAL_INTEGER", 
+                                         "OCT_INTEGER", "HEX_INTEGER", "BIN_INTEGER", 
+                                         "FLOAT_NUMBER", "IMAG_NUMBER", 
+                                         "DOT", "ELLIPSIS", "STAR", "OPEN_PAREN", 
+                                         "CLOSE_PAREN", "COMMA", "COLON", 
+                                         "SEMI_COLON", "POWER", "ASSIGN", 
+                                         "OPEN_BRACK", "CLOSE_BRACK", "OR_OP", 
+                                         "XOR", "AND_OP", "LEFT_SHIFT", 
+                                         "RIGHT_SHIFT", "ADD", "MINUS", 
+                                         "DIV", "MOD", "IDIV", "NOT_OP", 
+                                         "OPEN_BRACE", "CLOSE_BRACE", "LESS_THAN", 
+                                         "GREATER_THAN", "EQUALS", "GT_EQ", 
+                                         "LT_EQ", "NOT_EQ_1", "NOT_EQ_2", 
+                                         "AT", "ARROW", "ADD_ASSIGN", "SUB_ASSIGN", 
+                                         "MULT_ASSIGN", "AT_ASSIGN", "DIV_ASSIGN", 
+                                         "MOD_ASSIGN", "AND_ASSIGN", "OR_ASSIGN", 
+                                         "XOR_ASSIGN", "LEFT_SHIFT_ASSIGN", 
+                                         "RIGHT_SHIFT_ASSIGN", "POWER_ASSIGN", 
+                                         "IDIV_ASSIGN", "SKIP_", "UNKNOWN_CHAR" ];
+
+Python3Lexer.prototype.ruleNames = [ "DEF", "RETURN", "RAISE", "FROM", "IMPORT", 
+                                     "AS", "GLOBAL", "NONLOCAL", "ASSERT", 
+                                     "IF", "ELIF", "ELSE", "WHILE", "FOR", 
+                                     "IN", "TRY", "FINALLY", "WITH", "EXCEPT", 
+                                     "LAMBDA", "OR", "AND", "NOT", "IS", 
+                                     "NONE", "TRUE", "FALSE", "CLASS", "YIELD", 
+                                     "DEL", "PASS", "CONTINUE", "BREAK", 
+                                     "NEWLINE", "NAME", "STRING_LITERAL", 
+                                     "BYTES_LITERAL", "DECIMAL_INTEGER", 
+                                     "OCT_INTEGER", "HEX_INTEGER", "BIN_INTEGER", 
+                                     "FLOAT_NUMBER", "IMAG_NUMBER", "DOT", 
+                                     "ELLIPSIS", "STAR", "OPEN_PAREN", "CLOSE_PAREN", 
+                                     "COMMA", "COLON", "SEMI_COLON", "POWER", 
+                                     "ASSIGN", "OPEN_BRACK", "CLOSE_BRACK", 
+                                     "OR_OP", "XOR", "AND_OP", "LEFT_SHIFT", 
+                                     "RIGHT_SHIFT", "ADD", "MINUS", "DIV", 
+                                     "MOD", "IDIV", "NOT_OP", "OPEN_BRACE", 
+                                     "CLOSE_BRACE", "LESS_THAN", "GREATER_THAN", 
+                                     "EQUALS", "GT_EQ", "LT_EQ", "NOT_EQ_1", 
+                                     "NOT_EQ_2", "AT", "ARROW", "ADD_ASSIGN", 
+                                     "SUB_ASSIGN", "MULT_ASSIGN", "AT_ASSIGN", 
+                                     "DIV_ASSIGN", "MOD_ASSIGN", "AND_ASSIGN", 
+                                     "OR_ASSIGN", "XOR_ASSIGN", "LEFT_SHIFT_ASSIGN", 
+                                     "RIGHT_SHIFT_ASSIGN", "POWER_ASSIGN", 
+                                     "IDIV_ASSIGN", "SKIP_", "UNKNOWN_CHAR", 
+                                     "SHORT_STRING", "LONG_STRING", "LONG_STRING_ITEM", 
+                                     "LONG_STRING_CHAR", "STRING_ESCAPE_SEQ", 
+                                     "NON_ZERO_DIGIT", "DIGIT", "OCT_DIGIT", 
+                                     "HEX_DIGIT", "BIN_DIGIT", "POINT_FLOAT", 
+                                     "EXPONENT_FLOAT", "INT_PART", "FRACTION", 
+                                     "EXPONENT", "SHORT_BYTES", "LONG_BYTES", 
+                                     "LONG_BYTES_ITEM", "SHORT_BYTES_CHAR_NO_SINGLE_QUOTE", 
+                                     "SHORT_BYTES_CHAR_NO_DOUBLE_QUOTE", 
+                                     "LONG_BYTES_CHAR", "BYTES_ESCAPE_SEQ", 
+                                     "SPACES", "COMMENT", "LINE_JOINING", 
+                                     "ID_START", "ID_CONTINUE" ];
+
+Python3Lexer.prototype.grammarFileName = "Python3.g4";
+
+
+
+  let CommonToken = __webpack_require__(1).CommonToken;
+  let Python3Parser = __webpack_require__(21).Python3Parser;
+
+  let old_lexer = Python3Lexer;
+  Python3Lexer = function() {
+    old_lexer.apply(this, arguments);
+    this.reset.call(this);
   }
 
-  var i = 1;
-  var args = arguments;
-  var len = args.length;
-  var str = String(f).replace(formatRegExp, function(x) {
-    if (x === '%%') return '%';
-    if (i >= len) return x;
-    switch (x) {
-      case '%s': return String(args[i++]);
-      case '%d': return Number(args[i++]);
-      case '%j':
-        try {
-          return JSON.stringify(args[i++]);
-        } catch (_) {
-          return '[Circular]';
-        }
-      default:
-        return x;
-    }
-  });
-  for (var x = args[i]; i < len; x = args[++i]) {
-    if (isNull(x) || !isObject(x)) {
-      str += ' ' + x;
-    } else {
-      str += ' ' + inspect(x);
-    }
-  }
-  return str;
-};
+  Python3Lexer.prototype = Object.create(old_lexer.prototype);
+  Python3Lexer.prototype.constructor = Python3Lexer;
 
 
-// Mark that a method should not be used.
-// Returns a modified function which warns once by default.
-// If --no-deprecation is set, then it is a no-op.
-exports.deprecate = function(fn, msg) {
-  // Allow for deprecating things in the process of starting up.
-  if (isUndefined(global.process)) {
-    return function() {
-      return exports.deprecate(fn, msg).apply(this, arguments);
-    };
-  }
+  Python3Lexer.prototype.reset = function() {
+    // A queue where extra tokens are pushed on (see the NEWLINE lexer rule).
+    this.token_queue = [];
 
-  if (process.noDeprecation === true) {
-    return fn;
-  }
+    // The stack that keeps track of the indentation level.
+    this.indents = [];
 
-  var warned = false;
-  function deprecated() {
-    if (!warned) {
-      if (process.throwDeprecation) {
-        throw new Error(msg);
-      } else if (process.traceDeprecation) {
-        console.trace(msg);
-      } else {
-        console.error(msg);
-      }
-      warned = true;
-    }
-    return fn.apply(this, arguments);
-  }
+    // The amount of opened braces, brackets and parenthesis.
+    this.opened = 0;
 
-  return deprecated;
-};
-
-
-var debugs = {};
-var debugEnviron;
-exports.debuglog = function(set) {
-  if (isUndefined(debugEnviron))
-    debugEnviron = process.env.NODE_DEBUG || '';
-  set = set.toUpperCase();
-  if (!debugs[set]) {
-    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
-      var pid = process.pid;
-      debugs[set] = function() {
-        var msg = exports.format.apply(exports, arguments);
-        console.error('%s %d: %s', set, pid, msg);
-      };
-    } else {
-      debugs[set] = function() {};
-    }
-  }
-  return debugs[set];
-};
-
-
-/**
- * Echos the value of a value. Trys to print the value out
- * in the best way possible given the different types.
- *
- * @param {Object} obj The object to print out.
- * @param {Object} opts Optional options object that alters the output.
- */
-/* legacy: obj, showHidden, depth, colors*/
-function inspect(obj, opts) {
-  // default options
-  var ctx = {
-    seen: [],
-    stylize: stylizeNoColor
+    antlr4.Lexer.prototype.reset.call(this);
   };
-  // legacy...
-  if (arguments.length >= 3) ctx.depth = arguments[2];
-  if (arguments.length >= 4) ctx.colors = arguments[3];
-  if (isBoolean(opts)) {
-    // legacy...
-    ctx.showHidden = opts;
-  } else if (opts) {
-    // got an "options" object
-    exports._extend(ctx, opts);
-  }
-  // set default options
-  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
-  if (isUndefined(ctx.depth)) ctx.depth = 2;
-  if (isUndefined(ctx.colors)) ctx.colors = false;
-  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
-  if (ctx.colors) ctx.stylize = stylizeWithColor;
-  return formatValue(ctx, obj, ctx.depth);
-}
-exports.inspect = inspect;
 
+  Python3Lexer.prototype.emitToken = function(token) {
+    this._token = token;
+    this.token_queue.push(token);
+  };
 
-// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
-inspect.colors = {
-  'bold' : [1, 22],
-  'italic' : [3, 23],
-  'underline' : [4, 24],
-  'inverse' : [7, 27],
-  'white' : [37, 39],
-  'grey' : [90, 39],
-  'black' : [30, 39],
-  'blue' : [34, 39],
-  'cyan' : [36, 39],
-  'green' : [32, 39],
-  'magenta' : [35, 39],
-  'red' : [31, 39],
-  'yellow' : [33, 39]
-};
+  /**
+   * Return the next token from the character stream and records this last
+   * token in case it resides on the default channel. This recorded token
+   * is used to determine when the lexer could possibly match a regex
+   * literal.
+   *
+   */
+  Python3Lexer.prototype.nextToken = function() {
+    // Check if the end-of-file is ahead and there are still some DEDENTS expected.
+    if (this._input.LA(1) === Python3Parser.EOF && this.indents.length) {
 
-// Don't use 'blue' not visible on cmd.exe
-inspect.styles = {
-  'special': 'cyan',
-  'number': 'yellow',
-  'boolean': 'yellow',
-  'undefined': 'grey',
-  'null': 'bold',
-  'string': 'green',
-  'date': 'magenta',
-  // "name": intentionally not styling
-  'regexp': 'red'
-};
+      // Remove any trailing EOF tokens from our buffer.
+      this.token_queue = this.token_queue.filter(function(val) {
+        return val.type !== Python3Parser.EOF;
+      });
 
+      // First emit an extra line break that serves as the end of the statement.
+      this.emitToken(this.commonToken(Python3Parser.NEWLINE, "\n"));
 
-function stylizeWithColor(str, styleType) {
-  var style = inspect.styles[styleType];
+      // Now emit as much DEDENT tokens as needed.
+      while (this.indents.length) {
+        this.emitToken(this.createDedent());
+        this.indents.pop();
+      }
 
-  if (style) {
-    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
-           '\u001b[' + inspect.colors[style][1] + 'm';
-  } else {
-    return str;
-  }
-}
-
-
-function stylizeNoColor(str, styleType) {
-  return str;
-}
-
-
-function arrayToHash(array) {
-  var hash = {};
-
-  array.forEach(function(val, idx) {
-    hash[val] = true;
-  });
-
-  return hash;
-}
-
-
-function formatValue(ctx, value, recurseTimes) {
-  // Provide a hook for user-specified inspect functions.
-  // Check that value is an object with an inspect function on it
-  if (ctx.customInspect &&
-      value &&
-      isFunction(value.inspect) &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== exports.inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
-    var ret = value.inspect(recurseTimes, ctx);
-    if (!isString(ret)) {
-      ret = formatValue(ctx, ret, recurseTimes);
+      // Put the EOF back on the token stream.
+      this.emitToken(this.commonToken(Python3Parser.EOF, "<EOF>"));
     }
-    return ret;
+
+    let next = antlr4.Lexer.prototype.nextToken.call(this);
+    return this.token_queue.length ? this.token_queue.shift() : next;
+  };
+
+  Python3Lexer.prototype.createDedent = function() {
+    return this.commonToken(Python3Parser.DEDENT, "");
   }
 
-  // Primitive types cannot have properties
-  var primitive = formatPrimitive(ctx, value);
-  if (primitive) {
-    return primitive;
+  Python3Lexer.prototype.commonToken = function(type, text) {
+    let stop = this.getCharIndex() - 1;
+    let start = text.length ? stop - text.length + 1 : stop;
+    return new CommonToken(this._tokenFactorySourcePair, type, antlr4.Lexer.DEFAULT_TOKEN_CHANNEL, start, stop);
   }
 
-  // Look up the keys of the object.
-  var keys = Object.keys(value);
-  var visibleKeys = arrayToHash(keys);
-
-  if (ctx.showHidden) {
-    keys = Object.getOwnPropertyNames(value);
-  }
-
-  // IE doesn't make error fields non-enumerable
-  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
-  if (isError(value)
-      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
-    return formatError(value);
-  }
-
-  // Some type of object without properties can be shortcutted.
-  if (keys.length === 0) {
-    if (isFunction(value)) {
-      var name = value.name ? ': ' + value.name : '';
-      return ctx.stylize('[Function' + name + ']', 'special');
-    }
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    }
-    if (isDate(value)) {
-      return ctx.stylize(Date.prototype.toString.call(value), 'date');
-    }
-    if (isError(value)) {
-      return formatError(value);
-    }
-  }
-
-  var base = '', array = false, braces = ['{', '}'];
-
-  // Make Array say that they are Array
-  if (isArray(value)) {
-    array = true;
-    braces = ['[', ']'];
-  }
-
-  // Make functions say that they are functions
-  if (isFunction(value)) {
-    var n = value.name ? ': ' + value.name : '';
-    base = ' [Function' + n + ']';
-  }
-
-  // Make RegExps say that they are RegExps
-  if (isRegExp(value)) {
-    base = ' ' + RegExp.prototype.toString.call(value);
-  }
-
-  // Make dates with properties first say the date
-  if (isDate(value)) {
-    base = ' ' + Date.prototype.toUTCString.call(value);
-  }
-
-  // Make error with message first say the error
-  if (isError(value)) {
-    base = ' ' + formatError(value);
-  }
-
-  if (keys.length === 0 && (!array || value.length == 0)) {
-    return braces[0] + base + braces[1];
-  }
-
-  if (recurseTimes < 0) {
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    } else {
-      return ctx.stylize('[Object]', 'special');
-    }
-  }
-
-  ctx.seen.push(value);
-
-  var output;
-  if (array) {
-    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
-  } else {
-    output = keys.map(function(key) {
-      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
-    });
-  }
-
-  ctx.seen.pop();
-
-  return reduceToSingleString(output, base, braces);
-}
-
-
-function formatPrimitive(ctx, value) {
-  if (isUndefined(value))
-    return ctx.stylize('undefined', 'undefined');
-  if (isString(value)) {
-    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
-                                             .replace(/'/g, "\\'")
-                                             .replace(/\\"/g, '"') + '\'';
-    return ctx.stylize(simple, 'string');
-  }
-  if (isNumber(value))
-    return ctx.stylize('' + value, 'number');
-  if (isBoolean(value))
-    return ctx.stylize('' + value, 'boolean');
-  // For some reason typeof null is "object", so special case here.
-  if (isNull(value))
-    return ctx.stylize('null', 'null');
-}
-
-
-function formatError(value) {
-  return '[' + Error.prototype.toString.call(value) + ']';
-}
-
-
-function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
-  var output = [];
-  for (var i = 0, l = value.length; i < l; ++i) {
-    if (hasOwnProperty(value, String(i))) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          String(i), true));
-    } else {
-      output.push('');
-    }
-  }
-  keys.forEach(function(key) {
-    if (!key.match(/^\d+$/)) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          key, true));
-    }
-  });
-  return output;
-}
-
-
-function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
-  var name, str, desc;
-  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
-  if (desc.get) {
-    if (desc.set) {
-      str = ctx.stylize('[Getter/Setter]', 'special');
-    } else {
-      str = ctx.stylize('[Getter]', 'special');
-    }
-  } else {
-    if (desc.set) {
-      str = ctx.stylize('[Setter]', 'special');
-    }
-  }
-  if (!hasOwnProperty(visibleKeys, key)) {
-    name = '[' + key + ']';
-  }
-  if (!str) {
-    if (ctx.seen.indexOf(desc.value) < 0) {
-      if (isNull(recurseTimes)) {
-        str = formatValue(ctx, desc.value, null);
+  // Calculates the indentation of the provided spaces, taking the
+  // following rules into account:
+  //
+  // "Tabs are replaced (from left to right) by one to eight spaces
+  //  such that the total number of characters up to and including
+  //  the replacement is a multiple of eight [...]"
+  //
+  //  -- https://docs.python.org/3.1/reference/lexical_analysis.html#indentation
+  Python3Lexer.prototype.getIndentationCount = function(whitespace) {
+    let count = 0;
+    for (let i = 0; i < whitespace.length; i++) {
+      if (whitespace[i] === '\t') {
+        count += 8 - count % 8;
       } else {
-        str = formatValue(ctx, desc.value, recurseTimes - 1);
+        count++;
       }
-      if (str.indexOf('\n') > -1) {
-        if (array) {
-          str = str.split('\n').map(function(line) {
-            return '  ' + line;
-          }).join('\n').substr(2);
-        } else {
-          str = '\n' + str.split('\n').map(function(line) {
-            return '   ' + line;
-          }).join('\n');
-        }
-      }
-    } else {
-      str = ctx.stylize('[Circular]', 'special');
     }
-  }
-  if (isUndefined(name)) {
-    if (array && key.match(/^\d+$/)) {
-      return str;
-    }
-    name = JSON.stringify('' + key);
-    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-      name = name.substr(1, name.length - 2);
-      name = ctx.stylize(name, 'name');
-    } else {
-      name = name.replace(/'/g, "\\'")
-                 .replace(/\\"/g, '"')
-                 .replace(/(^"|"$)/g, "'");
-      name = ctx.stylize(name, 'string');
-    }
+    return count;
   }
 
-  return name + ': ' + str;
-}
-
-
-function reduceToSingleString(output, base, braces) {
-  var numLinesEst = 0;
-  var length = output.reduce(function(prev, cur) {
-    numLinesEst++;
-    if (cur.indexOf('\n') >= 0) numLinesEst++;
-    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
-  }, 0);
-
-  if (length > 60) {
-    return braces[0] +
-           (base === '' ? '' : base + '\n ') +
-           ' ' +
-           output.join(',\n  ') +
-           ' ' +
-           braces[1];
+  Python3Lexer.prototype.atStartOfInput = function() {
+    return this.getCharIndex() === 0;
   }
 
-  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
-}
 
+Python3Lexer.prototype.action = function(localctx, ruleIndex, actionIndex) {
+	switch (ruleIndex) {
+	case 33:
+		this.NEWLINE_action(localctx, actionIndex);
+		break;
+	case 46:
+		this.OPEN_PAREN_action(localctx, actionIndex);
+		break;
+	case 47:
+		this.CLOSE_PAREN_action(localctx, actionIndex);
+		break;
+	case 53:
+		this.OPEN_BRACK_action(localctx, actionIndex);
+		break;
+	case 54:
+		this.CLOSE_BRACK_action(localctx, actionIndex);
+		break;
+	case 66:
+		this.OPEN_BRACE_action(localctx, actionIndex);
+		break;
+	case 67:
+		this.CLOSE_BRACE_action(localctx, actionIndex);
+		break;
+	default:
+		throw "No registered action for:" + ruleIndex;
+	}
+};
 
-// NOTE: These type checking functions intentionally don't use `instanceof`
-// because it is fragile and can be easily faked with `Object.create()`.
-function isArray(ar) {
-  return Array.isArray(ar);
-}
-exports.isArray = isArray;
+Python3Lexer.prototype.NEWLINE_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 0:
 
-function isBoolean(arg) {
-  return typeof arg === 'boolean';
-}
-exports.isBoolean = isBoolean;
+		     let newLine = this.text.replace(/[^\r\n]+/g, '');
+		     let spaces = this.text.replace(/[\r\n]+/g, '');
+		     let next = this._input.LA(1);
 
-function isNull(arg) {
-  return arg === null;
-}
-exports.isNull = isNull;
+		     if (this.opened > 0 || next === 13 /* '\r' */ || next === 10 /* '\n' */ || next === 35 /* '#' */) {
+		       // If we're inside a list or on a blank line, ignore all indents,
+		       // dedents and line breaks.
+		       this.skip();
+		     } else {
+		       this.emitToken(this.commonToken(Python3Parser.NEWLINE, newLine));
 
-function isNullOrUndefined(arg) {
-  return arg == null;
-}
-exports.isNullOrUndefined = isNullOrUndefined;
+		       let indent = this.getIndentationCount(spaces);
+		       let previous = this.indents.length ? this.indents[this.indents.length - 1] : 0;
 
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-exports.isNumber = isNumber;
+		       if (indent === previous) {
+		         // skip indents of the same size as the present indent-size
+		         this.skip();
+		       } else if (indent > previous) {
+		         this.indents.push(indent);
+		         this.emitToken(this.commonToken(Python3Parser.INDENT, spaces));
+		       } else {
+		         // Possibly emit more than 1 DEDENT token.
+		         while (this.indents.length && this.indents[this.indents.length - 1] > indent) {
+		           this.emitToken(this.createDedent());
+		           this.indents.pop();
+		         }
+		       }
+		     }
+		   
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isString(arg) {
-  return typeof arg === 'string';
-}
-exports.isString = isString;
+Python3Lexer.prototype.OPEN_PAREN_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 1:
+		this.opened++;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isSymbol(arg) {
-  return typeof arg === 'symbol';
-}
-exports.isSymbol = isSymbol;
+Python3Lexer.prototype.CLOSE_PAREN_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 2:
+		this.opened--;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isUndefined(arg) {
-  return arg === void 0;
-}
-exports.isUndefined = isUndefined;
+Python3Lexer.prototype.OPEN_BRACK_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 3:
+		this.opened++;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isRegExp(re) {
-  return isObject(re) && objectToString(re) === '[object RegExp]';
-}
-exports.isRegExp = isRegExp;
+Python3Lexer.prototype.CLOSE_BRACK_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 4:
+		this.opened--;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-exports.isObject = isObject;
+Python3Lexer.prototype.OPEN_BRACE_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 5:
+		this.opened++;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
 
-function isDate(d) {
-  return isObject(d) && objectToString(d) === '[object Date]';
-}
-exports.isDate = isDate;
+Python3Lexer.prototype.CLOSE_BRACE_action = function(localctx , actionIndex) {
+	switch (actionIndex) {
+	case 6:
+		this.opened--;
+		break;
+	default:
+		throw "No registered action for:" + actionIndex;
+	}
+};
+Python3Lexer.prototype.sempred = function(localctx, ruleIndex, predIndex) {
+	switch (ruleIndex) {
+		case 33:
+			return this.NEWLINE_sempred(localctx, predIndex);
+    	default:
+    		throw "No registered predicate for:" + ruleIndex;
+    }
+};
 
-function isError(e) {
-  return isObject(e) &&
-      (objectToString(e) === '[object Error]' || e instanceof Error);
-}
-exports.isError = isError;
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-exports.isFunction = isFunction;
-
-function isPrimitive(arg) {
-  return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
-}
-exports.isPrimitive = isPrimitive;
-
-exports.isBuffer = __webpack_require__(94);
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-
-function pad(n) {
-  return n < 10 ? '0' + n.toString(10) : n.toString(10);
-}
-
-
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-              'Oct', 'Nov', 'Dec'];
-
-// 26 Feb 16:19:34
-function timestamp() {
-  var d = new Date();
-  var time = [pad(d.getHours()),
-              pad(d.getMinutes()),
-              pad(d.getSeconds())].join(':');
-  return [d.getDate(), months[d.getMonth()], time].join(' ');
-}
-
-
-// log is just a thin wrapper to console.log that prepends a timestamp
-exports.log = function() {
-  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+Python3Lexer.prototype.NEWLINE_sempred = function(localctx, predIndex) {
+	switch(predIndex) {
+		case 0:
+			return this.atStartOfInput();
+		default:
+			throw "No predicate with index:" + predIndex;
+	}
 };
 
 
-/**
- * Inherit the prototype methods from one constructor into another.
- *
- * The Function.prototype.inherits from lang.js rewritten as a standalone
- * function (not on Function.prototype). NOTE: If this file is to be loaded
- * during bootstrapping this function needs to be rewritten using some native
- * functions as prototype setup using normal JavaScript does not work as
- * expected during bootstrapping (see mirror.js in r114903).
- *
- * @param {function} ctor Constructor function which needs to inherit the
- *     prototype.
- * @param {function} superCtor Constructor function to inherit prototype from.
- */
-exports.inherits = __webpack_require__(93);
 
-exports._extend = function(origin, add) {
-  // Don't do anything if add isn't an object
-  if (!add || !isObject(add)) return origin;
+exports.Python3Lexer = Python3Lexer;
 
-  var keys = Object.keys(add);
-  var i = keys.length;
-  while (i--) {
-    origin[keys[i]] = add[keys[i]];
-  }
-  return origin;
-};
-
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(6)))
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-let antlr = __webpack_require__(20);
-
-// LANGUAGE_RUNTIME_CONFIG is defined in webpack.config.js
-
-let lang_runtime_config = {"language":"Python3","entry_rule":"file_input","rules":{"single_input":{"finalizers":[]},"file_input":{"finalizers":[]},"eval_input":{"finalizers":[]},"decorator":{"finalizers":[]},"decorators":{"finalizers":[null]},"decorated":{"finalizers":[null]},"funcdef":{"finalizers":[]},"parameters":{"finalizers":[]},"typedargslist":{"finalizers":[]},"tfpdef":{"finalizers":[]},"varargslist":{"finalizers":[]},"vfpdef":{"finalizers":[null]},"stmt":{"finalizers":[null]},"simple_stmt":{"finalizers":[]},"small_stmt":{"finalizers":[null]},"expr_stmt":{"finalizers":[]},"testlist_star_expr":{"finalizers":[null]},"augassign":{"finalizers":[]},"del_stmt":{"finalizers":[]},"pass_stmt":{"finalizers":[]},"flow_stmt":{"finalizers":[null]},"break_stmt":{"finalizers":[]},"continue_stmt":{"finalizers":[]},"return_stmt":{"finalizers":[]},"yield_stmt":{"finalizers":[]},"raise_stmt":{"finalizers":[]},"import_stmt":{"finalizers":[null],"sdb_concept":"import"},"import_name":{"finalizers":[]},"import_from":{"finalizers":[]},"import_as_name":{"finalizers":[]},"dotted_as_name":{"finalizers":[null]},"import_as_names":{"finalizers":[null]},"dotted_as_names":{"finalizers":[null]},"dotted_name":{"finalizers":[null]},"global_stmt":{"finalizers":[]},"nonlocal_stmt":{"finalizers":[]},"assert_stmt":{"finalizers":[]},"compound_stmt":{"finalizers":[null]},"if_stmt":{"finalizers":[]},"while_stmt":{"finalizers":[]},"for_stmt":{"finalizers":[]},"try_stmt":{"finalizers":[]},"with_stmt":{"finalizers":[]},"with_item":{"finalizers":[]},"except_clause":{"finalizers":[]},"suite":{"finalizers":[null]},"test":{"finalizers":[null]},"test_nocond":{"finalizers":[null]},"lambdef":{"finalizers":[]},"lambdef_nocond":{"finalizers":[]},"or_test":{"finalizers":[null]},"and_test":{"finalizers":[null]},"not_test":{"finalizers":[null]},"comparison":{"finalizers":[null]},"comp_op":{"finalizers":[]},"star_expr":{"finalizers":[null]},"expr":{"finalizers":[]},"xor_expr":{"finalizers":[null]},"and_expr":{"finalizers":[null]},"shift_expr":{"finalizers":[null]},"arith_expr":{"finalizers":[null]},"term":{"finalizers":[null]},"factor":{"finalizers":[null]},"power":{"finalizers":[null]},"trailed_atom":{"finalizers":[null]},"atom":{"finalizers":[]},"testlist_comp":{"finalizers":[]},"trailer":{"finalizers":[]},"subscriptlist":{"finalizers":[null]},"subscript":{"finalizers":[null]},"sliceop":{"finalizers":[]},"exprlist":{"finalizers":[null]},"testlist":{"finalizers":[null]},"dictorsetmaker":{"finalizers":[]},"classdef":{"finalizers":[]},"arglist":{"finalizers":[]},"argument":{"finalizers":[]},"comp_iter":{"finalizers":[null]},"comp_for":{"finalizers":[]},"comp_if":{"finalizers":[]},"yield_expr":{"finalizers":[]},"yield_arg":{"finalizers":[null]},"str":{"finalizers":[]},"number":{"finalizers":[null]},"integer":{"finalizers":[]},".DEF":{},".RETURN":{},".RAISE":{},".FROM":{},".IMPORT":{},".AS":{},".GLOBAL":{},".NONLOCAL":{},".ASSERT":{},".IF":{},".ELIF":{},".ELSE":{},".WHILE":{},".FOR":{},".IN":{},".TRY":{},".FINALLY":{},".WITH":{},".EXCEPT":{},".LAMBDA":{},".OR":{},".AND":{},".NOT":{},".IS":{},".NONE":{},".TRUE":{},".FALSE":{},".CLASS":{},".YIELD":{},".DEL":{},".PASS":{},".CONTINUE":{},".BREAK":{},".NEWLINE":{},".NAME":{},".STRING_LITERAL":{},".BYTES_LITERAL":{},".DECIMAL_INTEGER":{},".OCT_INTEGER":{},".HEX_INTEGER":{},".BIN_INTEGER":{},".FLOAT_NUMBER":{},".IMAG_NUMBER":{},".DOT":{},".ELLIPSIS":{},".STAR":{},".OPEN_PAREN":{},".CLOSE_PAREN":{},".COMMA":{},".COLON":{},".SEMI_COLON":{},".POWER":{},".ASSIGN":{},".OPEN_BRACK":{},".CLOSE_BRACK":{},".OR_OP":{},".XOR":{},".AND_OP":{},".LEFT_SHIFT":{},".RIGHT_SHIFT":{},".ADD":{},".MINUS":{},".DIV":{},".MOD":{},".IDIV":{},".NOT_OP":{},".OPEN_BRACE":{},".CLOSE_BRACE":{},".LESS_THAN":{},".GREATER_THAN":{},".EQUALS":{},".GT_EQ":{},".LT_EQ":{},".NOT_EQ_1":{},".NOT_EQ_2":{},".AT":{},".ARROW":{},".ADD_ASSIGN":{},".SUB_ASSIGN":{},".MULT_ASSIGN":{},".AT_ASSIGN":{},".DIV_ASSIGN":{},".MOD_ASSIGN":{},".AND_ASSIGN":{},".OR_ASSIGN":{},".XOR_ASSIGN":{},".LEFT_SHIFT_ASSIGN":{},".RIGHT_SHIFT_ASSIGN":{},".POWER_ASSIGN":{},".IDIV_ASSIGN":{},".SKIP_":{},".UNKNOWN_CHAR":{},".INDENT":{},".DEDENT":{}},"cache_dir":"/Users/joelwalker/codesplain/_cache/python3"};
-//require(lang_runtime_config.cache_dir + '/runtime_modifier.js')(lang_runtime_config);
-
-let lexer_classname = lang_runtime_config.language + 'Lexer';
-let parser_classname = lang_runtime_config.language + 'Parser';
-
-let LexerClass = __webpack_require__(13)(lang_runtime_config.cache_dir + '/' + lexer_classname + '.js')[lexer_classname];
-let ParserClass = __webpack_require__(13)(lang_runtime_config.cache_dir + '/' + parser_classname + '.js')[parser_classname];
-let ErrorListener = __webpack_require__(28);
-let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
-
-module.exports = function(input, error_callback) {
-    let chars = new antlr.InputStream(input);
-    let lexer = new LexerClass(chars);
-    let tokens  = new antlr.CommonTokenStream(lexer);
-    let parser = new ParserClass(tokens);
-    parser.buildParseTrees = true;
-
-    parser.removeErrorListeners();
-    parser.addErrorListener(new ErrorListener(error_callback));
-
-    let tree = parser[lang_runtime_config.entry_rule]();
-
-    let process_node = function(node) {
-        if (node instanceof TerminalNodeImpl) {
-            console.log(node);
-            return {
-                'type': '.' + parser.symbolicNames[node.symbol.type],
-                'begin': node.start.start,
-                'end': (node.stop ? node.stop : node.start).stop + 1,
-                'children': [],
-            };
-        } else {
-            let ast = {
-                'type': parser.ruleNames[node.ruleIndex],
-                'begin': node.start.start,
-                'end': (node.stop ? node.stop : node.start).stop + 1,
-                'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
-            };
-
-            let opts = lang_runtime_config.rules[ast.type];
-            opts.finalizers.forEach(function(func) {
-                ast = func(ast);
-            });
-
-            return ast;
-        }
-    };
-
-    return process_node(tree);
-};
 
 
 /***/ }),
-/* 55 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -13790,7 +17784,7 @@ module.exports = function(input, error_callback) {
 // {@link CommonTokenStream}.</p>
 
 var Token = __webpack_require__(1).Token;
-var Lexer = __webpack_require__(21).Lexer;
+var Lexer = __webpack_require__(13).Lexer;
 var Interval = __webpack_require__(2).Interval;
 
 // this is just to keep meaningful parameter types to Parser
@@ -14150,7 +18144,7 @@ exports.BufferedTokenStream = BufferedTokenStream;
 
 
 /***/ }),
-/* 56 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -14225,7 +18219,7 @@ exports.CommonTokenFactory = CommonTokenFactory;
 
 
 /***/ }),
-/* 57 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -14261,7 +18255,7 @@ exports.CommonTokenFactory = CommonTokenFactory;
 ///
 
 var Token = __webpack_require__(1).Token;
-var BufferedTokenStream = __webpack_require__(55).BufferedTokenStream;
+var BufferedTokenStream = __webpack_require__(37).BufferedTokenStream;
 
 function CommonTokenStream(lexer, channel) {
 	BufferedTokenStream.call(this, lexer);
@@ -14334,7 +18328,7 @@ CommonTokenStream.prototype.getNumberOfOnChannelTokens = function() {
 exports.CommonTokenStream = CommonTokenStream;
 
 /***/ }),
-/* 58 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -14348,9 +18342,9 @@ exports.CommonTokenStream = CommonTokenStream;
 //  This is an InputStream that is loaded from a file all at once
 //  when you construct the object.
 //
-var InputStream = __webpack_require__(36).InputStream;
+var InputStream = __webpack_require__(22).InputStream;
 var isNodeJs = typeof window === 'undefined' && typeof importScripts === 'undefined';
-var fs = isNodeJs ? __webpack_require__(19) : null;
+var fs = isNodeJs ? __webpack_require__(56) : null;
 
 function FileStream(fileName, decodeToUnicodeCodePoints) {
 	var data = fs.readFileSync(fileName, "utf8");
@@ -14366,7 +18360,7 @@ exports.FileStream = FileStream;
 
 
 /***/ }),
-/* 59 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -14379,16 +18373,16 @@ exports.FileStream = FileStream;
 var Set = __webpack_require__(0).Set;
 var BitSet = __webpack_require__(0).BitSet;
 var Token = __webpack_require__(1).Token;
-var ATNConfig = __webpack_require__(23).ATNConfig;
+var ATNConfig = __webpack_require__(15).ATNConfig;
 var Interval = __webpack_require__(2).Interval;
 var IntervalSet = __webpack_require__(2).IntervalSet;
 var RuleStopState = __webpack_require__(4).RuleStopState;
-var RuleTransition = __webpack_require__(9).RuleTransition;
-var NotSetTransition = __webpack_require__(9).NotSetTransition;
-var WildcardTransition = __webpack_require__(9).WildcardTransition;
-var AbstractPredicateTransition = __webpack_require__(9).AbstractPredicateTransition;
+var RuleTransition = __webpack_require__(8).RuleTransition;
+var NotSetTransition = __webpack_require__(8).NotSetTransition;
+var WildcardTransition = __webpack_require__(8).WildcardTransition;
+var AbstractPredicateTransition = __webpack_require__(8).AbstractPredicateTransition;
 
-var pc = __webpack_require__(7);
+var pc = __webpack_require__(6);
 var predictionContextFromRuleContext = pc.predictionContextFromRuleContext;
 var PredictionContext = pc.PredictionContext;
 var SingletonPredictionContext = pc.SingletonPredictionContext;
@@ -14571,7 +18565,7 @@ exports.LL1Analyzer = LL1Analyzer;
 
 
 /***/ }),
-/* 60 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -14581,10 +18575,10 @@ exports.LL1Analyzer = LL1Analyzer;
 
 var Token = __webpack_require__(1).Token;
 var ParseTreeListener = __webpack_require__(3).ParseTreeListener;
-var Recognizer = __webpack_require__(37).Recognizer;
-var DefaultErrorStrategy = __webpack_require__(43).DefaultErrorStrategy;
-var ATNDeserializer = __webpack_require__(39).ATNDeserializer;
-var ATNDeserializationOptions = __webpack_require__(38).ATNDeserializationOptions;
+var Recognizer = __webpack_require__(23).Recognizer;
+var DefaultErrorStrategy = __webpack_require__(29).DefaultErrorStrategy;
+var ATNDeserializer = __webpack_require__(25).ATNDeserializer;
+var ATNDeserializationOptions = __webpack_require__(24).ATNDeserializationOptions;
 var TerminalNode = __webpack_require__(3).TerminalNode;
 var ErrorNode = __webpack_require__(3).ErrorNode;
 
@@ -14870,7 +18864,7 @@ Parser.prototype.getATNWithBypassAlts = function() {
 // String id = m.get("ID");
 // </pre>
 
-var Lexer = __webpack_require__(21).Lexer;
+var Lexer = __webpack_require__(13).Lexer;
 
 Parser.prototype.compileParseTreePattern = function(pattern, patternRuleIndex, lexer) {
 	lexer = lexer || null;
@@ -15250,7 +19244,7 @@ Parser.prototype.setTrace = function(trace) {
 exports.Parser = Parser;
 
 /***/ }),
-/* 61 */
+/* 43 */
 /***/ (function(module, exports) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -15273,7 +19267,7 @@ exports.ATNType = ATNType;
 
 
 /***/ }),
-/* 62 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15300,18 +19294,18 @@ exports.ATNType = ATNType;
 ///
 
 var Token = __webpack_require__(1).Token;
-var Lexer = __webpack_require__(21).Lexer;
-var ATN = __webpack_require__(8).ATN;
-var ATNSimulator = __webpack_require__(40).ATNSimulator;
-var DFAState = __webpack_require__(15).DFAState;
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
-var OrderedATNConfigSet = __webpack_require__(10).OrderedATNConfigSet;
-var PredictionContext = __webpack_require__(7).PredictionContext;
-var SingletonPredictionContext = __webpack_require__(7).SingletonPredictionContext;
+var Lexer = __webpack_require__(13).Lexer;
+var ATN = __webpack_require__(7).ATN;
+var ATNSimulator = __webpack_require__(26).ATNSimulator;
+var DFAState = __webpack_require__(11).DFAState;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
+var OrderedATNConfigSet = __webpack_require__(9).OrderedATNConfigSet;
+var PredictionContext = __webpack_require__(6).PredictionContext;
+var SingletonPredictionContext = __webpack_require__(6).SingletonPredictionContext;
 var RuleStopState = __webpack_require__(4).RuleStopState;
-var LexerATNConfig = __webpack_require__(23).LexerATNConfig;
-var Transition = __webpack_require__(9).Transition;
-var LexerActionExecutor = __webpack_require__(63).LexerActionExecutor;
+var LexerATNConfig = __webpack_require__(15).LexerATNConfig;
+var Transition = __webpack_require__(8).Transition;
+var LexerActionExecutor = __webpack_require__(45).LexerActionExecutor;
 var LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 
 function resetSimState(sim) {
@@ -15915,7 +19909,7 @@ exports.LexerATNSimulator = LexerATNSimulator;
 
 
 /***/ }),
-/* 63 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -15933,7 +19927,7 @@ exports.LexerATNSimulator = LexerATNSimulator;
 // not cause bloating of the {@link DFA} created for the lexer.</p>
 
 var hashStuff = __webpack_require__(0).hashStuff;
-var LexerIndexedCustomAction = __webpack_require__(41).LexerIndexedCustomAction;
+var LexerIndexedCustomAction = __webpack_require__(27).LexerIndexedCustomAction;
 
 function LexerActionExecutor(lexerActions) {
 	this.lexerActions = lexerActions === null ? [] : lexerActions;
@@ -16087,7 +20081,7 @@ exports.LexerActionExecutor = LexerActionExecutor;
 
 
 /***/ }),
-/* 64 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -16329,23 +20323,23 @@ var Utils = __webpack_require__(0);
 var Set = Utils.Set;
 var BitSet = Utils.BitSet;
 var DoubleDict = Utils.DoubleDict;
-var ATN = __webpack_require__(8).ATN;
+var ATN = __webpack_require__(7).ATN;
 var ATNState = __webpack_require__(4).ATNState;
-var ATNConfig = __webpack_require__(23).ATNConfig;
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
+var ATNConfig = __webpack_require__(15).ATNConfig;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
 var Token = __webpack_require__(1).Token;
-var DFAState = __webpack_require__(15).DFAState;
-var PredPrediction = __webpack_require__(15).PredPrediction;
-var ATNSimulator = __webpack_require__(40).ATNSimulator;
-var PredictionMode = __webpack_require__(42).PredictionMode;
-var RuleContext = __webpack_require__(22).RuleContext;
-var ParserRuleContext = __webpack_require__(29).ParserRuleContext;
-var SemanticContext = __webpack_require__(14).SemanticContext;
+var DFAState = __webpack_require__(11).DFAState;
+var PredPrediction = __webpack_require__(11).PredPrediction;
+var ATNSimulator = __webpack_require__(26).ATNSimulator;
+var PredictionMode = __webpack_require__(28).PredictionMode;
+var RuleContext = __webpack_require__(14).RuleContext;
+var ParserRuleContext = __webpack_require__(19).ParserRuleContext;
+var SemanticContext = __webpack_require__(10).SemanticContext;
 var StarLoopEntryState = __webpack_require__(4).StarLoopEntryState;
 var RuleStopState = __webpack_require__(4).RuleStopState;
-var PredictionContext = __webpack_require__(7).PredictionContext;
+var PredictionContext = __webpack_require__(6).PredictionContext;
 var Interval = __webpack_require__(2).Interval;
-var Transitions = __webpack_require__(9);
+var Transitions = __webpack_require__(8);
 var Transition = Transitions.Transition;
 var SetTransition = Transitions.SetTransition;
 var NotSetTransition = Transitions.NotSetTransition;
@@ -16353,8 +20347,8 @@ var RuleTransition = Transitions.RuleTransition;
 var ActionTransition = Transitions.ActionTransition;
 var NoViableAltException = __webpack_require__(5).NoViableAltException;
 
-var SingletonPredictionContext = __webpack_require__(7).SingletonPredictionContext;
-var predictionContextFromRuleContext = __webpack_require__(7).predictionContextFromRuleContext;
+var SingletonPredictionContext = __webpack_require__(6).SingletonPredictionContext;
+var predictionContextFromRuleContext = __webpack_require__(6).predictionContextFromRuleContext;
 
 function ParserATNSimulator(parser, atn, decisionToDFA, sharedContextCache) {
 	ATNSimulator.call(this, atn, sharedContextCache);
@@ -17820,7 +21814,7 @@ ParserATNSimulator.prototype.reportAmbiguity = function(dfa, D, startIndex, stop
 exports.ParserATNSimulator = ParserATNSimulator;
 
 /***/ }),
-/* 65 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -17828,15 +21822,15 @@ exports.ParserATNSimulator = ParserATNSimulator;
  * can be found in the LICENSE.txt file in the project root.
  */
 
-exports.ATN = __webpack_require__(8).ATN;
-exports.ATNDeserializer = __webpack_require__(39).ATNDeserializer;
-exports.LexerATNSimulator = __webpack_require__(62).LexerATNSimulator;
-exports.ParserATNSimulator = __webpack_require__(64).ParserATNSimulator;
-exports.PredictionMode = __webpack_require__(42).PredictionMode;
+exports.ATN = __webpack_require__(7).ATN;
+exports.ATNDeserializer = __webpack_require__(25).ATNDeserializer;
+exports.LexerATNSimulator = __webpack_require__(44).LexerATNSimulator;
+exports.ParserATNSimulator = __webpack_require__(46).ParserATNSimulator;
+exports.PredictionMode = __webpack_require__(28).PredictionMode;
 
 
 /***/ }),
-/* 66 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -17846,11 +21840,11 @@ exports.PredictionMode = __webpack_require__(42).PredictionMode;
  */
 
 var Set = __webpack_require__(0).Set;
-var DFAState = __webpack_require__(15).DFAState;
+var DFAState = __webpack_require__(11).DFAState;
 var StarLoopEntryState = __webpack_require__(4).StarLoopEntryState;
-var ATNConfigSet = __webpack_require__(10).ATNConfigSet;
-var DFASerializer = __webpack_require__(24).DFASerializer;
-var LexerDFASerializer = __webpack_require__(24).LexerDFASerializer;
+var ATNConfigSet = __webpack_require__(9).ATNConfigSet;
+var DFASerializer = __webpack_require__(16).DFASerializer;
+var LexerDFASerializer = __webpack_require__(16).LexerDFASerializer;
 
 
 
@@ -17995,7 +21989,7 @@ exports.DFA = DFA;
 
 
 /***/ }),
-/* 67 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -18003,14 +21997,14 @@ exports.DFA = DFA;
  * can be found in the LICENSE.txt file in the project root.
  */
 
-exports.DFA = __webpack_require__(66).DFA;
-exports.DFASerializer = __webpack_require__(24).DFASerializer;
-exports.LexerDFASerializer = __webpack_require__(24).LexerDFASerializer;
-exports.PredPrediction = __webpack_require__(15).PredPrediction;
+exports.DFA = __webpack_require__(48).DFA;
+exports.DFASerializer = __webpack_require__(16).DFASerializer;
+exports.LexerDFASerializer = __webpack_require__(16).LexerDFASerializer;
+exports.PredPrediction = __webpack_require__(11).PredPrediction;
 
 
 /***/ }),
-/* 68 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -18040,7 +22034,7 @@ exports.PredPrediction = __webpack_require__(15).PredPrediction;
 // </ul>
 
 var BitSet = __webpack_require__(0).BitSet;
-var ErrorListener = __webpack_require__(25).ErrorListener;
+var ErrorListener = __webpack_require__(17).ErrorListener;
 var Interval = __webpack_require__(2).Interval;
 
 function DiagnosticErrorListener(exactOnly) {
@@ -18126,7 +22120,7 @@ DiagnosticErrorListener.prototype.getConflictingAlts = function(reportedAlts, co
 exports.DiagnosticErrorListener = DiagnosticErrorListener;
 
 /***/ }),
-/* 69 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -18139,13 +22133,13 @@ exports.NoViableAltException = __webpack_require__(5).NoViableAltException;
 exports.LexerNoViableAltException = __webpack_require__(5).LexerNoViableAltException;
 exports.InputMismatchException = __webpack_require__(5).InputMismatchException;
 exports.FailedPredicateException = __webpack_require__(5).FailedPredicateException;
-exports.DiagnosticErrorListener = __webpack_require__(68).DiagnosticErrorListener;
-exports.BailErrorStrategy = __webpack_require__(43).BailErrorStrategy;
-exports.ErrorListener = __webpack_require__(25).ErrorListener;
+exports.DiagnosticErrorListener = __webpack_require__(50).DiagnosticErrorListener;
+exports.BailErrorStrategy = __webpack_require__(29).BailErrorStrategy;
+exports.ErrorListener = __webpack_require__(17).ErrorListener;
 
 
 /***/ }),
-/* 70 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
@@ -18154,7 +22148,7 @@ exports.ErrorListener = __webpack_require__(25).ErrorListener;
  */
 
 var Tree = __webpack_require__(3);
-exports.Trees = __webpack_require__(46).Trees;
+exports.Trees = __webpack_require__(32).Trees;
 exports.RuleNode = Tree.RuleNode;
 exports.ParseTreeListener = Tree.ParseTreeListener;
 exports.ParseTreeVisitor = Tree.ParseTreeVisitor;
@@ -18162,2462 +22156,466 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 
 
 /***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(__dirname) {let fs = __webpack_require__(19);
-let path = __webpack_require__(32);
-let cp = __webpack_require__(79);
-let child_process = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"child_process\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()));
-let antlr = __webpack_require__(20);
-
-let config = __webpack_require__(75);
-
-module.exports = function(lang_compile_config, lang_runtime_config, callback) {
-    let language_key = lang_runtime_config.language.toLowerCase();
-    let g4_path = lang_compile_config.grammar_path;
-    if (!g4_path) {
-        g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_compile_config.grammar_file);
-    }
-
-    let cache_dir = path.resolve(__dirname, '..', '_cache', language_key);
-    let cache_g4_path = path.resolve(cache_dir, lang_runtime_config.language + '.g4');
-
-    let check_generated = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        fs.stat(cache_dir, function(err, stats) {
-            if (err && err.errno === -2) {
-                // If directory doesn't exist, create it and start the compilation process
-                fs.mkdir(cache_dir, cp_grammar);
-            } else if (err) {
-                callback_with_error(err);
-            } else if (config.always_recompile_antlr) {
-                cp_grammar(err);
-            } else {
-                // If the directory exists, assume that it's filled with the compiled parser and return
-                callback_with_success();
-            }
-        });
-    };
-
-    let cp_grammar = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        cp(g4_path, cache_g4_path, compile_parser);
-    };
-
-    let compile_parser = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        let cmd = 'java';
-        let args = [
-            '-Xmx500M',
-            '-cp', '../../bin/antlr-4.6-complete.jar',
-            'org.antlr.v4.Tool',
-            '-long-messages',
-            lang_compile_config.generate_listener ? '-listener' : '-no-listener',
-            lang_compile_config.generate_visitor ? '-visitor' : '-no-visitor',
-            '-Dlanguage=JavaScript',
-            lang_runtime_config.language + '.g4',
-        ];
-        let opts = {
-            'cwd': cache_dir,
-        };
-
-        let antlr = child_process.spawn(cmd, args, opts);
-
-        antlr.stdout.on('data', function(data) {
-            console.log(data.toString());
-        });
-
-        antlr.stderr.on('data', function(data) {
-            console.error(data.toString());
-        });
-
-        antlr.on('close', function(code) {
-            if (code) {
-                callback_with_error('Compiler error (returned ' + code + ')');
-            } else {
-                check_compiled();
-            }
-        });
-    };
-
-    let check_compiled = function() {
-        let array_diff = function(a, b) {
-            return a.filter(function(i) {return b.indexOf(i) === -1;});
-        };
-
-        let parser_classname = lang_runtime_config.language + 'Parser';
-        let ParserClass = __webpack_require__(13)(cache_dir + '/' + parser_classname + '.js')[parser_classname];
-        let parser = new ParserClass();
-
-        let symbol_rules = parser.symbolicNames.filter(Boolean).map(function(val) {return '.' + val;});
-        let parser_rules = parser.ruleNames.concat(symbol_rules);
-        let config_rules = Object.keys(lang_runtime_config.rules);
-
-        let config_missing = array_diff(parser_rules, config_rules);
-        if (config_missing.length) {
-            callback_with_error('Missing rules ' + JSON.stringify(config_missing));
-        }
-
-        let config_extra = array_diff(config_rules, parser_rules);
-        if (config_extra.length) {
-            callback_with_error('Extra rules ' + JSON.stringify(config_extra));
-        }
-
-        callback_with_success();
-    };
-
-    let callback_with_error = function(msg) {
-        callback(new Error('Language ' + JSON.stringify(language_key) + ': ' + msg));
-    };
-    let callback_with_success = function() {
-        lang_runtime_config.cache_dir = cache_dir;
-        callback(undefined);
-    }
-
-    check_generated();
-};
-
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
-
-/***/ }),
-/* 72 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = {};
 
-module.exports.collapse = function(ast) {
+module.exports.collapse = function(node) {
     // If there is only one child, and it is exactly the same as this node, then eliminate this node.
-    if (ast.children.length === 1
-        && ast.begin === ast.children[0].begin
-        && ast.end === ast.children[0].end
+    if (node.children.length === 1
+        && node.begin === node.children[0].begin
+        && node.end === node.children[0].end
     ) {
-        return ast.children[0];
+        return node.children[0];
     } else {
-        return ast;
+        return node;
     }
 };
 
 
 /***/ }),
-/* 73 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let antlr = __webpack_require__(20);
+let collapse = __webpack_require__(53).collapse;
 
-let lang_runtime_config = __webpack_require__(30);
+module.exports = {
+    'single_input': {'finalizers': []},
+    'file_input': {'finalizers': []},
+    'eval_input': {'finalizers': []},
+    'decorator': {'finalizers': []},
+    'decorators': {'finalizers': [collapse]},
+    'decorated': {'finalizers': [collapse]},
+    'funcdef': {'finalizers': []},
+    'parameters': {'finalizers': []},
+    'typedargslist': {'finalizers': []},
+    'tfpdef': {'finalizers': []},
+    'varargslist': {'finalizers': []},
+    'vfpdef': {'finalizers': [collapse]},
+    'stmt': {'finalizers': [collapse]},
+    'simple_stmt': {'finalizers': []},
+    'small_stmt': {'finalizers': [collapse]},
+    'expr_stmt': {'finalizers': []},
+    'testlist_star_expr': {'finalizers': [collapse]},
+    'augassign': {'finalizers': []},
+    'del_stmt': {'finalizers': []},
+    'pass_stmt': {'finalizers': []},
+    'flow_stmt': {'finalizers': [collapse]},
+    'break_stmt': {'finalizers': []},
+    'continue_stmt': {'finalizers': []},
+    'return_stmt': {'finalizers': []},
+    'yield_stmt': {'finalizers': []},
+    'raise_stmt': {'finalizers': []},
+    'import_stmt': {'finalizers': [collapse], 'sdb_concept': 'import'},
+    'import_name': {'finalizers': []},
+    'import_from': {'finalizers': []},
+    'import_as_name': {'finalizers': []},
+    'dotted_as_name': {'finalizers': [collapse]},
+    'import_as_names': {'finalizers': [collapse]},
+    'dotted_as_names': {'finalizers': [collapse]},
+    'dotted_name': {'finalizers': [collapse]},
+    'global_stmt': {'finalizers': []},
+    'nonlocal_stmt': {'finalizers': []},
+    'assert_stmt': {'finalizers': []},
+    'compound_stmt': {'finalizers': [collapse]},
+    'if_stmt': {'finalizers': []},
+    'while_stmt': {'finalizers': []},
+    'for_stmt': {'finalizers': []},
+    'try_stmt': {'finalizers': []},
+    'with_stmt': {'finalizers': []},
+    'with_item': {'finalizers': []},
+    'except_clause': {'finalizers': []},
+    'suite': {'finalizers': [collapse]},
+    'test': {'finalizers': [collapse]},
+    'test_nocond': {'finalizers': [collapse]},
+    'lambdef': {'finalizers': []},
+    'lambdef_nocond': {'finalizers': []},
+    'or_test': {'finalizers': [collapse]},
+    'and_test': {'finalizers': [collapse]},
+    'not_test': {'finalizers': [collapse]},
+    'comparison': {'finalizers': [collapse]},
+    'comp_op': {'finalizers': []},
+    'star_expr': {'finalizers': [collapse]},
+    'expr': {'finalizers': []},
+    'xor_expr': {'finalizers': [collapse]},
+    'and_expr': {'finalizers': [collapse]},
+    'shift_expr': {'finalizers': [collapse]},
+    'arith_expr': {'finalizers': [collapse]},
+    'term': {'finalizers': [collapse]},
+    'factor': {'finalizers': [collapse]},
+    'power': {'finalizers': [collapse]},
+    'trailed_atom': {'finalizers': [collapse]},
+    'atom': {'finalizers': []},
+    'testlist_comp': {'finalizers': []},
+    'trailer': {'finalizers': []},
+    'subscriptlist': {'finalizers': [collapse]},
+    'subscript': {'finalizers': [collapse]},
+    'sliceop': {'finalizers': []},
+    'exprlist': {'finalizers': [collapse]},
+    'testlist': {'finalizers': [collapse]},
+    'dictorsetmaker': {'finalizers': []},
+    'classdef': {'finalizers': []},
+    'arglist': {'finalizers': []},
+    'argument': {'finalizers': []},
+    'comp_iter': {'finalizers': [collapse]},
+    'comp_for': {'finalizers': []},
+    'comp_if': {'finalizers': []},
+    'yield_expr': {'finalizers': []},
+    'yield_arg': {'finalizers': [collapse]},
+    'str': {'finalizers': []},
+    'number': {'finalizers': [collapse]},
+    'integer': {'finalizers': []},
+    '.DEF': {},
+    '.RETURN': {},
+    '.RAISE': {},
+    '.FROM': {},
+    '.IMPORT': {},
+    '.AS': {},
+    '.GLOBAL': {},
+    '.NONLOCAL': {},
+    '.ASSERT': {},
+    '.IF': {},
+    '.ELIF': {},
+    '.ELSE': {},
+    '.WHILE': {},
+    '.FOR': {},
+    '.IN': {},
+    '.TRY': {},
+    '.FINALLY': {},
+    '.WITH': {},
+    '.EXCEPT': {},
+    '.LAMBDA': {},
+    '.OR': {},
+    '.AND': {},
+    '.NOT': {},
+    '.IS': {},
+    '.NONE': {},
+    '.TRUE': {},
+    '.FALSE': {},
+    '.CLASS': {},
+    '.YIELD': {},
+    '.DEL': {},
+    '.PASS': {},
+    '.CONTINUE': {},
+    '.BREAK': {},
+    '.NEWLINE': {},
+    '.NAME': {},
+    '.STRING_LITERAL': {},
+    '.BYTES_LITERAL': {},
+    '.DECIMAL_INTEGER': {},
+    '.OCT_INTEGER': {},
+    '.HEX_INTEGER': {},
+    '.BIN_INTEGER': {},
+    '.FLOAT_NUMBER': {},
+    '.IMAG_NUMBER': {},
+    '.DOT': {},
+    '.ELLIPSIS': {},
+    '.STAR': {},
+    '.OPEN_PAREN': {},
+    '.CLOSE_PAREN': {},
+    '.COMMA': {},
+    '.COLON': {},
+    '.SEMI_COLON': {},
+    '.POWER': {},
+    '.ASSIGN': {},
+    '.OPEN_BRACK': {},
+    '.CLOSE_BRACK': {},
+    '.OR_OP': {},
+    '.XOR': {},
+    '.AND_OP': {},
+    '.LEFT_SHIFT': {},
+    '.RIGHT_SHIFT': {},
+    '.ADD': {},
+    '.MINUS': {},
+    '.DIV': {},
+    '.MOD': {},
+    '.IDIV': {},
+    '.NOT_OP': {},
+    '.OPEN_BRACE': {},
+    '.CLOSE_BRACE': {},
+    '.LESS_THAN': {},
+    '.GREATER_THAN': {},
+    '.EQUALS': {},
+    '.GT_EQ': {},
+    '.LT_EQ': {},
+    '.NOT_EQ_1': {},
+    '.NOT_EQ_2': {},
+    '.AT': {},
+    '.ARROW': {},
+    '.ADD_ASSIGN': {},
+    '.SUB_ASSIGN': {},
+    '.MULT_ASSIGN': {},
+    '.AT_ASSIGN': {},
+    '.DIV_ASSIGN': {},
+    '.MOD_ASSIGN': {},
+    '.AND_ASSIGN': {},
+    '.OR_ASSIGN': {},
+    '.XOR_ASSIGN': {},
+    '.LEFT_SHIFT_ASSIGN': {},
+    '.RIGHT_SHIFT_ASSIGN': {},
+    '.POWER_ASSIGN': {},
+    '.IDIV_ASSIGN': {},
+    '.SKIP_': {},
+    '.UNKNOWN_CHAR': {},
+    '.INDENT': {},
+    '.DEDENT': {},
+};
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["fs"]; }());
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+let path = __webpack_require__(35);
+let antlr = __webpack_require__(12);
+
+// LANGUAGE_RUNTIME_CONFIG_PATH is defined in webpack.config.js
+let lang_runtime_config = __webpack_require__(34);
+
+__webpack_require__(20)(lang_runtime_config);
 
 let lexer_classname = lang_runtime_config.language + 'Lexer';
 let parser_classname = lang_runtime_config.language + 'Parser';
 
-let LexerClass = __webpack_require__(13)(lang_runtime_config.cache_dir + '/' + lexer_classname + '.js')[lexer_classname];
-let ParserClass = __webpack_require__(13)(lang_runtime_config.cache_dir + '/' + parser_classname + '.js')[parser_classname];
+let LexerClass = __webpack_require__(18)("./" + lexer_classname + '.js')[lexer_classname];
+let ParserClass = __webpack_require__(18)("./" + parser_classname + '.js')[parser_classname];
+let ErrorListener = __webpack_require__(33);
+let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
-let ErrorListener = __webpack_require__(28);
-let GeneratorListener = __webpack_require__(47)
-
-module.exports = function(matcher_config) {
-    let chars = new antlr.InputStream(matcher_config.pattern);
+module.exports = function(input, error_callback) {
+    let chars = new antlr.InputStream(input);
     let lexer = new LexerClass(chars);
     let tokens  = new antlr.CommonTokenStream(lexer);
     let parser = new ParserClass(tokens);
     parser.buildParseTrees = true;
 
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ErrorListener(error_callback));
+
     let tree = parser[lang_runtime_config.entry_rule]();
-    let generator = new GeneratorListener(matcher_config.profile_data);
-    //let res = antlr.tree.ParseTreeWalker.DEFAULT.walk(generator, tree);
 
-    // matcher_config.actor
-
-    //console.log(tree);
-
-    return tree;
-};
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(__dirname) {let path = __webpack_require__(32);
-
-module.exports = {
-    'grammar_path': path.resolve(__dirname, 'TreeMatcher.g4'),
-    'generate_listener': true,
-};
-
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(__dirname) {let path = __webpack_require__(32);
-
-module.exports = {
-    'lang_configs_path': path.resolve(__dirname, 'language_configs'),
-    'always_recompile_antlr': false,
-};
-
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-// compare and isBuffer taken from https://github.com/feross/buffer/blob/680e9e5e488f22aac27599a57dc844a6315928dd/index.js
-// original notice:
-
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-function compare(a, b) {
-  if (a === b) {
-    return 0;
-  }
-
-  var x = a.length;
-  var y = b.length;
-
-  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
-    if (a[i] !== b[i]) {
-      x = a[i];
-      y = b[i];
-      break;
-    }
-  }
-
-  if (x < y) {
-    return -1;
-  }
-  if (y < x) {
-    return 1;
-  }
-  return 0;
-}
-function isBuffer(b) {
-  if (global.Buffer && typeof global.Buffer.isBuffer === 'function') {
-    return global.Buffer.isBuffer(b);
-  }
-  return !!(b != null && b._isBuffer);
-}
-
-// based on node assert, original notice:
-
-// http://wiki.commonjs.org/wiki/Unit_Testing/1.0
-//
-// THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
-//
-// Originally from narwhal.js (http://narwhaljs.org)
-// Copyright (c) 2009 Thomas Robinson <280north.com>
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the 'Software'), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-var util = __webpack_require__(53);
-var hasOwn = Object.prototype.hasOwnProperty;
-var pSlice = Array.prototype.slice;
-var functionsHaveNames = (function () {
-  return function foo() {}.name === 'foo';
-}());
-function pToString (obj) {
-  return Object.prototype.toString.call(obj);
-}
-function isView(arrbuf) {
-  if (isBuffer(arrbuf)) {
-    return false;
-  }
-  if (typeof global.ArrayBuffer !== 'function') {
-    return false;
-  }
-  if (typeof ArrayBuffer.isView === 'function') {
-    return ArrayBuffer.isView(arrbuf);
-  }
-  if (!arrbuf) {
-    return false;
-  }
-  if (arrbuf instanceof DataView) {
-    return true;
-  }
-  if (arrbuf.buffer && arrbuf.buffer instanceof ArrayBuffer) {
-    return true;
-  }
-  return false;
-}
-// 1. The assert module provides functions that throw
-// AssertionError's when particular conditions are not met. The
-// assert module must conform to the following interface.
-
-var assert = module.exports = ok;
-
-// 2. The AssertionError is defined in assert.
-// new assert.AssertionError({ message: message,
-//                             actual: actual,
-//                             expected: expected })
-
-var regex = /\s*function\s+([^\(\s]*)\s*/;
-// based on https://github.com/ljharb/function.prototype.name/blob/adeeeec8bfcc6068b187d7d9fb3d5bb1d3a30899/implementation.js
-function getName(func) {
-  if (!util.isFunction(func)) {
-    return;
-  }
-  if (functionsHaveNames) {
-    return func.name;
-  }
-  var str = func.toString();
-  var match = str.match(regex);
-  return match && match[1];
-}
-assert.AssertionError = function AssertionError(options) {
-  this.name = 'AssertionError';
-  this.actual = options.actual;
-  this.expected = options.expected;
-  this.operator = options.operator;
-  if (options.message) {
-    this.message = options.message;
-    this.generatedMessage = false;
-  } else {
-    this.message = getMessage(this);
-    this.generatedMessage = true;
-  }
-  var stackStartFunction = options.stackStartFunction || fail;
-  if (Error.captureStackTrace) {
-    Error.captureStackTrace(this, stackStartFunction);
-  } else {
-    // non v8 browsers so we can have a stacktrace
-    var err = new Error();
-    if (err.stack) {
-      var out = err.stack;
-
-      // try to strip useless frames
-      var fn_name = getName(stackStartFunction);
-      var idx = out.indexOf('\n' + fn_name);
-      if (idx >= 0) {
-        // once we have located the function frame
-        // we need to strip out everything before it (and its line)
-        var next_line = out.indexOf('\n', idx + 1);
-        out = out.substring(next_line + 1);
-      }
-
-      this.stack = out;
-    }
-  }
-};
-
-// assert.AssertionError instanceof Error
-util.inherits(assert.AssertionError, Error);
-
-function truncate(s, n) {
-  if (typeof s === 'string') {
-    return s.length < n ? s : s.slice(0, n);
-  } else {
-    return s;
-  }
-}
-function inspect(something) {
-  if (functionsHaveNames || !util.isFunction(something)) {
-    return util.inspect(something);
-  }
-  var rawname = getName(something);
-  var name = rawname ? ': ' + rawname : '';
-  return '[Function' +  name + ']';
-}
-function getMessage(self) {
-  return truncate(inspect(self.actual), 128) + ' ' +
-         self.operator + ' ' +
-         truncate(inspect(self.expected), 128);
-}
-
-// At present only the three keys mentioned above are used and
-// understood by the spec. Implementations or sub modules can pass
-// other keys to the AssertionError's constructor - they will be
-// ignored.
-
-// 3. All of the following functions must throw an AssertionError
-// when a corresponding condition is not met, with a message that
-// may be undefined if not provided.  All assertion methods provide
-// both the actual and expected values to the assertion error for
-// display purposes.
-
-function fail(actual, expected, message, operator, stackStartFunction) {
-  throw new assert.AssertionError({
-    message: message,
-    actual: actual,
-    expected: expected,
-    operator: operator,
-    stackStartFunction: stackStartFunction
-  });
-}
-
-// EXTENSION! allows for well behaved errors defined elsewhere.
-assert.fail = fail;
-
-// 4. Pure assertion tests whether a value is truthy, as determined
-// by !!guard.
-// assert.ok(guard, message_opt);
-// This statement is equivalent to assert.equal(true, !!guard,
-// message_opt);. To test strictly for the value true, use
-// assert.strictEqual(true, guard, message_opt);.
-
-function ok(value, message) {
-  if (!value) fail(value, true, message, '==', assert.ok);
-}
-assert.ok = ok;
-
-// 5. The equality assertion tests shallow, coercive equality with
-// ==.
-// assert.equal(actual, expected, message_opt);
-
-assert.equal = function equal(actual, expected, message) {
-  if (actual != expected) fail(actual, expected, message, '==', assert.equal);
-};
-
-// 6. The non-equality assertion tests for whether two objects are not equal
-// with != assert.notEqual(actual, expected, message_opt);
-
-assert.notEqual = function notEqual(actual, expected, message) {
-  if (actual == expected) {
-    fail(actual, expected, message, '!=', assert.notEqual);
-  }
-};
-
-// 7. The equivalence assertion tests a deep equality relation.
-// assert.deepEqual(actual, expected, message_opt);
-
-assert.deepEqual = function deepEqual(actual, expected, message) {
-  if (!_deepEqual(actual, expected, false)) {
-    fail(actual, expected, message, 'deepEqual', assert.deepEqual);
-  }
-};
-
-assert.deepStrictEqual = function deepStrictEqual(actual, expected, message) {
-  if (!_deepEqual(actual, expected, true)) {
-    fail(actual, expected, message, 'deepStrictEqual', assert.deepStrictEqual);
-  }
-};
-
-function _deepEqual(actual, expected, strict, memos) {
-  // 7.1. All identical values are equivalent, as determined by ===.
-  if (actual === expected) {
-    return true;
-  } else if (isBuffer(actual) && isBuffer(expected)) {
-    return compare(actual, expected) === 0;
-
-  // 7.2. If the expected value is a Date object, the actual value is
-  // equivalent if it is also a Date object that refers to the same time.
-  } else if (util.isDate(actual) && util.isDate(expected)) {
-    return actual.getTime() === expected.getTime();
-
-  // 7.3 If the expected value is a RegExp object, the actual value is
-  // equivalent if it is also a RegExp object with the same source and
-  // properties (`global`, `multiline`, `lastIndex`, `ignoreCase`).
-  } else if (util.isRegExp(actual) && util.isRegExp(expected)) {
-    return actual.source === expected.source &&
-           actual.global === expected.global &&
-           actual.multiline === expected.multiline &&
-           actual.lastIndex === expected.lastIndex &&
-           actual.ignoreCase === expected.ignoreCase;
-
-  // 7.4. Other pairs that do not both pass typeof value == 'object',
-  // equivalence is determined by ==.
-  } else if ((actual === null || typeof actual !== 'object') &&
-             (expected === null || typeof expected !== 'object')) {
-    return strict ? actual === expected : actual == expected;
-
-  // If both values are instances of typed arrays, wrap their underlying
-  // ArrayBuffers in a Buffer each to increase performance
-  // This optimization requires the arrays to have the same type as checked by
-  // Object.prototype.toString (aka pToString). Never perform binary
-  // comparisons for Float*Arrays, though, since e.g. +0 === -0 but their
-  // bit patterns are not identical.
-  } else if (isView(actual) && isView(expected) &&
-             pToString(actual) === pToString(expected) &&
-             !(actual instanceof Float32Array ||
-               actual instanceof Float64Array)) {
-    return compare(new Uint8Array(actual.buffer),
-                   new Uint8Array(expected.buffer)) === 0;
-
-  // 7.5 For all other Object pairs, including Array objects, equivalence is
-  // determined by having the same number of owned properties (as verified
-  // with Object.prototype.hasOwnProperty.call), the same set of keys
-  // (although not necessarily the same order), equivalent values for every
-  // corresponding key, and an identical 'prototype' property. Note: this
-  // accounts for both named and indexed properties on Arrays.
-  } else if (isBuffer(actual) !== isBuffer(expected)) {
-    return false;
-  } else {
-    memos = memos || {actual: [], expected: []};
-
-    var actualIndex = memos.actual.indexOf(actual);
-    if (actualIndex !== -1) {
-      if (actualIndex === memos.expected.indexOf(expected)) {
-        return true;
-      }
-    }
-
-    memos.actual.push(actual);
-    memos.expected.push(expected);
-
-    return objEquiv(actual, expected, strict, memos);
-  }
-}
-
-function isArguments(object) {
-  return Object.prototype.toString.call(object) == '[object Arguments]';
-}
-
-function objEquiv(a, b, strict, actualVisitedObjects) {
-  if (a === null || a === undefined || b === null || b === undefined)
-    return false;
-  // if one is a primitive, the other must be same
-  if (util.isPrimitive(a) || util.isPrimitive(b))
-    return a === b;
-  if (strict && Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
-    return false;
-  var aIsArgs = isArguments(a);
-  var bIsArgs = isArguments(b);
-  if ((aIsArgs && !bIsArgs) || (!aIsArgs && bIsArgs))
-    return false;
-  if (aIsArgs) {
-    a = pSlice.call(a);
-    b = pSlice.call(b);
-    return _deepEqual(a, b, strict);
-  }
-  var ka = objectKeys(a);
-  var kb = objectKeys(b);
-  var key, i;
-  // having the same number of owned properties (keys incorporates
-  // hasOwnProperty)
-  if (ka.length !== kb.length)
-    return false;
-  //the same set of keys (although not necessarily the same order),
-  ka.sort();
-  kb.sort();
-  //~~~cheap key test
-  for (i = ka.length - 1; i >= 0; i--) {
-    if (ka[i] !== kb[i])
-      return false;
-  }
-  //equivalent values for every corresponding key, and
-  //~~~possibly expensive deep test
-  for (i = ka.length - 1; i >= 0; i--) {
-    key = ka[i];
-    if (!_deepEqual(a[key], b[key], strict, actualVisitedObjects))
-      return false;
-  }
-  return true;
-}
-
-// 8. The non-equivalence assertion tests for any deep inequality.
-// assert.notDeepEqual(actual, expected, message_opt);
-
-assert.notDeepEqual = function notDeepEqual(actual, expected, message) {
-  if (_deepEqual(actual, expected, false)) {
-    fail(actual, expected, message, 'notDeepEqual', assert.notDeepEqual);
-  }
-};
-
-assert.notDeepStrictEqual = notDeepStrictEqual;
-function notDeepStrictEqual(actual, expected, message) {
-  if (_deepEqual(actual, expected, true)) {
-    fail(actual, expected, message, 'notDeepStrictEqual', notDeepStrictEqual);
-  }
-}
-
-
-// 9. The strict equality assertion tests strict equality, as determined by ===.
-// assert.strictEqual(actual, expected, message_opt);
-
-assert.strictEqual = function strictEqual(actual, expected, message) {
-  if (actual !== expected) {
-    fail(actual, expected, message, '===', assert.strictEqual);
-  }
-};
-
-// 10. The strict non-equality assertion tests for strict inequality, as
-// determined by !==.  assert.notStrictEqual(actual, expected, message_opt);
-
-assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
-  if (actual === expected) {
-    fail(actual, expected, message, '!==', assert.notStrictEqual);
-  }
-};
-
-function expectedException(actual, expected) {
-  if (!actual || !expected) {
-    return false;
-  }
-
-  if (Object.prototype.toString.call(expected) == '[object RegExp]') {
-    return expected.test(actual);
-  }
-
-  try {
-    if (actual instanceof expected) {
-      return true;
-    }
-  } catch (e) {
-    // Ignore.  The instanceof check doesn't work for arrow functions.
-  }
-
-  if (Error.isPrototypeOf(expected)) {
-    return false;
-  }
-
-  return expected.call({}, actual) === true;
-}
-
-function _tryBlock(block) {
-  var error;
-  try {
-    block();
-  } catch (e) {
-    error = e;
-  }
-  return error;
-}
-
-function _throws(shouldThrow, block, expected, message) {
-  var actual;
-
-  if (typeof block !== 'function') {
-    throw new TypeError('"block" argument must be a function');
-  }
-
-  if (typeof expected === 'string') {
-    message = expected;
-    expected = null;
-  }
-
-  actual = _tryBlock(block);
-
-  message = (expected && expected.name ? ' (' + expected.name + ').' : '.') +
-            (message ? ' ' + message : '.');
-
-  if (shouldThrow && !actual) {
-    fail(actual, expected, 'Missing expected exception' + message);
-  }
-
-  var userProvidedMessage = typeof message === 'string';
-  var isUnwantedException = !shouldThrow && util.isError(actual);
-  var isUnexpectedException = !shouldThrow && actual && !expected;
-
-  if ((isUnwantedException &&
-      userProvidedMessage &&
-      expectedException(actual, expected)) ||
-      isUnexpectedException) {
-    fail(actual, expected, 'Got unwanted exception' + message);
-  }
-
-  if ((shouldThrow && actual && expected &&
-      !expectedException(actual, expected)) || (!shouldThrow && actual)) {
-    throw actual;
-  }
-}
-
-// 11. Expected to throw an error:
-// assert.throws(block, Error_opt, message_opt);
-
-assert.throws = function(block, /*optional*/error, /*optional*/message) {
-  _throws(true, block, error, message);
-};
-
-// EXTENSION! This is annoying to write outside this module.
-assert.doesNotThrow = function(block, /*optional*/error, /*optional*/message) {
-  _throws(false, block, error, message);
-};
-
-assert.ifError = function(err) { if (err) throw err; };
-
-var objectKeys = Object.keys || function (obj) {
-  var keys = [];
-  for (var key in obj) {
-    if (hasOwn.call(obj, key)) keys.push(key);
-  }
-  return keys;
-};
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
-
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
-
-function placeHoldersCount (b64) {
-  var len = b64.length
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
-}
-
-function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return b64.length * 3 / 4 - placeHoldersCount(b64)
-}
-
-function toByteArray (b64) {
-  var i, j, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
-
-  arr = new Arr(len * 3 / 4 - placeHolders)
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
-
-  var L = 0
-
-  for (i = 0, j = 0; i < l; i += 4, j += 3) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
-  for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-    output.push(tripletToBase64(tmp))
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
-  }
-
-  parts.push(output)
-
-  return parts.join('')
-}
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"O_RDONLY": 0,
-	"O_WRONLY": 1,
-	"O_RDWR": 2,
-	"S_IFMT": 61440,
-	"S_IFREG": 32768,
-	"S_IFDIR": 16384,
-	"S_IFCHR": 8192,
-	"S_IFBLK": 24576,
-	"S_IFIFO": 4096,
-	"S_IFLNK": 40960,
-	"S_IFSOCK": 49152,
-	"O_CREAT": 512,
-	"O_EXCL": 2048,
-	"O_NOCTTY": 131072,
-	"O_TRUNC": 1024,
-	"O_APPEND": 8,
-	"O_DIRECTORY": 1048576,
-	"O_NOFOLLOW": 256,
-	"O_SYNC": 128,
-	"O_SYMLINK": 2097152,
-	"O_NONBLOCK": 4,
-	"S_IRWXU": 448,
-	"S_IRUSR": 256,
-	"S_IWUSR": 128,
-	"S_IXUSR": 64,
-	"S_IRWXG": 56,
-	"S_IRGRP": 32,
-	"S_IWGRP": 16,
-	"S_IXGRP": 8,
-	"S_IRWXO": 7,
-	"S_IROTH": 4,
-	"S_IWOTH": 2,
-	"S_IXOTH": 1,
-	"E2BIG": 7,
-	"EACCES": 13,
-	"EADDRINUSE": 48,
-	"EADDRNOTAVAIL": 49,
-	"EAFNOSUPPORT": 47,
-	"EAGAIN": 35,
-	"EALREADY": 37,
-	"EBADF": 9,
-	"EBADMSG": 94,
-	"EBUSY": 16,
-	"ECANCELED": 89,
-	"ECHILD": 10,
-	"ECONNABORTED": 53,
-	"ECONNREFUSED": 61,
-	"ECONNRESET": 54,
-	"EDEADLK": 11,
-	"EDESTADDRREQ": 39,
-	"EDOM": 33,
-	"EDQUOT": 69,
-	"EEXIST": 17,
-	"EFAULT": 14,
-	"EFBIG": 27,
-	"EHOSTUNREACH": 65,
-	"EIDRM": 90,
-	"EILSEQ": 92,
-	"EINPROGRESS": 36,
-	"EINTR": 4,
-	"EINVAL": 22,
-	"EIO": 5,
-	"EISCONN": 56,
-	"EISDIR": 21,
-	"ELOOP": 62,
-	"EMFILE": 24,
-	"EMLINK": 31,
-	"EMSGSIZE": 40,
-	"EMULTIHOP": 95,
-	"ENAMETOOLONG": 63,
-	"ENETDOWN": 50,
-	"ENETRESET": 52,
-	"ENETUNREACH": 51,
-	"ENFILE": 23,
-	"ENOBUFS": 55,
-	"ENODATA": 96,
-	"ENODEV": 19,
-	"ENOENT": 2,
-	"ENOEXEC": 8,
-	"ENOLCK": 77,
-	"ENOLINK": 97,
-	"ENOMEM": 12,
-	"ENOMSG": 91,
-	"ENOPROTOOPT": 42,
-	"ENOSPC": 28,
-	"ENOSR": 98,
-	"ENOSTR": 99,
-	"ENOSYS": 78,
-	"ENOTCONN": 57,
-	"ENOTDIR": 20,
-	"ENOTEMPTY": 66,
-	"ENOTSOCK": 38,
-	"ENOTSUP": 45,
-	"ENOTTY": 25,
-	"ENXIO": 6,
-	"EOPNOTSUPP": 102,
-	"EOVERFLOW": 84,
-	"EPERM": 1,
-	"EPIPE": 32,
-	"EPROTO": 100,
-	"EPROTONOSUPPORT": 43,
-	"EPROTOTYPE": 41,
-	"ERANGE": 34,
-	"EROFS": 30,
-	"ESPIPE": 29,
-	"ESRCH": 3,
-	"ESTALE": 70,
-	"ETIME": 101,
-	"ETIMEDOUT": 60,
-	"ETXTBSY": 26,
-	"EWOULDBLOCK": 35,
-	"EXDEV": 18,
-	"SIGHUP": 1,
-	"SIGINT": 2,
-	"SIGQUIT": 3,
-	"SIGILL": 4,
-	"SIGTRAP": 5,
-	"SIGABRT": 6,
-	"SIGIOT": 6,
-	"SIGBUS": 10,
-	"SIGFPE": 8,
-	"SIGKILL": 9,
-	"SIGUSR1": 30,
-	"SIGSEGV": 11,
-	"SIGUSR2": 31,
-	"SIGPIPE": 13,
-	"SIGALRM": 14,
-	"SIGTERM": 15,
-	"SIGCHLD": 20,
-	"SIGCONT": 19,
-	"SIGSTOP": 17,
-	"SIGTSTP": 18,
-	"SIGTTIN": 21,
-	"SIGTTOU": 22,
-	"SIGURG": 16,
-	"SIGXCPU": 24,
-	"SIGXFSZ": 25,
-	"SIGVTALRM": 26,
-	"SIGPROF": 27,
-	"SIGWINCH": 28,
-	"SIGIO": 23,
-	"SIGSYS": 12,
-	"SSL_OP_ALL": 2147486719,
-	"SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION": 262144,
-	"SSL_OP_CIPHER_SERVER_PREFERENCE": 4194304,
-	"SSL_OP_CISCO_ANYCONNECT": 32768,
-	"SSL_OP_COOKIE_EXCHANGE": 8192,
-	"SSL_OP_CRYPTOPRO_TLSEXT_BUG": 2147483648,
-	"SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS": 2048,
-	"SSL_OP_EPHEMERAL_RSA": 0,
-	"SSL_OP_LEGACY_SERVER_CONNECT": 4,
-	"SSL_OP_MICROSOFT_BIG_SSLV3_BUFFER": 32,
-	"SSL_OP_MICROSOFT_SESS_ID_BUG": 1,
-	"SSL_OP_MSIE_SSLV2_RSA_PADDING": 0,
-	"SSL_OP_NETSCAPE_CA_DN_BUG": 536870912,
-	"SSL_OP_NETSCAPE_CHALLENGE_BUG": 2,
-	"SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG": 1073741824,
-	"SSL_OP_NETSCAPE_REUSE_CIPHER_CHANGE_BUG": 8,
-	"SSL_OP_NO_COMPRESSION": 131072,
-	"SSL_OP_NO_QUERY_MTU": 4096,
-	"SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION": 65536,
-	"SSL_OP_NO_SSLv2": 16777216,
-	"SSL_OP_NO_SSLv3": 33554432,
-	"SSL_OP_NO_TICKET": 16384,
-	"SSL_OP_NO_TLSv1": 67108864,
-	"SSL_OP_NO_TLSv1_1": 268435456,
-	"SSL_OP_NO_TLSv1_2": 134217728,
-	"SSL_OP_PKCS1_CHECK_1": 0,
-	"SSL_OP_PKCS1_CHECK_2": 0,
-	"SSL_OP_SINGLE_DH_USE": 1048576,
-	"SSL_OP_SINGLE_ECDH_USE": 524288,
-	"SSL_OP_SSLEAY_080_CLIENT_DH_BUG": 128,
-	"SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG": 0,
-	"SSL_OP_TLS_BLOCK_PADDING_BUG": 512,
-	"SSL_OP_TLS_D5_BUG": 256,
-	"SSL_OP_TLS_ROLLBACK_BUG": 8388608,
-	"ENGINE_METHOD_DSA": 2,
-	"ENGINE_METHOD_DH": 4,
-	"ENGINE_METHOD_RAND": 8,
-	"ENGINE_METHOD_ECDH": 16,
-	"ENGINE_METHOD_ECDSA": 32,
-	"ENGINE_METHOD_CIPHERS": 64,
-	"ENGINE_METHOD_DIGESTS": 128,
-	"ENGINE_METHOD_STORE": 256,
-	"ENGINE_METHOD_PKEY_METHS": 512,
-	"ENGINE_METHOD_PKEY_ASN1_METHS": 1024,
-	"ENGINE_METHOD_ALL": 65535,
-	"ENGINE_METHOD_NONE": 0,
-	"DH_CHECK_P_NOT_SAFE_PRIME": 2,
-	"DH_CHECK_P_NOT_PRIME": 1,
-	"DH_UNABLE_TO_CHECK_GENERATOR": 4,
-	"DH_NOT_SUITABLE_GENERATOR": 8,
-	"NPN_ENABLED": 1,
-	"RSA_PKCS1_PADDING": 1,
-	"RSA_SSLV23_PADDING": 2,
-	"RSA_NO_PADDING": 3,
-	"RSA_PKCS1_OAEP_PADDING": 4,
-	"RSA_X931_PADDING": 5,
-	"RSA_PKCS1_PSS_PADDING": 6,
-	"POINT_CONVERSION_COMPRESSED": 2,
-	"POINT_CONVERSION_UNCOMPRESSED": 4,
-	"POINT_CONVERSION_HYBRID": 6,
-	"F_OK": 0,
-	"R_OK": 4,
-	"W_OK": 2,
-	"X_OK": 1,
-	"UV_UDP_REUSEADDR": 4
-};
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {
-/**
- * Module dependencies.
- */
-
-var fs = __webpack_require__(19);
-try { fs = __webpack_require__(80); } catch (e) {}
-
-/**
- * Magic number.
- */
-
-var MAX_BUFFER = 1024;
-
-/**
- * Export `cp`.
- */
-
-exports = module.exports = cp;
-
-/**
- * Export `sync`.
- */
-
-exports.sync = sync;
-
-/**
- * Copy `src` to `dest`, invoking `cb(err)` when done.
- *
- * @param {String} src
- * @param {String} dest
- * @param {Function} [cb]
- * @api public
- */
-
-function cp(src, dest, cb) {
-  // yield support
-  if ('function' != typeof cb) return thunk;
-
-  var complete = false;
-  var read = fs.createReadStream(src);
-  var write = fs.createWriteStream(dest);
-
-  write.on('error', done);
-  write.on('close', done);
-  read.on('error', done);
-  read.pipe(write);
-
-  // done callback
-  function done(err) {
-    if (!complete) {
-      complete = true;
-      read.destroy();
-      write.destroy();
-      cb(err);
-    }
-  }
-
-  // thunk-ified
-  function thunk(done) {
-    cp(src, dest, done);
-  }
-}
-
-/**
- * Synchronously copy file `src` to `dest`
- *
- * @param {String} src
- * @param {String} dest
- * @api public
- */
-
-function sync(src, dest) {
-  if (!fs.existsSync(src)) {
-    throw new Error('no such file or directory: ' + src);
-  }
-
-  var buffer = new Buffer(MAX_BUFFER);
-  var bytesRead = MAX_BUFFER;
-  var pos = 0;
-  var read = fs.openSync(src, 'r');
-  var write = fs.openSync(dest, 'w');
-
-  while (MAX_BUFFER == bytesRead) {
-    bytesRead = fs.readSync(read, buffer, 0, MAX_BUFFER, pos);
-    fs.writeSync(write, buffer, 0, bytesRead);
-    pos += bytesRead;
-  }
-
-  fs.closeSync(read);
-  fs.closeSync(write);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).Buffer))
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {var fs = __webpack_require__(19)
-var polyfills = __webpack_require__(82)
-var legacy = __webpack_require__(81)
-var queue = []
-
-var util = __webpack_require__(53)
-
-function noop () {}
-
-var debug = noop
-if (util.debuglog)
-  debug = util.debuglog('gfs4')
-else if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || ''))
-  debug = function() {
-    var m = util.format.apply(util, arguments)
-    m = 'GFS4: ' + m.split(/\n/).join('\nGFS4: ')
-    console.error(m)
-  }
-
-if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || '')) {
-  process.on('exit', function() {
-    debug(queue)
-    __webpack_require__(76).equal(queue.length, 0)
-  })
-}
-
-module.exports = patch(__webpack_require__(48))
-if (process.env.TEST_GRACEFUL_FS_GLOBAL_PATCH) {
-  module.exports = patch(fs)
-}
-
-// Always patch fs.close/closeSync, because we want to
-// retry() whenever a close happens *anywhere* in the program.
-// This is essential when multiple graceful-fs instances are
-// in play at the same time.
-module.exports.close =
-fs.close = (function (fs$close) { return function (fd, cb) {
-  return fs$close.call(fs, fd, function (err) {
-    if (!err)
-      retry()
-
-    if (typeof cb === 'function')
-      cb.apply(this, arguments)
-  })
-}})(fs.close)
-
-module.exports.closeSync =
-fs.closeSync = (function (fs$closeSync) { return function (fd) {
-  // Note that graceful-fs also retries when fs.closeSync() fails.
-  // Looks like a bug to me, although it's probably a harmless one.
-  var rval = fs$closeSync.apply(fs, arguments)
-  retry()
-  return rval
-}})(fs.closeSync)
-
-function patch (fs) {
-  // Everything that references the open() function needs to be in here
-  polyfills(fs)
-  fs.gracefulify = patch
-  fs.FileReadStream = ReadStream;  // Legacy name.
-  fs.FileWriteStream = WriteStream;  // Legacy name.
-  fs.createReadStream = createReadStream
-  fs.createWriteStream = createWriteStream
-  var fs$readFile = fs.readFile
-  fs.readFile = readFile
-  function readFile (path, options, cb) {
-    if (typeof options === 'function')
-      cb = options, options = null
-
-    return go$readFile(path, options, cb)
-
-    function go$readFile (path, options, cb) {
-      return fs$readFile(path, options, function (err) {
-        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
-          enqueue([go$readFile, [path, options, cb]])
-        else {
-          if (typeof cb === 'function')
-            cb.apply(this, arguments)
-          retry()
-        }
-      })
-    }
-  }
-
-  var fs$writeFile = fs.writeFile
-  fs.writeFile = writeFile
-  function writeFile (path, data, options, cb) {
-    if (typeof options === 'function')
-      cb = options, options = null
-
-    return go$writeFile(path, data, options, cb)
-
-    function go$writeFile (path, data, options, cb) {
-      return fs$writeFile(path, data, options, function (err) {
-        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
-          enqueue([go$writeFile, [path, data, options, cb]])
-        else {
-          if (typeof cb === 'function')
-            cb.apply(this, arguments)
-          retry()
-        }
-      })
-    }
-  }
-
-  var fs$appendFile = fs.appendFile
-  if (fs$appendFile)
-    fs.appendFile = appendFile
-  function appendFile (path, data, options, cb) {
-    if (typeof options === 'function')
-      cb = options, options = null
-
-    return go$appendFile(path, data, options, cb)
-
-    function go$appendFile (path, data, options, cb) {
-      return fs$appendFile(path, data, options, function (err) {
-        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
-          enqueue([go$appendFile, [path, data, options, cb]])
-        else {
-          if (typeof cb === 'function')
-            cb.apply(this, arguments)
-          retry()
-        }
-      })
-    }
-  }
-
-  var fs$readdir = fs.readdir
-  fs.readdir = readdir
-  function readdir (path, options, cb) {
-    var args = [path]
-    if (typeof options !== 'function') {
-      args.push(options)
-    } else {
-      cb = options
-    }
-    args.push(go$readdir$cb)
-
-    return go$readdir(args)
-
-    function go$readdir$cb (err, files) {
-      if (files && files.sort)
-        files.sort()
-
-      if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
-        enqueue([go$readdir, [args]])
-      else {
-        if (typeof cb === 'function')
-          cb.apply(this, arguments)
-        retry()
-      }
-    }
-  }
-
-  function go$readdir (args) {
-    return fs$readdir.apply(fs, args)
-  }
-
-  if (process.version.substr(0, 4) === 'v0.8') {
-    var legStreams = legacy(fs)
-    ReadStream = legStreams.ReadStream
-    WriteStream = legStreams.WriteStream
-  }
-
-  var fs$ReadStream = fs.ReadStream
-  ReadStream.prototype = Object.create(fs$ReadStream.prototype)
-  ReadStream.prototype.open = ReadStream$open
-
-  var fs$WriteStream = fs.WriteStream
-  WriteStream.prototype = Object.create(fs$WriteStream.prototype)
-  WriteStream.prototype.open = WriteStream$open
-
-  fs.ReadStream = ReadStream
-  fs.WriteStream = WriteStream
-
-  function ReadStream (path, options) {
-    if (this instanceof ReadStream)
-      return fs$ReadStream.apply(this, arguments), this
-    else
-      return ReadStream.apply(Object.create(ReadStream.prototype), arguments)
-  }
-
-  function ReadStream$open () {
-    var that = this
-    open(that.path, that.flags, that.mode, function (err, fd) {
-      if (err) {
-        if (that.autoClose)
-          that.destroy()
-
-        that.emit('error', err)
-      } else {
-        that.fd = fd
-        that.emit('open', fd)
-        that.read()
-      }
-    })
-  }
-
-  function WriteStream (path, options) {
-    if (this instanceof WriteStream)
-      return fs$WriteStream.apply(this, arguments), this
-    else
-      return WriteStream.apply(Object.create(WriteStream.prototype), arguments)
-  }
-
-  function WriteStream$open () {
-    var that = this
-    open(that.path, that.flags, that.mode, function (err, fd) {
-      if (err) {
-        that.destroy()
-        that.emit('error', err)
-      } else {
-        that.fd = fd
-        that.emit('open', fd)
-      }
-    })
-  }
-
-  function createReadStream (path, options) {
-    return new ReadStream(path, options)
-  }
-
-  function createWriteStream (path, options) {
-    return new WriteStream(path, options)
-  }
-
-  var fs$open = fs.open
-  fs.open = open
-  function open (path, flags, mode, cb) {
-    if (typeof mode === 'function')
-      cb = mode, mode = null
-
-    return go$open(path, flags, mode, cb)
-
-    function go$open (path, flags, mode, cb) {
-      return fs$open(path, flags, mode, function (err, fd) {
-        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
-          enqueue([go$open, [path, flags, mode, cb]])
-        else {
-          if (typeof cb === 'function')
-            cb.apply(this, arguments)
-          retry()
-        }
-      })
-    }
-  }
-
-  return fs
-}
-
-function enqueue (elem) {
-  debug('ENQUEUE', elem[0].name, elem[1])
-  queue.push(elem)
-}
-
-function retry () {
-  var elem = queue.shift()
-  if (elem) {
-    debug('RETRY', elem[0].name, elem[1])
-    elem[0].apply(null, elem[1])
-  }
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {var Stream = __webpack_require__(27).Stream
-
-module.exports = legacy
-
-function legacy (fs) {
-  return {
-    ReadStream: ReadStream,
-    WriteStream: WriteStream
-  }
-
-  function ReadStream (path, options) {
-    if (!(this instanceof ReadStream)) return new ReadStream(path, options);
-
-    Stream.call(this);
-
-    var self = this;
-
-    this.path = path;
-    this.fd = null;
-    this.readable = true;
-    this.paused = false;
-
-    this.flags = 'r';
-    this.mode = 438; /*=0666*/
-    this.bufferSize = 64 * 1024;
-
-    options = options || {};
-
-    // Mixin options into this
-    var keys = Object.keys(options);
-    for (var index = 0, length = keys.length; index < length; index++) {
-      var key = keys[index];
-      this[key] = options[key];
-    }
-
-    if (this.encoding) this.setEncoding(this.encoding);
-
-    if (this.start !== undefined) {
-      if ('number' !== typeof this.start) {
-        throw TypeError('start must be a Number');
-      }
-      if (this.end === undefined) {
-        this.end = Infinity;
-      } else if ('number' !== typeof this.end) {
-        throw TypeError('end must be a Number');
-      }
-
-      if (this.start > this.end) {
-        throw new Error('start must be <= end');
-      }
-
-      this.pos = this.start;
-    }
-
-    if (this.fd !== null) {
-      process.nextTick(function() {
-        self._read();
-      });
-      return;
-    }
-
-    fs.open(this.path, this.flags, this.mode, function (err, fd) {
-      if (err) {
-        self.emit('error', err);
-        self.readable = false;
-        return;
-      }
-
-      self.fd = fd;
-      self.emit('open', fd);
-      self._read();
-    })
-  }
-
-  function WriteStream (path, options) {
-    if (!(this instanceof WriteStream)) return new WriteStream(path, options);
-
-    Stream.call(this);
-
-    this.path = path;
-    this.fd = null;
-    this.writable = true;
-
-    this.flags = 'w';
-    this.encoding = 'binary';
-    this.mode = 438; /*=0666*/
-    this.bytesWritten = 0;
-
-    options = options || {};
-
-    // Mixin options into this
-    var keys = Object.keys(options);
-    for (var index = 0, length = keys.length; index < length; index++) {
-      var key = keys[index];
-      this[key] = options[key];
-    }
-
-    if (this.start !== undefined) {
-      if ('number' !== typeof this.start) {
-        throw TypeError('start must be a Number');
-      }
-      if (this.start < 0) {
-        throw new Error('start must be >= zero');
-      }
-
-      this.pos = this.start;
-    }
-
-    this.busy = false;
-    this._queue = [];
-
-    if (this.fd === null) {
-      this._open = fs.open;
-      this._queue.push([this._open, this.path, this.flags, this.mode, undefined]);
-      this.flush();
-    }
-  }
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {var fs = __webpack_require__(48)
-var constants = __webpack_require__(78)
-
-var origCwd = process.cwd
-var cwd = null
-
-var platform = process.env.GRACEFUL_FS_PLATFORM || process.platform
-
-process.cwd = function() {
-  if (!cwd)
-    cwd = origCwd.call(process)
-  return cwd
-}
-try {
-  process.cwd()
-} catch (er) {}
-
-var chdir = process.chdir
-process.chdir = function(d) {
-  cwd = null
-  chdir.call(process, d)
-}
-
-module.exports = patch
-
-function patch (fs) {
-  // (re-)implement some things that are known busted or missing.
-
-  // lchmod, broken prior to 0.6.2
-  // back-port the fix here.
-  if (constants.hasOwnProperty('O_SYMLINK') &&
-      process.version.match(/^v0\.6\.[0-2]|^v0\.5\./)) {
-    patchLchmod(fs)
-  }
-
-  // lutimes implementation, or no-op
-  if (!fs.lutimes) {
-    patchLutimes(fs)
-  }
-
-  // https://github.com/isaacs/node-graceful-fs/issues/4
-  // Chown should not fail on einval or eperm if non-root.
-  // It should not fail on enosys ever, as this just indicates
-  // that a fs doesn't support the intended operation.
-
-  fs.chown = chownFix(fs.chown)
-  fs.fchown = chownFix(fs.fchown)
-  fs.lchown = chownFix(fs.lchown)
-
-  fs.chmod = chmodFix(fs.chmod)
-  fs.fchmod = chmodFix(fs.fchmod)
-  fs.lchmod = chmodFix(fs.lchmod)
-
-  fs.chownSync = chownFixSync(fs.chownSync)
-  fs.fchownSync = chownFixSync(fs.fchownSync)
-  fs.lchownSync = chownFixSync(fs.lchownSync)
-
-  fs.chmodSync = chmodFixSync(fs.chmodSync)
-  fs.fchmodSync = chmodFixSync(fs.fchmodSync)
-  fs.lchmodSync = chmodFixSync(fs.lchmodSync)
-
-  fs.stat = statFix(fs.stat)
-  fs.fstat = statFix(fs.fstat)
-  fs.lstat = statFix(fs.lstat)
-
-  fs.statSync = statFixSync(fs.statSync)
-  fs.fstatSync = statFixSync(fs.fstatSync)
-  fs.lstatSync = statFixSync(fs.lstatSync)
-
-  // if lchmod/lchown do not exist, then make them no-ops
-  if (!fs.lchmod) {
-    fs.lchmod = function (path, mode, cb) {
-      if (cb) process.nextTick(cb)
-    }
-    fs.lchmodSync = function () {}
-  }
-  if (!fs.lchown) {
-    fs.lchown = function (path, uid, gid, cb) {
-      if (cb) process.nextTick(cb)
-    }
-    fs.lchownSync = function () {}
-  }
-
-  // on Windows, A/V software can lock the directory, causing this
-  // to fail with an EACCES or EPERM if the directory contains newly
-  // created files.  Try again on failure, for up to 60 seconds.
-
-  // Set the timeout this long because some Windows Anti-Virus, such as Parity
-  // bit9, may lock files for up to a minute, causing npm package install
-  // failures. Also, take care to yield the scheduler. Windows scheduling gives
-  // CPU to a busy looping process, which can cause the program causing the lock
-  // contention to be starved of CPU by node, so the contention doesn't resolve.
-  if (platform === "win32") {
-    fs.rename = (function (fs$rename) { return function (from, to, cb) {
-      var start = Date.now()
-      var backoff = 0;
-      fs$rename(from, to, function CB (er) {
-        if (er
-            && (er.code === "EACCES" || er.code === "EPERM")
-            && Date.now() - start < 60000) {
-          setTimeout(function() {
-            fs.stat(to, function (stater, st) {
-              if (stater && stater.code === "ENOENT")
-                fs$rename(from, to, CB);
-              else
-                cb(er)
-            })
-          }, backoff)
-          if (backoff < 100)
-            backoff += 10;
-          return;
-        }
-        if (cb) cb(er)
-      })
-    }})(fs.rename)
-  }
-
-  // if read() returns EAGAIN, then just try it again.
-  fs.read = (function (fs$read) { return function (fd, buffer, offset, length, position, callback_) {
-    var callback
-    if (callback_ && typeof callback_ === 'function') {
-      var eagCounter = 0
-      callback = function (er, _, __) {
-        if (er && er.code === 'EAGAIN' && eagCounter < 10) {
-          eagCounter ++
-          return fs$read.call(fs, fd, buffer, offset, length, position, callback)
-        }
-        callback_.apply(this, arguments)
-      }
-    }
-    return fs$read.call(fs, fd, buffer, offset, length, position, callback)
-  }})(fs.read)
-
-  fs.readSync = (function (fs$readSync) { return function (fd, buffer, offset, length, position) {
-    var eagCounter = 0
-    while (true) {
-      try {
-        return fs$readSync.call(fs, fd, buffer, offset, length, position)
-      } catch (er) {
-        if (er.code === 'EAGAIN' && eagCounter < 10) {
-          eagCounter ++
-          continue
-        }
-        throw er
-      }
-    }
-  }})(fs.readSync)
-}
-
-function patchLchmod (fs) {
-  fs.lchmod = function (path, mode, callback) {
-    fs.open( path
-           , constants.O_WRONLY | constants.O_SYMLINK
-           , mode
-           , function (err, fd) {
-      if (err) {
-        if (callback) callback(err)
-        return
-      }
-      // prefer to return the chmod error, if one occurs,
-      // but still try to close, and report closing errors if they occur.
-      fs.fchmod(fd, mode, function (err) {
-        fs.close(fd, function(err2) {
-          if (callback) callback(err || err2)
-        })
-      })
-    })
-  }
-
-  fs.lchmodSync = function (path, mode) {
-    var fd = fs.openSync(path, constants.O_WRONLY | constants.O_SYMLINK, mode)
-
-    // prefer to return the chmod error, if one occurs,
-    // but still try to close, and report closing errors if they occur.
-    var threw = true
-    var ret
-    try {
-      ret = fs.fchmodSync(fd, mode)
-      threw = false
-    } finally {
-      if (threw) {
-        try {
-          fs.closeSync(fd)
-        } catch (er) {}
-      } else {
-        fs.closeSync(fd)
-      }
-    }
-    return ret
-  }
-}
-
-function patchLutimes (fs) {
-  if (constants.hasOwnProperty("O_SYMLINK")) {
-    fs.lutimes = function (path, at, mt, cb) {
-      fs.open(path, constants.O_SYMLINK, function (er, fd) {
-        if (er) {
-          if (cb) cb(er)
-          return
-        }
-        fs.futimes(fd, at, mt, function (er) {
-          fs.close(fd, function (er2) {
-            if (cb) cb(er || er2)
-          })
-        })
-      })
-    }
-
-    fs.lutimesSync = function (path, at, mt) {
-      var fd = fs.openSync(path, constants.O_SYMLINK)
-      var ret
-      var threw = true
-      try {
-        ret = fs.futimesSync(fd, at, mt)
-        threw = false
-      } finally {
-        if (threw) {
-          try {
-            fs.closeSync(fd)
-          } catch (er) {}
-        } else {
-          fs.closeSync(fd)
-        }
-      }
-      return ret
-    }
-
-  } else {
-    fs.lutimes = function (_a, _b, _c, cb) { if (cb) process.nextTick(cb) }
-    fs.lutimesSync = function () {}
-  }
-}
-
-function chmodFix (orig) {
-  if (!orig) return orig
-  return function (target, mode, cb) {
-    return orig.call(fs, target, mode, function (er) {
-      if (chownErOk(er)) er = null
-      if (cb) cb.apply(this, arguments)
-    })
-  }
-}
-
-function chmodFixSync (orig) {
-  if (!orig) return orig
-  return function (target, mode) {
-    try {
-      return orig.call(fs, target, mode)
-    } catch (er) {
-      if (!chownErOk(er)) throw er
-    }
-  }
-}
-
-
-function chownFix (orig) {
-  if (!orig) return orig
-  return function (target, uid, gid, cb) {
-    return orig.call(fs, target, uid, gid, function (er) {
-      if (chownErOk(er)) er = null
-      if (cb) cb.apply(this, arguments)
-    })
-  }
-}
-
-function chownFixSync (orig) {
-  if (!orig) return orig
-  return function (target, uid, gid) {
-    try {
-      return orig.call(fs, target, uid, gid)
-    } catch (er) {
-      if (!chownErOk(er)) throw er
-    }
-  }
-}
-
-
-function statFix (orig) {
-  if (!orig) return orig
-  // Older versions of Node erroneously returned signed integers for
-  // uid + gid.
-  return function (target, cb) {
-    return orig.call(fs, target, function (er, stats) {
-      if (!stats) return cb.apply(this, arguments)
-      if (stats.uid < 0) stats.uid += 0x100000000
-      if (stats.gid < 0) stats.gid += 0x100000000
-      if (cb) cb.apply(this, arguments)
-    })
-  }
-}
-
-function statFixSync (orig) {
-  if (!orig) return orig
-  // Older versions of Node erroneously returned signed integers for
-  // uid + gid.
-  return function (target) {
-    var stats = orig.call(fs, target)
-    if (stats.uid < 0) stats.uid += 0x100000000
-    if (stats.gid < 0) stats.gid += 0x100000000
-    return stats;
-  }
-}
-
-// ENOSYS means that the fs doesn't support the op. Just ignore
-// that, because it doesn't matter.
-//
-// if there's no getuid, or if getuid() is something other
-// than 0, and the error is EINVAL or EPERM, then just ignore
-// it.
-//
-// This specific case is a silent failure in cp, install, tar,
-// and most other unix tools that manage permissions.
-//
-// When running as root, or if other types of errors are
-// encountered, then it's strict.
-function chownErOk (er) {
-  if (!er)
-    return true
-
-  if (er.code === "ENOSYS")
-    return true
-
-  var nonroot = !process.getuid || process.getuid() !== 0
-  if (nonroot) {
-    if (er.code === "EINVAL" || er.code === "EPERM")
-      return true
-  }
-
-  return false
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports) {
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(12)
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Buffer = __webpack_require__(11).Buffer;
-/*<replacement>*/
-var bufferShim = __webpack_require__(31);
-/*</replacement>*/
-
-module.exports = BufferList;
-
-function BufferList() {
-  this.head = null;
-  this.tail = null;
-  this.length = 0;
-}
-
-BufferList.prototype.push = function (v) {
-  var entry = { data: v, next: null };
-  if (this.length > 0) this.tail.next = entry;else this.head = entry;
-  this.tail = entry;
-  ++this.length;
-};
-
-BufferList.prototype.unshift = function (v) {
-  var entry = { data: v, next: this.head };
-  if (this.length === 0) this.tail = entry;
-  this.head = entry;
-  ++this.length;
-};
-
-BufferList.prototype.shift = function () {
-  if (this.length === 0) return;
-  var ret = this.head.data;
-  if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
-  --this.length;
-  return ret;
-};
-
-BufferList.prototype.clear = function () {
-  this.head = this.tail = null;
-  this.length = 0;
-};
-
-BufferList.prototype.join = function (s) {
-  if (this.length === 0) return '';
-  var p = this.head;
-  var ret = '' + p.data;
-  while (p = p.next) {
-    ret += s + p.data;
-  }return ret;
-};
-
-BufferList.prototype.concat = function (n) {
-  if (this.length === 0) return bufferShim.alloc(0);
-  if (this.length === 1) return this.head.data;
-  var ret = bufferShim.allocUnsafe(n >>> 0);
-  var p = this.head;
-  var i = 0;
-  while (p) {
-    p.data.copy(ret, i);
-    i += p.data.length;
-    p = p.next;
-  }
-  return ret;
-};
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(50)
-
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {var Stream = (function (){
-  try {
-    return __webpack_require__(27); // hack to fix a circular dependency issue when used with browserify
-  } catch(_){}
-}());
-exports = module.exports = __webpack_require__(51);
-exports.Stream = Stream || exports;
-exports.Readable = exports;
-exports.Writable = __webpack_require__(35);
-exports.Duplex = __webpack_require__(12);
-exports.Transform = __webpack_require__(34);
-exports.PassThrough = __webpack_require__(50);
-
-if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
-  module.exports = Stream;
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(34)
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(35)
-
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
+    let process_node = function(node) {
+        if (node instanceof TerminalNodeImpl) {
+            console.log(node);
+            return {
+                'type': '.' + parser.symbolicNames[node.symbol.type],
+                'begin': node.start.start,
+                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'children': [],
             };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
         } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
+            let ast = {
+                'type': parser.ruleNames[node.ruleIndex],
+                'begin': node.start.start,
+                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
             };
-            html.appendChild(script);
-        };
-    }
 
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
+            let opts = lang_runtime_config.rules[ast.type];
+            opts.finalizers.forEach(function(func) {
+                ast = func(ast);
+            });
 
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+            return ast;
+        }
+    };
 
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(6)))
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
+    return process_node(tree);
 };
 
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(90);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {
-/**
- * Module exports.
- */
-
-module.exports = deprecate;
-
-/**
- * Mark that a method should not be used.
- * Returns a modified function which warns once by default.
- *
- * If `localStorage.noDeprecation = true` is set, then it is a no-op.
- *
- * If `localStorage.throwDeprecation = true` is set, then deprecated functions
- * will throw an Error when invoked.
- *
- * If `localStorage.traceDeprecation = true` is set, then deprecated functions
- * will invoke `console.trace()` instead of `console.error()`.
- *
- * @param {Function} fn - the function to deprecate
- * @param {String} msg - the string to print to the console when `fn` is invoked
- * @returns {Function} a new "deprecated" version of `fn`
- * @api public
- */
-
-function deprecate (fn, msg) {
-  if (config('noDeprecation')) {
-    return fn;
-  }
-
-  var warned = false;
-  function deprecated() {
-    if (!warned) {
-      if (config('throwDeprecation')) {
-        throw new Error(msg);
-      } else if (config('traceDeprecation')) {
-        console.trace(msg);
-      } else {
-        console.warn(msg);
-      }
-      warned = true;
-    }
-    return fn.apply(this, arguments);
-  }
-
-  return deprecated;
-}
-
-/**
- * Checks `localStorage` for boolean values for the given `name`.
- *
- * @param {String} name
- * @returns {Boolean}
- * @api private
- */
-
-function config (name) {
-  // accessing global.localStorage can trigger a DOMException in sandboxed iframes
-  try {
-    if (!global.localStorage) return false;
-  } catch (_) {
-    return false;
-  }
-  var val = global.localStorage[name];
-  if (null == val) return false;
-  return String(val).toLowerCase() === 'true';
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-module.exports = function isBuffer(arg) {
-  return arg && typeof arg === 'object'
-    && typeof arg.copy === 'function'
-    && typeof arg.fill === 'function'
-    && typeof arg.readUInt8 === 'function';
-}
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
 
 /***/ })
 /******/ ]);
