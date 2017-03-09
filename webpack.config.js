@@ -8,29 +8,30 @@ let config = require('./config');
 let compile = require('./app/compile');
 
 let prepare_lang = function(filename) {
-    let lang_name = filename.slice(0, -3);
+    let lang_name = filename.slice(0, -11);
 
-    if (filename.slice(-3) !== '.js') {return undefined;}
+    if (filename.slice(-11) !== '.compile.js') {return undefined;}
     if (config.langs && config.langs.indexOf(lang_name) === -1) {return undefined;}
 
     return new Promise(function(resolve, reject) {
-        let lang_config_path = path.resolve(config.lang_configs_path, lang_name + '.js');
-        let lang_config = require(lang_config_path);
+        let lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
+        let lang_runtime_config_path = path.resolve(config.lang_configs_path, lang_name + '.runtime.js');
 
-        compile(lang_config, function(err, lang_cache_dir) {
+        let lang_compile_config = require(lang_compile_config_path);
+        let lang_runtime_config = require(lang_runtime_config_path);
+        compile(lang_compile_config, lang_runtime_config, function(err, lang_runtime_params) {
             if (err) {
                 reject(err);
                 return;
             }
 
             resolve({
+                'context': __dirname,
                 'entry': path.resolve(__dirname, 'app', 'runtime.js'),
                 'externals': ['fs'],
                 'plugins': [
                     new webpack.DefinePlugin({
-                        'LANGUAGE_CONFIG_PATH': JSON.stringify(lang_config_path),
-                        'LANGUAGE_CACHE_DIR': JSON.stringify(lang_cache_dir),
-                        'TREE_MATCHER_CACHE_DIR': JSON.stringify(config.tree_matcher_cache_dir),
+                        'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
                     }),
                     config.optimize ? new ClosureCompilerPlugin({
                         'compiler': {
@@ -63,18 +64,21 @@ module.exports = function(env) {
     config.optimize = env && env.optimize;
 
     return new Promise(function(resolve, reject) {
-        let lang_config = require('./app/tree_matcher_parser/lang_config.js');
-        compile(lang_config, function(err, lang_cache_dir) {
+        let lang_compile_config = require('./app/tree_matcher_parser/lang_config.compile.js');
+        let lang_runtime_config = require('./app/tree_matcher_parser/lang_config.runtime.js');
+        compile(lang_compile_config, lang_runtime_config, function(err) {
             if (err) {
                 reject(err);
                 return;
             }
 
-            config.tree_matcher_cache_dir = lang_cache_dir;
-
             fs.readdir(config.lang_configs_path, function(err, files) {
                 let lang_configs = files.map(prepare_lang).filter(Boolean);
-                Promise.all(lang_configs).then(resolve, reject);
+                if (lang_configs.length === 0) {
+                    console.warn('No languages generated...');
+                } else {
+                    Promise.all(lang_configs).then(resolve, reject);
+                }
             });
         });
     });

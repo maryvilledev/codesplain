@@ -1,10 +1,6 @@
-let path = require('path');
-
 module.exports = {
     'language': 'TreeMatcher',
-    'grammar_path': path.resolve(__dirname, 'TreeMatcher.g4'),
     'entry_rule': 'main',
-    'generate_listener': true,
     'rules': {
         'main': {},
         'node': {},

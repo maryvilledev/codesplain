@@ -1,14 +1,19 @@
+let path = require('path');
 let antlr = require('antlr4');
 
-// LANGUAGE_CONFIG_PATH and LANGUAGE_CACHE_DIR are defined in webpack.config.js
+// LANGUAGE_RUNTIME_CONFIG_PATH is defined in webpack.config.js
+let lang_runtime_config = require(LANGUAGE_RUNTIME_CONFIG_PATH);
 
-let lang_config = require(LANGUAGE_CONFIG_PATH);
+let utils = require('./utils.js');
+let cache_dir = utils.resolve_cache_dir(lang_runtime_config);
 
-let lexer_classname = lang_config.language + 'Lexer';
-let parser_classname = lang_config.language + 'Parser';
+require(path.resolve(cache_dir, 'runtime_modifier.js'))(lang_runtime_config);
 
-let LexerClass = require(LANGUAGE_CACHE_DIR + '/' + lexer_classname + '.js')[lexer_classname];
-let ParserClass = require(LANGUAGE_CACHE_DIR + '/' + parser_classname + '.js')[parser_classname];
+let lexer_classname = lang_runtime_config.language + 'Lexer';
+let parser_classname = lang_runtime_config.language + 'Parser';
+
+let LexerClass = require(path.resolve(cache_dir, lexer_classname + '.js'))[lexer_classname];
+let ParserClass = require(path.resolve(cache_dir, parser_classname + '.js'))[parser_classname];
 let ErrorListener = require('./error_listener');
 let TerminalNodeImpl = require('antlr4/tree/Tree.js').TerminalNodeImpl;
 
@@ -22,7 +27,7 @@ module.exports = function(input, error_callback) {
     parser.removeErrorListeners();
     parser.addErrorListener(new ErrorListener(error_callback));
 
-    let tree = parser[lang_config.entry_rule]();
+    let tree = parser[lang_runtime_config.entry_rule]();
 
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
@@ -41,7 +46,7 @@ module.exports = function(input, error_callback) {
                 'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
             };
 
-            let opts = lang_config.rules[ast.type];
+            let opts = lang_runtime_config.rules[ast.type];
             opts.finalizers.forEach(function(func) {
                 ast = func(ast);
             });

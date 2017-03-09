@@ -4,17 +4,18 @@ let cp = require('cp');
 let child_process = require('child_process');
 let antlr = require('antlr4');
 
-let config = require('../config');
+let utils = require('./utils.js');
+let tree_matcher_generator = require('./tree_matcher_generator.js');
 
-module.exports = function(lang_config, callback) {
-    let language_key = lang_config.language.toLowerCase();
-    let g4_path = lang_config.grammar_path;
+module.exports = function(lang_compile_config, lang_runtime_config, callback) {
+    let language_key = lang_runtime_config.language.toLowerCase();
+    let g4_path = lang_compile_config.grammar_path;
     if (!g4_path) {
-        g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_config.grammar_file);
+        g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_compile_config.grammar_file);
     }
 
-    let cache_dir = path.resolve(__dirname, '..', '_cache', language_key);
-    let cache_g4_path = path.resolve(cache_dir, lang_config.language + '.g4');
+    let cache_dir = utils.resolve_cache_dir(lang_runtime_config);
+    let cache_g4_path = path.resolve(cache_dir, lang_runtime_config.language + '.g4');
 
     let check_generated = function(err) {
         if (err) {
@@ -28,8 +29,6 @@ module.exports = function(lang_config, callback) {
                 fs.mkdir(cache_dir, cp_grammar);
             } else if (err) {
                 callback_with_error(err);
-            } else if (config.always_recompile_antlr) {
-                cp_grammar(err);
             } else {
                 // If the directory exists, assume that it's filled with the compiled parser and return
                 callback_with_success();
@@ -58,10 +57,10 @@ module.exports = function(lang_config, callback) {
             '-cp', '../../bin/antlr-4.6-complete.jar',
             'org.antlr.v4.Tool',
             '-long-messages',
-            lang_config.generate_listener ? '-listener' : '-no-listener',
-            lang_config.generate_visitor ? '-visitor' : '-no-visitor',
+            lang_compile_config.generate_listener ? '-listener' : '-no-listener',
+            lang_compile_config.generate_visitor ? '-visitor' : '-no-visitor',
             '-Dlanguage=JavaScript',
-            lang_config.language + '.g4',
+            lang_runtime_config.language + '.g4',
         ];
         let opts = {
             'cwd': cache_dir,
@@ -91,13 +90,13 @@ module.exports = function(lang_config, callback) {
             return a.filter(function(i) {return b.indexOf(i) === -1;});
         };
 
-        let parser_classname = lang_config.language + 'Parser';
+        let parser_classname = lang_runtime_config.language + 'Parser';
         let ParserClass = require(cache_dir + '/' + parser_classname + '.js')[parser_classname];
         let parser = new ParserClass();
 
         let symbol_rules = parser.symbolicNames.filter(Boolean).map(function(val) {return '.' + val;});
         let parser_rules = parser.ruleNames.concat(symbol_rules);
-        let config_rules = Object.keys(lang_config.rules);
+        let config_rules = Object.keys(lang_runtime_config.rules);
 
         let config_missing = array_diff(parser_rules, config_rules);
         if (config_missing.length) {
@@ -109,6 +108,20 @@ module.exports = function(lang_config, callback) {
             callback_with_error('Extra rules ' + JSON.stringify(config_extra));
         }
 
+        write_runtime_config();
+    };
+
+    let write_runtime_config = function() {
+        let matchers = lang_compile_config.tree_matcher_specs.map(tree_matcher_generator);
+
+        {
+            'cache_dir': cache_dir,
+    'language': 'Python3',
+    'grammar_file': 'Python3.JavaScriptTarget.g4',
+    'entry_rule': 'file_input',
+    'rules': require('./python3.rules.js'),
+    'tree_matchers': require('./python3.tree_matchers.js'),
+        }
         callback_with_success();
     };
 
@@ -116,7 +129,7 @@ module.exports = function(lang_config, callback) {
         callback(new Error('Language ' + JSON.stringify(language_key) + ': ' + msg));
     };
     let callback_with_success = function() {
-        callback(null, cache_dir);
+        callback(undefined);
     }
 
     check_generated();

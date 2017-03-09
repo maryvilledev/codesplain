@@ -1,5 +1,3 @@
-let generate_tree_matcher = require('../app/generate_tree_matcher.js');
-
 module.exports = [
     {
         'pattern': 'for_stmt [.FOR, /.NAME:iter, .IN, /trailed_atom [/.NAME="range", trailer\
@@ -11,4 +9,4 @@ module.exports = [
             nodes.iter.tags.push('iter');
         },
     },
-].map(generate_tree_matcher);
+];
