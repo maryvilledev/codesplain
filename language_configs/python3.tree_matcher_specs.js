@@ -5,7 +5,7 @@ module.exports = [
             /.DECIMAL_INTEGER:end], .CLOSE_PAREN]]]',
         'profile_data': {},
         'actor': function(nodes) {
-            nodes.main.tags.push('for');
+            nodes.root.tags.push('for');
             nodes.iter.tags.push('iter');
         },
     },

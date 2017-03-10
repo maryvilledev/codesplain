@@ -10,7 +10,7 @@ main
   ;
 
 node
-  : (mod_type | mod_terminal) (mod_store | mod_eq)* (mod_child | mod_children)?
+  : (mod_type | mod_terminal) (mod_store | mod_eq_id | mod_eq_json_string)* (mod_child | mod_children)?
   ;
 
 mod_type
@@ -24,8 +24,11 @@ mod_store
   : ':' IDENTIFIER
   ;
 
-mod_eq
-  : '=' (IDENTIFIER | JSON_STRING)
+mod_eq_id
+  : '=' IDENTIFIER
+  ;
+mod_eq_json_string
+  : '=' JSON_STRING
   ;
 
 mod_child

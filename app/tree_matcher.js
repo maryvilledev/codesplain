@@ -47,7 +47,8 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
             'mod_type': '',
             'mod_terminal': '',
             'mod_store': '',
-            'mod_eq': '',
+            'mod_eq_id': '',
+            'mod_eq_json_string': '',
             'mod_child': '',
             'mod_children': '',
             'child': '',
@@ -60,12 +61,53 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         let build_finalizer = function(node, node_var) {
             let type = parser.ruleNames[node.ruleIndex];
             switch (type) {
-            case 'mod_type':
-                node.children[0].symbol.text
-                if (true) {
-                    console.log(node.children[0].symbol.text);
-                }
-                return '';
+            case 'main':
+                return build_finalizer(node.children[0]);
+/*
+            case 'node':
+                return '??';
+*/
+            case 'mod_type': {
+                let test_type = node.children[0].symbol.text;
+                return 'if (' + node_var + '.type !== ' + JSON.stringify(test_type) + ') {return false;}\n';
+            }
+            case 'mod_terminal': {
+                let test_type = node.children[1].symbol.text;
+                return 'if (' + node_var + '.type !== ' + JSON.stringify('.' + test_type) + ') {return false;}\n';
+            }
+            case 'mod_store': {
+                let node_key = node.children[1].symbol.text;
+                return 'nodes.' + node_key + ' = ' + node_var + ';\n';
+            }
+            case 'mod_eq_id': {
+                // Working here
+            }
+            case 'mod_eq_json_string': {
+                // Working here
+            }
+/*
+            case 'mod_child':
+                return '??';
+
+            case 'mod_children':
+                return '??';
+
+            case 'child':
+                return '??';
+
+            case 'node_search':
+                return '??';
+
+            case '.WS':
+                return '??';
+
+            case '.IDENTIFIER':
+                return '??';
+
+            case '.JSON_STRING':
+                return '??';
+*/
+
             default:
                 if (node.children) {
                     node.children.map(build_finalizer);
