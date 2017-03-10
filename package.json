@@ -11,7 +11,8 @@
   "author": "Maryville Techonologies",
   "license": "ISC",
   "dependencies": {
-    "cp": "^0.2.0",
+    "child-process-promise": "^2.2.0",
+    "fs-promise": "^2.0.0",
     "webpack": "^2.2.1",
     "webpack-closure-compiler": "^2.1.4"
   }

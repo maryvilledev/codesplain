@@ -4933,7 +4933,7 @@ exports.ParserRuleContext = ParserRuleContext;
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = function(lang_runtime_config) {lang_runtime_config.rules.for_stmt.finalizers.push(function(node) {return node;});};
+module.exports = function(lang_runtime_config) {lang_runtime_config.rules.for_stmt.finalizers.push(undefined);};
 
 /***/ }),
 /* 21 */

@@ -1,12 +1,16 @@
-let fs = require('fs');
+let fs = require('fs-promise');
 let path = require('path');
-let cp = require('cp');
-let child_process = require('child_process');
+let child_process = require('child-process-promise');
 let antlr = require('antlr4');
 
 let config = require('../config.js');
+let tree_matcher = require('./tree_matcher.js');
 
-module.exports = function(lang_compile_config, lang_runtime_config, callback) {
+let array_diff = function(a, b) {
+    return a.filter(function(i) {return b.indexOf(i) === -1;});
+};
+
+module.exports = function(lang_compile_config, lang_runtime_config) {
     let language_key = lang_runtime_config.language.toLowerCase();
 
     let g4_path = lang_compile_config.grammar_path;
@@ -17,39 +21,10 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
     let cache_dir = config.resolve_cache_dir(lang_runtime_config);
     let cache_g4_path = path.resolve(cache_dir, lang_runtime_config.language + '.g4');
 
-    let check_generated = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
 
-        fs.stat(cache_dir, function(err, stats) {
-            if (err && err.errno === -2) {
-                // If directory doesn't exist, create it and start the compilation process
-                fs.mkdir(cache_dir, cp_grammar);
-            } else if (err) {
-                callback_with_error(err);
-            } else {
-                // If the directory exists, assume that it's filled with the compiled parser and return
-                callback_with_success();
-            }
-        });
-    };
-
-    let cp_grammar = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        cp(g4_path, cache_g4_path, compile_parser);
-    };
-
-    let compile_parser = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
+    let compile_promise = async function() {
+        await fs.mkdir(cache_dir);
+        await fs.copy(g4_path, cache_g4_path);
 
         let cmd = 'java';
         let args = [
@@ -64,36 +39,10 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
         ];
         let opts = {
             'cwd': cache_dir,
+            'stdio': ['ignore', process.stdout, process.stderr],
         };
 
-        let antlr = child_process.spawn(cmd, args, opts);
-
-        antlr.stdout.on('data', function(data) {
-            console.log(data.toString());
-        });
-
-        antlr.stderr.on('data', function(data) {
-            console.error(data.toString());
-        });
-
-        antlr.on('close', function(code) {
-            if (code) {
-                callback_with_error('Compiler error (returned ' + code + ')');
-            } else {
-                check_compiled();
-            }
-        });
-    };
-
-    let check_compiled = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        let array_diff = function(a, b) {
-            return a.filter(function(i) {return b.indexOf(i) === -1;});
-        };
+        await child_process.spawn(cmd, args, opts);
 
         let parser_classname = lang_runtime_config.language + 'Parser';
         let ParserClass = require(cache_dir + '/' + parser_classname + '.js')[parser_classname];
@@ -105,29 +54,20 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
 
         let config_missing = array_diff(parser_rules, config_rules);
         if (config_missing.length) {
-            callback_with_error('Missing rules ' + JSON.stringify(config_missing));
+            throw new Error('Missing rules ' + JSON.stringify(config_missing));
         }
 
         let config_extra = array_diff(config_rules, parser_rules);
         if (config_extra.length) {
-            callback_with_error('Extra rules ' + JSON.stringify(config_extra));
-        }
-
-        write_runtime_config_modifier();
-    };
-
-    let write_runtime_config_modifier = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
+            throw new Error('Extra rules ' + JSON.stringify(config_extra));
         }
 
         let code = '';
         code += 'module.exports = function(lang_runtime_config) {';
 
         if (lang_compile_config.tree_matcher_specs) {
-            let tree_matcher_generator = require('./tree_matcher_generator.js');
-            let tree_matchers = lang_compile_config.tree_matcher_specs.map(tree_matcher_generator);
+            let generator = await tree_matcher.make_generator(lang_compile_config, lang_runtime_config);
+            let tree_matchers = lang_compile_config.tree_matcher_specs.map(generator);
 
             code += tree_matchers.map(function(tree_matcher) {
                 return 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.push(' + tree_matcher.finalizer_code + ');';
@@ -137,22 +77,20 @@ module.exports = function(lang_compile_config, lang_runtime_config, callback) {
         code += '};';
 
         let modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
-        fs.writeFile(modifier_path, code, callback_with_success);
+        await fs.writeFile(modifier_path, code);
     };
 
-    let callback_with_error = function(msg) {
-        callback(new Error('Language ' + JSON.stringify(language_key) + ': ' + msg));
-    };
-    let callback_with_success = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
-
-        callback(undefined, {
-            'cache_dir': cache_dir
+    return fs.stat(cache_dir)
+        .catch(function(err) {
+            if (err.errno === -2) {
+                // If directory doesn't exist, start the compilation process
+                return compile_promise();
+            } else {
+                throw err;
+            }
+        }).then(function() {
+            return {
+                'cache_dir': cache_dir
+            };
         });
-    }
-
-    check_generated();
 };
