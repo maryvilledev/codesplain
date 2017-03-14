@@ -34,61 +34,84 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
 
         let tree = parser[tree_matcher_runtime_config.entry_rule]();
 
-        /*
-        %matcher -- An array of TreeMatcher child nodes. Children should not be accessed, only be passed to %descend.
-        %ast_node -- The current node in the AST.
-        %descend -- A function that takes two arguments: (matcher_child_node, ast_child_node).
-        %reject -- A function that takes zero arguments. Causes the matcher to terminate, and the actor will not be run.
-        */
-
-        let node_map = {
-            'main': '%descend(%matcher[0], )',
-            'node': '',
-            'mod_type': '',
-            'mod_terminal': '',
-            'mod_store': '',
-            'mod_eq_id': '',
-            'mod_eq_json_string': '',
-            'mod_child': '',
-            'mod_children': '',
-            'child': '',
-            'node_search': '',
-            '.WS': '',
-            '.IDENTIFIER': '',
-            '.JSON_STRING': '',
+        matcher_spec.profile_data = {
+            '0': 0.25,
+            '0.0': 0.01,
+            '0.1.0': 0,
+            '0.1.0.0': 0,
+            '0.1.0.0.0': 0.25,
+            '0.2': 0,
         };
 
-        let build_finalizer = function(node, node_var) {
+        let generate_profiler = true;
+
+        console.log(tree.getText());
+        return {
+            'rule_key': 'for_stmt',
+            'finalizer_code': 'function(node) {abc: {let a = 123; break abc; console.log("abc");} console.log("after");}',
+        };
+
+        let next_id = 1;
+        let get_var = function(node) {
+            if (typeof node.var_name !== 'string') {
+                node.var_name = 'n_' + (next_id++);
+            }
+            return node.var_name;
+        };
+
+        let make_test = function(expr, ) {
+
+        };
+
+        let sort_tests = function(tests) {
+        };
+
+        let build_test_list = function(node, fail_stmt) {
             let type = parser.ruleNames[node.ruleIndex];
             switch (type) {
-            case 'main':
-                return build_finalizer(node.children[0]);
+            case 'main': {
+                build_test_list(node.children[0]);
+            }
+            case 'expr': {
+                let res = '';
+                for (let i = 0; i < node.children.length; i += 2) {
+                    let tests = build_test_list(node.children[i]);
+                    sort_tests(tests)
+                }
+            }
+
 /*
             case 'node':
                 return '??';
 */
             case 'mod_type': {
                 let test_type = node.children[0].symbol.text;
-                return 'if (' + node_var + '.type !== ' + JSON.stringify(test_type) + ') {return false;}\n';
+                create_test();
+                tests.push({
+                    'cost':
+                })
+                return node_var + '.type === ' + JSON.stringify(test_type);
             }
             case 'mod_terminal': {
                 let test_type = node.children[1].symbol.text;
-                return 'if (' + node_var + '.type !== ' + JSON.stringify('.' + test_type) + ') {return false;}\n';
+                return node_var + '.type === ' + JSON.stringify('.' + test_type);
             }
             case 'mod_store': {
-                let node_key = node.children[1].symbol.text;
-                return 'nodes.' + node_key + ' = ' + node_var + ';\n';
+                let store_key = node.children[1].symbol.text;
+                return 'nodes.' + store_key + ' = ' + node_var + ';\n';
             }
             case 'mod_eq_id': {
-                // Working here
+                let test_text = node.children[1].symbol.text;
+                return 'if (' + node_var + '.symbol.text !== ' + JSON.stringify(test_text) + ') {return false;}\n';
             }
             case 'mod_eq_json_string': {
-                // Working here
+                let test_text = JSON.parse(node.children[1].symbol.text);
+                return 'if (' + node_var + '.symbol.text !== ' + JSON.stringify(test_text) + ') {return false;}\n';
+            }
+            case 'mod_child': {
+                return '??';
             }
 /*
-            case 'mod_child':
-                return '??';
-
             case 'mod_children':
                 return '??';
 
@@ -110,7 +133,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
 
             default:
                 if (node.children) {
-                    node.children.map(build_finalizer);
+                    node.children.forEach(build_test_list);
                 }
             }
             /*
@@ -140,9 +163,13 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
             */
         };
 
+        build_test_list(tree);
+
+        let code = 'function(_1) {'
+
         return {
             'rule_key': 'for_stmt',
-            'finalizer_code': build_finalizer(tree),
+            'finalizer_code': code,
         };
     };
 };

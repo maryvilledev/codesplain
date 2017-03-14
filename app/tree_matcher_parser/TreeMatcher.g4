@@ -6,7 +6,11 @@ WS
   ;
 
 main
-  : node
+  : expr
+  ;
+
+expr
+  : node ('|' node)*
   ;
 
 node
@@ -41,11 +45,11 @@ mod_children
   ;
 
 child
-  : node
-  | node_search
+  : expr
+  | search
   ;
-node_search
-  : '/' node
+search
+  : '/' expr
   ;
 
 IDENTIFIER
