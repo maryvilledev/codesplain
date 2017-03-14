@@ -80,7 +80,7 @@ module.exports = {
 	    'testlist': {'finalizers': [collapse]},
 	    'dictorsetmaker': {'finalizers': []},
 	    'classdef': {'finalizers': []},
-	    'arglist': {'finalizers': [collapse]},
+	    'arglist': {'finalizers': [collapse]}, // This probably won't ever actually collapse, due to the arguments in the list being csv
 	    'argument': {'finalizers': []},
 	    'comp_iter': {'finalizers': [collapse]},
 	    'comp_for': {'finalizers': []},
