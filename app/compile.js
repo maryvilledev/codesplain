@@ -48,8 +48,10 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
         let ParserClass = require(cache_dir + '/' + parser_classname + '.js')[parser_classname];
         let parser = new ParserClass();
 
-        let symbol_rules = parser.symbolicNames.filter(Boolean).map(function(val) {return '.' + val;});
-        let parser_rules = parser.ruleNames.concat(symbol_rules);
+        let symbol_name_map = ['_EPSILON', '_EOF', '_INVALID']
+            .concat(parser.symbolicNames.slice(1))
+            .map(function(val) {return val ? '.' + val : undefined;});
+        let parser_rules = parser.ruleNames.concat(symbol_name_map.filter(Boolean));
         let config_rules = Object.keys(lang_runtime_config.rules);
 
         let config_missing = array_diff(parser_rules, config_rules);
@@ -64,6 +66,8 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
 
         let code = '';
         code += 'module.exports = function(lang_runtime_config) {';
+
+        code += 'lang_runtime_config.symbol_name_map = ' + JSON.stringify(symbol_name_map) + ';';
 
         if (lang_compile_config.tree_matcher_specs) {
             let generator = await tree_matcher.make_generator(lang_compile_config, lang_runtime_config);

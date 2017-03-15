@@ -156,6 +156,7 @@
 
         let code = code_el.value;
         let ast = parser(code, function() {});
+        console.log(ast);
         let html = gen_html(code, ast);
         formatted_el.innerHTML = html;
     }

@@ -29,10 +29,10 @@ module.exports = function(input, error_callback) {
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
             return {
-                'type': '.' + parser.symbolicNames[node.symbol.type],
+                'type': lang_runtime_config.symbol_name_map[node.symbol.type + 2],
                 'text': node.symbol.text,
-                'begin': node.start.start,
-                'end': (node.stop ? node.stop : node.start).stop + 1,
+                'begin': node.symbol.start,
+                'end': node.symbol.stop + 1,
                 'tags': [],
                 'children': [],
             };
@@ -58,4 +58,4 @@ module.exports = function(input, error_callback) {
 };
 
 module.exports['finalizers'] = require('./finalizers.js');
-module.exports['rules'] = lang_config.rules;
+module.exports['rules'] = lang_runtime_config.rules;
