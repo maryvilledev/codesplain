@@ -10,11 +10,35 @@ main
   ;
 
 expr
-  : node ('|' node)*
+  : atom ('|' atom)*
+  ;
+
+atom
+  : expr_atom
+  | wildcard
+  | search
+  | node
+  ;
+
+expr_atom
+  : '(' expr ')'
+  ;
+wildcard
+  : '?'
+  ;
+search
+  : '/' searchable_atom
+  ;
+
+searchable_atom
+  : expr_atom
+  | node
   ;
 
 node
-  : (mod_type | mod_terminal) (mod_store | mod_eq_id | mod_eq_json_string)* (mod_child | mod_children)?
+  : (mod_type | mod_terminal)
+    (mod_store | mod_eq_id | mod_eq_json_string)*
+    (mod_fixed_children | mod_fixed_child | mod_variable_children | mod_variable_child)?
   ;
 
 mod_type
@@ -35,21 +59,23 @@ mod_eq_json_string
   : '=' JSON_STRING
   ;
 
-mod_child
-  : child
+mod_fixed_children
+  : '[' expr_list ']'
   ;
-
-mod_children
-  : '[' child (',' child)* ']'
-  | '[' ']'
-  ;
-
-child
+mod_fixed_child
   : expr
-  | search
   ;
-search
-  : '/' expr
+
+mod_variable_children
+  : '[' expr_list ',' atom '*' ',' expr_list ']'
+  ;
+mod_variable_child
+  : atom '*'
+  ;
+
+expr_list
+  : expr (',' expr)*
+  | // empty
   ;
 
 IDENTIFIER

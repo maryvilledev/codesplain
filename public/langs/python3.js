@@ -4933,7 +4933,106 @@ exports.ParserRuleContext = ParserRuleContext;
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = function(lang_runtime_config) {lang_runtime_config.rules.for_stmt.finalizers.push(function(node) {abc: {let a = 123; break abc; console.log("abc");} console.log("after");});};
+module.exports = function(lang_runtime_config) {lang_runtime_config.rules.for_stmt.finalizers.push(function(_1) {
+  let sn = {"root": _1};
+  let actor = function (nodes) {
+              nodes.root.tags.push('for');
+              nodes.iter.tags.push('iter');
+          };
+  if (_1.type === "for_stmt") {
+    if (_1.children.length === 4) {
+      let _8 = _1.children[3];
+      let _9 = _8;
+      _11: {
+        _10: for (;;) {
+          if (_9.type === "trailed_atom") {
+            if (_9.children.length === 2) {
+              let _16 = _9.children[1];
+              if (_16.type === "trailer") {
+                if (_16.children.length === 3) {
+                  let _28 = _16.children[2];
+                  if (_28.type === ".CLOSE_PAREN") {
+                    let _18 = _16.children[1];
+                    if (_18.type === "arglist") {
+                      if (_18.children.length === 3) {
+                        let _24 = _18.children[2];
+                        let _25 = _24;
+                        _27: {
+                          _26: for (;;) {
+                            if (_25.type === ".DECIMAL_INTEGER") {
+                              sn.end = _25;
+                              break _26;
+                            }
+                            if (_25.children.length !== 1) {break _27;}
+                            _25 = _25.children[0];
+                          }
+                          let _23 = _18.children[1];
+                          if (_23.type === ".COMMA") {
+                            let _19 = _18.children[0];
+                            let _20 = _19;
+                            _22: {
+                              _21: for (;;) {
+                                if (_20.type === ".DECIMAL_INTEGER") {
+                                  sn.begin = _20;
+                                  break _21;
+                                }
+                                if (_20.children.length !== 1) {break _22;}
+                                _20 = _20.children[0];
+                              }
+                              let _17 = _16.children[0];
+                              if (_17.type === ".OPEN_PAREN") {
+                                let _12 = _9.children[0];
+                                let _13 = _12;
+                                _15: {
+                                  _14: for (;;) {
+                                    if (_13.type === ".NAME") {
+                                      if (_13.text === "range") {
+                                        break _14;
+                                      }
+                                    }
+                                    if (_13.children.length !== 1) {break _15;}
+                                    _13 = _13.children[0];
+                                  }
+                                  break _10;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (_9.children.length !== 1) {break _11;}
+          _9 = _9.children[0];
+        }
+        let _7 = _1.children[2];
+        if (_7.type === ".IN") {
+          let _3 = _1.children[1];
+          let _4 = _3;
+          _6: {
+            _5: for (;;) {
+              if (_4.type === ".NAME") {
+                sn.iter = _4;
+                break _5;
+              }
+              if (_4.children.length !== 1) {break _6;}
+              _4 = _4.children[0];
+            }
+            let _2 = _1.children[0];
+            if (_2.type === ".FOR") {
+              actor(sn);
+            }
+          }
+        }
+      }
+    }
+  }
+  return sn.root;
+});};
 
 /***/ }),
 /* 21 */
@@ -22561,6 +22660,7 @@ process.umask = function() { return 0; };
 
 let path = __webpack_require__(35);
 let antlr = __webpack_require__(12);
+let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
 // LANGUAGE_RUNTIME_CONFIG_PATH is defined in webpack.config.js
 let lang_runtime_config = __webpack_require__(34);
@@ -22573,7 +22673,6 @@ let parser_classname = lang_runtime_config.language + 'Parser';
 let LexerClass = __webpack_require__(18)("./" + lexer_classname + '.js')[lexer_classname];
 let ParserClass = __webpack_require__(18)("./" + parser_classname + '.js')[parser_classname];
 let ErrorListener = __webpack_require__(33);
-let TerminalNodeImpl = __webpack_require__(3).TerminalNodeImpl;
 
 module.exports = function(input, error_callback) {
     let chars = new antlr.InputStream(input);
@@ -22589,11 +22688,12 @@ module.exports = function(input, error_callback) {
 
     let process_node = function(node) {
         if (node instanceof TerminalNodeImpl) {
-            console.log(node);
             return {
                 'type': '.' + parser.symbolicNames[node.symbol.type],
+                'text': node.symbol.text,
                 'begin': node.start.start,
                 'end': (node.stop ? node.stop : node.start).stop + 1,
+                'tags': [],
                 'children': [],
             };
         } else {
@@ -22601,6 +22701,7 @@ module.exports = function(input, error_callback) {
                 'type': parser.ruleNames[node.ruleIndex],
                 'begin': node.start.start,
                 'end': (node.stop ? node.stop : node.start).stop + 1,
+                'tags': [],
                 'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
             };
 
