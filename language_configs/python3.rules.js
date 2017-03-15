@@ -16,7 +16,7 @@ module.exports = {
     'stmt': {'finalizers': [collapse]},
     'simple_stmt': {'finalizers': []},
     'small_stmt': {'finalizers': [collapse]},
-    'expr_stmt': {'finalizers': []},
+    'expr_stmt': {'finalizers': [collapse]},
     'testlist_star_expr': {'finalizers': [collapse]},
     'augassign': {'finalizers': []},
     'del_stmt': {'finalizers': []},
@@ -76,7 +76,7 @@ module.exports = {
     'testlist': {'finalizers': [collapse]},
     'dictorsetmaker': {'finalizers': []},
     'classdef': {'finalizers': []},
-    'arglist': {'finalizers': []},
+    'arglist': {'finalizers': [collapse]}, // This probably won't ever actually collapse, due to the arguments in the list being csv
     'argument': {'finalizers': []},
     'comp_iter': {'finalizers': [collapse]},
     'comp_for': {'finalizers': []},
