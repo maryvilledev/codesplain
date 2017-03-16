@@ -26,6 +26,13 @@ module.exports = [
                 'args': args.children,
             });
         },
+    }, {
+        'pattern': 'atom .TRUE|.FALSE',
+        'actor': function() {
+            root.tags.push({
+                'type': 'boolean',
+            });
+        },
     },
 ];
 

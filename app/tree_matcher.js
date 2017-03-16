@@ -168,7 +168,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
                     let child_var = create_var();
                     let new_stmt = '';
                     new_stmt += 'let ' + child_var + ' = ' + node_var + '.children[0];\n';
-                    new_stmt += build_tester(child, child_var, pass_stmt);
+                    new_stmt += build_tester(node.children[0], child_var, pass_stmt);
                     let cond = node_var + '.children.length === 1';
                     return make_if(cond, new_stmt);
                 }
@@ -255,7 +255,6 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
 
         let finalizer_code = 'function(root) ' + make_block(
             define_stmts.join('\n'),
-            'console.log("thing", root);',
             build_tester(tree, 'root', actor_var + '();'),
             'return root;'
         );
