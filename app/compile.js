@@ -73,9 +73,20 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
             let generator = await tree_matcher.make_generator(lang_compile_config, lang_runtime_config);
             let tree_matchers = lang_compile_config.tree_matcher_specs.map(generator);
 
-            code += tree_matchers.map(function(tree_matcher) {
-                return 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.push(' + tree_matcher.finalizer_code + ');';
-            });
+            code += tree_matchers.map(function(tree_matcher, matcher_index) {
+                let code = '';
+                if (tree_matcher.rule_key === '*') {
+                    console.error('A tree matcher root wildcard will cause a finalizer to be added to each node type, which could cause the parsing to be very slow.');
+
+                    code += 'let _matcher_' + matcher_index + ' = ' + tree_matcher.finalizer_code + ';\n';
+                    code += 'for (let i in lang_runtime_config.rules) {\n';
+                    code += '  lang_runtime_config.rules[i].finalizers.unshift(_matcher_' + matcher_index + ');\n';
+                    code += '}\n';
+                } else {
+                    code += 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.unshift(' + tree_matcher.finalizer_code + ');';
+                }
+                return code;
+            }).join('');
         }
 
         code += '};';

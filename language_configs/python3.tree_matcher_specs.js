@@ -8,12 +8,27 @@ module.exports = [
             '0a0': [2,6],
             '0a0b1': [3,6],
         },
-        'actor': function(nodes) {
-            nodes.root.tags.push({
-                'range_loop_iter': nodes.iter.text,
-                'range_loop_begin': parseInt(nodes.begin.text),
-                'range_loop_end': parseInt(nodes.end.text),
+        'actor': function() {
+            root.tags.push({
+                'type': 'for_range',
+                'iter': iter.text,
+                'begin': parseInt(begin.text),
+                'end': parseInt(end.text),
+            });
+        },
+    }, {
+        'pattern': 'trailed_atom [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
+        'actor': function() {
+            console.log(name.text, args.children);
+            root.tags.push({
+                'type': 'function_call',
+                'name': name.text,
+                'args': args.children,
             });
         },
     },
 ];
+
+
+// https://docs.python.org/3/library/functions.html#len
+// https://docs.python.org/3/library/pickle.html#pickle.load
