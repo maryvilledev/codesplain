@@ -38,20 +38,20 @@ module.exports = function(input, error_callback) {
                 'children': [],
             };
         } else {
-            let ast = {
+            let ast_node = {
                 'type': parser.ruleNames[node.ruleIndex],
                 'begin': node.start.start,
                 'end': (node.stop ? node.stop : node.start).stop + 1,
                 'tags': [],
-                'children': node.children ? node.children.map(process_node).filter(Boolean) : [],
+                'children': node.children ? node.children.map(process_node) : [],
             };
 
-            let opts = lang_runtime_config.rules[ast.type];
+            let opts = lang_runtime_config.rules[ast_node.type];
             opts.finalizers.forEach(function(func) {
-                ast = func(ast);
+                ast_node = func(ast_node);
             });
 
-            return ast;
+            return ast_node;
         }
     };
 

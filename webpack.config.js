@@ -58,7 +58,7 @@ let prepare_lang = async function(filename) {
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
             'path': path.resolve(__dirname, 'public', 'langs'),
             'library': 'CodeSplain_parse_' + lang_name,
-            'libraryTarget': 'window',
+            'libraryTarget': 'commonjs2',
         },
     };
 };

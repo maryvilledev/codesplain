@@ -80,10 +80,10 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
 
                     code += 'let _matcher_' + matcher_index + ' = ' + tree_matcher.finalizer_code + ';\n';
                     code += 'for (let i in lang_runtime_config.rules) {\n';
-                    code += '  lang_runtime_config.rules[i].finalizers.unshift(_matcher_' + matcher_index + ');\n';
+                    code += '  lang_runtime_config.rules[i].finalizers.push(_matcher_' + matcher_index + ');\n';
                     code += '}\n';
                 } else {
-                    code += 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.unshift(' + tree_matcher.finalizer_code + ');';
+                    code += 'lang_runtime_config.rules.' + tree_matcher.rule_key + '.finalizers.push(' + tree_matcher.finalizer_code + ');';
                 }
                 return code;
             }).join('');
