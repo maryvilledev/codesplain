@@ -157,7 +157,7 @@
         if (typeof parser !== 'function') {return;}
 
         let code = code_el.value;
-        let ast = parser(code, function() {});
+        let ast = parser(code, function() {}, {'log_cutoffs': true});
         console.log(ast);
         let html = gen_html(code, ast);
         formatted_el.innerHTML = html;

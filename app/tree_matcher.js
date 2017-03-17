@@ -49,7 +49,6 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         };
 
         const generate_profiler = true;
-        const log_cutoffs = true;
 
         let next_var_id = 1;
         let create_var = function() {
@@ -63,8 +62,8 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         };
 
         let make_if = function(cond, then) {
-            return 'if (' + cond + ') ' + make_block(then) + (log_cutoffs ? ' else ' + make_block(
-                'console.log(' + JSON.stringify('Cutoff in matcher ' + matcher_index + ' on node type ' + JSON.stringify(root_type) + ' at cond ' + JSON.stringify(cond)) + ');'
+            return 'if (' + cond + ') ' + make_block(then) + (global.enable_debug ? ' else ' + make_block(
+                'lang_runtime_config.call_options.log_cutoffs && console.log(' + JSON.stringify('Cutoff in matcher ' + matcher_index + ' on node type ' + JSON.stringify(root_type) + ' at cond ' + JSON.stringify(cond)) + ');'
             ) : '');
         };
 
@@ -255,7 +254,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
 
         let finalizer_code = 'function(root) ' + make_block(
             define_stmts.join('\n'),
-            build_tester(tree, 'root', actor_var + '();'),
+            build_tester(tree, 'root', actor_var + '.call(this);'),
             'return root;'
         );
 

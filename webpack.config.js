@@ -66,7 +66,8 @@ let prepare_lang = async function(filename) {
 module.exports = async function(env) {
     // Read command line options
     langs = env && env.langs ? env.langs.split(',') : undefined;
-    optimize = env && env.optimize;
+    optimize = Boolean(env && parseInt(env.optimize));
+    global.enable_debug = Boolean(env && parseInt(env.enable_debug));
 
     // Then, find language configuration files
     let files = await fs.readdir(config.lang_configs_path);
