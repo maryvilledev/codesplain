@@ -33,6 +33,14 @@ module.exports = [
                 'type': 'boolean',
             });
         },
+    }, {
+        'pattern': 'factor [.MINUS, /number]',
+        'actor': function() {
+            console.log(root);
+            root.tags.push({
+                'type': 'negative_number',
+            });
+        },
     },
 ];
 

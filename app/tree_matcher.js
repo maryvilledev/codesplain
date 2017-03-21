@@ -62,9 +62,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         };
 
         let make_if = function(cond, then) {
-            return 'if (' + cond + ') ' + make_block(then) + (global.enable_debug ? ' else ' + make_block(
-                'lang_runtime_config.call_options.log_cutoffs && console.log(' + JSON.stringify('Cutoff in matcher ' + matcher_index + ' on node type ' + JSON.stringify(root_type) + ' at cond ' + JSON.stringify(cond)) + ');'
-            ) : '');
+            return 'if (' + cond + ') ' + make_block(then);
         };
 
         let make_sorter = function(order) {
@@ -221,27 +219,6 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         let tree = parser[tree_matcher_runtime_config.entry_rule]();
         tree.profile_key = '';
 
-        let root_type;
-        tree.children = tree.children.filter(function(modifier) {
-            let type = parser.ruleNames[modifier.ruleIndex];
-            if (type.slice(0, 4) !== 'mod_') {
-                throw new Error('Unexpected node child type ' + JSON.stringify(type));
-            }
-
-            if (type === 'mod_type') {
-                root_type = modifier.children[0].symbol.text;
-                return false;
-            } else if (type === 'mod_terminal') {
-                root_type = modifier.children[1].symbol.text;
-                return false;
-            } else if (type === 'mod_wildcard') {
-                root_type = '*';
-                return false;
-            } else {
-                return true;
-            }
-        });
-
         let actor_var = create_var();
 
         let defs = typeof matcher_spec.defines === 'object' ? matcher_spec.defines : {};
@@ -252,15 +229,9 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
             define_stmts.push('let ' + def_var + ' = ' + defs[def_var].toString() + ';');
         }
 
-        let finalizer_code = 'function(root) ' + make_block(
+        return make_block(
             define_stmts.join('\n'),
-            build_tester(tree, 'root', actor_var + '.call(this);'),
-            'return root;'
+            build_tester(tree, 'root', actor_var + '.call(this);')
         );
-
-        return {
-            'rule_key': root_type,
-            'finalizer_code': finalizer_code,
-        };
     };
 };
