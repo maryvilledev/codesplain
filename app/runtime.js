@@ -29,8 +29,9 @@ module.exports = function(input, error_callback, options) {
     let tree = parser[lang_runtime_config.entry_rule]();
 
     let process_node = function(node) {
+        let ast_node;
         if (node instanceof TerminalNodeImpl) {
-            return {
+            ast_node = {
                 'type': lang_runtime_config.symbol_name_map[node.symbol.type + 2],
                 'text': node.symbol.text,
                 'begin': node.symbol.start,
@@ -39,21 +40,21 @@ module.exports = function(input, error_callback, options) {
                 'children': [],
             };
         } else {
-            let ast_node = {
+            ast_node = {
                 'type': parser.ruleNames[node.ruleIndex],
                 'begin': node.start.start,
                 'end': (node.stop ? node.stop : node.start).stop + 1,
                 'tags': [],
                 'children': node.children ? node.children.map(process_node) : [],
             };
-
-            let opts = lang_runtime_config.rules[ast_node.type];
-            opts.finalizers.forEach(function(func) {
-                ast_node = func(ast_node);
-            });
-
-            return ast_node;
         }
+
+        let opts = lang_runtime_config.rules[ast_node.type];
+        opts.finalizers.forEach(function(func) {
+            ast_node = func(ast_node);
+        });
+
+        return ast_node;
     };
 
     return process_node(tree);

@@ -26,6 +26,23 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
     let ParserClass = require(compile_result.cache_dir + '/' + parser_classname + '.js')[parser_classname];
     let ErrorListener = require('./error_listener');
 
+    let profile_key_type_char = {
+        'main': 'm',
+        'expr': 'x',
+        'node': 'n',
+        'mod_type': 'y',
+        'mod_terminal': 'r',
+        'mod_store': 't',
+        'mod_eq_id': 'i',
+        'mod_eq_json_string': 'j',
+        'mod_child': 'c',
+        'mod_children': 'd',
+        'child': 'e',
+        'search': 's',
+    };
+
+    const generate_profiler = true;
+
     return function(matcher_spec, matcher_index) {
         let chars = new antlr.InputStream(matcher_spec.pattern);
         let lexer = new LexerClass(chars);
@@ -33,26 +50,9 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         let parser = new ParserClass(tokens);
         parser.buildParseTrees = true;
 
-        let profile_key_type_char = {
-            'main': 'm',
-            'expr': 'x',
-            'node': 'n',
-            'mod_type': 'y',
-            'mod_terminal': 'r',
-            'mod_store': 't',
-            'mod_eq_id': 'i',
-            'mod_eq_json_string': 'j',
-            'mod_child': 'c',
-            'mod_children': 'd',
-            'child': 'e',
-            'search': 's',
-        };
-
-        const generate_profiler = true;
-
         let next_var_id = 1;
         let create_var = function() {
-            return '_' + (next_var_id++);
+            return '_' + (next_var_id++).toString(36);
         };
 
         let make_block = function() {
