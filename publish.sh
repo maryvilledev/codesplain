@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Config begin
-
+LANG="en_US.UTF-8"
 LANG_CONFIGS_DIR=language_configs/
 CACHE_DIR=_cache/
 OUTPUT_DIR=public/langs
