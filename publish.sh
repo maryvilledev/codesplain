@@ -42,7 +42,7 @@ rm -rf "$CACHE_DIR/$LANG/"
 cd $OUTPUT_DIR && ls
 
 echo "S3Command mv $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js"
-aws s3 mv $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js
-aws s3 mv $OUTPUT_DIR/$LANG.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.js
+aws s3 mv --debug $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js
+aws s3 mv --debug $OUTPUT_DIR/$LANG.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.js
 
 # done
