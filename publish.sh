@@ -4,7 +4,7 @@
 
 LANG_CONFIGS_DIR=language_configs/
 CACHE_DIR=_cache/
-OUTPUT_DIR=public/langs/
+OUTPUT_DIR=public/langs
 PUSH_ENV="$1"
 VERSION_TAG="$2"
 
