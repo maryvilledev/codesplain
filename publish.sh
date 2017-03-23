@@ -39,7 +39,7 @@ rm -rf "$CACHE_DIR/$PARSELANG/"
 ./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=1 --env.enable_debug=0
 
 
-aws s3 cp --debug $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
-aws s3 cp --debug $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
+aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
+aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
 
 # done
