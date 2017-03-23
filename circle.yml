@@ -1,7 +1,7 @@
 machine:
   node:
     version: 7.7.2
-    
+
 test:
   override:
     - echo "test"
@@ -10,8 +10,8 @@ deployment:
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
-        - sh publish.sh release $CIRCLE_TAG
+        - ./publish.sh release $CIRCLE_TAG
   master:
     branch: [fixCircle2, master]
     commands:
-      - sh publish.sh dev
+      - ./publish.sh dev

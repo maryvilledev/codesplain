@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Config begin
 
@@ -11,10 +11,10 @@ VERSION_TAG="$2"
 # Config end
 
 
-if [ "$PUSH_ENV" = "release" ]
+if [ "$PUSH_ENV" == "release" ]
 then
     S3CMD="put"
-elif [ "$PUSH_ENV" = "dev" ]
+elif [ "$PUSH_ENV" == "dev" ]
 then
     S3CMD="sync"
     VERSION_TAG="dev"
