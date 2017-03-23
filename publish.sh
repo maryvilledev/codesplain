@@ -39,6 +39,8 @@ rm -rf "$CACHE_DIR/$LANG/"
 ./node_modules/.bin/webpack "--env.langs=$LANG" --env.optimize=0 --env.enable_debug=1
 ./node_modules/.bin/webpack "--env.langs=$LANG" --env.optimize=1 --env.enable_debug=0
 
+cd $OUTPUT_DIR && ls
+
 echo "S3Command mv $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js"
 aws s3 mv $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js
 aws s3 mv $OUTPUT_DIR/$LANG.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.js
