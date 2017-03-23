@@ -33,15 +33,12 @@ rm -rf $CACHE_DIR/treematcher/
 lang_config="$LANG_CONFIGS_DIR/python3.js"
 
 PARSELANG="$(basename $lang_config .js)"
-echo "Processing language $PARS..."
 
 rm -rf "$CACHE_DIR/$PARSELANG/"
 ./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=0 --env.enable_debug=1
 ./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=1 --env.enable_debug=0
 
-cd $OUTPUT_DIR && ls
 
-locale
 echo "S3Command mv $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js"
 aws s3api put-object --debug $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
 aws s3api put-object --debug $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
