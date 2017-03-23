@@ -41,6 +41,7 @@ rm -rf "$CACHE_DIR/$LANG/"
 
 cd $OUTPUT_DIR && ls
 
+locale
 echo "S3Command mv $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js"
 aws s3api put-object --debug $OUTPUT_DIR/$LANG.min.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js
 aws s3api put-object --debug $OUTPUT_DIR/$LANG.js s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.js
