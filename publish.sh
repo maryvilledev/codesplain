@@ -1,23 +1,22 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Config begin
-
 LANG_CONFIGS_DIR=language_configs/
 CACHE_DIR=_cache/
-OUTPUT_DIR=public/langs/
+OUTPUT_DIR=public/langs
 PUSH_ENV="$1"
 VERSION_TAG="$2"
 
 # Config end
 
 
-if [ $PUSH_ENV == "release" ]
+if [ "$PUSH_ENV" == "release" ]
 then
-    S3CMD="put"
-elif [ $PUSH_ENV == "dev" ]
+  echo "Releasing Codesplain Parsers"
+elif [ "$PUSH_ENV" == "dev" ]
 then
-    S3CMD="sync"
-    VERSION_TAG="dev"
+  echo "Updating Codesplain Parsers in dev environment"
+  VERSION_TAG="dev"
 else
    echo "Error! Invalid PUSH_ENV" 1>&2
    exit 1
@@ -32,14 +31,14 @@ rm -rf $CACHE_DIR/treematcher/
 # But for now just do python3:
 lang_config="$LANG_CONFIGS_DIR/python3.js"
 
-LANG="$(basename $lang_config .js)"
-echo "Processing language $LANG..."
+PARSELANG="$(basename $lang_config .js)"
 
-rm -rf "$CACHE_DIR/$LANG/"
-./node_modules/.bin/webpack "--env.langs=$LANG" --env.optimize=0 --env.enable_debug=1
-./node_modules/.bin/webpack "--env.langs=$LANG" --env.optimize=1 --env.enable_debug=0
+rm -rf "$CACHE_DIR/$PARSELANG/"
+./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=0 --env.enable_debug=1
+./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=1 --env.enable_debug=0
 
-aws s3 $S3CMD "$OUTPUT_DIR/$LANG.min.js" "s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.min.js"
-aws s3 $S3CMD "$OUTPUT_DIR/$LANG.js" "s3://codesplain-parsers/$LANG/$VERSION_TAG/$LANG.js"
+
+aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
+aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
 
 # done
