@@ -12,6 +12,6 @@ deployment:
     commands:
         - ./publish.sh release $CIRCLE_TAG
   master:
-    branch: [fixCircle2, master]
+    branch: master
     commands:
       - ./publish.sh dev
