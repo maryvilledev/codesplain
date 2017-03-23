@@ -6,8 +6,8 @@ deployment:
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
-        - ./publish.sh release $CIRCLE_TAG
+        - sh publish.sh release $CIRCLE_TAG
   master:
     branch: [fixCircle2, master]
     commands:
-      - ./publish.sh dev
+      - sh publish.sh dev
