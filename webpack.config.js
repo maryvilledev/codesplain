@@ -44,8 +44,8 @@ let prepare_lang = function(lang_name) {
                 'output': {
                     'filename': lang_name + (config.optimize ? '.min.js' : '.js'),
                     'path': path.resolve(__dirname, 'public', 'langs'),
-                    'library': 'CodeSplain_parse_' + lang_name,
-                    'libraryTarget': 'commonjs2',
+                    'library': 'Codesplain_parse_' + lang_name,
+                    'libraryTarget': config.libraryTarget,
                 },
             });
         });
@@ -55,6 +55,7 @@ let prepare_lang = function(lang_name) {
 module.exports = function(env) {
     config.langs = env && env.langs ? env.langs.split(',') : undefined;
     config.optimize = env && env.optimize;
+    config.libraryTarget = (env && env.libraryTarget) || 'window';
 
     return new Promise(function(resolve, reject) {
         fs.readdir(config.lang_configs_path, function(err, files) {
