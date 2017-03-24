@@ -12,6 +12,7 @@ module.exports = function(lang_runtime_config, root) {
         ) {
             return collapse(node.children[0]);
         } else {
+            // Otherwise, collapse the children
             node.children = node.children.map(collapse);
             return node;
         }

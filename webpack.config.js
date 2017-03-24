@@ -10,35 +10,59 @@ let compile = require('./app/compile.js');
 let langs;
 let optimize;
 
+// Filter the files that should be compiled
 let filter_lang = function(filename) {
+    // Get the language name
     let lang_name = filename.slice(0, -11);
 
+    // Make sure the filename ends with ".compile.js"
     if (filename.slice(-11) !== '.compile.js') {return false;}
+
+    // Make sure either:
+    //   1. The env.langs variable is not set (meaning compile all languages), or:
+    //   2. The env.langs variable is set, and this language name is contained in it.
+    // If both of these fail, then don't compile this language.
     if (langs && langs.indexOf(lang_name) === -1) {return false;}
 
+    // Otherwise compile it!
     return true;
 };
 
 let prepare_lang = async function(filename) {
+    // Get the language name again (same as above)
     let lang_name = filename.slice(0, -11);
 
+    // Load the language config files
     let lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
     let lang_runtime_config_path = path.resolve(config.lang_configs_path, lang_name + '.runtime.js');
-
     let lang_compile_config = require(lang_compile_config_path);
     let lang_runtime_config = require(lang_runtime_config_path);
 
+    // Compile it!
+    // This does a few things:
+    //   1. Runs the antlr compiler that generates a javascript lexer and parser
+    //   2. Runs the tree matcher compiler that generates tree matchers.
     let compile_result = await compile(lang_compile_config, lang_runtime_config);
 
+    // Return an object that will be used by webpack to compile the parser.
     return {
+        // I don't know
         'context': __dirname,
+
+        // The file to compile. All other files are included in this file or in files included from this file.
         'entry': path.resolve(__dirname, 'app', 'runtime.js'),
+
+        // Tell webpack that fs will be external so it doesn't complain.
         'externals': ['fs'],
+
         'plugins': [
+            // Find/replace these strings in runtime.js
             new webpack.DefinePlugin({
                 'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
                 'LANGUAGE_CACHE_DIR': JSON.stringify(compile_result.cache_dir),
             }),
+
+            // Run the Google Closure Compiler if env.optimize is set
             optimize ? new ClosureCompilerPlugin({
                 'compiler': {
                     'language_in': 'ECMASCRIPT6',
@@ -54,11 +78,21 @@ let prepare_lang = async function(filename) {
                 'concurrency': 10,
             }) : undefined,
         ].filter(Boolean),
+
         'output': {
+            // The output filename
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
+
+            // The output directory
             'path': path.resolve(__dirname, 'public', 'langs'),
-            'library': 'CodeSplain_parse_' + lang_name,
+
+            // How to export the parser library
+            //   commonjs2 - Use module.exports
+            //   window - Add an item to the global window variable
             'libraryTarget': 'commonjs2',
+
+            // When libraryTarget is "window", the parser will be stored into window.[whatever library is]
+            'library': 'CodeSplain_parse_' + lang_name,
         },
     };
 };
@@ -72,10 +106,15 @@ module.exports = async function(env) {
     // Then, find language configuration files
     let files = await fs.readdir(config.lang_configs_path);
 
+    // Filter langs and compile them.
+    // Prepare_lang returns a promise, so after this step we have an array of promises.
     let lang_configs = files.filter(filter_lang).map(prepare_lang);
+
     if (lang_configs.length === 0) {
+        // If no languages were compiled, warn the user.
         console.warn('No languages generated...');
     } else {
+        // Otherwise, return a promise that resolves when all of the language promises resolve.
         return Promise.all(lang_configs);
     }
 };
