@@ -55,7 +55,7 @@ let prepare_lang = function(lang_name) {
 module.exports = function(env) {
     config.langs = env && env.langs ? env.langs.split(',') : undefined;
     config.optimize = env && env.optimize;
-    config.libraryTarget = (env && env.libraryTarget) || 'window';
+    config.libraryTarget = (env && env.libraryTarget) || 'var';
 
     return new Promise(function(resolve, reject) {
         fs.readdir(config.lang_configs_path, function(err, files) {
