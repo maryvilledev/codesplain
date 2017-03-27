@@ -34,11 +34,13 @@ lang_config="$LANG_CONFIGS_DIR/python3.js"
 PARSELANG="$(basename $lang_config .js)"
 
 rm -rf "$CACHE_DIR/$PARSELANG/"
-./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=0 --env.enable_debug=1
-./node_modules/.bin/webpack "--env.langs=$PARSELANG" --env.optimize=1 --env.enable_debug=0
+./make -d
+./make -m
 
 
 aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
 aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
+
+exit
 
 # done
