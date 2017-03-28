@@ -51,7 +51,7 @@ After this, all of the compiled parsers are in `public/langs/`
 * `webpack.config.js` - Kicks everything off. Calls `app/compiler.js`, then packs `app/runtime.js` and all of it's dependencies into the resulting parsers.
 
 ### Why no NPM install antlr4?
-Antlr publishes their javascript runtime as a npm module, but it is not up-to-date with master, which contains some bugfixes (https://github.com/antlr/antlr4/pull/1599). The solution I came up with is to clone antlr as a submodule and use `npm link` to install the local version.
+Antlr publishes their javascript runtime as a npm module, but it is not up-to-date with master, which contains some bugfixes (https://github.com/antlr/antlr4/pull/1599). The solution was to clone antlr as a submodule and use `npm link` to install the local version.
 
 ### Language configurations
 Each language has two configuration files located in `language_configs/`. There's a compile config file and a runtime config file. Currently, the python3 compile config includes a tree_matcher_specs config file and the runtime config includes a rules config file, but those could just as easily have been inserted directly into the compile/runtime config. The compile config is not included in the generated parser, and as such, is not accessible by the runtime. It has two options:

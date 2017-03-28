@@ -9,6 +9,7 @@ let compile = require('./app/compile.js');
 
 let langs;
 let optimize;
+let libraryTarget;
 
 // Filter the files that should be compiled
 let filter_lang = function(filename) {
@@ -88,11 +89,12 @@ let prepare_lang = async function(filename) {
 
             // How to export the parser library
             //   commonjs2 - Use module.exports
-            //   window - Add an item to the global window variable
-            'libraryTarget': 'commonjs2',
+            //   window - Add an entry to the global window variable
+            //   var - Add a local variable declared with "var"
+            'libraryTarget': libraryTarget,
 
-            // When libraryTarget is "window", the parser will be stored into window.[whatever library is]
-            'library': 'CodeSplain_parse_' + lang_name,
+            // When libraryTarget is "window" or "var", the window key or variable name will be this value
+            'library': 'Codesplain_parse_' + lang_name,
         },
     };
 };
@@ -101,6 +103,7 @@ module.exports = async function(env) {
     // Read command line options
     langs = env && env.langs ? env.langs.split(',') : undefined;
     optimize = Boolean(env && parseInt(env.optimize));
+    libraryTarget = (env && env.libraryTarget) || 'var';
     global.enable_debug = Boolean(env && parseInt(env.enable_debug));
 
     // Then, find language configuration files
