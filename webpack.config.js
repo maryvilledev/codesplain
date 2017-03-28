@@ -9,6 +9,7 @@ let compile = require('./app/compile.js');
 
 let langs;
 let optimize;
+let libraryTarget;
 
 let filter_lang = function(filename) {
     let lang_name = filename.slice(0, -11);
@@ -32,34 +33,34 @@ let prepare_lang = async function(filename) {
 
     return {
         'context': __dirname,
-        'entry': path.resolve(__dirname, 'app', 'runtime.js'),
-        'externals': ['fs'],
-        'plugins': [
-            new webpack.DefinePlugin({
+                'entry': path.resolve(__dirname, 'app', 'runtime.js'),
+                'externals': ['fs'],
+                'plugins': [
+                    new webpack.DefinePlugin({
                 'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
                 'LANGUAGE_CACHE_DIR': JSON.stringify(compile_result.cache_dir),
-            }),
+                    }),
             optimize ? new ClosureCompilerPlugin({
-                'compiler': {
-                    'language_in': 'ECMASCRIPT6',
-                    'language_out': 'ECMASCRIPT5',
-                    'compilation_level': 'SIMPLE_OPTIMIZATIONS',
-                    /*
-                    There is a higher compilation level, ADVANCED_OPTIMIZATIONS.
-                    Unfortunately, it requires property access by string or key to be consistent.
-                    For example, obj.abc = 123; alert(obj['abc']); doesn't work.
-                    Antlr does not follow this principle, so as far as I can see, we won't be able to use this level.
-                    */
-                },
-                'concurrency': 10,
-            }) : undefined,
-        ].filter(Boolean),
-        'output': {
+                        'compiler': {
+                            'language_in': 'ECMASCRIPT6',
+                            'language_out': 'ECMASCRIPT5',
+                            'compilation_level': 'SIMPLE_OPTIMIZATIONS',
+                            /*
+                            There is a higher compilation level, ADVANCED_OPTIMIZATIONS.
+                            Unfortunately, it requires property access by string or key to be consistent.
+                            For example, obj.abc = 123; alert(obj['abc']); doesn't work.
+                            Antlr does not follow this principle, so as far as I can see, we won't be able to use this level.
+                            */
+                        },
+                        'concurrency': 10,
+                    }) : undefined,
+                ].filter(Boolean),
+                'output': {
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
-            'path': path.resolve(__dirname, 'public', 'langs'),
-            'library': 'CodeSplain_parse_' + lang_name,
-            'libraryTarget': 'commonjs2',
-        },
+                    'path': path.resolve(__dirname, 'public', 'langs'),
+                    'library': 'Codesplain_parse_' + lang_name,
+                    'libraryTarget': libraryTarget,
+                },
     };
 };
 
@@ -67,6 +68,7 @@ module.exports = async function(env) {
     // Read command line options
     langs = env && env.langs ? env.langs.split(',') : undefined;
     optimize = Boolean(env && parseInt(env.optimize));
+    libraryTarget = (env && env.libraryTarget) || 'var';
     global.enable_debug = Boolean(env && parseInt(env.enable_debug));
 
     // Then, find language configuration files
