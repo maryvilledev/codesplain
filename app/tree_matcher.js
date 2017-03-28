@@ -11,14 +11,17 @@ let compile_promise;
 module.exports = {};
 
 module.exports.make_generator = async function(lang_compile_config, lang_runtime_config) {
+    // Compile the tree matcher if it's not being done already
     if (!compile_promise) {
         // Compile the tree matcher parser
         let compile = require('./compile.js');
         compile_promise = compile(tree_matcher_compile_config, tree_matcher_runtime_config);
     }
 
+    // Wait for the tree matcher lexer and parser to be compiled
     let compile_result = await compile_promise;
 
+    // Require them
     let lexer_classname = tree_matcher_runtime_config.language + 'Lexer';
     let parser_classname = tree_matcher_runtime_config.language + 'Parser';
 
@@ -26,6 +29,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
     let ParserClass = require(compile_result.cache_dir + '/' + parser_classname + '.js')[parser_classname];
     let ErrorListener = require('./error_listener');
 
+    // For use later, when the tree matcher is optimized
     let profile_key_type_char = {
         'main': 'm',
         'expr': 'x',
@@ -40,27 +44,36 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
         'child': 'e',
         'search': 's',
     };
-
     const generate_profiler = true;
 
-    return function(matcher_spec, matcher_index) {
+    // This function takes a matcher specification and returns a function that takes a node,
+    //   and runs the actor if the node matches the specification pattern.
+    return function(matcher_spec) {
+
+        // Take the string of a matcher specification pattern, and generate a stream of tokens using the antlr lexer.
         let chars = new antlr.InputStream(matcher_spec.pattern);
         let lexer = new LexerClass(chars);
         let tokens  = new antlr.CommonTokenStream(lexer);
+
+        // Take the stream of tokens, and create a parser class using the antlr parser.
+        // Doesn't execute it yet.
         let parser = new ParserClass(tokens);
         parser.buildParseTrees = true;
 
+        // Define a function that generates unique variable names.
         let next_var_id = 1;
         let create_var = function() {
             return '_' + (next_var_id++).toString(36);
         };
 
+        // Define a function that pretty-prints a javascript block
         let make_block = function() {
             let args = Array.prototype.slice.call(arguments);
             args = args.map(function(str) {return str.trim();}).filter(Boolean);
             return '{\n  ' + args.join('\n').replace(/\n/g, '\n  ') + '\n}';
         };
 
+        // Define a function that makes a javascript if statement.
         let make_if = function(cond, then) {
             return 'if (' + cond + ') ' + make_block(then);
         };
@@ -81,14 +94,24 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
 
                 return b_index - a_index;
             };
-        }
+        };
 
+        // This function creates a javascript statement that tests if a canidate node passes.
+        // If the canidate node passes, pass_stmt is executed.
+        // If the canidate node fails, control must exit the returned statement, so any appended statements will be executed.
+        // node is the TreeMatcher ast node that's currently being processed. This is NOT the canidate node.
+        // node_var is a string containing the javascript variable that the canidate node is stored in.
+        // pass_stmt is a string containing the code to be executed if the canidate node passes the current test.
         let build_tester = function(node, node_var, pass_stmt) {
+            // Get the tree matcher node type.
             let type = parser.ruleNames[node.ruleIndex];
+
+            // Write profile keys to child nodes.
             node.children.forEach(function(child, index) {
                 child.profile_key = node.profile_key + profile_key_type_char[type] + index;
             });
 
+            // Return some test based on the tree matcher node type
             switch (type) {
                 case 'node': {
                     node.children.sort(make_sorter([

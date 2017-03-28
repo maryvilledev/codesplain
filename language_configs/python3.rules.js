@@ -1,3 +1,6 @@
+// Configuration for each possible node type.
+// Currently, the only option is 'collapse', which is used by the collapse transformer.
+
 module.exports = {
     // Non-terminals:
     'single_input': {},
@@ -26,7 +29,7 @@ module.exports = {
     'return_stmt': {},
     'yield_stmt': {},
     'raise_stmt': {},
-    'import_stmt': {'collapse': true, 'sdb_concept': 'import'},
+    'import_stmt': {'collapse': true},
     'import_name': {},
     'import_from': {},
     'import_as_name': {},
