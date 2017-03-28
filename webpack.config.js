@@ -1,32 +1,46 @@
-let fs = require('fs');
+let fs = require('fs-promise');
 let path = require('path');
 let webpack = require('webpack');
 let ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 
-let config = require('./config');
-let compile = require('./app/compile');
+let config = require('./config.js');
+let compile = require('./app/compile.js');
 
-let prepare_lang = function(lang_name) {
-    return new Promise(function(resolve, reject) {
-        let lang_config_path = path.resolve(config.lang_configs_path, lang_name + '.js');
-        let lang_config = require(lang_config_path);
+let langs;
+let optimize;
+let libraryTarget;
 
-        compile(lang_config, function(err, lang_cache_dir) {
-            if (err) {
-                reject(err);
-                return;
-            }
+let filter_lang = function(filename) {
+    let lang_name = filename.slice(0, -11);
 
-            resolve({
+    if (filename.slice(-11) !== '.compile.js') {return false;}
+    if (langs && langs.indexOf(lang_name) === -1) {return false;}
+
+    return true;
+};
+
+let prepare_lang = async function(filename) {
+    let lang_name = filename.slice(0, -11);
+
+    let lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
+    let lang_runtime_config_path = path.resolve(config.lang_configs_path, lang_name + '.runtime.js');
+
+    let lang_compile_config = require(lang_compile_config_path);
+    let lang_runtime_config = require(lang_runtime_config_path);
+
+    let compile_result = await compile(lang_compile_config, lang_runtime_config);
+
+    return {
+        'context': __dirname,
                 'entry': path.resolve(__dirname, 'app', 'runtime.js'),
                 'externals': ['fs'],
                 'plugins': [
                     new webpack.DefinePlugin({
-                        'LANGUAGE_CONFIG_PATH': JSON.stringify(lang_config_path),
-                        'LANGUAGE_CACHE_DIR': JSON.stringify(lang_cache_dir),
+                'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
+                'LANGUAGE_CACHE_DIR': JSON.stringify(compile_result.cache_dir),
                     }),
-                    config.optimize ? new ClosureCompilerPlugin({
+            optimize ? new ClosureCompilerPlugin({
                         'compiler': {
                             'language_in': 'ECMASCRIPT6',
                             'language_out': 'ECMASCRIPT5',
@@ -42,32 +56,28 @@ let prepare_lang = function(lang_name) {
                     }) : undefined,
                 ].filter(Boolean),
                 'output': {
-                    'filename': lang_name + (config.optimize ? '.min.js' : '.js'),
+            'filename': lang_name + (optimize ? '.min.js' : '.js'),
                     'path': path.resolve(__dirname, 'public', 'langs'),
                     'library': 'Codesplain_parse_' + lang_name,
-                    'libraryTarget': config.libraryTarget,
+                    'libraryTarget': libraryTarget,
                 },
-            });
-        });
-    });
+    };
 };
 
-module.exports = function(env) {
-    config.langs = env && env.langs ? env.langs.split(',') : undefined;
-    config.optimize = env && env.optimize;
-    config.libraryTarget = (env && env.libraryTarget) || 'var';
+module.exports = async function(env) {
+    // Read command line options
+    langs = env && env.langs ? env.langs.split(',') : undefined;
+    optimize = Boolean(env && parseInt(env.optimize));
+    libraryTarget = (env && env.libraryTarget) || 'var';
+    global.enable_debug = Boolean(env && parseInt(env.enable_debug));
 
-    return new Promise(function(resolve, reject) {
-        fs.readdir(config.lang_configs_path, function(err, files) {
-            let lang_configs = files.map(function(file) {
-                let lang = file.slice(0, -3);
+    // Then, find language configuration files
+    let files = await fs.readdir(config.lang_configs_path);
 
-                if (file.slice(-3) !== '.js') {return;}
-                if (config.langs && config.langs.indexOf(lang) === -1) {return;}
-
-                return prepare_lang(file.slice(0, -3));
-            }).filter(Boolean);
-            Promise.all(lang_configs).then(resolve, reject);
-        });
-    });
+    let lang_configs = files.filter(filter_lang).map(prepare_lang);
+    if (lang_configs.length === 0) {
+        console.warn('No languages generated...');
+    } else {
+        return Promise.all(lang_configs);
+    }
 };

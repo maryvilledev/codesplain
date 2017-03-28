@@ -1,117 +1,113 @@
-let fs = require('fs');
+let fs = require('fs-promise');
 let path = require('path');
-let cp = require('cp');
-let child_process = require('child_process');
+let child_process = require('child-process-promise');
 let antlr = require('antlr4');
 
-let config = require('../config');
+let config = require('../config.js');
+let tree_matcher = require('./tree_matcher.js');
 
-module.exports = function(lang_config, callback) {
-    let language_key = lang_config.language.toLowerCase();
-    let g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_config.grammar_file);
-    let cache_dir = path.resolve(__dirname, '..', '_cache', language_key);
-    let cache_g4_path = path.resolve(cache_dir, lang_config.language + '.g4');
+let array_diff = function(a, b) {
+    return a.filter(function(i) {return b.indexOf(i) === -1;});
+};
 
-    let check_generated = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
+module.exports = function(lang_compile_config, lang_runtime_config) {
+    let language_key = lang_runtime_config.language.toLowerCase();
 
-        fs.stat(cache_dir, function(err, stats) {
-            if (err && err.errno === -2) {
-                // If directory doesn't exist, create it and start the compilation process
-                fs.mkdir(cache_dir, cp_grammar);
-            } else if (err) {
-                callback_with_error(err);
-            } else if (config.always_recompile_antlr) {
-                cp_grammar(err);
-            } else {
-                // If the directory exists, assume that it's filled with the compiled parser and return
-                callback_with_success();
-            }
-        });
-    };
+    let g4_path = lang_compile_config.grammar_path;
+    if (!g4_path) {
+        g4_path = path.resolve(__dirname, '..', 'grammars-v4', language_key, lang_compile_config.grammar_file);
+    }
 
-    let cp_grammar = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
+    let cache_dir = config.resolve_cache_dir(lang_runtime_config);
+    let cache_g4_path = path.resolve(cache_dir, lang_runtime_config.language + '.g4');
 
-        cp(g4_path, cache_g4_path, compile_parser);
-    };
 
-    let compile_parser = function(err) {
-        if (err) {
-            callback_with_error(err);
-            return;
-        }
+    let compile_promise = async function() {
+        // Make sure the cache directory exists
+        await fs.mkdir(cache_dir);
 
+        // Copies the g4 file into the cache directory
+        await fs.copy(g4_path, cache_g4_path);
+
+        // Prepare options to the antlr compiler that generates the antlr lexer and antlr parser
         let cmd = 'java';
         let args = [
             '-Xmx500M',
             '-cp', '../../bin/antlr-4.6-complete.jar',
             'org.antlr.v4.Tool',
             '-long-messages',
-            //'-no-listener',
+            lang_compile_config.generate_listener ? '-listener' : '-no-listener',
+            lang_compile_config.generate_visitor ? '-visitor' : '-no-visitor',
             '-Dlanguage=JavaScript',
-            lang_config.language + '.g4',
+            lang_runtime_config.language + '.g4',
         ];
         let opts = {
             'cwd': cache_dir,
+            'stdio': ['ignore', process.stdout, process.stderr],
         };
 
-        let antlr = child_process.spawn(cmd, args, opts);
+        // Call antlr
+        await child_process.spawn(cmd, args, opts);
 
-        antlr.stdout.on('data', function(data) {
-            console.log(data.toString());
-        });
-
-        antlr.stderr.on('data', function(data) {
-            console.error(data.toString());
-        });
-
-        antlr.on('close', function(code) {
-            if (code) {
-                callback_with_error('Compiler error (returned ' + code + ')');
-            } else {
-                check_compiled();
-            }
-        });
-    };
-
-    let check_compiled = function() {
-        let array_diff = function(a, b) {
-            return a.filter(function(i) {return b.indexOf(i) === -1;});
-        };
-
-        let parser_classname = lang_config.language + 'Parser';
+        // Make sure the generated parser has the same rules as our config file.
+        let parser_classname = lang_runtime_config.language + 'Parser';
         let ParserClass = require(cache_dir + '/' + parser_classname + '.js')[parser_classname];
         let parser = new ParserClass();
 
-        let parser_rules = parser.ruleNames;
-        let config_rules = Object.keys(lang_config.rules);
+        // Create an array of symbol (terminal) names
+        let symbol_name_map = ['_EPSILON', '_EOF', '_INVALID']
+            .concat(parser.symbolicNames.slice(1))
+            .map(function(val) {return val ? '.' + val : undefined;});
 
+        // Create the list of rule names (both terminals and non-terminals)
+        let parser_rules = parser.ruleNames.concat(symbol_name_map.filter(Boolean));
+        let config_rules = Object.keys(lang_runtime_config.rules);
+
+        // Make sure the parser doesn't have extra rules
         let config_missing = array_diff(parser_rules, config_rules);
         if (config_missing.length) {
-            callback_with_error('Missing rules ' + JSON.stringify(config_missing));
+            throw new Error('Missing rules ' + JSON.stringify(config_missing));
         }
 
+        // Make sure our config doesn't have extra rules
         let config_extra = array_diff(config_rules, parser_rules);
         if (config_extra.length) {
-            callback_with_error('Extra rules ' + JSON.stringify(config_extra));
+            throw new Error('Extra rules ' + JSON.stringify(config_extra));
         }
 
-        callback_with_success();
+        // Generate the runtime config modifier
+        let code = '';
+        code += 'module.exports = function(lang_runtime_config) {';
+
+        code += 'lang_runtime_config.symbol_name_map = ' + JSON.stringify(symbol_name_map) + ';';
+
+        code += 'lang_runtime_config.rule_name_map = ' + JSON.stringify(parser.ruleNames) + ';';
+
+        if (lang_compile_config.tree_matcher_specs) {
+            let generator = await tree_matcher.make_generator(lang_compile_config, lang_runtime_config);
+            let tree_matchers = lang_compile_config.tree_matcher_specs.map(generator);
+            code += 'lang_runtime_config.tree_matcher = function(root) {' + tree_matchers.join('\n') + '};';
+        }
+
+        code += '};';
+
+        // Write the runtime config modifier
+        let modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
+        await fs.writeFile(modifier_path, code);
     };
 
-    let callback_with_error = function(msg) {
-        callback(new Error('Language ' + JSON.stringify(language_key) + ': ' + msg));
-    };
-    let callback_with_success = function() {
-        callback(null, cache_dir);
-    }
-
-    check_generated();
+    // Stat the cache directory, which is the standard way if checking if it exists.
+    return fs.stat(cache_dir)
+        .catch(function(err) {
+            if (err.errno === -2) {
+                // If directory doesn't exist, start the compilation process
+                return compile_promise();
+            } else {
+                throw err;
+            }
+        }).then(function() {
+            return {
+                'cache_dir': cache_dir
+            };
+        });
 };
