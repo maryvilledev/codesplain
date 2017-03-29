@@ -11,16 +11,8 @@ npm install
 # To rebuild everything after making code changes, you need to clear the cache:
 rm -rf _cache/treematcher/ _cache/python3/
 
-# Basic build command:
-./node_modules/.bin/webpack
-
-# Options:
-# --env.langs=[python3]
-# --env.optimize=[0 or 1]
-# --env.enable_debug=[0 or 1]
-
-# Advanced build command:
-rm -rf _cache/treematcher/ _cache/python3/ && ./node_modules/.bin/webpack --env.langs=python3 --env.optimize=0 --env.enable_debug=1
+# Build command:
+./make
 ```
 After this, all of the compiled parsers are in `public/langs/`
 
