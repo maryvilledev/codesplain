@@ -1,4 +1,4 @@
-# CodeSplain
+# CodeSplain [![CircleCI](https://circleci.com/gh/maryvilledev/codesplain.svg?style=svg)](https://circleci.com/gh/maryvilledev/codesplain)
 
 ##### [Awesome tagline here]
 
