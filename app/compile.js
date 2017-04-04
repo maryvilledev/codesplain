@@ -27,6 +27,9 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
 
     let compile_promise = async function() {
         // Make sure the cache directory exists
+        await fs.mkdir(config.cache_path);
+
+        // Make sure the language cache directory exists
         await fs.mkdir(cache_dir);
 
         // Copies the g4 file into the cache directory

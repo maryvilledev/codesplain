@@ -2,6 +2,8 @@ let path = require('path');
 let antlr = require('antlr4');
 
 // LANGUAGE_RUNTIME_CONFIG_PATH and LANGUAGE_CACHE_DIR are defined in webpack.config.js
+global LANGUAGE_CACHE_DIR = LANGUAGE_CACHE_DIR;
+
 let lang_runtime_config = require(LANGUAGE_RUNTIME_CONFIG_PATH);
 
 require(LANGUAGE_CACHE_DIR + '/runtime_config_modifier.js')(lang_runtime_config);
