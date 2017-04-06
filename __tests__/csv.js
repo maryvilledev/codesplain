@@ -6,8 +6,8 @@ describe('mappings', () => {
   ).forEach((file) => {
     describe(file.split('.')[0] + '.csv', () => {
       it('should have a definition for all rules', () => {
-        const csv = fs.readFileSync(`./mappings/${file.split('.')[0]}.csv`,
-      {encoding: 'utf8'})
+        const csvFile = `./mappings/${file.split('.')[0]}.csv`;
+        const csv = fs.readFileSync(csvFile, {encoding: 'utf8'})
           .split('\n')
           .slice(1) //Cut off the header
           .map((line) => line.split(',')[0])
