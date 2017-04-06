@@ -53,16 +53,18 @@ let prepare_lang = async function(filename) {
         // The file to compile. All other files are included in this file or in files included from this file.
         'entry': path.resolve(__dirname, 'app', 'runtime.js'),
 
+        'resolve': {
+            'alias': {
+                'app': path.resolve(__dirname, 'app'),
+                'lang_runtime_config$': lang_runtime_config_path,
+                'lang_cache': compile_result.cache_dir,
+            }
+        },
+
         // Tell webpack that fs will be external so it doesn't complain.
         'externals': ['fs'],
 
         'plugins': [
-            // Find/replace these strings in runtime.js
-            new webpack.DefinePlugin({
-                'LANGUAGE_RUNTIME_CONFIG_PATH': JSON.stringify(lang_runtime_config_path),
-                'LANGUAGE_CACHE_DIR': JSON.stringify(compile_result.cache_dir),
-            }),
-
             // Run the Google Closure Compiler if env.optimize is set
             optimize ? new ClosureCompilerPlugin({
                 'compiler': {
