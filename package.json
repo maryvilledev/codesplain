@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "./install",
-    "test": "jest",
+    "test": "jest --watchAll",
     "build": "webpack"
   },
   "author": "Maryville Techonologies",
@@ -18,5 +18,8 @@
   },
   "devDependencies": {
     "jest": "^19.0.2"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js", "json", "jsx", "node", "csv"]
   }
 }
