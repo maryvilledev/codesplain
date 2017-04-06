@@ -1,23 +1,15 @@
-let fs = require('fs-promise');
 let path = require('path');
+let fs = require('fs-promise');
 let child_process = require('child-process-promise');
 let antlr = require('antlr4');
 
 let config = require('../config.js');
+let expect_error = require('./expect_error.js');
 let tree_matcher = require('./tree_matcher.js');
+let java_func_data_generator = require('./java_func_data_generator.js');
 
 let array_diff = function(a, b) {
     return a.filter(function(i) {return b.indexOf(i) === -1;});
-};
-
-let expect_error = function(code, callback) {
-    return function(err) {
-        if (err.code === code) {
-            return callback();
-        } else {
-            throw err;
-        }
-    };
 };
 
 module.exports = function(lang_compile_config, lang_runtime_config) {
@@ -64,6 +56,11 @@ module.exports = function(lang_compile_config, lang_runtime_config) {
 
         // Call antlr
         await child_process.spawn(cmd, args, opts);
+
+        if (lang_compile_config.needs_java_func_data) {
+            await fs.stat(config.cache_path + '/java_func_data')
+                .catch(expect_error('ENOENT', java_func_data_generator));
+        }
 
         // Make sure the generated parser has the same rules as our config file.
         let parser_classname = lang_runtime_config.language + 'Parser';

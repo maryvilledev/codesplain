@@ -13,7 +13,7 @@ public abstract class TranslatedFunction {
         run(encoder);
         String js_data = encoder.make_js_data();
 
-        String filename = "../_cache/java_func_data/" + get_name() + ".json";
+        String filename = get_name() + ".json";
         PrintWriter writer;
         try {
             writer = new PrintWriter(filename);

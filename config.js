@@ -1,6 +1,7 @@
 let path = require('path');
 
 module.exports = {
+    'app_path': path.resolve(__dirname, 'app'),
     'lang_configs_path': path.resolve(__dirname, 'language_configs'),
     'cache_path': path.resolve(__dirname, '_cache'),
     'resolve_cache_dir': function(lang_runtime_config) {

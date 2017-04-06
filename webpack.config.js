@@ -55,10 +55,11 @@ let prepare_lang = async function(filename) {
 
         'resolve': {
             'alias': {
-                'app': path.resolve(__dirname, 'app'),
-                'lang_runtime_config$': lang_runtime_config_path,
-                'lang_cache': compile_result.cache_dir,
-            }
+                'App': config.app_path,
+                'Cache': config.cache_path,
+                'LangRuntimeConfig$': lang_runtime_config_path,
+                'LangCache': compile_result.cache_dir,
+            },
         },
 
         // Tell webpack that fs will be external so it doesn't complain.
