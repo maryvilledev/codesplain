@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const fs = require('fs')
+const fs = require('fs');
 
 if (process.argv.length < 3) {
   console.error(`Usage: ${process.argv[1]} <lang>`);
@@ -18,9 +18,10 @@ if (fs.existsSync(langCsvFile)) {
   process.exit(1);
 }
 
-let csv = 'RULE,ENABLED,PRETTY_NAME,COLOR,\n'
-Object.keys(rules).forEach((rule) => {csv = csv + `${rule},0,,\n`});
+const csvHeader = 'RULE,ENABLED,PRETTY_NAME,COLOR,\n';
+const reducer = (acc, rule) => `${acc}${rule},0,,\n`;
+const csvBody = Object.keys(rules).reduce(reducer, '');
 if (!fs.existsSync('./mappings')) {
-  fs.mkdir('./mappings');
+  fs.mkdirSync('./mappings');
 }
-fs.writeFileSync(langCsvFile, csv)
+fs.writeFileSync(langCsvFile, `${csvHeader}${csvBody}`);
