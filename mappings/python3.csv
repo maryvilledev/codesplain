@@ -1,12 +1,12 @@
-RULE,ENABLED,PRETTY_NAME,COLOR,
+RULE,ENABLED,PRETTY_NAME,COLOR
 single_input,0,,
 file_input,0,,
 eval_input,0,,
 decorator,0,,
 decorators,0,,
 decorated,0,,
-funcdef,0,,
-parameters,0,,
+funcdef,1,Function Definitions,#AEC6CF
+parameters,1,Parameters,#FFB347
 typedargslist,0,,
 tfpdef,0,,
 varargslist,0,,
@@ -16,17 +16,17 @@ simple_stmt,0,,
 small_stmt,0,,
 expr_stmt,0,,
 testlist_star_expr,0,,
-augassign,0,,
+augassign,1,Augmented Assignment,#00FFFF
 del_stmt,0,,
-pass_stmt,0,,
+pass_stmt,1,Pass Statements,#FDFD96
 flow_stmt,0,,
-break_stmt,0,,
+break_stmt,1,Break Statement,#00FFA0
 continue_stmt,0,,
-return_stmt,0,,
+return_stmt,1,Return Statements,#EECCFF
 yield_stmt,0,,
 raise_stmt,0,,
 import_stmt,0,,
-import_name,0,,
+import_name,1,Import Statement,#FF6666
 import_from,0,,
 import_as_name,0,,
 dotted_as_name,0,,
@@ -37,13 +37,13 @@ global_stmt,0,,
 nonlocal_stmt,0,,
 assert_stmt,0,,
 compound_stmt,0,,
-if_stmt,0,,
-while_stmt,0,,
-for_stmt,0,,
-try_stmt,0,,
+if_stmt,1,If Statements,#FFFF00
+while_stmt,1,While Loops,#F0E68C
+for_stmt,1,For Loops,#F7ABAB
+try_stmt,1,Try Statements,#CCCCFF
 with_stmt,0,,
 with_item,0,,
-except_clause,0,,
+except_clause,1,Except Clauses,#779ECB
 suite,0,,
 test,0,,
 test_nocond,0,,
@@ -53,18 +53,18 @@ or_test,0,,
 and_test,0,,
 not_test,0,,
 comparison,0,,
-comp_op,0,,
+comp_op,1,Comparison Operator,#DAA520
 star_expr,0,,
-expr,0,,
+expr,1,Expressions,#F0ABF7
 xor_expr,0,,
-and_expr,0,,
+and_expr,1,And,#F0E68C
 shift_expr,0,,
-arith_expr,0,,
+arith_expr,1,Arithmetic Expression,#FFA500
 term,0,,
 factor,0,,
 power,0,,
 trailed_atom,0,,
-atom,0,,
+atom,1,Atoms,#ABDBF7
 testlist_comp,0,,
 trailer,0,,
 subscriptlist,0,,
@@ -72,18 +72,18 @@ subscript,0,,
 sliceop,0,,
 exprlist,0,,
 testlist,0,,
-dictorsetmaker,0,,
-classdef,0,,
+dictorsetmaker,1,Dictionary,#00FF7F
+classdef,1,Class Definitions,#03C03C
 arglist,0,,
-argument,0,,
+argument,1,Arguments,#EAF7AB
 comp_iter,0,,
 comp_for,0,,
 comp_if,0,,
 yield_expr,0,,
 yield_arg,0,,
-str,0,,
-number,0,,
-integer,0,,
+str,1,Strings,#CAABF7
+number,1,Numbers,#DEA5A4
+integer,1,Integers,#ABF7C6
 ._EPSILON,0,,
 ._EOF,0,,
 ._INVALID,0,,
@@ -112,8 +112,8 @@ integer,0,,
 .NOT,0,,
 .IS,0,,
 .NONE,0,,
-.TRUE,0,,
-.FALSE,0,,
+.TRUE,1,Boolean (True),#FF9933
+.FALSE,1,Boolean (False),#E67300
 .CLASS,0,,
 .YIELD,0,,
 .DEL,0,,
