@@ -97,7 +97,7 @@ let prepare_lang = async function(filename) {
             'libraryTarget': libraryTarget,
 
             // When libraryTarget is "window" or "var", the window key or variable name will be this value
-            'library': 'Codesplain_parse_' + lang_name,
+            'library': 'CodesplainParser',
         },
     };
 };

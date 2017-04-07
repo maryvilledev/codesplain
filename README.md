@@ -32,14 +32,14 @@ After this, all of the compiled parsers are in `public/langs/`
 * `config.js` - Codesplain configuration options.
 * `gen_lang_configs.js` - Very very hacky script that compiles each language grammar and creates a language config file that uses the result. These can be used to generate parsers for each language. The language configs that are produced should not be used to create any production parsers without first applying finalizers to each node (which is a necessarily manual process).
 * `grammars-v4/` - Contains the `.g4` grammars for a lot of languages.
-* `install.sh` - Called by npm's postinstall hook (look in `package.json`). Clones submodules (`antlr4` and `grammars-v4`), downloads the antlr compiler to `bin/`, runs `npm install` on the `antlr4` repo, links the library so it can be required, and makes the `_cache` dir.
+* `install` - Called by npm's postinstall hook (look in `package.json`). Clones submodules (`antlr4` and `grammars-v4`), downloads the antlr compiler to `bin/`, runs `npm install` on the `antlr4` repo, links the library so it can be required, and makes the `_cache` dir.
 * `language_configs/` - Contains language configurations. See "Language configurations" below.
 * `package.json` - NPM config file.
 * `public/` - Everything in here can be published.
 * `public/index.html` - Simple testing script for the generated parsers.
 * `public/langs/*.js` - Compiled, unminified parsers (from `app/runtime.js`).
 * `public/langs/*.min.js` - Compiled, minified parsers (from `app/runtime.js`).
-* `publish.sh` - Script that compiles and publishes the generated parsers to AWS S3.
+* `publish` - Script that compiles and publishes the generated parsers to AWS S3.
 * `webpack.config.js` - Kicks everything off. Calls `app/compiler.js`, then packs `app/runtime.js` and all of it's dependencies into the resulting parsers.
 
 ### Why no NPM install antlr4?

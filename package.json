@@ -1,10 +1,10 @@
 {
-  "name": "explain_my_code",
+  "name": "codesplain",
   "version": "1.0.0",
   "description": "Decomposes the lexical elements of a string of code",
   "main": "index.js",
   "scripts": {
-    "postinstall": "sh install.sh",
+    "postinstall": "./install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
