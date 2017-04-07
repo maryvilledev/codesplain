@@ -29,24 +29,19 @@ module.exports = function(data) {
             // This takes the average of min_index and max_index, and floors the result.
             // Using division will give a floating point answer
             let cur_index = (min_index + max_index) >> 1;
-            let range_min = data[cur_index];
-            let range_max = data[cur_index + 1];
 
-            if (search_val < range_min) {
-                // Search to the left of the range minimum
+            if (search_val < data[cur_index]) {
+                // Search the left half
                 max_index = cur_index - 1;
-            } else if (search_val >= range_max) {
-                // Search to the right of the range minimum
-                min_index = cur_index + 1;
             } else {
-                // At this point, range_min <= search_val < range_max
-                // We've reached the end of our search
-                // The only thing left to do is figure out if it's a  range
-                // If cur_index is even, we are inside a range.
-                return !!(cur_index % 2);
+                // Search the right half
+                min_index = cur_index + 1;
             }
         }
 
-        return false;
+        // We've reached the end of our search
+        // The only thing left to do is figure out if it's an even or odd range
+        // If min_index is even, we are inside a range.
+        return Boolean(min_index % 2);
     };
 };

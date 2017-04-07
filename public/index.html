@@ -153,7 +153,7 @@
     let code_el = document.getElementById('code');
     let formatted_el = document.getElementById('formatted');
     code_el.onkeyup = code_el.onchange = function() {
-        let parser = module.exports;
+        let parser = window['Codesplain_parse_' + lang_el.value];
         if (typeof parser !== 'function') {return;}
 
         let code = code_el.value;
