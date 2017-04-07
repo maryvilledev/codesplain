@@ -8,7 +8,7 @@ dependencies:
 
 test:
   override:
-    - yarn test
+    - yarn test-circle
 
 deployment:
   release:

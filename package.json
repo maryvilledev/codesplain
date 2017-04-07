@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "./install",
     "test": "jest --watchAll",
+    "test-circle": "jest",
     "build": "webpack"
   },
   "author": "Maryville Techonologies",
