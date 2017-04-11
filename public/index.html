@@ -141,7 +141,8 @@
 
     let lang_el = document.getElementById('language');
     lang_el.onchange = function() {
-        let path = 'langs/' + lang_el.value + '.js';
+        // let path = 'langs/' + lang_el.value + '.js';
+        let path = 'https://api.codesplain.io/dev/parsers/' + lang_el.value;
 
         var script_el = document.createElement('script');
         script_el.setAttribute('type', 'text/javascript');
@@ -153,7 +154,7 @@
     let code_el = document.getElementById('code');
     let formatted_el = document.getElementById('formatted');
     code_el.onkeyup = code_el.onchange = function() {
-        let parser = window['Codesplain_parse_' + lang_el.value];
+        let parser = window['CodesplainParser'];
         if (typeof parser !== 'function') {return;}
 
         let code = code_el.value;

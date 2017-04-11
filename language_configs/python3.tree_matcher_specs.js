@@ -17,8 +17,11 @@ module.exports = [
         // The node that was matched will be available as the root variable.
         // Variables set by the pattern (:iter, :begin, :end) will also be available.
         'actor': function() {
-            root.tags.push({
-                'type': 'for_range',
+            root.tags.push('for_range');
+
+            root.detail.push({
+                'handler': 'docs',
+                'template': 'for_range',
                 'iter': iter.text,
                 'begin': parseInt(begin.text),
                 'end': parseInt(end.text),
@@ -27,27 +30,24 @@ module.exports = [
     }, {
         'pattern': 'trailed_atom [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
         'actor': function() {
-            console.log(name.text, args.children);
-            root.tags.push({
-                'type': 'function_call',
+            root.tags.push('function_call');
+
+            root.detail.push({
+                'handler': 'docs',
+                'template': 'function_call',
                 'name': name.text,
-                'args': args.children,
+                'args': args.children.map(function(child) {return child.text;}),
             });
         },
     }, {
         'pattern': 'atom .TRUE|.FALSE',
         'actor': function() {
-            root.tags.push({
-                'type': 'boolean',
-            });
+            root.tags.push('boolean');
         },
     }, {
         'pattern': 'factor [.MINUS, /number]',
         'actor': function() {
-            console.log(root);
-            root.tags.push({
-                'type': 'negative_number',
-            });
+            root.tags.push('negative_number');
         },
     },
 ];

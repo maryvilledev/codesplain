@@ -10,11 +10,15 @@ ErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
 ErrorListener.prototype.constructor = ErrorListener;
 
 ErrorListener.prototype.syntaxError = function(recognizer, offendingSymbol, line, column, msg, e) {
-    this.callback('syntaxError', recognizer, offendingSymbol, line, column, msg, e);
+    this.callback({
+        'type': 'syntaxError',
+        'begin': offendingSymbol.start,
+        'end': offendingSymbol.end + 1,
+        'msg': msg,
+    });
 };
 
 ErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
-    // This really shouldn't happen...
 };
 
 ErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
