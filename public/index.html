@@ -141,8 +141,7 @@
 
     let lang_el = document.getElementById('language');
     lang_el.onchange = function() {
-        // let path = 'langs/' + lang_el.value + '.js';
-        let path = 'https://api.codesplain.io/dev/parsers/' + lang_el.value;
+        let path = 'langs/' + lang_el.value + '.js';
 
         var script_el = document.createElement('script');
         script_el.setAttribute('type', 'text/javascript');
