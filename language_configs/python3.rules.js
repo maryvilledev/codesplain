@@ -79,7 +79,7 @@ module.exports = {
     'dictorsetmaker': {},
     'classdef': {},
     'arglist': {},
-    'argument': {},
+    'argument': {'collapse': true},
     'comp_iter': {'collapse': true},
     'comp_for': {},
     'comp_if': {},
