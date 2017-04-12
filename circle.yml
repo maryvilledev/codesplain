@@ -2,9 +2,13 @@ machine:
   node:
     version: 7.7.2
 
+dependencies:
+  override:
+    - yarn
+
 test:
   override:
-    - echo "test"
+    - yarn test-circle
 
 deployment:
   release:

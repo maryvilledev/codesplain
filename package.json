@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "./install",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll",
+    "test-circle": "jest",
     "build": "webpack"
   },
   "author": "Maryville Techonologies",
@@ -15,5 +16,11 @@
     "fs-promise": "^2.0.0",
     "webpack": "^2.2.1",
     "webpack-closure-compiler": "^2.1.4"
+  },
+  "devDependencies": {
+    "jest": "^19.0.2"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js", "json", "jsx", "node", "csv"]
   }
 }

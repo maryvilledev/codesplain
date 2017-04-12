@@ -4,6 +4,7 @@
 LANG_CONFIGS_DIR=language_configs/
 CACHE_DIR=_cache/
 OUTPUT_DIR=public/langs
+MAPPINGS_DIR="mappings"
 PUSH_ENV="$1"
 VERSION_TAG="$2"
 
@@ -40,6 +41,7 @@ rm -rf "$CACHE_DIR/$PARSELANG/"
 
 aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
 aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
+aws s3 cp $MAPPINGS_DIR/$PARSELANG.csv s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.csv
 
 exit
 
