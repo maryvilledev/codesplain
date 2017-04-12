@@ -11,3 +11,4 @@ cd -
 npm link antlr4/runtime/JavaScript/src/antlr4/
 
 mkdir -p _cache/
+mkdir -p _cache/java_func_data/
