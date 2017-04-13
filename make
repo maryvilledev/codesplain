@@ -48,5 +48,6 @@ while (( "$#" )); do
 	esac
 done
 
+rm -r ./_cache
 $NPM run build -- --env.langs="$LANG" --env.optimize=$MINIFY --env.enable_debug=$DEBUG
 exit

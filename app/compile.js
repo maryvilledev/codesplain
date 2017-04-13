@@ -13,10 +13,16 @@ const array_diff = (a, b) => a.filter(i => b.indexOf(i) === -1);
 const resolve_grammar_path = (lang_key, grammar_file) =>
       path.resolve(__dirname, '..', 'grammars-v4', lang_key, grammar_file);
 
-// Calls each function in 'tasks' with the results of the previous task's
-// invocation. The first task is called with no args.
+/*
+Sequentially invokes each task in `tasks` using the previous tasks's
+return value as its argument. `tasks` must be an array of async functions.
+*/
 const waterfall = async (tasks) => {
-  tasks.reduce((acc, task) => task(acc), tasks[0]());
+  let args = null;
+  for(let i = 0; i < tasks.length; i++) {
+    args = await tasks[i](args);
+  }
+  return args;
 };
 
 /*
@@ -24,7 +30,7 @@ Returns a set of async closure functions with references to the given
 lang_compile_config & lang_runtime_config that can be used to build the
 parser.
 */
-const make_build_tasks = (lang_compile_config, lang_runtime_config) => {
+const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
     language,
     rules,
@@ -49,6 +55,7 @@ const make_build_tasks = (lang_compile_config, lang_runtime_config) => {
   const cache_dir     = config.resolve_cache_dir(lang_runtime_config);
   const cache_g4_path = path.resolve(cache_dir, language + '.g4');
 
+  /* ============================ Build Tasks: ============================== */
   /* --- Creates cache directory and copies grammar files into it. --- */
   const prepare_cache_dir = async () => {
     const on_eexist_err = expect_error('EEXIST', () => {});
@@ -64,7 +71,7 @@ const make_build_tasks = (lang_compile_config, lang_runtime_config) => {
   }
 
   /* --- Invokes the antlr process, returns a Promise --- */
-  const invokeAntlr = async () => {
+  const invoke_antlr = async () => {
     // Prepare options to the antlr compiler that generates
     // the antlr lexer and antlr parser
     const cmd = 'java';
@@ -162,35 +169,28 @@ const make_build_tasks = (lang_compile_config, lang_runtime_config) => {
   }
 
   /* --- Writes the runtime config modifier to file system --- */
-  const write_runtime_config_modifier = async ({ config_modifier }) => {
+  const write_runtime_config_modifier = async (config_modifier) => {
     const modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
     await fs.writeFile(modifier_path, config_modifier);
+  }
+
+  /* --- Returns the cache_dir wrapped in an object --- */
+  const final_task = async () => {
+    return { cache_dir };
   }
 
   // Return the set of async closures
   return [
     prepare_cache_dir,
-    invokeAntlr,
+    invoke_antlr,
     make_java_func_data,
     make_parser,
     make_runtime_config_modifier,
     write_runtime_config_modifier,
+    final_task,
   ];
 }
 
-
-
 module.exports = (lang_compile_config, lang_runtime_config) => {
-  const compile_promise = async () => {
-    await waterfall(make_build_tasks(lang_compile_config, lang_runtime_config));
-  };
-
-  const cache_dir = config.resolve_cache_dir(lang_runtime_config);
-    // Check if the cache directory exists using 'stat'
-    return fs.stat(cache_dir)
-      // If it does not exist, then build it up using compile_promise().
-      .catch(expect_error('ENOENT', compile_promise))
-      // In either case, return an object describing the results.
-      // Currently, this description is just where the compiled files are stored.
-      .then(() => ({ cache_dir }));
+  return waterfall(build_tasks(lang_compile_config, lang_runtime_config));
 };
