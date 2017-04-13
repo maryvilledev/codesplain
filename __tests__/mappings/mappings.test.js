@@ -7,7 +7,8 @@ describe('mappings', () => {
       const csvFileName = `${file.split('.')[0]}.csv`;
       describe(csvFileName, () => {
         const encoding = { encoding: 'utf-8' };
-        const csv = fs.readFileSync(`./mappings/${csvFileName}`, encoding)
+        const csvPath = __dirname + `/../../mappings/${csvFileName}`;
+        const csv = fs.readFileSync(csvPath, encoding)
           .split('\n')   // Make array of lines
           .slice(1, -1); // Cut off the header and newline
         it('should have a definition for all rules', () => {
@@ -17,7 +18,8 @@ describe('mappings', () => {
 
           // Now create sorted array of rules in the config
           // file, and compare the two
-          Object.keys(require(`../language_configs/${file}`))
+          const languageConfigPath = __dirname + `/../../language_configs/${file}`;
+          Object.keys(require(languageConfigPath))
             .sort((a, b) => a.localeCompare(b))
             .forEach((rule, i) => expect(rule).toEqual(tokens[i]));
         });
