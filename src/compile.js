@@ -51,23 +51,23 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const g4_path = grammar_path ? grammar_path :
     resolve_grammar_path(language_key, grammar_file);
 
-  // Figure out the path to the cache directory
-  const cache_dir     = config.resolve_cache_dir(lang_runtime_config);
-  const cache_g4_path = path.resolve(cache_dir, language + '.g4');
+  // Figure out the path to the build directory
+  const build     = config.resolve_build_dir(lang_runtime_config);
+  const build_g4_path = path.resolve(build_dir, language + '.g4');
 
   /* ============================ Build Tasks: ============================== */
-  /* --- Creates cache directory and copies grammar files into it. --- */
-  const prepare_cache_dir = async () => {
+  /* --- Creates build directory and copies grammar files into it. --- */
+  const prepare_build_dir = async () => {
     const on_eexist_err = expect_error('EEXIST', () => {});
 
-    // Make sure the cache directory exists
-    await fs.mkdir(config.cache_path).catch(on_eexist_err);
+    // Make sure the build directory exists
+    await fs.mkdir(config.build_path).catch(on_eexist_err);
 
-    // Make sure the language cache directory exists
-    await fs.mkdir(cache_dir).catch(on_eexist_err);
+    // Make sure the language build directory exists
+    await fs.mkdir(build_dir).catch(on_eexist_err);
 
-    // Copies the g4 file into the cache directory
-    await fs.copy(g4_path, cache_g4_path);
+    // Copies the g4 file into the build directory
+    await fs.copy(g4_path, build_g4_path);
   }
 
   /* --- Invokes the antlr process, returns a Promise --- */
@@ -86,7 +86,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
         language + '.g4',
     ];
     const opts = {
-        'cwd': cache_dir,
+        'cwd': build_dir,
         'stdio': ['ignore', process.stdout, process.stderr],
     };
 
@@ -96,7 +96,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   /* --- Generates java func data, if this lang needs any --- */
   const make_java_func_data = async () => {
     if (needs_java_func_data) {
-      await fs.stat(config.cache_path + '/java_func_data')
+      await fs.stat(config.build_path + '/java_func_data')
           .catch(expect_error('ENOENT', java_func_data_generator));
     }
   }
@@ -105,7 +105,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const make_parser = async () => {
     // Create instance of the parser
     const parser_classname = language + 'Parser';
-    const ParserClass = require(`${cache_dir}/${parser_classname}.js`)[parser_classname]
+    const ParserClass = require(`${build_dir}/${parser_classname}.js`)[parser_classname]
     const parser = new ParserClass();
 
     // Create an array of symbol (terminal) names
@@ -170,18 +170,18 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
 
   /* --- Writes the runtime config modifier to file system --- */
   const write_runtime_config_modifier = async (config_modifier) => {
-    const modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
+    const modifier_path = path.resolve(build_dir, 'runtime_config_modifier.js');
     await fs.writeFile(modifier_path, config_modifier);
   }
 
-  /* --- Returns the cache_dir wrapped in an object --- */
+  /* --- Returns the build_dir wrapped in an object --- */
   const final_task = async () => {
-    return { cache_dir };
+    return { build_dir };
   }
 
   // Return the set of async closures
   return [
-    prepare_cache_dir,
+    prepare_build_dir,
     invoke_antlr,
     make_java_func_data,
     make_parser,
