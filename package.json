@@ -12,7 +12,6 @@
   "author": "Maryville Techonologies",
   "license": "ISC",
   "dependencies": {
-    "async-waterfall": "^0.1.5",
     "child-process-promise": "^2.2.0",
     "fs-promise": "^2.0.0",
     "webpack": "^2.2.1",

@@ -13,12 +13,18 @@ const array_diff = (a, b) => a.filter(i => b.indexOf(i) === -1);
 const resolve_grammar_path = (lang_key, grammar_file) =>
       path.resolve(__dirname, '..', 'grammars-v4', lang_key, grammar_file);
 
+// Calls each function in 'tasks' with the results of the previous task's
+// invocation. The first task is called with no args.
+const waterfall = async (tasks) => {
+  tasks.reduce((acc, task) => task(acc), tasks[0]());
+};
+
 /*
 Returns a set of async closure functions with references to the given
 lang_compile_config & lang_runtime_config that can be used to build the
 parser.
 */
-const make_config_closures = (lang_compile_config, lang_runtime_config) => {
+const make_build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
     language,
     rules,
@@ -77,7 +83,7 @@ const make_config_closures = (lang_compile_config, lang_runtime_config) => {
         'stdio': ['ignore', process.stdout, process.stderr],
     };
 
-    return child_process.spawn(cmd, args, opts);
+    await child_process.spawn(cmd, args, opts);
   }
 
   /* --- Generates java func data, if this lang needs any --- */
@@ -120,7 +126,7 @@ const make_config_closures = (lang_compile_config, lang_runtime_config) => {
   }
 
   /* --- Dynamically creates runtime config modifier function --- */
-  const make_runtime_config_modifier = async (symbol_name_map, parser) => {
+  const make_runtime_config_modifier = async ({ symbol_name_map, parser }) => {
     // Turns these maps into human-readable JSON for insertion
     // into returned function string
     const symbol_name_map_str = JSON.stringify(symbol_name_map, null, 2);
@@ -155,44 +161,29 @@ const make_config_closures = (lang_compile_config, lang_runtime_config) => {
     `;
   }
 
+  /* --- Writes the runtime config modifier to file system --- */
+  const write_runtime_config_modifier = async ({ config_modifier }) => {
+    const modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
+    await fs.writeFile(modifier_path, config_modifier);
+  }
+
   // Return the set of async closures
-  return {
+  return [
     prepare_cache_dir,
     invokeAntlr,
     make_java_func_data,
     make_parser,
     make_runtime_config_modifier,
-  }
+    write_runtime_config_modifier,
+  ];
 }
 
 
 
 module.exports = (lang_compile_config, lang_runtime_config) => {
-    const compile_promise = async () => {
-      const {
-        prepare_cache_dir,
-        invokeAntlr,
-        make_java_func_data,
-        make_parser,
-        make_runtime_config_modifier,
-      } = make_config_closures(lang_compile_config, lang_runtime_config);
-
-      await prepare_cache_dir();
-      await invokeAntlr();
-      await make_java_func_data();
-      const {
-        symbol_name_map,
-        parser
-      } = await make_parser(lang_runtime_config);
-      const runtime_config_modifier = await make_runtime_config_modifier(
-        symbol_name_map,
-        parser
-      );
-
-      // Write the runtime config modifier
-      const modifier_path = path.resolve(cache_dir, 'runtime_config_modifier.js');
-      await fs.writeFile(modifier_path, runtime_config_modifier);
-    };
+  const compile_promise = async () => {
+    await waterfall(make_build_tasks(lang_compile_config, lang_runtime_config));
+  };
 
   const cache_dir = config.resolve_cache_dir(lang_runtime_config);
     // Check if the cache directory exists using 'stat'
