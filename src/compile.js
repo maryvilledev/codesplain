@@ -16,6 +16,7 @@ const resolve_grammar_path = (lang_key, grammar_file) =>
 /*
 Sequentially invokes each task in `tasks` using the previous tasks's
 return value as its argument. `tasks` must be an array of async functions.
+The first task is invoked with a null argument.
 */
 const waterfall = async (tasks) => {
   let args = null;
