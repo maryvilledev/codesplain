@@ -5,7 +5,7 @@ let ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 
 let config = require('./config.js');
-let compile = require('./app/compile.js');
+let compile = require('./src/compile.js');
 
 let langs;
 let optimize;
@@ -51,7 +51,7 @@ let prepare_lang = async function(filename) {
         'context': __dirname,
 
         // The file to compile. All other files are included in this file or in files included from this file.
-        'entry': path.resolve(__dirname, 'app', 'runtime.js'),
+        'entry': path.resolve(__dirname, 'src', 'runtime.js'),
 
         'resolve': {
             'alias': {

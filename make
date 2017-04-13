@@ -1,5 +1,5 @@
 #!/bin/bash
-#Operate in current direcory
+# Operate in current direcory
 cd $(dirname $0)
 
 # Variables
@@ -17,7 +17,7 @@ function help {
 	echo "	-h|--help: Prints this help text"
 }
 
-#Ensure npm installed
+# Ensure npm installed
 NPM="$(which npm)"
 if [ "$NPM" == "" ]; then
 	echo "npm not installed"
@@ -48,6 +48,9 @@ while (( "$#" )); do
 	esac
 done
 
-rm -r ./_cache
+if [[ -e "./_cache" ]]; then
+  rm -r ./_cache
+fi
+
 $NPM run build -- --env.langs="$LANG" --env.optimize=$MINIFY --env.enable_debug=$DEBUG
 exit
