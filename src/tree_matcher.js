@@ -25,8 +25,8 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
     let lexer_classname = tree_matcher_runtime_config.language + 'Lexer';
     let parser_classname = tree_matcher_runtime_config.language + 'Parser';
 
-    let LexerClass = require(compile_result.cache_dir + '/' + lexer_classname + '.js')[lexer_classname];
-    let ParserClass = require(compile_result.cache_dir + '/' + parser_classname + '.js')[parser_classname];
+    let LexerClass = require(compile_result.build_dir + '/' + lexer_classname + '.js')[lexer_classname];
+    let ParserClass = require(compile_result.build_dir + '/' + parser_classname + '.js')[parser_classname];
     let ErrorListener = require('./error_listener');
 
     // For use later, when the tree matcher is optimized

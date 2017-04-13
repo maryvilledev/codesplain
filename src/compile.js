@@ -51,8 +51,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const g4_path = grammar_path ? grammar_path :
     resolve_grammar_path(language_key, grammar_file);
 
-  // Figure out the path to the build directory
-  const build     = config.resolve_build_dir(lang_runtime_config);
+  const build_dir     = config.resolve_build_dir(lang_runtime_config);
   const build_g4_path = path.resolve(build_dir, language + '.g4');
 
   /* ============================ Build Tasks: ============================== */

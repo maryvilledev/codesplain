@@ -56,9 +56,9 @@ let prepare_lang = async function(filename) {
         'resolve': {
             'alias': {
                 'App': config.app_path,
-                'Cache': config.cache_path,
+                'Build': config.build_path,
                 'LangRuntimeConfig$': lang_runtime_config_path,
-                'LangCache': compile_result.cache_dir,
+                'LangBuild': compile_result.build_dir,
             },
         },
 

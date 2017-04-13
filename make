@@ -48,8 +48,8 @@ while (( "$#" )); do
 	esac
 done
 
-if [[ -e "./_cache" ]]; then
-  rm -r ./_cache
+if [[ -e "./build" ]]; then
+  rm -r ./build
 fi
 
 $NPM run build -- --env.langs="$LANG" --env.optimize=$MINIFY --env.enable_debug=$DEBUG
