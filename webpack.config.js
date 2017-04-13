@@ -88,7 +88,7 @@ let prepare_lang = async function(filename) {
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
 
             // The output directory
-            'path': path.resolve(__dirname, 'public', 'langs'),
+            'path': path.resolve(__dirname, 'build', 'parsers'),
 
             // How to export the parser library
             //   commonjs2 - Use module.exports

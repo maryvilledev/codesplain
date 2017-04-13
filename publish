@@ -1,48 +1,68 @@
 #!/usr/bin/env bash
 
+################################################################################
+# This script builds the parsers and pushes them to their S3 bucket. It can be #
+# used in dev mode, to push to the dev bucket:                                 #
+#     ./publish dev                                                            #
+# or release mode, to push to a prod bucket with the specified release version:#
+#     ./publish release v0.1                                                   #
+################################################################################
+
 # Config begin
-LANG_CONFIGS_DIR=language_configs/
-CACHE_DIR=_cache/
-OUTPUT_DIR=public/langs
+LANG_CONFIGS_DIR="language_configs/"
+BUILD_DIR="build/"
 MAPPINGS_DIR="mappings"
+
 PUSH_ENV="$1"
 VERSION_TAG="$2"
-
 # Config end
 
+### Helper functions:
+# Pushes parsers for specified language and their mappings to S3
+function pushToS3 {
+  printf "Pushing $1.js and $1.min.js to S3... "
+  aws s3 cp \
+    $BUILD_DIR/parsers/$1.js \
+    s3://codesplain-parsers/$1/$VERSION_TAG/$1.js
+  aws s3 cp \
+    $BUILD_DIR/parsers/$1.min.js \
+    s3://codesplain-parsers/$1/$VERSION_TAG/$1.min.js
+  aws s3 cp \
+    $MAPPINGS_DIR/$1.csv \
+    s3://codesplain-parsers/$1/$VERSION_TAG/$1.csv
+  printf "Done.\n"
+}
 
-if [ "$PUSH_ENV" == "release" ]
-then
-  echo "Releasing Codesplain Parsers"
-elif [ "$PUSH_ENV" == "dev" ]
-then
-  echo "Updating Codesplain Parsers in dev environment"
+# Builds the minified and non-minified parsers for the given language
+function buildParsers {
+  printf "Building parsers for $1... "
+  ./make --lang $1 --debug >/dev/null
+  ./make --lang $1 --minify >/dev/null
+  printf "Done.\n"
+}
+
+### Process command line args
+if [[ "$PUSH_ENV" == "release" ]]; then
+  echo "### Releasing Codesplain Parsers ###"
+elif [[ "$PUSH_ENV" == "dev" ]]; then
+  echo "### Updating Codesplain Parsers in dev environment ###"
   VERSION_TAG="dev"
 else
    echo "Error! Invalid PUSH_ENV" 1>&2
    exit 1
 fi
 
-
-rm -rf $CACHE_DIR/treematcher/
-
 # In the future we want to iterate over all language configs:
 # for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
 
 # But for now just do python3:
-lang_config="$LANG_CONFIGS_DIR/python3.js"
+lang_config="$BUILD_DIR/parsers/python3.js"
 
-PARSELANG="$(basename $lang_config .js)"
+parser_lang="$(basename $lang_config .js)"
 
-rm -rf "$CACHE_DIR/$PARSELANG/"
-./make -d
-./make -m
-
-
-aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
-aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
-aws s3 cp $MAPPINGS_DIR/$PARSELANG.csv s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.csv
+# Build parser and push to S3
+buildParsers $parser_lang
+pushToS3 $parser_lang
 
 exit
-
 # done
