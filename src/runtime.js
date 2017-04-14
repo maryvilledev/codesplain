@@ -3,6 +3,11 @@ let antlr = require('antlr4');
 
 let lang_runtime_config = require('LangRuntimeConfig');
 
+// Modify the runtime config to give it the following properties that are
+// generated at compile time (in compile.js):
+//   • symbol_name_map => Array of Strings
+//   • rule_name_map   => Array of Strings
+//   • tree_matcher    => Function (optional)
 require('LangBuild/runtime_config_modifier.js')(lang_runtime_config);
 
 let lexer_classname = lang_runtime_config.language + 'Lexer';

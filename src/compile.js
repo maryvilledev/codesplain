@@ -70,7 +70,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
     await fs.copy(g4_path, build_g4_path);
   }
 
-  /* --- Invokes the antlr process, returns a Promise --- */
+  /* --- Invokes the antlr process --- */
   const invoke_antlr = async () => {
     // Prepare options to the antlr compiler that generates
     // the antlr lexer and antlr parser
@@ -164,8 +164,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
       lang_runtime_config.symbol_name_map = ${symbol_name_map_str};
       lang_runtime_config.rule_name_map   = ${rule_name_map_str};
       ${tree_matchers_str}
-    };
-    `;
+    };`;
   }
 
   /* --- Writes the runtime config modifier to file system --- */
