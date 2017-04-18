@@ -32,8 +32,8 @@ for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
   printf "Building and publishing $PARSELANG parser\n"
 
   rm -rf "$CACHE_DIR/$PARSELANG/"
-  ./make --lang $PARSELANG --debug >/dev/null
-  ./make --lang $PARSELANG --minify >/dev/null
+  ./make --lang $PARSELANG --debug
+  ./make --lang $PARSELANG --minify
 
   aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
   aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
