@@ -26,23 +26,18 @@ fi
 
 rm -rf $CACHE_DIR/treematcher/
 
-# In the future we want to iterate over all language configs:
-# for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
+# Build and push all parsers to S3 buckets:
+for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
+  PARSELANG="$(basename $lang_config .compile.js)"
+  printf "Building and publishing $PARSELANG parser\n"
 
-# But for now just do python3:
-lang_config="$LANG_CONFIGS_DIR/python3.js"
+  rm -rf "$CACHE_DIR/$PARSELANG/"
+  ./make --lang $PARSELANG --debug
+  ./make --lang $PARSELANG --minify
 
-PARSELANG="$(basename $lang_config .js)"
-
-rm -rf "$CACHE_DIR/$PARSELANG/"
-./make -d
-./make -m
-
-
-aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
-aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
-aws s3 cp $MAPPINGS_DIR/$PARSELANG.csv s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.csv
+  aws s3 cp $OUTPUT_DIR/$PARSELANG.min.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.min.js
+  aws s3 cp $OUTPUT_DIR/$PARSELANG.js s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.js
+  aws s3 cp $MAPPINGS_DIR/$PARSELANG.csv s3://codesplain-parsers/$PARSELANG/$VERSION_TAG/$PARSELANG.csv
+done
 
 exit
-
-# done
