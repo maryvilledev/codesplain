@@ -4,8 +4,7 @@ const child_process = require('child-process-promise');
 const antlr = require('antlr4');
 
 const config = require('../config.js');
-const expect_error = require('../utils/expect_error.js');
-const run_antlr = require('./run_antlr.js');
+const expect_error = require('./expect_error.js');
 const tree_matcher = require('./tree_matcher.js');
 const java_func_data_generator = require('./java_func_data_generator.js');
 
@@ -34,10 +33,13 @@ parser.
 */
 const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
+<<<<<<< Updated upstream
+=======
     tree_matcher_specs,
     needs_java_func_data,
   } = lang_compile_config;
   const {
+>>>>>>> Stashed changes
     language,
     rules,
   } = lang_runtime_config;
@@ -48,7 +50,53 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
     grammar_file,
   } = lang_compile_config;
 
-  const result = await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
+  // Figure out the language key
+  const language_key = language.toLowerCase();
+
+  // Figure out the path to the grammar file
+  const g4_path = grammar_path ? grammar_path :
+    resolve_grammar_path(language_key, grammar_file);
+
+  const build_dir     = config.resolve_build_dir(lang_runtime_config);
+  const build_g4_path = path.resolve(build_dir, language + '.g4');
+
+  /* ============================ Build Tasks: ============================== */
+  /* --- Creates build directory and copies grammar files into it. --- */
+  const prepare_build_dir = async () => {
+    const on_eexist_err = expect_error('EEXIST', () => {});
+
+    // Make sure the build directory exists
+    await fs.mkdir(config.build_path).catch(on_eexist_err);
+
+    // Make sure the language build directory exists
+    await fs.mkdir(build_dir).catch(on_eexist_err);
+
+    // Copies the g4 file into the build directory
+    await fs.copy(g4_path, build_g4_path);
+  }
+
+  /* --- Invokes the antlr process --- */
+  const invoke_antlr = async () => {
+    // Prepare options to the antlr compiler that generates
+    // the antlr lexer and antlr parser
+    const cmd = 'java';
+    const args = [
+        '-Xmx500M',
+        '-cp', '../../bin/antlr-4.6-complete.jar',
+        'org.antlr.v4.Tool',
+        '-long-messages',
+        generate_listener ? '-listener' : '-no-listener',
+        generate_visitor ? '-visitor' : '-no-visitor',
+        '-Dlanguage=JavaScript',
+        language + '.g4',
+    ];
+    const opts = {
+        'cwd': build_dir,
+        'stdio': ['ignore', process.stdout, process.stderr],
+    };
+
+    await child_process.spawn(cmd, args, opts);
+  }
 
   /* --- Generates java func data, if this lang needs any --- */
   const make_java_func_data = async () => {
@@ -131,7 +179,9 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   }
 
   /* --- Returns the build_dir wrapped in an object --- */
-  const final_task = async () => result
+  const final_task = async () => {
+    return { build_dir };
+  }
 
   // Return the set of async closures
   return [
