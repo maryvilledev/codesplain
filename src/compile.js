@@ -11,9 +11,6 @@ const java_func_data_generator = require('./java_func_data_generator.js');
 
 const array_diff = (a, b) => a.filter(i => b.indexOf(i) === -1);
 
-const resolve_grammar_path = (lang_key, grammar_file) =>
-      path.resolve(__dirname, '..', 'grammars-v4', lang_key, grammar_file);
-
 /*
 Sequentially invokes each task in `tasks` using the previous tasks's
 return value as its argument. `tasks` must be an array of async functions.
@@ -34,20 +31,18 @@ parser.
 */
 const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
+    tree_matcher_specs,
+    needs_java_func_data,
+  } = lang_compile_config;
+  const {
     language,
     rules,
   } = lang_runtime_config;
-  const {
-    tree_matcher_specs,
-    needs_java_func_data,
-    grammar_path,
-    grammar_file,
-  } = lang_compile_config;
 
-  const build_dir = config.resolve_build_dir(lang_runtime_config);
+  let result;
 
   const make_lexer_and_parser = async () => {
-    await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
+    result = await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
   }
 
   /* --- Generates java func data, if this lang needs any --- */
@@ -62,7 +57,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const make_parser = async () => {
     // Create instance of the parser
     const parser_classname = language + 'Parser';
-    const ParserClass = require(`${build_dir}/${parser_classname}.js`)[parser_classname]
+    const ParserClass = require(`${result.build_dir}/${parser_classname}.js`)[parser_classname]
     const parser = new ParserClass();
 
     // Create an array of symbol (terminal) names
@@ -126,12 +121,12 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
 
   /* --- Writes the runtime config modifier to file system --- */
   const write_runtime_config_modifier = async (config_modifier) => {
-    const modifier_path = path.resolve(build_dir, 'runtime_config_modifier.js');
+    const modifier_path = path.resolve(result.build_dir, 'runtime_config_modifier.js');
     await fs.writeFile(modifier_path, config_modifier);
   }
 
   /* --- Returns the build_dir wrapped in an object --- */
-  const final_task = async () => ({ build_dir });
+  const final_task = async () => result;
 
   // Return the set of async closures
   return [

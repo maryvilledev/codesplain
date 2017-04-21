@@ -4,10 +4,12 @@ const antlr = require('antlr4');
 const expect_error = require('../../utils/expect_error.js');
 const run_antlr = require('../../utils/run_antlr.js');
 const run_java = require('../../utils/run_java.js');
+const webpack = require('webpack');
 
 const cache_dir = '/tmp/codesplain/';
 
 const genTreeViaJava = async function(lang_compile_config, lang_runtime_config, code) {
+  return 'abc';
   const {
     build_dir
   } = await run_antlr(lang_compile_config, lang_runtime_config, 'Java');
@@ -41,6 +43,19 @@ const genTreeViaJava = async function(lang_compile_config, lang_runtime_config, 
 };
 
 const genTreeViaJs = async function(lang_compile_config, lang_runtime_config, code) {
+  let config = await require('../../webpack.config.js')({
+    'langs': lang_runtime_config.language,
+    'optimize': 0,
+    'libraryTarget': 'commonjs',
+    'enable_debug': true,
+  });
+  let compiler = webpack(config);
+  compiler.run(function(err, stats) {
+    if (err) throw err;
+    console.log(arguments);
+  });
+
+/*
   const {
     build_dir
   } = await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
@@ -70,6 +85,7 @@ const genTreeViaJs = async function(lang_compile_config, lang_runtime_config, co
   let tree = parser[lang_runtime_config.entry_rule]();
 
   return tree.toStringTree(parser);
+*/
 };
 
 const compare = async function(language_name, code_file) {
@@ -97,7 +113,7 @@ describe('grammars-v4/', () => {
   });
 
   describe('grammars-v4/java8/', () => {
-    it(`tags for range loops`, () => {
+    it(`handles basic hello worlds`, () => {
       return compare('python3', __dirname + '/code/snippet.1.py').then(data => {
         expect(data).toBeTruthy();
       });

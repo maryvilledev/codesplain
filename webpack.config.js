@@ -103,7 +103,7 @@ let prepare_lang = async function(filename) {
 
 module.exports = async function(env) {
     // Read command line options
-    langs = env && env.langs ? env.langs.split(',') : undefined;
+    langs = env && env.langs ? env.langs.toLowerCase().split(',') : undefined;
     optimize = Boolean(env && parseInt(env.optimize));
     libraryTarget = (env && env.libraryTarget) || 'var';
     global.enable_debug = Boolean(env && parseInt(env.enable_debug));
