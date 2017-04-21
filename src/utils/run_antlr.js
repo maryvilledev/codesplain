@@ -2,9 +2,8 @@ const path = require('path');
 const fs = require('fs-promise');
 const child_process = require('child-process-promise');
 
-const config = require('../config.js');
+const config = require('../../config.js');
 const expect_error = require('./expect_error.js');
-
 
 module.exports = async (lang_compile_config, lang_runtime_config, target_language) => {
   const {
@@ -21,7 +20,7 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
   const language_key = language.toLowerCase();
 
   // Figure out the path to the grammar file
-  const g4_dir = grammar_dir ? grammar_dir : path.resolve(__dirname, '..', 'grammars-v4', language_key);
+  const g4_dir = grammar_dir ? grammar_dir : path.resolve(__dirname, '..', '..', 'grammars-v4', language_key);
   const g4_path = path.resolve(g4_dir, grammar_files[target_language]);
 
   const build_dir     = config.resolve_build_dir(lang_runtime_config);
@@ -49,7 +48,7 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
     const cmd = 'java';
     const args = [
         '-Xmx500M',
-        '-cp', path.resolve(__dirname, '../bin/antlr-4.6-complete.jar'),
+        '-cp', path.resolve(__dirname, '../../bin/antlr-4.6-complete.jar'),
         'org.antlr.v4.Tool',
         '-long-messages',
         generate_listener ? '-listener' : '-no-listener',

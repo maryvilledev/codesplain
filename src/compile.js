@@ -3,9 +3,9 @@ const fs = require('fs-promise');
 const child_process = require('child-process-promise');
 const antlr = require('antlr4');
 
-const config = require('../config.js');
-const expect_error = require('../utils/expect_error.js');
-const run_antlr = require('./run_antlr.js');
+const config = require('../config');
+const expect_error = require('./utils/expect_error.js');
+const run_antlr = require('./utils/run_antlr.js');
 const tree_matcher = require('./tree_matcher.js');
 const java_func_data_generator = require('./java_func_data_generator.js');
 
@@ -34,10 +34,6 @@ parser.
 */
 const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
-    tree_matcher_specs,
-    needs_java_func_data,
-  } = lang_compile_config;
-  const {
     language,
     rules,
   } = lang_runtime_config;
@@ -48,7 +44,11 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
     grammar_file,
   } = lang_compile_config;
 
-  const result = await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
+  const build_dir = config.resolve_build_dir(lang_runtime_config);
+
+  const make_lexer_and_parser = async () => {
+    await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
+  }
 
   /* --- Generates java func data, if this lang needs any --- */
   const make_java_func_data = async () => {
@@ -131,12 +131,11 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
   }
 
   /* --- Returns the build_dir wrapped in an object --- */
-  const final_task = async () => result
+  const final_task = async () => ({ build_dir });
 
   // Return the set of async closures
   return [
-    prepare_build_dir,
-    invoke_antlr,
+    make_lexer_and_parser,
     make_java_func_data,
     make_parser,
     make_runtime_config_modifier,

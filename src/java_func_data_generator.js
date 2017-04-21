@@ -3,7 +3,7 @@ let fs = require('fs-promise');
 let child_process = require('child-process-promise');
 
 let config = require('../config');
-let expect_error = require('./expect_error.js');
+let expect_error = require('./utils/expect_error.js');
 
 let compile_promise;
 

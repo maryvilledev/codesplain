@@ -3,7 +3,6 @@ let path = require('path');
 let webpack = require('webpack');
 let ClosureCompilerPlugin = require('webpack-closure-compiler');
 
-
 let config = require('./config.js');
 let compile = require('./src/compile.js');
 
