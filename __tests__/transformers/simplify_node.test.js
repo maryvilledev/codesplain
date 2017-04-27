@@ -5,7 +5,7 @@ describe(`simplify_node.js`, () => {
     makeAntlrTerminal,
     makeNode,
     makeTerminal,
-  } = require('../../utils/utils');
+  } = require('../../src/utils/utils.js');
   const lang_runtime_config = {
     symbol_name_map: [
       '.BLAH',

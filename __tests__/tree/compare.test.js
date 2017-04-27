@@ -1,12 +1,12 @@
 const path = require('path');
 const fs = require('fs-promise');
 const antlr = require('antlr4');
-const expect_error = require('../../utils/expect_error.js');
-const run_antlr = require('../../utils/run_antlr.js');
-const run_java = require('../../utils/run_java.js');
+const expect_error = require('../../src/utils/expect_error.js');
+const run_antlr = require('../../src/utils/run_antlr.js');
+const run_java = require('../../src/utils/run_java.js');
 const webpack = require('webpack');
 
-const cache_dir = '/tmp/codesplain/';
+const config = require('../../config');
 
 const genTreeViaJava = async function(lang_compile_config, lang_runtime_config, code) {
   return 'abc';
@@ -21,12 +21,12 @@ const genTreeViaJava = async function(lang_compile_config, lang_runtime_config, 
 
   // Add CLASSPATH to environment
   const environment = Object.create(process.env);
-  let classpath = environment.CLASSPATH ? environment.CLASSPATH.split(':') : [];
+  const classpath = environment.CLASSPATH ? environment.CLASSPATH.split(':') : [];
   classpath.unshift(path.resolve(__dirname, '../../bin/antlr-4.6-complete.jar'));
   classpath.unshift('.');
   environment.CLASSPATH = classpath.join(':');
 
-  let result = await run_java(
+  const result = await run_java(
     java_sources,
     'org.antlr.v4.gui.TestRig',
     [lang_runtime_config.language, lang_runtime_config.entry_rule, '-tree'],
@@ -43,17 +43,38 @@ const genTreeViaJava = async function(lang_compile_config, lang_runtime_config, 
 };
 
 const genTreeViaJs = async function(lang_compile_config, lang_runtime_config, code) {
-  let config = await require('../../webpack.config.js')({
+  const output_path = path.resolve(config.build_path, 'output');
+
+  const webpack_config = await require('../../webpack.config.js')({
     'langs': lang_runtime_config.language,
     'optimize': 0,
-    'libraryTarget': 'commonjs',
+    'libraryTarget': 'commonjs2',
+    'outputPath': output_path,
     'enable_debug': true,
   });
-  let compiler = webpack(config);
-  compiler.run(function(err, stats) {
-    if (err) throw err;
-    console.log(arguments);
+
+  const compiler = webpack(webpack_config);
+  await new Promise(function(resolve, reject) {
+    compiler.run(function(err, stats) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(stats);
+      }
+    });
   });
+
+  const parser = require(path.resolve(output_path, lang_runtime_config.language));
+
+console.log('code start');
+  const string_tree = parser(code, function(err) {
+    throw err;
+  }, {
+    'return_toStringTree': true,
+  });
+  console.log('code end');
+
+  return string_tree;
 
 /*
   const {
@@ -91,19 +112,24 @@ const genTreeViaJs = async function(lang_compile_config, lang_runtime_config, co
 const compare = async function(language_name, code_file) {
   const lang_compile_config = require(`../../language_configs/${language_name}.compile.js`);
   const lang_runtime_config = require(`../../language_configs/${language_name}.runtime.js`);
-  const code = await fs.readFile(code_file);
+  const code = await fs.readFile(code_file, {'encoding': 'utf8'});
   const treeViaJava = await genTreeViaJava(lang_compile_config, lang_runtime_config, code);
-  console.log('abc');
+  console.log(treeViaJava);
   const treeViaJs = await genTreeViaJs(lang_compile_config, lang_runtime_config, code);
-  console.log('def');
+  console.log(treeViaJs);
   return treeViaJava === treeViaJs;
 };
+
 
 
 const prev_timeout = jasmine.getEnv().DEFAULT_TIMEOUT_INTERVAL;
 jasmine.getEnv().DEFAULT_TIMEOUT_INTERVAL = 20000;
 
 describe('grammars-v4/', () => {
+  afterAll(() => {
+    fs.unlink(config.build_path);
+  });
+
   describe('grammars-v4/java8/', () => {
     it(`handles basic hello worlds`, () => {
       return compare('java8', __dirname + '/code/snippet.0.java').then(data => {
@@ -111,7 +137,7 @@ describe('grammars-v4/', () => {
       });
     });
   });
-
+/*
   describe('grammars-v4/java8/', () => {
     it(`handles basic hello worlds`, () => {
       return compare('python3', __dirname + '/code/snippet.1.py').then(data => {
@@ -119,6 +145,7 @@ describe('grammars-v4/', () => {
       });
     });
   });
+*/
 });
 
 jasmine.getEnv().DEFAULT_TIMEOUT_INTERVAL = prev_timeout;

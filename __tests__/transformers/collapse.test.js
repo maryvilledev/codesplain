@@ -1,6 +1,6 @@
 describe('collapse.js', () => {
   const collapse = require('../../src/transformers/collapse.js');
-  const { makeNode } = require('../../utils/utils.js');
+  const { makeNode } = require('../../src/utils/utils.js');
 
   const start  = 0;
   const end    = 5;

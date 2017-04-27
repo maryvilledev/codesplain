@@ -1,4 +1,4 @@
-const { makeNode } = require('../../utils/utils.js');
+const { makeNode } = require('../../src/utils/utils.js');
 
 describe(`test-utils.js`, () => {
   describe(`makeNode`, () => {

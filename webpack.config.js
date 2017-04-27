@@ -1,19 +1,20 @@
-let fs = require('fs-promise');
-let path = require('path');
-let webpack = require('webpack');
-let ClosureCompilerPlugin = require('webpack-closure-compiler');
+const fs = require('fs-promise');
+const path = require('path');
+const webpack = require('webpack');
+const ClosureCompilerPlugin = require('webpack-closure-compiler');
 
-let config = require('./config.js');
-let compile = require('./src/compile.js');
+const config = require('./config.js');
+const compile = require('./src/compile.js');
 
 let langs;
 let optimize;
 let libraryTarget;
+let outputPath;
 
 // Filter the files that should be compiled
-let filter_lang = function(filename) {
+const filter_lang = function(filename) {
     // Get the language name
-    let lang_name = filename.slice(0, -11);
+    const lang_name = filename.slice(0, -11);
 
     // Make sure the filename ends with ".compile.js"
     if (filename.slice(-11) !== '.compile.js') {return false;}
@@ -28,21 +29,21 @@ let filter_lang = function(filename) {
     return true;
 };
 
-let prepare_lang = async function(filename) {
+const prepare_lang = async function(filename) {
     // Get the language name again (same as above)
-    let lang_name = filename.slice(0, -11);
+    const lang_name = filename.slice(0, -11);
 
     // Load the language config files
-    let lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
-    let lang_runtime_config_path = path.resolve(config.lang_configs_path, lang_name + '.runtime.js');
-    let lang_compile_config = require(lang_compile_config_path);
-    let lang_runtime_config = require(lang_runtime_config_path);
+    const lang_compile_config_path = path.resolve(config.lang_configs_path, lang_name + '.compile.js');
+    const lang_runtime_config_path = path.resolve(config.lang_configs_path, lang_name + '.runtime.js');
+    const lang_compile_config = require(lang_compile_config_path);
+    const lang_runtime_config = require(lang_runtime_config_path);
 
     // Compile it!
     // This does a few things:
     //   1. Runs the antlr compiler that generates a javascript lexer and parser
     //   2. Runs the tree matcher compiler that generates tree matchers.
-    let compile_result = await compile(lang_compile_config, lang_runtime_config);
+    const compile_result = await compile(lang_compile_config, lang_runtime_config);
 
     // Return an object that will be used by webpack to compile the parser.
     return {
@@ -87,7 +88,7 @@ let prepare_lang = async function(filename) {
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
 
             // The output directory
-            'path': path.resolve(__dirname, 'build', 'parsers'),
+            'path': outputPath,
 
             // How to export the parser library
             //   commonjs2 - Use module.exports
@@ -106,14 +107,15 @@ module.exports = async function(env) {
     langs = env && env.langs ? env.langs.toLowerCase().split(',') : undefined;
     optimize = Boolean(env && parseInt(env.optimize));
     libraryTarget = (env && env.libraryTarget) || 'var';
+    outputPath = (env && env.outputPath) || path.resolve(__dirname, 'build', 'parsers');
     global.enable_debug = Boolean(env && parseInt(env.enable_debug));
 
     // Then, find language configuration files
-    let files = await fs.readdir(config.lang_configs_path);
+    const files = await fs.readdir(config.lang_configs_path);
 
     // Filter langs and compile them.
     // Prepare_lang returns a promise, so after this step we have an array of promises.
-    let lang_configs = files.filter(filter_lang).map(prepare_lang);
+    const lang_configs = files.filter(filter_lang).map(prepare_lang);
 
     if (lang_configs.length === 0) {
         // If no languages were compiled, warn the user.
