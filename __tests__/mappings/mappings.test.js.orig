@@ -17,15 +17,22 @@ describe('mappings', () => {
           const tokens = csv.map(line => line.split(',')[0])
             .sort((a, b) => a.localeCompare(b));
 
+<<<<<<< HEAD:__tests__/mappings/mappings.test.js
+          // Now create sorted array of rules in the config
+          // file, and compare the two
+          const languageConfigPath = __dirname + `/../../language_configs/${file}`;
+          Object.keys(require(languageConfigPath))
+=======
           // Extract types from tree_matcher_specs.js file for this lang
           const treeMatcherTypes = require(
-            `../../language_configs/${lang}.tree_matcher_specs.js`
+            `../language_configs/${lang}.tree_matcher_specs.js`
           ).map(spec => spec.type);
 
           // Now create a sorted array of rules in the config files, and
           // the tree matcher specs file, then compare the two
           Object.keys(require(`../language_configs/${lang}.rules.js`))
             .concat(treeMatcherTypes)
+>>>>>>> master:__tests__/mappings.js
             .sort((a, b) => a.localeCompare(b))
             .forEach((rule, i) => expect(rule).toEqual(tokens[i]));
         });
