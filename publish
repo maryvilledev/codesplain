@@ -52,17 +52,14 @@ else
    exit 1
 fi
 
-# In the future we want to iterate over all language configs:
-# for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
 
-# But for now just do python3:
-lang_config="$BUILD_DIR/parsers/python3.js"
+# Build and push all parsers to S3 buckets:
+for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do
+  parser_lang="$(basename $lang_config .compile.js)"
 
-parser_lang="$(basename $lang_config .js)"
-
-# Build parser and push to S3
-buildParsers $parser_lang
-pushToS3 $parser_lang
+  # Build parser and push to S3
+  buildParsers $parser_lang
+  pushToS3 $parser_lang
+done
 
 exit
-# done
