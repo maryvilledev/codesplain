@@ -13,7 +13,7 @@ ErrorListener.prototype.syntaxError = function(recognizer, offendingSymbol, line
     this.callback({
         'type': 'syntaxError',
         'begin': offendingSymbol.start,
-        'end': offendingSymbol.end + 1,
+        'end': offendingSymbol.stop + 1,
         'msg': msg,
     });
 };
