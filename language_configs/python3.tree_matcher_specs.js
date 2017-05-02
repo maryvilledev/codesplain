@@ -1,5 +1,7 @@
 module.exports = [
     {
+        provides_tags: ['for_range'],
+
         // The pattern specifies which nodes to match.
         // When a node is matched, actor will be executed.
         pattern: 'for_stmt [.FOR, /.NAME:iter, .IN, /trailed_atom [/.NAME="range", trailer\
@@ -16,7 +18,7 @@ module.exports = [
         // The actor will be run when a node matches.
         // The node that was matched will be available as the root variable.
         // Variables set by the pattern (:iter, :begin, :end) will also be available.
-        'actor': function() {
+        actor: function() {
             root.tags.push('for_range');
 
             root.detail.push({
@@ -28,8 +30,10 @@ module.exports = [
             });
         },
     }, {
-        'pattern': 'trailed_atom [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
-        'actor': function() {
+        provides_tags: ['function_call'],
+
+        pattern: 'trailed_atom [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
+        actor: function() {
             root.tags.push('function_call');
 
             root.detail.push({
@@ -40,13 +44,15 @@ module.exports = [
             });
         },
     }, {
-        'pattern': 'atom .TRUE|.FALSE',
-        'actor': function() {
+        provides_tags: ['boolean'],
+        pattern: 'atom .TRUE|.FALSE',
+        actor: function() {
             root.tags.push('boolean');
         },
     }, {
-        'pattern': 'factor [.MINUS, /number]',
-        'actor': function() {
+        provides_tags: ['negative_number'],
+        pattern: 'factor [.MINUS, /number]',
+        actor: function() {
             root.tags.push('negative_number');
         },
     },
