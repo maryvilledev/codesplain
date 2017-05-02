@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Exit if error
+set -e
+
 # Config begin
 LANG_CONFIGS_DIR=language_configs/
 CACHE_DIR=_cache/
@@ -25,6 +28,7 @@ fi
 
 
 rm -rf $CACHE_DIR/treematcher/
+rm -rf $CACHE_DIR/java_func_data/
 
 # Build and push all parsers to S3 buckets:
 for lang_config in $LANG_CONFIGS_DIR/*.compile.js; do

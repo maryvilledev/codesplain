@@ -1,5 +1,9 @@
 #!/bin/bash
-#Operate in current direcory
+
+# Exit if error
+set -e
+
+# Operate in current direcory
 cd $(dirname $0)
 
 # Variables
