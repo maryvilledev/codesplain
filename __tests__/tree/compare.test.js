@@ -114,10 +114,10 @@ const compare = async function(language_name, code_file) {
   const treeViaJs = await genTreeViaJs(lang_runtime_config, js_parser, code);
   const t5 = Date.now();
 
-  console.log('[' + language_name + '] prepare:  ' + (t2 - t1) + 'ms');
-  console.log('[' + language_name + '] readFile: ' + (t3 - t2) + 'ms');
-  console.log('[' + language_name + '] genJava:  ' + (t4 - t3) + 'ms');
-  console.log('[' + language_name + '] genJs:    ' + (t5 - t4) + 'ms');
+  console.log('compare(' + code_file + ') prepare:  ' + (t2 - t1) + 'ms');
+  console.log('compare(' + code_file + ') readFile: ' + (t3 - t2) + 'ms');
+  console.log('compare(' + code_file + ') genJava:  ' + (t4 - t3) + 'ms');
+  console.log('compare(' + code_file + ') genJs:    ' + (t5 - t4) + 'ms');
 
   return treeViaJava.trim() === treeViaJs.trim();
 };
@@ -142,12 +142,15 @@ describe('grammars-v4/', () => {
       expect.assertions(1);
       return compare(lang_key, __dirname + '/code/' + code_filename).then(data => {
         expect(data).toBeTruthy();
+      }).catch(err => {
+        console.error(err);
       });
     });
   };
 
   describe('grammars-v4/python3/', () => {
     test_snippet('python3', 'handles basic hello worlds', 'snippet.voc84cjo.py');
+    test_snippet('python3', 'handles a script adding the input arguments', 'snippet.kt29xnfw.py');
   });
 
   describe('grammars-v4/java8/', () => {
