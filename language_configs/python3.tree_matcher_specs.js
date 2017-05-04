@@ -2,7 +2,7 @@ module.exports = [
     {
         // The pattern specifies which nodes to match.
         // When a node is matched, actor will be executed.
-        pattern: 'for_stmt [.FOR, /.NAME:iter, .IN, /trailed_atom [/.NAME="range", trailer\
+        pattern: 'for_stmt [.FOR, /.NAME:iter, .IN, /power [/.NAME="range", trailer\
             [.OPEN_PAREN, arglist [/.DECIMAL_INTEGER:begin, .COMMA,\
             /.DECIMAL_INTEGER:end], .CLOSE_PAREN]], .COLON, suite]',
 
@@ -28,7 +28,7 @@ module.exports = [
             });
         },
     }, {
-        pattern: 'trailed_atom [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
+        pattern: 'power [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
         type: 'function_call',
         actor: function() {
             console.log(name.text, args.children);

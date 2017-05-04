@@ -23,7 +23,7 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
   const g4_dir = grammar_dir ? grammar_dir : path.resolve(__dirname, '..', '..', 'grammars-v4', language_key);
   const g4_path = path.resolve(g4_dir, grammar_files[target_language]);
 
-  const build_dir     = config.resolve_build_dir(lang_runtime_config);
+  const build_dir     = config.resolve_build_dir(lang_runtime_config, target_language);
   const build_g4_path = path.resolve(build_dir, language + '.g4');
 
   /* ============================ Build Tasks: ============================== */

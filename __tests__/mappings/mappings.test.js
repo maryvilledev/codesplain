@@ -24,7 +24,7 @@ describe('mappings', () => {
 
           // Now create a sorted array of rules in the config files, and
           // the tree matcher specs file, then compare the two
-          Object.keys(require(`../language_configs/${lang}.rules.js`))
+          Object.keys(require(`../../language_configs/${lang}.rules.js`))
             .concat(treeMatcherTypes)
             .sort((a, b) => a.localeCompare(b))
             .forEach((rule, i) => expect(rule).toEqual(tokens[i]));

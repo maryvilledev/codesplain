@@ -122,6 +122,6 @@ module.exports = async function(env) {
         console.warn('No languages generated...');
     } else {
         // Otherwise, return a promise that resolves when all of the language promises resolve.
-        return Promise.all(lang_configs);
+        return await Promise.all(lang_configs);
     }
 };
