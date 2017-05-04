@@ -2,22 +2,29 @@ const fs = require('fs');
 
 describe('mappings', () => {
   fs.readdirSync('./language_configs/')
-    .filter((name) => name.split('.')[1] === 'rules' )
-    .forEach((file) => {
-      const csvFileName = `${file.split('.')[0]}.csv`;
+    // Gather set of all langs in "language_configs"
+    .reduce((langs, name) => langs.add(name.split('.')[0]), new Set())
+    .forEach(lang => {
+      const csvFileName = `${lang}.csv`
       describe(csvFileName, () => {
         const encoding = { encoding: 'utf-8' };
         const csv = fs.readFileSync(`./mappings/${csvFileName}`, encoding)
           .split('\n')   // Make array of lines
           .slice(1, -1); // Cut off the header and newline
-        it('should have a definition for all rules', () => {
+        it(`should have a definition for all rules`, () => {
           // Create a sorted array of tokens in the csv
-          const tokens = csv.map((line) => line.split(',')[0])
+          const tokens = csv.map(line => line.split(',')[0])
             .sort((a, b) => a.localeCompare(b));
 
-          // Now create sorted array of rules in the config
-          // file, and compare the two
-          Object.keys(require(`../language_configs/${file}`))
+          // Extract types from tree_matcher_specs.js file for this lang
+          const treeMatcherTypes = require(
+            `../language_configs/${lang}.tree_matcher_specs.js`
+          ).reduce((arr, spec) => arr.concat(spec.provides_tags), []);
+
+          // Now create a sorted array of rules in the config files, and
+          // the tree matcher specs file, then compare the two
+          Object.keys(require(`../language_configs/${lang}.rules.js`))
+            .concat(treeMatcherTypes)
             .sort((a, b) => a.localeCompare(b))
             .forEach((rule, i) => expect(rule).toEqual(tokens[i]));
         });

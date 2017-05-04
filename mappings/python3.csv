@@ -181,3 +181,7 @@ integer,1,Integers,#ABF7C6
 .UNKNOWN_CHAR,0,,
 .INDENT,0,,
 .DEDENT,0,,
+boolean,1,Boolean,#FFCCFF
+for_range,1,For Range Loop,#99CCFF
+function_call,1,Function Call,#DB70B8
+negative_number,1,Negative Number,#33CC33
