@@ -59,6 +59,10 @@ const prepareJs = async function(lang_compile_config, lang_runtime_config) {
     'enable_debug': false,
   });
 
+  if (webpack_config.length !== 1) {
+    throw new Error('Unexpected webpack output');
+  }
+
   const compiler = webpack(webpack_config);
 
   await new Promise(function(resolve, reject) {
@@ -71,7 +75,7 @@ const prepareJs = async function(lang_compile_config, lang_runtime_config) {
     });
   });
 
-  return require(path.resolve(output_path, lang_runtime_config.language));
+  return require(path.resolve(output_path, webpack_config[0].output.filename));
 }
 
 const genTreeViaJs = async function(lang_runtime_config, js_parser, code) {
