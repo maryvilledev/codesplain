@@ -4,3 +4,4 @@ bin/
 node_modules/
 .DS_Store
 public/langs/*
+profile_result.txt

@@ -129,12 +129,12 @@ describe('grammars-v4/', () => {
   beforeAll(() => {
     prev_timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-  });
-  afterAll(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = prev_timeout;
     return fs.remove(config.build_path).catch(err => {
       console.error(err);
     });
+  });
+  afterAll(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = prev_timeout;
   });
 
   const test_snippet = function(lang_key, description, code_filename) {

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Exit if error
+set -e
+
+# Remove any profile logs from previous runs
+rm -f isolate-*-v8.log
+
+# Run profiler
+node --prof ./node_modules/.bin/jest
+
+# The profiler outputs 3 files.
+# Find the one that contains results from running /Users/joelwalker/codesplain/build/output/
+match=$(grep --fixed-strings --files-with-matches '/Users/joelwalker/codesplain/build/output/' isolate-*-v8.log)
+[ $(wc -l <<< "$match") = "1" ] || {
+    echo 'Did not find exactly one file with search string in profile output'
+    echo "$match"
+    exit 1
+}
+
+node --prof-process "$match" > profile_result.txt
+echo "Wrote profile_result.txt"
+
+rm isolate-*-v8.log
