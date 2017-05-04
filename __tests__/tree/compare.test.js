@@ -132,7 +132,7 @@ describe('grammars-v4/', () => {
   let prev_timeout;
   beforeAll(() => {
     prev_timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
     return fs.remove(config.build_path).catch(err => {
       console.error(err);
     });
