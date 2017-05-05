@@ -116,7 +116,7 @@
     };
 
     let gen_html = function(code, node) {
-        let html = '<span style="background-color: ' + get_color(node.type) + '">';
+        let html = '<span style="background-color: ' + get_color(node.ast_type) + '">';
 
         let i = node.begin;
         html += node.children.map(function(child) {
@@ -125,12 +125,12 @@
             let res = '';
 
             if (i > child.begin) {
-                // throw new Error('Unordered children');
+                // throw new Error('Unordered children, ' + i + ' > ' + child.begin);
             } else {
+            res += escape_code(code.substring(i, child.begin));
                 i = child.begin;
-                res += escape_code(code.substring(i, child.begin));
-                res += gen_html(code, child);
-                i = child.end;
+            res += gen_html(code, child);
+            i = child.end;
             }
 
             return res;
@@ -144,7 +144,7 @@
 
     let lang_el = document.getElementById('language');
     lang_el.onchange = function() {
-        let path = 'langs/' + lang_el.value + '.min.js';
+        let path = 'langs/' + lang_el.value + '.js';
         // let path = 'https://api.codesplain.io/dev/parsers/' + lang_el.value;
 
         var script_el = document.createElement('script');
