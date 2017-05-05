@@ -127,10 +127,10 @@
             if (i > child.begin) {
                 // throw new Error('Unordered children, ' + i + ' > ' + child.begin);
             } else {
-                res += escape_code(code.substring(i, child.begin));
+            res += escape_code(code.substring(i, child.begin));
                 i = child.begin;
-                res += gen_html(code, child);
-                i = child.end;
+            res += gen_html(code, child);
+            i = child.end;
             }
 
             return res;

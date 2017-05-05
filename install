@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Exit if error
+set -e
+
 git submodule update --init --recursive
 
 mkdir -p bin/
