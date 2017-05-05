@@ -55,6 +55,7 @@ let prepare_lang = async function(filename) {
 
         'resolve': {
             'alias': {
+                'PackageJson$': path.resolve(__dirname, 'package.json'),
                 'App': config.app_path,
                 'Cache': config.cache_path,
                 'LangRuntimeConfig$': lang_runtime_config_path,
