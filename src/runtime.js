@@ -1,5 +1,5 @@
 let path = require('path');
-let antlr = require('antlr4');
+let antlr = require('antlr4ts');
 
 let lang_runtime_config = require('LangRuntimeConfig');
 
@@ -32,7 +32,7 @@ module.exports = function(input, error_callback, options) {
 
     // Take the string of code, and generate a stream of tokens using the antlr lexer.
     // Example: ['if', '(', 'var', '==', '123', ')', '{', ...]
-    let chars = new antlr.InputStream(input);
+    let chars = new antlr.ANTLRInputStream(input);
     let lexer = new LexerClass(chars);
     let tokens = new antlr.CommonTokenStream(lexer);
 
