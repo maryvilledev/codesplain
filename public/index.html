@@ -95,11 +95,13 @@
 
     <textarea id="code" style="width: 40%; height: 100%; display: inline-block; float: left;"></textarea>
 
-    <span style="width: 48%; height: 100%; display: inline-block; float: left;">
+    <span style="width: 38%; height: 100%; display: inline-block; float: left;">
         <pre id="formatted" style="padding: 20px;"></pre>
     </span>
+    <input type="button" onclick=copyAST() value="Copy AST"/>
 
     <script type="text/javascript">
+     let ast;
 
     window.module = {'exports': undefined};
 
@@ -161,11 +163,14 @@
         if (typeof parser !== 'function') {return;}
 
         let code = code_el.value;
-        let ast = parser(code, function() {}, {'log_cutoffs': false});
+        ast = parser(code, function() {}, {'log_cutoffs': false});
         console.log(ast);
         let html = gen_html(code, ast);
         formatted_el.innerHTML = html;
-    }
+    };
+    function copyAST() {
+        window.alert(JSON.stringify(ast));
+    };
     code_el.onchange();
     </script>
 </body>
