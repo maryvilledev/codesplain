@@ -112,8 +112,8 @@ integer,1,Integers,#ABF7C6
 .NOT,0,,
 .IS,0,,
 .NONE,0,,
-.TRUE,1,Boolean (True),#FF9933
-.FALSE,1,Boolean (False),#E67300
+.TRUE,0,,
+.FALSE,0,,
 .CLASS,0,,
 .YIELD,0,,
 .DEL,0,,
