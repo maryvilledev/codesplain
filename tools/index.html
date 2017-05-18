@@ -116,20 +116,23 @@
     };
 
     let gen_html = function(code, node) {
-        let html = '<span style="background-color: ' + get_color(node.type) + '">';
+        let html = '<span style="background-color: ' + get_color(node.ast_type) + '">';
 
         let i = node.begin;
         html += node.children.map(function(child) {
             if (typeof child !== 'object') {return '';}
 
-            if (i > child.begin) {
-                throw new Error('Unordered children');
-            }
-
             let res = '';
+
+            if (i > child.begin) {
+                // throw new Error('Unordered children, ' + i + ' > ' + child.begin);
+            } else {
             res += escape_code(code.substring(i, child.begin));
+                i = child.begin;
             res += gen_html(code, child);
             i = child.end;
+            }
+
             return res;
         }).join('');
         html += escape_code(code.substring(i, node.end));
@@ -141,7 +144,8 @@
 
     let lang_el = document.getElementById('language');
     lang_el.onchange = function() {
-        let path = '../build/parsers/' + lang_el.value + '.js';
+        let path = 'build/parsers/' + lang_el.value + '.js';
+        // let path = 'https://api.codesplain.io/dev/parsers/' + lang_el.value;
 
         var script_el = document.createElement('script');
         script_el.setAttribute('type', 'text/javascript');

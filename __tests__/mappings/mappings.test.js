@@ -20,7 +20,7 @@ describe('mappings', () => {
           // Extract types from tree_matcher_specs.js file for this lang
           const treeMatcherTypes = require(
             `../../language_configs/${lang}.tree_matcher_specs.js`
-          ).map(spec => spec.type);
+          ).reduce((arr, spec) => arr.concat(spec.provides_tags), []);
 
           // Now create a sorted array of rules in the config files, and
           // the tree matcher specs file, then compare the two

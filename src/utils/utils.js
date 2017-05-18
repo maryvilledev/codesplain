@@ -4,12 +4,13 @@ const { TerminalNodeImpl } = require('antlr4/tree/Tree.js');
 Returns an object built from the given arguments. The object is
 representative of nodes present in the parser output AST.
 */
-module.exports.makeNode = (type, begin, end, tags, children) => {
+module.exports.makeNode = (ast_type, begin, end, detail, children) => {
   return {
-    type,
+    ast_type,
+    tags: [ast_type],
     begin,
     end,
-    tags,
+    detail,
     children,
   }
 };
@@ -18,14 +19,15 @@ module.exports.makeNode = (type, begin, end, tags, children) => {
 Returns an object built from the given arguments. The object is
 representative of terminal nodes present in the parser output AST.
 */
-module.exports.makeTerminal = (type, begin, end, tags, children, text) => {
+module.exports.makeTerminal = (ast_type, begin, end, text, detail) => {
   return {
-    type,
+    ast_type,
+    tags: [ast_type],
     begin,
     end,
-    tags,
-    children,
     text,
+    detail,
+    children: [],
   }
 };
 

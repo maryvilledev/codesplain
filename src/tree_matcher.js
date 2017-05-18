@@ -131,7 +131,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
                     if (!lang_runtime_config.rules.hasOwnProperty(test_type)) {
                         throw new Error('Type ' + JSON.stringify(test_type) + ' is not a valid language node type');
                     }
-                    let cond = node_var + '.type === ' + JSON.stringify(test_type);
+                    let cond = node_var + '.ast_type === ' + JSON.stringify(test_type);
                     return make_if(cond, pass_stmt);
                 }
                 case 'mod_terminal': {
@@ -139,7 +139,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
                     if (!lang_runtime_config.rules.hasOwnProperty(test_type)) {
                         throw new Error('Type ' + JSON.stringify(test_type) + ' is not a valid language node type');
                     }
-                    let cond = node_var + '.type === ' + JSON.stringify(test_type);
+                    let cond = node_var + '.ast_type === ' + JSON.stringify(test_type);
                     return make_if(cond, pass_stmt);
                 }
                 case 'mod_wildcard': {

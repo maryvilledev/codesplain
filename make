@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Exit if error
+set -e
+
 # Operate in current direcory
 cd $(dirname $0)
 
@@ -47,10 +51,6 @@ while (( "$#" )); do
 		exit 127
 	esac
 done
-
-if [[ -e "./build" ]]; then
-  rm -r ./build
-fi
 
 $NPM run build -- --env.langs="$LANG" --env.optimize=$MINIFY --env.enable_debug=$DEBUG
 exit
