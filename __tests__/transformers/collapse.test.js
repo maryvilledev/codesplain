@@ -4,11 +4,11 @@ describe('collapse.js', () => {
 
   const start  = 0;
   const end    = 5;
-  const noTags = [];
+  const noDetail = [];
 
-  const bottomNode = makeNode('bottom_node', start, end, noTags, []);
-  const middleNode = makeNode('middle_node', start, end, noTags, [ bottomNode ]);
-  const topNode    = makeNode('top_node', start, end, noTags, [ middleNode ]);
+  const bottomNode = makeNode('bottom_node', start, end, noDetail, []);
+  const middleNode = makeNode('middle_node', start, end, noDetail, [ bottomNode ]);
+  const topNode    = makeNode('top_node', start, end, noDetail, [ middleNode ]);
 
   it(`is a function`, () => {
     expect(typeof(collapse)).toEqual('function');
@@ -50,8 +50,8 @@ describe('collapse.js', () => {
 
   it(`does NOT remove nodes from the tree if they ARE flagged as collapsible,
       but whose children do NOT occupt identical ranges`, () => {
-        const childNode  = makeNode('child', 0, 3, noTags, []);
-        const parentNode = makeNode('parent', 0, 5, noTags, [ childNode ]);
+        const childNode  = makeNode('child', 0, 3, noDetail, []);
+        const parentNode = makeNode('parent', 0, 5, noDetail, [ childNode ]);
         const langRuntimeConfig = {
           'rules': {
             'parent': { 'collapse': true },

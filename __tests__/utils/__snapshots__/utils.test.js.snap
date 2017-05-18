@@ -2,10 +2,13 @@
 
 exports[`test-utils.js makeNode returns the expected object 1`] = `
 Object {
+  "ast_type": "Some Type",
   "begin": 0,
   "children": Array [],
+  "detail": Array [],
   "end": 5,
-  "tags": Array [],
-  "type": "Some Type",
+  "tags": Array [
+    "Some Type",
+  ],
 }
 `;

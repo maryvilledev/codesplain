@@ -1,5 +1,7 @@
 module.exports = [
     {
+        provides_tags: ['for_range'],
+
         // The pattern specifies which nodes to match.
         // When a node is matched, actor will be executed.
         pattern: 'for_stmt [.FOR, /.NAME:iter, .IN, /power [/.NAME="range", trailer\
@@ -13,47 +15,45 @@ module.exports = [
             '0a0b1': [3,6],
         },
 
-        // The string that will be pushed onto the node's tags array
-        type: 'for_range',
-
         // The actor will be run when a node matches.
         // The node that was matched will be available as the root variable.
         // Variables set by the pattern (:iter, :begin, :end) will also be available.
-        'actor': function() {
-            root.tags.push({
-                'type': this.type,
+        actor: function() {
+            root.tags.push('for_range');
+
+            root.detail.push({
+                'handler': 'docs',
+                'template': 'for_range',
                 'iter': iter.text,
                 'begin': parseInt(begin.text),
                 'end': parseInt(end.text),
             });
         },
     }, {
+        provides_tags: ['function_call'],
+
         pattern: 'power [/.NAME:name, trailer [.OPEN_PAREN, arglist:args, .CLOSE_PAREN]]',
-        type: 'function_call',
         actor: function() {
-            console.log(name.text, args.children);
-            root.tags.push({
-                'type': this.type,
+            root.tags.push('function_call');
+
+            root.detail.push({
+                'handler': 'docs',
+                'template': 'function_call',
                 'name': name.text,
-                'args': args.children,
+                'args': args.children.map(function(child) {return child.text;}),
             });
         },
     }, {
+        provides_tags: ['boolean'],
         pattern: 'atom .TRUE|.FALSE',
-        type: 'boolean',
         actor: function() {
-            root.tags.push({
-                'type': this.type,
-            });
+            root.tags.push('boolean');
         },
     }, {
+        provides_tags: ['negative_number'],
         pattern: 'factor [.MINUS, /number]',
-        type: 'negative_number',
         actor: function() {
-            console.log(root);
-            root.tags.push({
-                'type': this.type,
-            });
+            root.tags.push('negative_number');
         },
     },
 ];

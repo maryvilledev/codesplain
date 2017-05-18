@@ -56,7 +56,7 @@ describe(`simplify_node.js`, () => {
     );
     const { symbol_name_map } = lang_runtime_config;
     const expected = (
-      makeTerminal(symbol_name_map[0 + 2], 0, 6, [], [], 'foobar')
+      makeTerminal(symbol_name_map[0 + 2], 0, 6, 'foobar', [])
     );
     expect(simplify_node(lang_runtime_config, input_terminal)).toEqual(expected);
   });
