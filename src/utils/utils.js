@@ -1,4 +1,4 @@
-const { TerminalNodeImpl } = require('antlr4/tree/Tree.js');
+const { TerminalNode } = require('antlr4ts/tree/TerminalNode.js');
 
 /*
 Returns an object built from the given arguments. The object is
@@ -49,12 +49,10 @@ Returns an object built from the given arguments. The object
 is a mock of terminal nodes that appear in ANTLR output ASTs. Note that these mocks are incomplete, and only contain some properties found in real ANTLR nodes.
 */
 module.exports.makeAntlrTerminal = (type, start, stop, text) => {
-  const terminal = Object.create(TerminalNodeImpl.prototype, {});
-  terminal.symbol = {
+  return new TerminalNode({
       type,
       start,
       stop,
       text
-  };
-  return terminal;
+  });
 };

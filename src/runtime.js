@@ -53,8 +53,8 @@ module.exports = function(input, error_callback, options) {
     // This tree has complicated nodes that need to be simplified by our process_node function.
     let tree = parser[lang_runtime_config.entry_rule]();
 
-    if (options.return_antlr_tree) {
-        return tree;
+    if (options.return_antlr_toStringTree) {
+        return tree.toStringTree(parser.ruleNames);
     }
 
     // Transform the tree and return it
