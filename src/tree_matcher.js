@@ -1,6 +1,6 @@
 let path = require('path');
-let antlr = require('antlr4ts');
-let TerminalNode = require('antlr4ts/tree/TerminalNode.js').TerminalNode;
+let antlr = require('antlr4');
+let TerminalNodeImpl = require('antlr4/tree/Tree.js').TerminalNodeImpl;
 
 let tree_matcher_compile_config = require('./tree_matcher_parser/lang_config.compile.js');
 let tree_matcher_runtime_config = require('./tree_matcher_parser/lang_config.runtime.js');
@@ -51,7 +51,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
     return function(matcher_spec) {
 
         // Take the string of a matcher specification pattern, and generate a stream of tokens using the antlr lexer.
-        let chars = new antlr.ANTLRInputStream(matcher_spec.pattern);
+        let chars = new antlr.InputStream(matcher_spec.pattern);
         let lexer = new LexerClass(chars);
         let tokens  = new antlr.CommonTokenStream(lexer);
 
@@ -171,7 +171,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
                 case 'mod_fixed_children': {
                     let child_index = 0;
                     node.children[1].children.forEach(function(child) {
-                        if (child instanceof TerminalNode) {
+                        if (child instanceof TerminalNodeImpl) {
                             return '';
                         } else {
                             let child_var = create_var();
@@ -200,7 +200,7 @@ module.exports.make_generator = async function(lang_compile_config, lang_runtime
                 }
                 case 'expr': {
                     return node.children.map(function(child) {
-                        if (child instanceof TerminalNode) {
+                        if (child instanceof TerminalNodeImpl) {
                             return '';
                         } else {
                             return build_tester(child, node_var, pass_stmt);

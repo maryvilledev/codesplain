@@ -1,5 +1,5 @@
 let path = require('path');
-let antlr = require('antlr4ts');
+let antlr = require('antlr4');
 
 let lang_runtime_config = require('LangRuntimeConfig');
 
@@ -32,7 +32,7 @@ module.exports = function(input, error_callback, options) {
 
     // Take the string of code, and generate a stream of tokens using the antlr lexer.
     // Example: ['if', '(', 'var', '==', '123', ')', '{', ...]
-    let chars = new antlr.ANTLRInputStream(input);
+    let chars = new antlr.InputStream(input);
     let lexer = new LexerClass(chars);
     let tokens = new antlr.CommonTokenStream(lexer);
 
@@ -53,8 +53,8 @@ module.exports = function(input, error_callback, options) {
     // This tree has complicated nodes that need to be simplified by our process_node function.
     let tree = parser[lang_runtime_config.entry_rule]();
 
-    if (options.return_antlr_toStringTree) {
-        return tree.toStringTree(parser.ruleNames);
+    if (options.return_antlr_tree) {
+        return tree;
     }
 
     // Transform the tree and return it

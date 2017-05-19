@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs-promise');
 const child_process = require('child-process-promise');
+const antlr = require('antlr4');
 
 const config = require('../config');
 const expect_error = require('./utils/expect_error.js');
 const run_antlr = require('./utils/run_antlr.js');
-const run_tsc = require('./utils/run_tsc.js');
 const tree_matcher = require('./tree_matcher.js');
 const java_func_data_generator = require('./java_func_data_generator.js');
 
@@ -31,7 +31,6 @@ parser.
 */
 const build_tasks = (lang_compile_config, lang_runtime_config) => {
   const {
-    use_typescript_target,
     tree_matcher_specs,
     needs_java_func_data,
   } = lang_compile_config;
@@ -42,8 +41,8 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
 
   let result;
 
-  const make_typescript_target = async () => {
-    result = await run_antlr(lang_compile_config, lang_runtime_config, 'TypeScript');
+  const make_lexer_and_parser = async () => {
+    result = await run_antlr(lang_compile_config, lang_runtime_config, 'JavaScript');
   }
 
   /* --- Generates java func data, if this lang needs any --- */
@@ -52,10 +51,6 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
       await fs.stat(config.build_path + '/java_func_data')
           .catch(expect_error('ENOENT', java_func_data_generator));
     }
-  }
-
-  const make_javascript_target = async() => {
-    await run_tsc(result.build_dir);
   }
 
   /* --- Creates and returns the parser and symbol_name_map --- */
@@ -67,7 +62,7 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
 
     // Create an array of symbol (terminal) names
     const symbol_name_map = ['_EPSILON', '_EOF', '_INVALID']
-        .concat(parser.vocabulary.symbolicNames.slice(1))
+        .concat(parser.symbolicNames.slice(1))
         .map((val) => val ? '.' + val : undefined);
 
     // Create the lists of rule names (both terminals and non-terminals)
@@ -135,9 +130,8 @@ const build_tasks = (lang_compile_config, lang_runtime_config) => {
 
   // Return the set of async closures
   return [
-    make_typescript_target,
+    make_lexer_and_parser,
     make_java_func_data,
-    make_javascript_target,
     make_parser,
     make_runtime_config_modifier,
     write_runtime_config_modifier,

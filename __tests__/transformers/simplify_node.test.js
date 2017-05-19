@@ -29,12 +29,11 @@ describe(`simplify_node.js`, () => {
         • end
         • tags
         • children`, () => {
-
     // Different forms for starts and stops are intentionally
     // used here, as both can be found in real ANTLR nodes.
     const input_node = (
       makeAntlrNode(0, { start: 0 }, { stop: 5 }, [
-        makeAntlrNode(1, { start: 0, stop: 4 }, undefined, []),
+        makeAntlrNode(1, { start: 0, stop: 4 }, undefined, undefined),
       ]));
 
     const { rule_name_map } = lang_runtime_config;
@@ -42,7 +41,6 @@ describe(`simplify_node.js`, () => {
       makeNode(rule_name_map[0], 0, 5 + 1, [], [
         makeNode(rule_name_map[1], 0, 4 + 1, [], []),
       ]));
-
     expect(simplify_node(lang_runtime_config, input_node)).toEqual(expected);
   });
 
@@ -53,16 +51,13 @@ describe(`simplify_node.js`, () => {
       • tags
       • children
       • text`, () => {
-
     const input_terminal = (
       makeAntlrTerminal(0, 0, 5, 'foobar')
     );
-
     const { symbol_name_map } = lang_runtime_config;
     const expected = (
       makeTerminal(symbol_name_map[0 + 2], 0, 6, 'foobar', [])
     );
-
     expect(simplify_node(lang_runtime_config, input_terminal)).toEqual(expected);
   });
 });
