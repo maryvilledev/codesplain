@@ -1,26 +1,30 @@
-"use strict";
-class ConsoleErrorListener {
-    constructor(callback) {
-        this.callback = callback;
-    }
+let antlr = require('antlr4');
 
-    syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e) {
-        this.callback({
-            'type': 'syntaxError',
-            'begin': offendingSymbol.start,
-            'end': offendingSymbol.stop + 1,
-            'msg': msg,
-        });
-    }
-
-    reportAmbiguity(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
-    }
-
-    reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
-    }
-
-    reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
-    }
+function ErrorListener(callback) {
+    antlr.error.ErrorListener.call(this);
+    this.callback = callback;
+    return this;
 }
 
-module.exports = ConsoleErrorListener;
+ErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
+ErrorListener.prototype.constructor = ErrorListener;
+
+ErrorListener.prototype.syntaxError = function(recognizer, offendingSymbol, line, column, msg, e) {
+    this.callback({
+        'type': 'syntaxError',
+        'begin': offendingSymbol.start,
+        'end': offendingSymbol.stop + 1,
+        'msg': msg,
+    });
+};
+
+ErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
+};
+
+ErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
+};
+
+ErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
+};
+
+module.exports = ErrorListener;
