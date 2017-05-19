@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+################################################################################
+# This script builds the parsers and pushes them to their S3 bucket. It can be #
+# used in dev mode, to push to the dev bucket:                                 #
+#     ./publish dev                                                            #
+# or release mode, to push to a prod bucket with the specified release version:#
+#     ./publish release v0.1                                                   #
+################################################################################
+
 # Exit if error
 set -e
 

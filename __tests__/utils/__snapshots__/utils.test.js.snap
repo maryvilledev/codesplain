@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-utils.js makeNode returns the expected object 1`] = `
+Object {
+  "ast_type": "Some Type",
+  "begin": 0,
+  "children": Array [],
+  "detail": Array [],
+  "end": 5,
+  "tags": Array [
+    "Some Type",
+  ],
+}
+`;

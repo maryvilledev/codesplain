@@ -4,7 +4,8 @@ module.exports = function(lang_runtime_config, root) {
     let collapse = function(node) {
         let type_opts = lang_runtime_config.rules[node.ast_type];
 
-        // If there is only one child, and it is exactly the same as this node, then eliminate this node.
+        // If there is only one child, and it is exactly the same as this node,
+        // then eliminate this node.
         if (type_opts.collapse
             && node.children.length === 1
             && node.begin === node.children[0].begin

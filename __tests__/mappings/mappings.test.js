@@ -8,7 +8,8 @@ describe('mappings', () => {
       const csvFileName = `${lang}.csv`
       describe(csvFileName, () => {
         const encoding = { encoding: 'utf-8' };
-        const csv = fs.readFileSync(`./mappings/${csvFileName}`, encoding)
+        const csvPath = __dirname + `/../../mappings/${csvFileName}`;
+        const csv = fs.readFileSync(csvPath, encoding)
           .split('\n')   // Make array of lines
           .slice(1, -1); // Cut off the header and newline
         it(`should have a definition for all rules`, () => {
@@ -18,12 +19,12 @@ describe('mappings', () => {
 
           // Extract types from tree_matcher_specs.js file for this lang
           const treeMatcherTypes = require(
-            `../language_configs/${lang}.tree_matcher_specs.js`
+            `../../language_configs/${lang}.tree_matcher_specs.js`
           ).reduce((arr, spec) => arr.concat(spec.provides_tags), []);
 
           // Now create a sorted array of rules in the config files, and
           // the tree matcher specs file, then compare the two
-          Object.keys(require(`../language_configs/${lang}.rules.js`))
+          Object.keys(require(`../../language_configs/${lang}.rules.js`))
             .concat(treeMatcherTypes)
             .sort((a, b) => a.localeCompare(b))
             .forEach((rule, i) => expect(rule).toEqual(tokens[i]));

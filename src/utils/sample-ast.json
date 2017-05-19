@@ -1,0 +1,277 @@
+{
+  "type":"file_input",
+  "begin":0,
+  "end":13,
+  "tags":[
+
+  ],
+  "children":[
+    {
+      "type":"simple_stmt",
+      "begin":0,
+      "end":13,
+      "tags":[
+
+      ],
+      "children":[
+        {
+          "type":"expr",
+          "begin":0,
+          "end":13,
+          "tags":[
+
+          ],
+          "children":[
+            {
+              "type":"trailed_atom",
+              "begin":0,
+              "end":13,
+              "tags":[
+                {
+                  "type":"function_call",
+                  "name":"print",
+                  "args":[
+                    {
+                      "type":"argument",
+                      "begin":6,
+                      "end":12,
+                      "tags":[
+
+                      ],
+                      "children":[
+                        {
+                          "type":"test",
+                          "begin":6,
+                          "end":12,
+                          "tags":[
+
+                          ],
+                          "children":[
+                            {
+                              "type":"or_test",
+                              "begin":6,
+                              "end":12,
+                              "tags":[
+
+                              ],
+                              "children":[
+                                {
+                                  "type":"and_test",
+                                  "begin":6,
+                                  "end":12,
+                                  "tags":[
+
+                                  ],
+                                  "children":[
+                                    {
+                                      "type":"not_test",
+                                      "begin":6,
+                                      "end":12,
+                                      "tags":[
+
+                                      ],
+                                      "children":[
+                                        {
+                                          "type":"comparison",
+                                          "begin":6,
+                                          "end":12,
+                                          "tags":[
+
+                                          ],
+                                          "children":[
+                                            {
+                                              "type":"star_expr",
+                                              "begin":6,
+                                              "end":12,
+                                              "tags":[
+
+                                              ],
+                                              "children":[
+                                                {
+                                                  "type":"expr",
+                                                  "begin":6,
+                                                  "end":12,
+                                                  "tags":[
+
+                                                  ],
+                                                  "children":[
+                                                    {
+                                                      "type":"atom",
+                                                      "begin":6,
+                                                      "end":12,
+                                                      "tags":[
+
+                                                      ],
+                                                      "children":[
+                                                        {
+                                                          "type":"str",
+                                                          "begin":6,
+                                                          "end":12,
+                                                          "tags":[
+
+                                                          ],
+                                                          "children":[
+                                                            {
+                                                              "type":".STRING_LITERAL",
+                                                              "text":"'test'",
+                                                              "begin":6,
+                                                              "end":12,
+                                                              "tags":[
+
+                                                              ],
+                                                              "children":[
+
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "children":[
+                {
+                  "type":"atom",
+                  "begin":0,
+                  "end":5,
+                  "tags":[
+
+                  ],
+                  "children":[
+                    {
+                      "type":".NAME",
+                      "text":"print",
+                      "begin":0,
+                      "end":5,
+                      "tags":[
+
+                      ],
+                      "children":[
+
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type":"trailer",
+                  "begin":5,
+                  "end":13,
+                  "tags":[
+
+                  ],
+                  "children":[
+                    {
+                      "type":".OPEN_PAREN",
+                      "text":"(",
+                      "begin":5,
+                      "end":6,
+                      "tags":[
+
+                      ],
+                      "children":[
+
+                      ]
+                    },
+                    {
+                      "type":"arglist",
+                      "begin":6,
+                      "end":12,
+                      "tags":[
+
+                      ],
+                      "children":[
+                        {
+                          "type":"expr",
+                          "begin":6,
+                          "end":12,
+                          "tags":[
+
+                          ],
+                          "children":[
+                            {
+                              "type":"atom",
+                              "begin":6,
+                              "end":12,
+                              "tags":[
+
+                              ],
+                              "children":[
+                                {
+                                  "type":"str",
+                                  "begin":6,
+                                  "end":12,
+                                  "tags":[
+
+                                  ],
+                                  "children":[
+                                    {
+                                      "type":".STRING_LITERAL",
+                                      "text":"'test'",
+                                      "begin":6,
+                                      "end":12,
+                                      "tags":[
+
+                                      ],
+                                      "children":[
+
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type":".CLOSE_PAREN",
+                      "text":")",
+                      "begin":12,
+                      "end":13,
+                      "tags":[
+
+                      ],
+                      "children":[
+
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type":"._EOF",
+      "text":"<EOF>",
+      "begin":13,
+      "end":13,
+      "tags":[
+
+      ],
+      "children":[
+
+      ]
+    }
+  ]
+}

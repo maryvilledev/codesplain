@@ -21,6 +21,12 @@
     "jest": "^19.0.2"
   },
   "jest": {
-    "moduleFileExtensions": ["js", "json", "jsx", "node", "csv"]
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "node",
+      "csv"
+    ]
   }
 }

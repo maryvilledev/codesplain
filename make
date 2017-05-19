@@ -14,14 +14,14 @@ DEBUG=0
 # Help
 function help {
 	echo "Usage: $0 [-l|--lang lang] [-m|--minify] [-d|--debug] [-h|--help]"
-	echo "	Makes the parser with the current configuration and places in './public/lang'"
+	echo "	Makes the parser with the current configuration and places in './build/parsers'"
 	echo "	-l|--lang [lang]: Which language the parser is for"
 	echo " 	-m|--minify: Optimizes the parser, will not be human-readable"
 	echo "	-d|--debug: Enables debugging info"
 	echo "	-h|--help: Prints this help text"
 }
 
-#Ensure npm installed
+# Ensure npm installed
 NPM="$(which npm)"
 if [ "$NPM" == "" ]; then
 	echo "npm not installed"

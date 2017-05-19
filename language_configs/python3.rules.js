@@ -67,7 +67,6 @@ module.exports = {
     'term': {'collapse': true},
     'factor': {'collapse': true},
     'power': {'collapse': true},
-    'trailed_atom': {'collapse': true},
     'atom': {},
     'testlist_comp': {},
     'trailer': {},

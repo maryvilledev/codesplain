@@ -3,15 +3,15 @@ let fs = require('fs-promise');
 let child_process = require('child-process-promise');
 
 let config = require('../config');
-let expect_error = require('./expect_error.js');
+let expect_error = require('./utils/expect_error.js');
 
 let compile_promise;
 
 let compile = async function() {
-    let cache_dir = path.resolve(config.cache_path, 'java_func_data');
+    let cache_dir = path.resolve(config.build_path, 'java_func_data');
 
     // Make sure the cache directory exists
-    await fs.mkdir(config.cache_path).catch(expect_error('EEXIST', function() {}));
+    await fs.mkdir(config.build_path).catch(expect_error('EEXIST', function() {}));
 
     // Make sure the language cache directory exists
     await fs.mkdir(cache_dir).catch(expect_error('EEXIST', function() {}));
