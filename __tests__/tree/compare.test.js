@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs-promise');
-const antlr = require('antlr4');
 const expect_error = require('../../src/utils/expect_error.js');
 const run_antlr = require('../../src/utils/run_antlr.js');
 const run_java = require('../../src/utils/run_java.js');
@@ -79,13 +78,11 @@ const prepareJs = async function(lang_compile_config, lang_runtime_config) {
 }
 
 const genTreeViaJs = async function(lang_runtime_config, js_parser, code) {
-  const tree = js_parser(code, function(err) {
+  return js_parser(code, function(err) {
     throw err;
   }, {
-    'return_antlr_tree': true,
+    'return_antlr_toStringTree': true,
   });
-
-  return tree.toStringTree(tree.parser.ruleNames);
 };
 
 
@@ -123,7 +120,9 @@ const compare = async function(language_name, code_file) {
   console.log('compare(' + code_file + ') genJava:  ' + (t4 - t3) + 'ms');
   console.log('compare(' + code_file + ') genJs:    ' + (t5 - t4) + 'ms');
 
-  return treeViaJava.trim() === treeViaJs.trim();
+  return [treeViaJava, treeViaJs].map(function(val) {
+    return val.trim().replace(/(\\n|\s)+/g, ' ');
+  });
 };
 
 
@@ -145,19 +144,32 @@ describe('grammars-v4/', () => {
     it(description, () => {
       expect.assertions(1);
       return compare(lang_key, __dirname + '/code/' + code_filename).then(data => {
-        expect(data).toBeTruthy();
+        expect(data[0]).toEqual(data[1]);
       }).catch(err => {
         console.error(err);
       });
     });
   };
 
-  describe('grammars-v4/python3/', () => {
-    test_snippet('python3', 'handles basic hello worlds', 'snippet.voc84cjo.py');
-    test_snippet('python3', 'handles a script adding the input arguments', 'snippet.kt29xnfw.py');
+  describe('grammars-v4/c/', () => {
+    test_snippet('c', 'handles lots of stuff', 'snippet.ecemhuve.c');
   });
+
+  describe('grammars-v4/clojure/', () => {
+    test_snippet('clojure', 'handles lots of stuff', 'snippet.1v88olr0.clj');
+  })
 
   describe('grammars-v4/java8/', () => {
     test_snippet('java8', 'handles basic hello worlds', 'snippet.k17eu4f2.java');
+    test_snippet('java8', 'handles lots of stuff', 'snippet.lk0rlo4z.java');
+  });
+
+  describe('grammars-v4/lua/', () => {
+    test_snippet('lua', 'handles lots of stuff', 'snippet.seefwj9h.lua');
+  });
+
+  describe('grammars-v4/python3/', () => {
+    test_snippet('python3', 'handles basic hello worlds', 'snippet.voc84cjo.py');
+    test_snippet('python3', 'handles a script adding the input arguments', 'snippet.kt29xnfw.py');
   });
 });

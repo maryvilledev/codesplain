@@ -7,7 +7,6 @@ const expect_error = require('./expect_error.js');
 
 module.exports = async (lang_compile_config, lang_runtime_config, target_language) => {
   const {
-    grammar_dir,
     grammar_files,
   } = lang_compile_config;
   const {
@@ -16,12 +15,10 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
     generate_listener,
   } = lang_runtime_config;
 
-  // Figure out the language key
-  const language_key = language.toLowerCase();
-
-  // Figure out the path to the grammar file
-  const g4_dir = grammar_dir ? grammar_dir : path.resolve(__dirname, '..', '..', 'grammars-v4', language_key);
-  const g4_path = path.resolve(g4_dir, grammar_files[target_language]);
+  if (typeof grammar_files[target_language] !== 'string') {
+    throw new Error('No grammar file specified for target ' + target_language);
+  }
+  const g4_path = path.resolve(__dirname, '..', '..', grammar_files[target_language]);
 
   const build_dir     = config.resolve_build_dir(lang_runtime_config, target_language);
   const build_g4_path = path.resolve(build_dir, language + '.g4');
@@ -45,20 +42,29 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
   const invoke_antlr = async () => {
     // Prepare options to the antlr compiler that generates
     // the antlr lexer and antlr parser
-    const cmd = 'java';
-    const args = [
-        '-Xmx500M',
-        '-cp', path.resolve(__dirname, '../../bin/antlr-4.6-complete.jar'),
-        'org.antlr.v4.Tool',
-        '-long-messages',
-        generate_listener ? '-listener' : '-no-listener',
-        generate_visitor ? '-visitor' : '-no-visitor',
-        '-Dlanguage=' + target_language,
-        language + '.g4',
-    ];
+
+    let cmd;
+    let args;
+
+    if (target_language === 'TypeScript') {
+      // To generate a TypeScript target, run the node antlr4ts-cli module
+      cmd = process.argv[0]; // This should be an absolute path to the node executable
+      args = [require.resolve('antlr4ts-cli')];
+    } else {
+      cmd = 'java';
+      args = ['-jar', path.resolve(__dirname, '../../bin/antlr-4.6-complete.jar')];
+    }
+
+    args = args.concat([
+      '-long-messages',
+      generate_listener ? '-listener' : '-no-listener',
+      generate_visitor ? '-visitor' : '-no-visitor',
+      '-Dlanguage=' + target_language,
+      language + '.g4',
+    ]);
     const opts = {
-        'cwd': build_dir,
-        'stdio': ['ignore', process.stdout, process.stderr],
+      'cwd': build_dir,
+      'stdio': ['ignore', process.stdout, process.stderr],
     };
 
     await child_process.spawn(cmd, args, opts);
