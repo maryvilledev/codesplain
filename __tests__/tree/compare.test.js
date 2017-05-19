@@ -151,12 +151,25 @@ describe('grammars-v4/', () => {
     });
   };
 
-  describe('grammars-v4/python3/', () => {
-    test_snippet('python3', 'handles basic hello worlds', 'snippet.voc84cjo.py');
-    test_snippet('python3', 'handles a script adding the input arguments', 'snippet.kt29xnfw.py');
+  describe('grammars-v4/c/', () => {
+    test_snippet('c', 'handles lots of stuff', 'snippet.ecemhuve.c');
   });
+
+  describe('grammars-v4/clojure/', () => {
+    test_snippet('clojure', 'handles lots of stuff', 'snippet.1v88olr0.clj');
+  })
 
   describe('grammars-v4/java8/', () => {
     test_snippet('java8', 'handles basic hello worlds', 'snippet.k17eu4f2.java');
+    test_snippet('java8', 'handles lots of stuff', 'snippet.lk0rlo4z.java');
+  });
+
+  describe('grammars-v4/lua/', () => {
+    test_snippet('lua', 'handles lots of stuff', 'snippet.seefwj9h.lua');
+  });
+
+  describe('grammars-v4/python3/', () => {
+    test_snippet('python3', 'handles basic hello worlds', 'snippet.voc84cjo.py');
+    test_snippet('python3', 'handles a script adding the input arguments', 'snippet.kt29xnfw.py');
   });
 });

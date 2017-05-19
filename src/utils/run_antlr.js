@@ -7,7 +7,6 @@ const expect_error = require('./expect_error.js');
 
 module.exports = async (lang_compile_config, lang_runtime_config, target_language) => {
   const {
-    grammar_dir,
     grammar_files,
   } = lang_compile_config;
   const {
@@ -16,16 +15,10 @@ module.exports = async (lang_compile_config, lang_runtime_config, target_languag
     generate_listener,
   } = lang_runtime_config;
 
-  // Figure out the language key
-  const language_key = language.toLowerCase();
-
-  // Figure out the path to the grammar file
-  const g4_dir = grammar_dir ? grammar_dir : path.resolve(__dirname, '..', '..', 'grammars-v4', language_key);
-
   if (typeof grammar_files[target_language] !== 'string') {
     throw new Error('No grammar file specified for target ' + target_language);
   }
-  const g4_path = path.resolve(g4_dir, grammar_files[target_language]);
+  const g4_path = path.resolve(__dirname, '..', '..', grammar_files[target_language]);
 
   const build_dir     = config.resolve_build_dir(lang_runtime_config, target_language);
   const build_g4_path = path.resolve(build_dir, language + '.g4');
