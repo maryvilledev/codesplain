@@ -63,7 +63,6 @@ arith_expr,1,Arithmetic Expression,#FFA500
 term,0,,
 factor,0,,
 power,0,,
-trailed_atom,0,,
 atom,0,,
 testlist_comp,0,,
 trailer,0,,
