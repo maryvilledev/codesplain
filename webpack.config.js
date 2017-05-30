@@ -65,6 +65,24 @@ const prepare_lang = async function(filename) {
         // Tell webpack that fs will be external so it doesn't complain.
         'externals': ['fs'],
 
+        'plugins': [
+            // Run the Google Closure Compiler if env.optimize is set
+            optimize ? new ClosureCompilerPlugin({
+                'compiler': {
+                    'language_in': 'ECMASCRIPT6',
+                    'language_out': 'ECMASCRIPT5',
+                    'compilation_level': 'SIMPLE_OPTIMIZATIONS',
+                    /*
+                    There is a higher compilation level, ADVANCED_OPTIMIZATIONS.
+                    Unfortunately, it requires property access by string or key to be consistent.
+                    For example, obj.abc = 123; alert(obj['abc']); doesn't work.
+                    Antlr does not follow this principle, so as far as I can see, we won't be able to use this level.
+                    */
+                },
+                'concurrency': 10,
+            }) : undefined,
+        ].filter(Boolean),
+
         'output': {
             // The output filename
             'filename': lang_name + (optimize ? '.min.js' : '.js'),
